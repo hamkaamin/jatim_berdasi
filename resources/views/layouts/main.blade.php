@@ -53,14 +53,14 @@
 								<div class="widget-content-wrapper">
 									<div class="widget-content-left ml-3 header-user-info">
 										<div class="widget-heading">
-											{{ ucwords(Auth::user()->first_name.' '.Auth::user()->last_name) }}
+											{{ ucwords(Auth::user()->name) }}
 										</div>
 										<div class="widget-subheading">
 											{{ ucwords(Auth::user()->role) }}
 										</div>
 									</div>
 									<div class="widget-content-right header-user-info ml-3">
-										<a href="{{ route('super.profile.index') }}" class="btn-shadow p-1 btn btn-secondary btn-sm"><i class="fas fa-user-cog pr-1 pl-1"></i></a>
+										<a href="" class="btn-shadow p-1 btn btn-secondary btn-sm"><i class="fas fa-user-cog pr-1 pl-1"></i></a>
 										<form action="{{ route('logout') }}" method="post" style="all: unset">
 											@csrf
 											<button type="submit" class="btn-shadow p-1 btn btn-danger btn-sm">
@@ -108,9 +108,6 @@
 						<div class="app-page-title">
 							<div class="page-title-wrapper">
 								<div class="page-title-heading">
-									<div class="page-title-icon">
-										<i class="metismenu-icon pe-7s-settings"></i>
-									</div>
 									<div>
 										@yield('title')
 										<div class="page-title-subheading">@yield('title-desc')</div>
