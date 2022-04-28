@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Super Admin - Marketplace</title>
+    <title>SI -Inovasi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="Super Admin - Marketplace">
     <meta name="msapplication-tap-highlight" content="no">
@@ -56,14 +56,14 @@
 											{{ ucwords(Auth::user()->name) }}
 										</div>
 										<div class="widget-subheading">
-											{{ ucwords(Auth::user()->role) }}
+											{{ ucwords($role) }}
 										</div>
 									</div>
 									<div class="widget-content-right header-user-info ml-3">
-										<a href="" class="btn-shadow p-1 btn btn-secondary btn-sm"><i class="fas fa-user-cog pr-1 pl-1"></i></a>
+										<a href="{{ route('profil.index') }}" class="btn-shadow p-1 btn btn-secondary btn-sm"><i class="fas fa-user-cog pr-1 pl-1"></i></a>
 										<form action="{{ route('logout') }}" method="post" style="all: unset">
 											@csrf
-											<button type="submit" class="btn-shadow p-1 btn btn-danger btn-sm">
+											<button type="submit" class="btn-shadow p-1 btn btn-danger btn-sm" onclick="if(!confirm('Apakah Anda yakin akan logout?')){return false;}">
 												<i class="fas fa-power-off text-white pr-1 pl-1"></i>
 											</button>
 										</form>
@@ -74,6 +74,7 @@
 					</div>
 				</div>
 			</div>
+			<div class="scrollbar-container"></div>
 			<div class="app-main">
 				<div class="app-sidebar sidebar-shadow">
 					<div class="app-header__logo">
@@ -137,7 +138,7 @@
 								<div class="app-footer-right">
 									<ul class="nav">
 										<li class="nav-item">
-											© {{ date('Y') }} <a href="#">SKDEVTECH</a>. All Rights Reserved
+											© {{ date('Y') }} <a href="#">SI-INOVASI</a>. All Rights Reserved
 										</li>
 									</ul>
 								</div>
