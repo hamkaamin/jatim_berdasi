@@ -21,7 +21,7 @@
 						<tr>
 							<th>No.</th>
 							<th>Nama</th>
-							<th></th>
+							<th style="min-width: 50px"></th>
 						</tr>
 					</thead>
 					<tbody>

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
+    Route::post('/change-area', [App\Http\Controllers\HomeController::class, 'change_area'])->name('change-area');
 
     Route::prefix('profil')->name('profil.')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilController::class, 'index'])->name('index');
@@ -27,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [App\Http\Controllers\IndikatorController::class, 'index'])->name('index');
             Route::post('/', [App\Http\Controllers\IndikatorController::class, 'save'])->name('save');
             Route::post('/delete', [App\Http\Controllers\IndikatorController::class, 'delete'])->name('delete');
+        });
+        Route::prefix('parameter')->name('parameter.')->group(function () {
+            Route::post('/add', [App\Http\Controllers\ParameterController::class, 'add'])->name('add');
+            Route::post('/', [App\Http\Controllers\ParameterController::class, 'save'])->name('save');
+            Route::post('/delete', [App\Http\Controllers\ParameterController::class, 'delete'])->name('delete');
         });
         Route::prefix('tahapan')->name('tahapan.')->group(function () {
             Route::get('/', [App\Http\Controllers\TahapanController::class, 'index'])->name('index');
@@ -75,7 +81,10 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('opd')->name('opd.')->group(function () {
-        Route::get('/', [App\Http\Controllers\OpdController::class, 'index'])->name('index'); 
+        Route::get('/', [App\Http\Controllers\OpdController::class, 'index'])->name('index');
+        Route::post('/change-scope', [App\Http\Controllers\OpdController::class, 'change_scope'])->name('change-scope');
+        Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save'); 
+        Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete'); 
     });
 });
 

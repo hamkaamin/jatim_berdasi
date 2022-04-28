@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>SI -Inovasi</title>
+    <title>SI-Inovasi</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <meta name="description" content="Super Admin - Marketplace">
     <meta name="msapplication-tap-highlight" content="no">
@@ -22,6 +22,8 @@
     -->
 	<link href="{{ asset('admin_asset/main.css') }}" rel="stylesheet"></head>
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+	<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 	<body>
 		<div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
 			<div class="app-header header-shadow">
@@ -151,6 +153,7 @@
 		<script type="text/javascript" src="{{ asset('admin_asset/assets/scripts/main.js') }}"></script>
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 		<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 		@yield('script')
 	</body>
 </html>
