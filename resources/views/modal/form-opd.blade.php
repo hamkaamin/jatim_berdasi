@@ -52,7 +52,32 @@
 				</div>
 			</div>
 		@else
-			
+			<div class="row my-2">
+				<div class="col-sm-4 d-flex align-items-center"><label>Daerah</label></div>
+				<div class="col-sm-8">
+					@if ($data->provinsi_id != null)
+						PROVINSI {{ ($data->provinsi->name) }}
+					@elseif ($data->kabkota_id != null)
+						{{ ucwords($data->kota->name) }}
+					@elseif ($data->kecamatan_id != null)
+						KECAMATAN {{ $data->kecamatan->name }}
+					@elseif ($data->kelurahan_id != null)
+						KELURAHAN {{ $data->kelurahan->name }}
+					@endif
+				</div>
+			</div>
+			<div class="row my-2">
+				<div class="col-sm-4 d-flex align-items-center"><label>Dibuat Oleh</label></div>
+				<div class="col-sm-8">
+					{{ $data->maker_id != null ? $data->maker->name : '-' }}
+				</div>
+			</div>
+			<div class="row my-2">
+				<div class="col-sm-4 d-flex align-items-center"><label>Update Terakhir Oleh</label></div>
+				<div class="col-sm-8">
+					{{ $data->updater_id != null ? $data->updater->name : '-' }} ({{ $data->updated_at }})
+				</div>
+			</div>
 		@endif
 	</div>
 	<div class="modal-footer">

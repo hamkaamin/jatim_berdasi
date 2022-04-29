@@ -35,4 +35,14 @@ class Opd extends Model
     {
         return $this->belongsTo('App\Models\Kelurahan', 'kelurahan_id', 'id');
     }
+
+    public function maker()
+    {
+        return $this->belongsTo('App\Models\User', 'maker_id', 'id');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo('App\Models\User', 'updater_id', 'id');
+    }
 }

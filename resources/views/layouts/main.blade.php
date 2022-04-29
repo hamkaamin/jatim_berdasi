@@ -58,7 +58,7 @@
 											{{ ucwords(Auth::user()->name) }}
 										</div>
 										<div class="widget-subheading">
-											{{ ucwords($role) }}
+											{{ Helper::getRole(Auth::user()->role) }}
 										</div>
 									</div>
 									<div class="widget-content-right header-user-info ml-3">

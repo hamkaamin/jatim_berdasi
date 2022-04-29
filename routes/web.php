@@ -78,6 +78,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('pengguna')->name('pengguna.')->group(function () {
         Route::get('/', [App\Http\Controllers\PenggunaController::class, 'index'])->name('index'); 
+        Route::post('/', [App\Http\Controllers\PenggunaController::class, 'save'])->name('save'); 
+        Route::post('/change-role', [App\Http\Controllers\PenggunaController::class, 'change_role'])->name('change-role');
+        Route::post('/reset-pass', [App\Http\Controllers\PenggunaController::class, 'reset_pass'])->name('reset-pass');
+        Route::post('/delete', [App\Http\Controllers\PenggunaController::class, 'delete'])->name('delete'); 
     });
 
     Route::prefix('opd')->name('opd.')->group(function () {
@@ -88,4 +92,4 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);

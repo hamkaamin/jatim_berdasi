@@ -4,7 +4,7 @@
         <select @if($labelNext != null) onchange="ubahWilayah('{{ $labelNext }}', this.value);" @endif class="form-control" name="{{ strtolower($label).'_id' }}" id="{{ strtolower($label).'_id' }}" required>
             <option selected disabled>-- Pilih Salah Satu --</option>
             @foreach ($wilayah as $item)
-                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                <option value="{{ $item->id }}">@if(in_array(strtolower($label), ['provinsi', 'kota', 'kelurahan', 'kecamatan'])) {{ $item->name }} @else {{ $item->nama }} @endif</option>
             @endforeach
         </select>
     </div>

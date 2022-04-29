@@ -17,6 +17,7 @@ use App\Models\Parameter;
 use App\Models\Provinsi;
 use App\Models\Tahapan;
 use App\Models\Urusan;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -94,6 +95,14 @@ class HomeController extends Controller
 				$data = ($request->id == 0) ? null : Opd::findOrFail($request->id);
 				return response()->json(array(
 					'msg' => view('modal.form-opd', compact('data'))->render()
+				), 200);
+				break;
+			case "pengguna":
+				$data = ($request->id == 0) ? null : User::findOrFail($request->id);
+				$jabatan = Jabatan::all();
+				$golongan = Golongan::all();
+				return response()->json(array(
+					'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan'))->render()
 				), 200);
 				break;
         }
