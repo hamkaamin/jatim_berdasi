@@ -28,7 +28,7 @@ class PenggunaController extends Controller
             $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::all(), 'labelNext' => 'kota'];
             $temp[] = ['label' => 'Kota', 'wilayah' => [], 'labelNext' => null];
         } elseif ($request->type == 5) {
-            $temp[] = ['label' => 'OPD', 'wilayah' => Opd::all(), 'labelNext' => null];
+            $temp[] = ['label' => 'OPD', 'wilayah' => Opd::doesntHave('users')->get(), 'labelNext' => null];
         }
         foreach ($temp as $item) {
             $label = $item['label'];

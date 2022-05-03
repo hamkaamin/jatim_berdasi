@@ -38,10 +38,21 @@
 				<div class="col-sm-8">
 					<select onchange="ubahScopeOpd(this.value)" class="form-control" required name="scope">
 						<option selected disabled>-- Pilih Salah Satu --</option>
-						<option value="provinsi">Provinsi</option>
-						<option value="kota">Kabupaten / Kota</option>
-						<option value="kecamatan">Kecamatan</option>
-						<option value="kelurahan">Kelurahan</option>
+						@if (in_array(Auth::user()->role, [1,2,3]) || (Auth::user()->role == 5 && Auth::user()->opd->provinsi_id != null))
+							<option value="provinsi">Provinsi</option>
+							<option value="kota">Kabupaten / Kota</option>
+							<option value="kecamatan">Kecamatan</option>
+							<option value="kelurahan">Kelurahan</option>
+						@elseif (Auth::user()->role == 4 || (Auth::user()->role == 5 && Auth::user()->opd->kabkota_id != null))
+							<option value="kota">Kabupaten / Kota</option>
+							<option value="kecamatan">Kecamatan</option>
+							<option value="kelurahan">Kelurahan</option>
+						@elseif (Auth::user()->role == 5 && Auth::user()->opd->kecamatan_id != null)
+							<option value="kecamatan">Kecamatan</option>
+							<option value="kelurahan">Kelurahan</option>
+						@elseif (Auth::user()->role == 5 && Auth::user()->opd->kelurahan_id != null)
+							<option value="kelurahan">Kelurahan</option>
+						@endif
 					</select>
 					<small>Scope hanya dapat ditentukan pada saat pembuatan data OPD baru. <b>Pastikan data yang dimasukkan pada form ini sudah benar !</b></small>
 				</div>

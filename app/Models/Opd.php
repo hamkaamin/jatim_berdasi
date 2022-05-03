@@ -45,4 +45,9 @@ class Opd extends Model
     {
         return $this->belongsTo('App\Models\User', 'updater_id', 'id');
     }
+
+    public function users()
+    {
+        return $this->hasMany('App\Models\User', 'opd_id', 'id');
+    }
 }

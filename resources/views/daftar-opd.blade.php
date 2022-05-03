@@ -8,9 +8,11 @@
     Daftar Seluruh OPD yang ada di dalam Database Sistem
 @endsection
 
-@section('buttons')
+@if (Auth::user()->role != 6 && Auth::user()->role != 2)
+	@section('buttons')
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="modal(0, 'opd')">Tambah Data</button>
-@endsection
+	@endsection
+@endif
 
 @section('content')
 	<div class="row">
@@ -42,11 +44,13 @@
 									@endif
 								</td>
 								<td>
-									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'opd')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
-									<form style="all: unset" action="{{ route('opd.delete', ['id' => $item->id]) }}" method="post">
-										@csrf
-										<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
-									</form>
+									@if (in_array(Auth::user()->role, [1,3,4]) || (Auth::user()->role == 5 && $item->maker_id == Auth::user()->id))
+										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'opd')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+										<form style="all: unset" action="{{ route('opd.delete', ['id' => $item->id]) }}" method="post">
+											@csrf
+											<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
+										</form>
+									@endif
 								</td>
 							</tr>
 						@endforeach
@@ -63,6 +67,7 @@
 	@include('script.ubahWilayah')
 	<script>
 		function ubahScopeOpd(type) {
+			$('#scope_container').html("<div class=\"text-center my-1\"><h4><b>Loading...</b></h4></div>");
 			$.ajax({
 				type: 'POST',
 				url: '{{route("opd.change-scope")}}',

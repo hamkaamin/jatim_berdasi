@@ -34,7 +34,20 @@
 								<td>{{ $item->name }}</td>
 								<td>{{ $item->username }}</td>
 								<td>{{ $item->email }}</td>
-								<td>{{ Helper::getRole($item->role) }}</td>
+								<td>
+									{{ Helper::getRole($item->role) }}
+									@if ($item->role == 5)
+										@if ($item->opd->provinsi_id != null)
+											- Provinsi
+										@elseif ($item->opd->kabkota_id != null)
+											- Kota
+										@elseif ($item->opd->kecamatan_id != null)
+											- Kecamatan
+										@elseif ($item->opd->kelurahan_id != null)
+											- Kelurahan
+										@endif
+									@endif
+								</td>
 								<td>
 									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
 									<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
@@ -61,6 +74,7 @@
 	@include('script.ubahWilayah')
 	<script>
 		function ubahRole(type) {
+			$('#role_container').html("<div class=\"text-center my-1\"><h4><b>Loading...</b></h4></div>");
 			$.ajax({
 				type: 'POST',
 				url: '{{route("pengguna.change-role")}}',

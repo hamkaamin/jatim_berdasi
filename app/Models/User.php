@@ -19,6 +19,11 @@ class User extends Authenticatable
         static::addGlobalScope(new OrderByIdScope);
     }
 
+    public function opd()
+    {
+        return $this->belongsTo('App\Models\Opd', 'opd_id', 'id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *
