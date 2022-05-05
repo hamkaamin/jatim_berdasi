@@ -8,9 +8,11 @@
 	Daftar Seluruh Pengguna yang ada di dalam Database Sistem
 @endsection
 
-@section('buttons')
+@if (Auth::user()->role != 6 && Auth::user()->role != 2)
+	@section('buttons')
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="modal(0, 'pengguna')">Tambah Data</button>
-@endsection
+	@endsection
+@endif
 
 @section('content')
 	<div class="row">
@@ -49,15 +51,17 @@
 									@endif
 								</td>
 								<td>
-									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
-									<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
-										@csrf
-										<button type="submit" class="btn btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i></button>
-									</form>
-									<form style="all: unset" action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
-										@csrf
-										<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
-									</form>
+									@if (in_array(Auth::user()->role, [1,3,4]) || (Auth::user()->role == 5 && $item->opd_id == Auth::user()->opd_id))
+										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+										<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
+											@csrf
+											<button type="submit" class="btn btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i></button>
+										</form>
+										<form style="all: unset" action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
+											@csrf
+											<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
+										</form>
+									@endif
 								</td>
 							</tr>
 						@endforeach

@@ -87,6 +87,22 @@ class Helper
 		}
 		return $array;
 	}
+
+	public static function checkOpd($scope, $user)
+	{
+		if ($user->role == 5) {
+			if ($scope == 'provinsi' && $user->opd->provinsi_id != null) {
+				return true;
+			} elseif ($scope == 'kota' && $user->opd->kabkota_id != null) {
+				return true;
+			} elseif ($scope == 'kecamatan' && $user->opd->kecamatan_id != null) {
+				return true;
+			} elseif ($scope == 'kelurahan' && $user->opd->kelurahan_id != null) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 ?>

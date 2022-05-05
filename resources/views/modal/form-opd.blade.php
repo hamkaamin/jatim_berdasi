@@ -38,19 +38,19 @@
 				<div class="col-sm-8">
 					<select onchange="ubahScopeOpd(this.value)" class="form-control" required name="scope">
 						<option selected disabled>-- Pilih Salah Satu --</option>
-						@if (in_array(Auth::user()->role, [1,2,3]) || (Auth::user()->role == 5 && Auth::user()->opd->provinsi_id != null))
+						@if (in_array(Auth::user()->role, [1,2,3]) || Helper::checkOpd('provinsi', Auth::user()))
 							<option value="provinsi">Provinsi</option>
 							<option value="kota">Kabupaten / Kota</option>
 							<option value="kecamatan">Kecamatan</option>
 							<option value="kelurahan">Kelurahan</option>
-						@elseif (Auth::user()->role == 4 || (Auth::user()->role == 5 && Auth::user()->opd->kabkota_id != null))
+						@elseif (Auth::user()->role == 4 || Helper::checkOpd('kota', Auth::user()))
 							<option value="kota">Kabupaten / Kota</option>
 							<option value="kecamatan">Kecamatan</option>
 							<option value="kelurahan">Kelurahan</option>
-						@elseif (Auth::user()->role == 5 && Auth::user()->opd->kecamatan_id != null)
+						@elseif (Helper::checkOpd('kecamatan', Auth::user()))
 							<option value="kecamatan">Kecamatan</option>
 							<option value="kelurahan">Kelurahan</option>
-						@elseif (Auth::user()->role == 5 && Auth::user()->opd->kelurahan_id != null)
+						@elseif (Helper::checkOpd('kelurahan', Auth::user()))
 							<option value="kelurahan">Kelurahan</option>
 						@endif
 					</select>

@@ -24,16 +24,14 @@ class OpdController extends Controller
             $data = Helper::getOpdProvinsi(Auth::user()->province_id, $data);
         } elseif (Auth::user()->role == 4) {
             $data = Helper::getOpdKota(Auth::user()->regency_id, $data);
-        } elseif (Auth::user()->role == 5) {
-            if (Auth::user()->opd->provinsi_id != null) {
-                $data = Helper::getOpdProvinsi(Auth::user()->opd->provinsi_id, $data);
-            } elseif (Auth::user()->opd->kabkota_id != null) {
-                $data = Helper::getOpdKota(Auth::user()->opd->kabkota_id, $data);
-            } elseif (Auth::user()->opd->kecamatan_id != null) {
-                $data = Helper::getOpdKecamatan(Auth::user()->opd->kecamatan_id, $data);
-            } elseif (Auth::user()->opd->kelurahan_id != null) {
-                $data = Helper::getOpd('kelurahan', Auth::user()->opd->kelurahan_id, $data);
-            }
+        } elseif (Helper::checkOpd('provinsi', Auth::user())) {
+            $data = Helper::getOpdProvinsi(Auth::user()->opd->provinsi_id, $data);
+        } elseif (Helper::checkOpd('kota', Auth::user())) {
+            $data = Helper::getOpdKota(Auth::user()->opd->kabkota_id, $data);
+        } elseif (Helper::checkOpd('kecamatan', Auth::user())) {
+            $data = Helper::getOpdKecamatan(Auth::user()->opd->kecamatan_id, $data);
+        } elseif (Helper::checkOpd('kelurahan', Auth::user())) {
+            $data = Helper::getOpd('kelurahan', Auth::user()->opd->kelurahan_id, $data);
         }
         return view('daftar-opd', compact('data'));
     }
@@ -50,37 +48,35 @@ class OpdController extends Controller
         $dataKelurahan = [];
         if (Auth::user()->role == 3) {
             $dataProvinsi = Provinsi::where('id', Auth::user()->province_id)->get();
-        } elseif (Auth::user()->role == 5 && Auth::user()->opd->provinsi_id != null) {
+        } elseif (Helper::checkOpd('provinsi', Auth::user())) {
             $dataProvinsi = Provinsi::where('id', Auth::user()->opd->provinsi_id)->get();
         } 
         if (Auth::user()->role == 4) {
             $dataKota = Kota::where('id', Auth::user()->regency_id)->get();
-        } elseif (Auth::user()->role == 5 && Auth::user()->opd->kabkota_id != null) {
+        } elseif (Helper::checkOpd('kota', Auth::user())) {
             $dataKota = Kota::where('id', Auth::user()->opd->kabkota_id)->get();
         }
-        if (Auth::user()->role == 5) {
-            if (Auth::user()->opd->kecamatan_id != null) {
-                $dataKecamatan = Kecamatan::where('id', Auth::user()->opd->kecamatan_id)->get();
-            } elseif (Auth::user()->opd->kelurahan_id != null) {
-                $dataKelurahan = Kelurahan::where('id', Auth::user()->opd->kelurahan_id)->get();
-            }
+        if (Helper::checkOpd('kecamatan', Auth::user())) {
+            $dataKecamatan = Kecamatan::where('id', Auth::user()->opd->kecamatan_id)->get();
+        } elseif (Helper::checkOpd('kelurahan', Auth::user())) {
+            $dataKelurahan = Kelurahan::where('id', Auth::user()->opd->kelurahan_id)->get();
         }
         if ($request->type == 'provinsi') {
             $temp[] = ['label' => 'Provinsi', 'wilayah' => $dataProvinsi, 'labelNext' => null];
         } else {
-            if (in_array(Auth::user()->role, [1,2,3]) || (Auth::user()->role == 5 && Auth::user()->opd->provinsi_id != null)) {
+            if (in_array(Auth::user()->role, [1,2,3]) || Helper::checkOpd('provinsi', Auth::user())) {
                 $temp[] = ['label' => 'Provinsi', 'wilayah' => $dataProvinsi, 'labelNext' => 'kota'];
             }
             if ($request->type == 'kota') {
                 $temp[] = ['label' => 'Kota', 'wilayah' => $dataKota, 'labelNext' => null];
             } else {
-                if (in_array(Auth::user()->role, [1,2,3]) || Auth::user()->role == 4 || (Auth::user()->role == 5 && (Auth::user()->opd->kabkota_id != null || Auth::user()->opd->provinsi_id != null))) {
+                if (in_array(Auth::user()->role, [1,2,3]) || Auth::user()->role == 4 || Helper::checkOpd('provinsi', Auth::user()) || Helper::checkOpd('kota', Auth::user())) {
                     $temp[] = ['label' => 'Kota', 'wilayah' => $dataKota, 'labelNext' => 'kecamatan'];
                 }
                 if ($request->type == 'kecamatan') {
                     $temp[] = ['label' => 'Kecamatan', 'wilayah' => $dataKecamatan, 'labelNext' => null];
                 } else {
-                    if (in_array(Auth::user()->role, [1,2,3]) || Auth::user()->role == 4 || (Auth::user()->role == 5 && (Auth::user()->opd->kabkota_id != null || Auth::user()->opd->provinsi_id != null || Auth::user()->opd->kecamatan_id != null))) {
+                    if (in_array(Auth::user()->role, [1,2,3]) || Auth::user()->role == 4 || Helper::checkOpd('provinsi', Auth::user()) || Helper::checkOpd('kota', Auth::user()) || Helper::checkOpd('kecamatan', Auth::user())) {
                         $temp[] = ['label' => 'Kecamatan', 'wilayah' => $dataKecamatan, 'labelNext' => 'kelurahan'];
                     }
                     if ($request->type == 'kelurahan') {

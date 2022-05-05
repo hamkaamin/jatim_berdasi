@@ -16,4 +16,9 @@ class Kota extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function kecamatan()
+    {
+        return $this->hasMany('App\Models\Kecamatan', 'regency_id', 'id');
+    }
 }
