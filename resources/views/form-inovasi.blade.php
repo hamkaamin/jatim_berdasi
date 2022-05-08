@@ -10,6 +10,12 @@
 
 @section('buttons')
     <a href="{{ route('inovasi.masyarakat.index') }}" class="btn btn-light">Kembali</a>
+	@if ($data != null && $data->status == 0)
+		<form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
+			@csrf
+			<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>
+		</form>
+	@endif
 @endsection
 
 @section('content')
@@ -156,8 +162,11 @@
 				</div>
 				<div class="row mt-4">
 					<div class="col text-right">
-						<a href="{{ route('inovasi.masyarakat.index') }}" class="btn btn-light btn-lg mr-4">Batal</a>
-						<button class="btn btn-success btn-lg mr-4" type="submit" name="status" value="0">Simpan</button>
+						<a href="{{ route('inovasi.masyarakat.index') }}" class="btn btn-light btn-lg">Batal</a>
+						<button class="btn btn-success btn-lg" type="submit" name="status" value="0">Simpan</button>
+						@if ($data != null && $data->status == 0)
+							<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>
+						@endif
 					</div>
 				</div>
 			</form>

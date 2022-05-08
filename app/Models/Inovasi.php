@@ -38,7 +38,7 @@ class Inovasi extends Model
 
     public function indikator()
     {
-        return $this->belongsToMany('App\Models\Indikator', 'indikator_inovasi', 'inovasi_id', 'indikator_id')->withPivot('param_awal', 'param_akhir', 'bobot_awal', 'bobot_akhir');
+        return $this->belongsToMany('App\Models\Indikator', 'indikator_inovasi', 'inovasi_id', 'indikator_id')->withPivot('param_awal', 'param_akhir', 'bobot_awal', 'bobot_akhir', 'catatan');
     }
 
     public function upload()

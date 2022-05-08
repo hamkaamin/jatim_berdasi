@@ -88,6 +88,18 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('masyarakat')->name('masyarakat.')->group(function (){
             Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_masyarakat'])->name('index');
         });
+
+        Route::prefix('indikator')->name('indikator.')->group(function () {
+            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
+            Route::post('/chooseParam', [App\Http\Controllers\IndikatorController::class, 'chooseParam'])->name('chooseParam');
+            Route::post('/saveParam', [App\Http\Controllers\IndikatorController::class, 'saveParam'])->name('saveParam');
+
+            Route::prefix('upload')->name('upload.')->group(function () {
+                Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_upload'])->name('index');
+                Route::post('/add', [App\Http\Controllers\UploadController::class, 'add'])->name('add');
+                Route::post('/', [App\Http\Controllers\UploadController::class, 'save'])->name('save');
+            });
+        });
     });
     
     Route::prefix('pengguna')->name('pengguna.')->group(function () {

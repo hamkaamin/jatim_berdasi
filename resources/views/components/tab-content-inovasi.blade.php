@@ -42,7 +42,7 @@
                             <td>
                                 <a href="" class="btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Download Pdf"><i class="fa fa-file-pdf"></i></a>
                                 <a href="" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Download Excel"><i class="fa fa-file-excel"></i></a>
-                                <a href="" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Upload Indikator"><i class="fa fa-folder-open"></i></a>
+                                <a href="{{ route('inovasi.indikator.index', ['id' => $item->id]) }}" class="btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Upload Indikator"><i class="fa fa-folder-open"></i></a>
                                 <a href="{{ route('inovasi.edit', ['id' => $item->id]) }}" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Inovasi"><i class="fa fa-edit"></i></a>
                                 <form style="all: unset" action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                     @csrf

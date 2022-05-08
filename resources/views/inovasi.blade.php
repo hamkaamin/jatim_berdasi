@@ -8,9 +8,11 @@
     Daftar Pengajuan Inovasi dari Masyarakat
 @endsection
 
-@section('buttons')
-    <a href="{{ route('inovasi.edit', ['id' => 0]) }}" class="btn btn-primary">Tambah Data</a>
-@endsection
+@if (Auth::user()->role != 2)
+    @section('buttons')
+        <a href="{{ route('inovasi.edit', ['id' => 0]) }}" class="btn btn-primary">Tambah Data</a>
+    @endsection
+@endif
 
 @section('content')
 	<div class="row">

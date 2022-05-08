@@ -130,6 +130,25 @@ class Helper
 		}
 		return $status;
 	}
+
+	public static function generateKolomUpload($indikator)
+	{
+		$kolom = [['Judul', 'judul', 'text']];
+		$tipe_file = explode(",", $indikator->tipe_file);
+		if (count($tipe_file) == 1) {
+			if ($tipe_file[0] == 'pdf') {
+				$kolom[] = ['No. Dokumen', 'no_dokumen', 'text'];
+				$kolom[] = ['Tgl. Dokumen', 'tgl_dokumen', 'date'];
+			} elseif ($tipe_file[0] == 'mp4') {
+				$kolom[] = ['Kover', 'cover', 'file'];
+				$kolom[] = ['URL', 'url', 'url'];
+			}
+		} else {
+			$kolom[] = ['Tentang', 'tentang', 'textarea'];
+		}
+		$kolom[] = ['File', 'file', 'file'];
+		return $kolom;
+	}
 }
 
 ?>

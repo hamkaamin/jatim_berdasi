@@ -6,10 +6,12 @@ use Auth;
 use Config;
 use Helper;
 use App\Models\Bentuk;
+use App\Models\Indikator;
 use App\Models\Inisiator;
 use App\Models\Inovasi;
 use App\Models\Jenis;
 use App\Models\Tahapan;
+use App\Models\Upload;
 use App\Models\Urusan;
 use Illuminate\Http\Request;
 
@@ -52,6 +54,37 @@ class InovasiController extends Controller
             $data->kode = uniqid();
         } else {
             $data = Inovasi::findOrFail($request->id);
+            $temp = [];
+            if ($request->status == 1) {
+                if ($data->nama == null) {
+                    $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
+                }
+                if ($data->bentuk_id == null) {
+                    $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
+                }
+                if ($data->indikator()->count() <= 0 || $data->indikator()->wherePivot('param_awal', null)->orWherePivot('bobot_awal', null)->count() > 0) {
+                    $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
+                } else {
+                    foreach ($data->indikator()->where('wajib', 1)->get() as $indikator) {
+                        $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $data->id)->count();
+                        if ($upload <= 0) {
+                            $temp[] = "Upload file pendukung untuk Indikator ".$indikator->nama." terlebih dahulu !";
+                        }
+                    }
+                }
+                if (count($temp) > 0) {
+                    $msg = "<ul>";
+                    foreach ($temp as $item) {
+                        $msg .= "<li>".$item."</li>";
+                    }
+                    $msg .= "</ul>";
+                    return redirect()->back()->with('error', $msg);
+                } else {
+                    $data->status = $request->status;
+                    $data->save();
+                    return redirect(route('inovasi.masyarakat.index'))->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
+                }
+            }
         }
         $data->nama = $request->nama;
         $data->tahapan_id = $request->tahapan_id;
@@ -97,5 +130,35 @@ class InovasiController extends Controller
         }
         $data->delete();
         return redirect()->back()->with('success', Config::get('delete_success'));
+    }
+
+    public function index_indikator(Request $request)
+    {
+        if (count($request->input()) == 1 && $request->has('id')) {
+            $inovasi = Inovasi::findOrFail($request->id);
+            $data = [];
+            if ($inovasi->indikator()->count() == 0) {
+                $indikator = Indikator::all();
+                foreach ($indikator as $item) {
+                    $inovasi->indikator()->attach($item->id);
+                }
+            }
+            $data = $inovasi->indikator()->get();
+            return view('indikator', compact('data', 'inovasi'));
+        } else {
+            return redirect()->back();
+        }
+    }
+
+    public function index_upload(Request $request)
+    {
+        if (count($request->input()) == 2 && $request->has('id') && $request->has('indikator')) {
+            $data = Upload::where('inovasi_id', $request->id)->where('indikator_id', $request->indikator)->get();
+            $indikator = Indikator::findOrFail($request->indikator);
+            $kolom = Helper::generateKolomUpload($indikator);
+            return view('upload', compact('data', 'kolom'));
+        } else {
+            return redirect()->back();
+        }
     }
 }
