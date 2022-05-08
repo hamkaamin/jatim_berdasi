@@ -32,8 +32,10 @@ class HomeController extends Controller
 		switch ($request->type) {
             case "tahapan":
                 $data = ($request->id == 0) ? null : Tahapan::findOrFail($request->id);
+				$urutan = Tahapan::max('urutan');
+				$urutan++;
                 return response()->json(array(
-                    'msg' => view('modal.form-tahapan', compact('data'))->render()
+                    'msg' => view('modal.form-tahapan', compact('data', 'urutan'))->render()
                 ), 200);
                 break;
 			case "inisiator":

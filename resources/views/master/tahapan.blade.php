@@ -19,16 +19,24 @@
 				<table class="table align-items-center table-flush" id="myTable">
 					<thead class="thead-light">
 						<tr>
-							<th>No.</th>
+							<th>Urutan</th>
 							<th>Nama</th>
+							<th>Tampilkan Kolom</th>
 							<th style="min-width: 50px"></th>
 						</tr>
 					</thead>
 					<tbody>
 						@foreach ($data as $item)
 							<tr>
-								<td>{{ $loop->iteration }}</td>
+								<td>{{ $item->urutan }}</td>
 								<td>{{ $item->nama }}</td>
+								<td>
+									@if ($item->tampilkan_kolom == 1)
+										<span class="badge badge-success">Yes</span>
+									@else
+										<span class="badge badge-danger">No</span>
+									@endif
+								</td>
 								<td>
 									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'tahapan')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
 									<form style="all: unset" action="{{ route('master.tahapan.delete', ['id' => $item->id]) }}" method="post">

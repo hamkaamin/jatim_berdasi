@@ -79,6 +79,16 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index_user'])->name('faq.index');
+
+    Route::prefix('inovasi')->name('inovasi.')->group(function () {
+        Route::get('/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
+        Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
+        Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
+
+        Route::prefix('masyarakat')->name('masyarakat.')->group(function (){
+            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_masyarakat'])->name('index');
+        });
+    });
     
     Route::prefix('pengguna')->name('pengguna.')->group(function () {
         Route::get('/', [App\Http\Controllers\PenggunaController::class, 'index'])->name('index'); 

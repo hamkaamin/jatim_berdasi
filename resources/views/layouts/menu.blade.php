@@ -98,7 +98,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('inovasi.masyarakat.index') }}" class="{{ Request::routeIs('inovasi.masyarakat.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Masyarakat
 			</a>
 		</li>

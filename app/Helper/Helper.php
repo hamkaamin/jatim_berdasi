@@ -103,6 +103,33 @@ class Helper
 		}
 		return false;
 	}
+
+	public static function save_file($file, $name, $folder, $existing)
+	{
+		if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
+			unlink(public_path('/'.$folder.'/'.$existing));
+		}
+		$nama_file = $name.'.'.$file->getClientOriginalExtension();
+		$file->move($folder, $nama_file);
+		return $nama_file;
+	}
+
+	public static function getStatusInovasi($id)
+	{
+		$status = "";
+		if ($id == 0) {
+			$status = "<span class='badge badge-secondary'>Draft</span>";
+		} elseif ($id == 1) {
+			$status = "<span class='badge badge-primary'>Diproses</span>";
+		} elseif ($id == 2) {
+			$status = "<span class='badge badge-success'>Disetujui</span>";
+		} elseif ($id == 3) {
+			$status = "<span class='badge badge-danger'>Ditolak</span>";
+		} elseif ($id == 4) {
+			$status = "<span class='badge badge-warning'>Revisi</span>";
+		}
+		return $status;
+	}
 }
 
 ?>
