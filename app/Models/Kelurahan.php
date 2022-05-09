@@ -16,4 +16,9 @@ class Kelurahan extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function kelurahan()
+    {
+        return $this->hasMany('App\Models\Kelurahan', 'district_id', 'id');
+    }
 }

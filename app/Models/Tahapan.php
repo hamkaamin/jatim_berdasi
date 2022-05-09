@@ -15,4 +15,19 @@ class Tahapan extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function scopeUrutan($query)
+    {
+        return $query->orderBy('urutan', 'asc');
+    }
+
+    public function hasManyInovasi()
+    {
+        return $this->hasMany('App\Models\Inovasi', 'tahapan_id', 'id');
+    }
+
+    public function belongsToManyInovasi()
+    {
+        return $this->belongsToMany('App\Models\Inovasi', 'tahapan_inovasi', 'tahapan_id', 'inovasi_id')->withPivot('waktu');
+    }
 }

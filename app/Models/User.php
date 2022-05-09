@@ -19,6 +19,21 @@ class User extends Authenticatable
         static::addGlobalScope(new OrderByIdScope);
     }
 
+    public function opd()
+    {
+        return $this->belongsTo('App\Models\Opd', 'opd_id', 'id');
+    }
+
+    public function provinsi()
+    {
+        return $this->belongsTo('App\Models\Provinsi', 'province_id', 'id');
+    }
+
+    public function kota()
+    {
+        return $this->belongsTo('App\Models\Kota', 'regency_id', 'id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

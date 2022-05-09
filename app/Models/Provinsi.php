@@ -16,4 +16,9 @@ class Provinsi extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function kota()
+    {
+        return $this->hasMany('App\Models\Kota', 'province_id', 'id');
+    }
 }

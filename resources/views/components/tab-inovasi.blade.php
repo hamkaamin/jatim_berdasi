@@ -1,0 +1,3 @@
+<li class="nav-item" role="presentation">
+    <a class="nav-link {{ $active == 1 ? 'active' : '' }}" id="{{ $tahapan == null ? 0 : $tahapan->id }}-tab" data-toggle="tab" href="#tab-{{ $tahapan == null ? 0 : $tahapan->id }}" role="tab" aria-controls="tab-{{ $tahapan == null ? 0 : $tahapan->id }}" {{ $active == 1 ? "aria-selected='true'" : '' }}>{{ $tahapan == null ? 'Semua' : ucwords($tahapan->nama) }}</a>
+</li>

@@ -14,6 +14,12 @@ class FaqController extends Controller
         return view('master.faq', compact('data'));
     }
 
+    public function index_user()
+    {
+        $data = Faq::all();
+        return view('faq', compact('data'));
+    }
+
     public function save(Request $request)
     {
         if ($request->id == 0) {

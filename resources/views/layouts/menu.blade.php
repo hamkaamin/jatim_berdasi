@@ -76,7 +76,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('faq.index') }}" class="{{ Request::routeIs('faq.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-info"></i> FAQ
 			</a>
 		</li>
@@ -98,7 +98,7 @@
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('inovasi.masyarakat.index') }}" class="{{ Request::routeIs('inovasi.masyarakat.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Masyarakat
 			</a>
 		</li>
@@ -125,12 +125,12 @@
 		</li>
 		<li class="app-sidebar__heading">Konfigurasi</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('pengguna.index') }}" class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-users"></i> Accounts
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('opd.index') }}" class="{{ Request::routeIs('opd.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-note2"></i> Daftar OPD
 			</a>
 		</li>

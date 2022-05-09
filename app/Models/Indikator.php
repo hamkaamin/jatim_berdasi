@@ -15,4 +15,9 @@ class Indikator extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function param()
+    {
+        return $this->hasMany('App\Models\Parameter', 'indikator_id', 'id');
+    }
 }

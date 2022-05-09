@@ -8,9 +8,11 @@
 	Daftar Seluruh Pengguna yang ada di dalam Database Sistem
 @endsection
 
-@section('buttons')
+@if (Auth::user()->role != 6 && Auth::user()->role != 2)
+	@section('buttons')
 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="modal(0, 'pengguna')">Tambah Data</button>
-@endsection
+	@endsection
+@endif
 
 @section('content')
 	<div class="row">
@@ -34,17 +36,32 @@
 								<td>{{ $item->name }}</td>
 								<td>{{ $item->username }}</td>
 								<td>{{ $item->email }}</td>
-								<td>{{ Helper::getRole($item->role) }}</td>
 								<td>
-									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
-									<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
-										@csrf
-										<button type="submit" class="btn btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i></button>
-									</form>
-									<form style="all: unset" action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
-										@csrf
-										<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
-									</form>
+									{{ Helper::getRole($item->role) }}
+									@if ($item->role == 5)
+										@if ($item->opd->provinsi_id != null)
+											- Provinsi
+										@elseif ($item->opd->kabkota_id != null)
+											- Kota
+										@elseif ($item->opd->kecamatan_id != null)
+											- Kecamatan
+										@elseif ($item->opd->kelurahan_id != null)
+											- Kelurahan
+										@endif
+									@endif
+								</td>
+								<td>
+									@if (in_array(Auth::user()->role, [1,3,4]) || (Auth::user()->role == 5 && $item->opd_id == Auth::user()->opd_id))
+										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+										<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
+											@csrf
+											<button type="submit" class="btn btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i></button>
+										</form>
+										<form style="all: unset" action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
+											@csrf
+											<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
+										</form>
+									@endif
 								</td>
 							</tr>
 						@endforeach
@@ -61,6 +78,7 @@
 	@include('script.ubahWilayah')
 	<script>
 		function ubahRole(type) {
+			$('#role_container').html("<div class=\"text-center my-1\"><h4><b>Loading...</b></h4></div>");
 			$.ajax({
 				type: 'POST',
 				url: '{{route("pengguna.change-role")}}',

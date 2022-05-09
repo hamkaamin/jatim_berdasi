@@ -22,6 +22,8 @@ class TahapanController extends Controller
             $data = Tahapan::findOrFail($request->id);
         }
         $data->nama = $request->nama;
+        $data->urutan = $request->urutan;
+        $data->tampilkan_kolom = $request->tampilkan_kolom;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
