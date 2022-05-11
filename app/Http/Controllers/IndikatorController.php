@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Config;
 use App\Models\Indikator;
 use App\Models\Inovasi;
@@ -54,10 +55,19 @@ class IndikatorController extends Controller
     {
         $inovasi = Inovasi::findOrFail($request->inovasi_id);
         $param = Parameter::findOrFail($request->param);
-        $inovasi->indikator()->updateExistingPivot($request->indikator_id, [
-            'param_awal' => $param->nama,
-            'bobot_awal' => $param->bobot
-        ]);
+        if (Auth::user()->role == 2) {
+            $inovasi->indikator()->updateExistingPivot($request->indikator_id, [
+                'param_akhir' => $param->nama,
+                'bobot_akhir' => $param->bobot,
+                'catatan' => $request->catatan,
+            ]);
+        } else {
+            $inovasi->indikator()->updateExistingPivot($request->indikator_id, [
+                'param_awal' => $param->nama,
+                'bobot_awal' => $param->bobot
+            ]);
+        }
+        
         return redirect()->back()->with('success', Config::get('save_success'));
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Faq;
 use App\Models\Golongan;
 use App\Models\Indikator;
 use App\Models\Inisiator;
+use App\Models\Inovasi;
 use App\Models\Jabatan;
 use App\Models\Jenis;
 use App\Models\Kecamatan;
@@ -105,6 +106,12 @@ class HomeController extends Controller
 				$golongan = Golongan::all();
 				return response()->json(array(
 					'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan'))->render()
+				), 200);
+				break;
+			case "inovasi_status":
+				$data = Inovasi::findOrFail($request->id);
+				return response()->json(array(
+					'msg' => view('modal.form-status-inovasi', compact('data'))->render()
 				), 200);
 				break;
         }

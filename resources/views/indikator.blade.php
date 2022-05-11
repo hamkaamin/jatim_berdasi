@@ -17,6 +17,9 @@
 			<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>
 		</form>
 	@endif
+	@if (Auth::user()->role == 2)
+		<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup" onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
+	@endif
 @endsection
 
 @section('content')
@@ -43,12 +46,14 @@
 								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
 								<td>{!! $item->keterangan !!}</td>
 								<td><b>{{ $item->pivot->bobot_awal }}</b> - {{ $item->pivot->param_awal }}</td>
-								<td><b>{{ $item->pivot->bobot_akhir }}</b> - {{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->catatan }}"></i> @endif</td>
+								<td><b>{{ $item->pivot->bobot_akhir }}</b> - {{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td>
 								<td>{{ $item->data_pendukung }}</td>
 								<td>{{ $item->tipe_file }}</td>
 								<td>
 									<a href="{{ route('inovasi.indikator.upload.index', ['id' => request()->id, 'indikator' => $item->id]) }}" class="btn btn-sm btn-warning"><i class="fas fa-upload"></i></a>
-									<button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i></button>
+									@if ($inovasi->status == 0 || Auth::user()->role == 2)
+										<button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i></button>
+									@endif
 								</td>
 							</tr>
 						@endforeach
@@ -61,6 +66,7 @@
 
 @section('script')
 	@include('script.dataTable')
+	@include('script.modal')
 	<div class="modal fade" id="modalPopup" aria-labelledby="modalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content" id="modalContent">

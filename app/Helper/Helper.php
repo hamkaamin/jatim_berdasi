@@ -133,20 +133,20 @@ class Helper
 
 	public static function generateKolomUpload($indikator)
 	{
-		$kolom = [['Judul', 'judul', 'text']];
+		$kolom = [['Judul', 'judul', 'text', 1]];
 		$tipe_file = explode(",", $indikator->tipe_file);
 		if (count($tipe_file) == 1) {
 			if ($tipe_file[0] == 'pdf') {
-				$kolom[] = ['No. Dokumen', 'no_dokumen', 'text'];
-				$kolom[] = ['Tgl. Dokumen', 'tgl_dokumen', 'date'];
+				$kolom[] = ['No. Dokumen', 'no_dokumen', 'text', 0];
+				$kolom[] = ['Tgl. Dokumen', 'tgl_dokumen', 'date', 0];
 			} elseif ($tipe_file[0] == 'mp4') {
-				$kolom[] = ['Kover', 'cover', 'file'];
-				$kolom[] = ['URL', 'url', 'url'];
+				$kolom[] = ['Kover', 'cover', 'file', 0];
+				$kolom[] = ['URL', 'url', 'url', 0];
 			}
 		} else {
-			$kolom[] = ['Tentang', 'tentang', 'textarea'];
+			$kolom[] = ['Tentang', 'tentang', 'textarea', 1];
 		}
-		$kolom[] = ['File', 'file', 'file'];
+		$kolom[] = ['File', 'file', 'file', 0];
 		return $kolom;
 	}
 }

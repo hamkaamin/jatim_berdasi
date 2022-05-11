@@ -16,6 +16,9 @@
 			<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>
 		</form>
 	@endif
+	@if (Auth::user()->role == 2)
+		<button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup" onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
+	@endif
 @endsection
 
 @section('content')
@@ -177,4 +180,5 @@
 @section('script')
 	@include('script.select2-multiple')
 	@include('script.ck-editor')
+	@include('script.modal')
 @endsection

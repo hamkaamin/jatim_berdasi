@@ -21,6 +21,9 @@ class InovasiController extends Controller
     {
         $tahapan = Tahapan::all();
         $inovasi = Inovasi::all();
+        if (Auth::user()->role == 2) {
+            $inovasi = Inovasi::where('status', '<>', 0)->get();
+        }
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         return view('inovasi', compact('tahapan', 'tahapanKolom', 'inovasi'));
     }
@@ -116,6 +119,15 @@ class InovasiController extends Controller
         return redirect(route('inovasi.masyarakat.index'))->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
     }
 
+    public function update(Request $request)
+    {
+        $inovasi = Inovasi::findOrFail($request->id);
+        $inovasi->status = $request->status;
+        $inovasi->keterangan = $request->keterangan;
+        $inovasi->save();
+        return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');
+    }
+
     public function delete(Request $request)
     {
         $data = Inovasi::findOrFail($request->id);
@@ -154,9 +166,10 @@ class InovasiController extends Controller
     {
         if (count($request->input()) == 2 && $request->has('id') && $request->has('indikator')) {
             $data = Upload::where('inovasi_id', $request->id)->where('indikator_id', $request->indikator)->get();
+            $inovasi = Inovasi::findOrFail($request->id);
             $indikator = Indikator::findOrFail($request->indikator);
             $kolom = Helper::generateKolomUpload($indikator);
-            return view('upload', compact('data', 'kolom'));
+            return view('upload', compact('data', 'kolom', 'inovasi'));
         } else {
             return redirect()->back();
         }
