@@ -10,7 +10,9 @@
 
 @section('buttons')
     <a href="{{ route('inovasi.indikator.index', ['id' => request()->id]) }}" class="btn btn-light">Kembali</a>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="uploadNewFile({{ request()->id }}, {{ request()->indikator }}, 0)">Tambah Data</button>
+	@if ($inovasi->status == 0)
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="uploadNewFile({{ request()->id }}, {{ request()->indikator }}, 0)">Tambah Data</button>
+	@endif
 @endsection
 
 @section('content')
@@ -32,7 +34,19 @@
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								@foreach ($kolom as $kol)
-									<td>{{ $kol[0] }}</td>
+									<td>
+										@if ($kol[2] == 'file')
+											@if ($item->{$kol[1]} != null && file_exists(public_path('/indikator_uploads/'.$item->{$kol[1]})))
+												<a href="{{ asset('/indikator_uploads/'.$item->{$kol[1]}) }}" target="_blank">View</a>
+											@else
+												-
+											@endif
+										@elseif ($kol[2] == 'date')
+											{{ date('Y-m-d', strtotime($item->{$kol[1]})) }}
+										@else
+											{{ $item->{$kol[1]} }}
+										@endif
+									</td>
 								@endforeach
 								<td></td>
 							</tr>

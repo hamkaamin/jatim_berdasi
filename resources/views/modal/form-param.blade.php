@@ -18,6 +18,14 @@
 				</select>
 			</div>
 		</div>
+		@if (Auth::user()->role == 2)
+			<div class="row my-2">
+				<div class="col-sm-4 d-flex align-items-center"><label>Notes</label></div>
+				<div class="col-sm-8">
+					<input type="text" name="catatan" class="form-control">
+				</div>
+			</div>
+		@endif
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

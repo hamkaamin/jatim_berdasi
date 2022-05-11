@@ -15,26 +15,28 @@
 @endif
 
 @section('content')
-	<div class="row">
-        <div class="col-12">
-            <div class="row">
-                @foreach ($tahapan as $item)
-                    <div class="col-3">
-                        <div class="card mb-3 widget-content bg-midnight-bloom">
-                            <div class="widget-content-wrapper text-white">
-                                <div class="widget-content-left">
-                                    <div class="widget-heading">{{ $item->nama }}</div>
-                                    <div class="widget-subheading">Inovasi Tahap <b>{{ $item->nama }}</b></div>
-                                </div>
-                                <div class="widget-content-right">
-                                    <div class="widget-numbers text-white"><span>{{ $item->hasManyInovasi()->count() }}</span></div>
+    <div class="row">
+        @if (Auth::user()->role != 2)
+            <div class="col-12">
+                <div class="row">
+                    @foreach ($tahapan as $item)
+                        <div class="col-3">
+                            <div class="card mb-3 widget-content bg-midnight-bloom">
+                                <div class="widget-content-wrapper text-white">
+                                    <div class="widget-content-left">
+                                        <div class="widget-heading">{{ $item->nama }}</div>
+                                        <div class="widget-subheading">Inovasi Tahap <b>{{ $item->nama }}</b></div>
+                                    </div>
+                                    <div class="widget-content-right">
+                                        <div class="widget-numbers text-white"><span>{{ $item->hasManyInovasi()->count() }}</span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @endif
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <x-tab-inovasi :tahapan="null" :active="1" />
