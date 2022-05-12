@@ -44,4 +44,11 @@ class UploadController extends Controller
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
+
+    public function delete(Request $request)
+    {
+        $data = Upload::findOrFail($request->id);
+        $data->delete();
+        return redirect()->back()->with('success', Config::get('delete_success'));
+    }
 }

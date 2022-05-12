@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Helper;
 use App\Models\Bentuk;
 use App\Models\Faq;
 use App\Models\Golongan;
@@ -17,6 +18,7 @@ use App\Models\Opd;
 use App\Models\Parameter;
 use App\Models\Provinsi;
 use App\Models\Tahapan;
+use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -112,6 +114,16 @@ class HomeController extends Controller
 				$data = Inovasi::findOrFail($request->id);
 				return response()->json(array(
 					'msg' => view('modal.form-status-inovasi', compact('data'))->render()
+				), 200);
+				break;
+			case "upload":
+				$data = Upload::findOrFail($request->id);
+				$inovasi_id = $data->inovasi_id;
+				$indikator_id = $data->indikator_id;
+				$indikator = Indikator::findOrFail($indikator_id);
+				$kolom = Helper::generateKolomUpload($indikator);
+				return response()->json(array(
+					'msg' => view('modal.form-upload', compact('inovasi_id', 'indikator_id', 'kolom', 'data'))->render()
 				), 200);
 				break;
         }

@@ -1,4 +1,4 @@
-<form action="{{ route('inovasi.indikator.saveParam', ['inovasi_id' => $inovasi_id, 'indikator_id' => $indikator_id]) }}" method="post">
+<form action="{{ route('inovasi.indikator.saveParam', ['inovasi_id' => $inovasi_id, 'indikator_id' => $indikator->id]) }}" method="post">
 	@csrf
 	<div class="modal-header">
 		<h5 class="modal-title" id="modalLabel">Pilih Parameter</h5>
@@ -7,6 +7,12 @@
 		</button>
 	</div>
 	<div class="modal-body">
+		<div class="row mb-2">
+			<div class="col">
+				<h6><b>{{ $indikator->nama }}</b></h6>
+				{!! $indikator->keterangan !!}
+			</div>
+		</div>
 		<div class="row my-2">
 			<div class="col-sm-4 d-flex align-items-center"><label>Parameter <span class="text-danger">*</span></label></div>
 			<div class="col-sm-8">

@@ -15,6 +15,41 @@
 @endif
 
 @section('content')
+	@if (Auth::user()->role != 1 && Auth::user()->role != 2 && Auth::user()->role != 6)
+		<div class="row p-1">
+			<div class="col">
+				<form action="{{ route('pengguna.filter-area') }}" method="get">
+					<div class="row">
+						<div class="col-auto align-self-center">
+							<b>Filter Berdasarkan Wilayah OPD :</b>
+						</div>
+						<div class="col">
+							<select onchange="ubahScopeOpd(this.value, 'col')" class="form-control" required name="scope">
+								<option selected disabled>-- Pilih Salah Satu --</option>
+								@if (in_array(Auth::user()->role, [1,2,3]) || Helper::checkOpd('provinsi', Auth::user()))
+									<option value="provinsi">Provinsi</option>
+									<option value="kota">Kabupaten / Kota</option>
+									<option value="kecamatan">Kecamatan</option>
+									<option value="kelurahan">Kelurahan</option>
+								@elseif (Auth::user()->role == 4 || Helper::checkOpd('kota', Auth::user()))
+									<option value="kota">Kabupaten / Kota</option>
+									<option value="kecamatan">Kecamatan</option>
+									<option value="kelurahan">Kelurahan</option>
+								@elseif (Helper::checkOpd('kecamatan', Auth::user()))
+									<option value="kecamatan">Kecamatan</option>
+									<option value="kelurahan">Kelurahan</option>
+								@elseif (Helper::checkOpd('kelurahan', Auth::user()))
+									<option value="kelurahan">Kelurahan</option>
+								@endif
+							</select>
+						</div>
+					</div>
+					<div class="row mt-2" id="col_scope_container"></div>
+					<div class="row mt-2 mb-4 d-flex justify-content-center"><div class="col-4"><button class="btn btn-primary btn-sm btn-block" type="submit">Filter</button></div></div>
+				</form>
+			</div>
+		</div>
+	@endif
 	<div class="row">
 		<div class="col">
 			<div class="table-responsive p-3">
@@ -26,7 +61,7 @@
 							<th>Username</th>
 							<th>Email</th>
 							<th>Role</th>
-							<th style="min-width: 100px"></th>
+							<th style="width: 100px"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -52,14 +87,14 @@
 								</td>
 								<td>
 									@if (in_array(Auth::user()->role, [1,3,4]) || (Auth::user()->role == 5 && $item->opd_id == Auth::user()->opd_id))
-										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn m-1 btn-block btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
 										<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
 											@csrf
-											<button type="submit" class="btn btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i></button>
+											<button type="submit" class="btn m-1 btn-block btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i>&nbsp;&nbsp;Reset Pass</button>
 										</form>
 										<form style="all: unset" action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
 											@csrf
-											<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
+											<button type="submit" class="btn m-1 btn-block btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
 										</form>
 									@endif
 								</td>
@@ -76,6 +111,7 @@
 	@include('script.dataTable')
 	@include('script.modal')
 	@include('script.ubahWilayah')
+	@include('script.ubahScopeOpd')
 	<script>
 		function ubahRole(type) {
 			$('#role_container').html("<div class=\"text-center my-1\"><h4><b>Loading...</b></h4></div>");

@@ -36,7 +36,7 @@
 			<div class="row my-2">
 				<div class="col-sm-4 d-flex align-items-center"><label>Scope OPD <span class="text-danger">*</span></label></div>
 				<div class="col-sm-8">
-					<select onchange="ubahScopeOpd(this.value)" class="form-control" required name="scope">
+					<select onchange="ubahScopeOpd(this.value, 'row')" class="form-control" required name="scope">
 						<option selected disabled>-- Pilih Salah Satu --</option>
 						@if (in_array(Auth::user()->role, [1,2,3]) || Helper::checkOpd('provinsi', Auth::user()))
 							<option value="provinsi">Provinsi</option>
@@ -58,7 +58,7 @@
 				</div>
 			</div>
 			<div class="row my-2">
-				<div class="col" id="scope_container">
+				<div class="col" id="row_scope_container">
 
 				</div>
 			</div>

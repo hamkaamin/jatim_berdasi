@@ -14,22 +14,25 @@ use Illuminate\Http\Request;
 
 class OpdController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        set_time_limit(0);
         $data = [];
+        if (isset($request->scope) && $request->scope != null) {
+            $data = Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $data);
+            return view('daftar-opd', compact('data'));
+        }
         if (Auth::user()->role == 1 || Auth::user()->role == 2 || Auth::user()->role == 6) {
             $data = Opd::all();
         } elseif (Auth::user()->role == 3) {
-            $data = Helper::getOpdProvinsi(Auth::user()->province_id, $data);
+            $data = Helper::getOpd('provinsi', Auth::user()->province_id, $data);
         } elseif (Auth::user()->role == 4) {
-            $data = Helper::getOpdKota(Auth::user()->regency_id, $data);
+            $data = Helper::getOpd('kota', Auth::user()->regency_id, $data);
         } elseif (Helper::checkOpd('provinsi', Auth::user())) {
-            $data = Helper::getOpdProvinsi(Auth::user()->opd->provinsi_id, $data);
+            $data = Helper::getOpd('provinsi', Auth::user()->opd->provinsi_id, $data);
         } elseif (Helper::checkOpd('kota', Auth::user())) {
-            $data = Helper::getOpdKota(Auth::user()->opd->kabkota_id, $data);
+            $data = Helper::getOpd('kota', Auth::user()->opd->kabkota_id, $data);
         } elseif (Helper::checkOpd('kecamatan', Auth::user())) {
-            $data = Helper::getOpdKecamatan(Auth::user()->opd->kecamatan_id, $data);
+            $data = Helper::getOpd('kecamatan', Auth::user()->opd->kecamatan_id, $data);
         } elseif (Helper::checkOpd('kelurahan', Auth::user())) {
             $data = Helper::getOpd('kelurahan', Auth::user()->opd->kelurahan_id, $data);
         }
@@ -90,7 +93,8 @@ class OpdController extends Controller
             $label = $item['label'];
             $wilayah = $item['wilayah'];
             $labelNext = $item['labelNext'];
-            $html .= view('components.select-wilayah', compact('label', 'wilayah', 'labelNext'))->render();
+            $type = $request->align;
+            $html .= view('components.select-wilayah', compact('label', 'wilayah', 'labelNext', 'type'))->render();
         }
         return response()->json(array(
             'msg' => $html

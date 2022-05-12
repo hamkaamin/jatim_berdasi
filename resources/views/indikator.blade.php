@@ -32,11 +32,11 @@
 							<th>No.</th>
 							<th>Indikator</th>
 							<th>Keterangan</th>
-							<th>Bobot Awal</th>
-							<th>Bobot Akhir</th>
+							<th style="min-width: 100px">Bobot Awal</th>
+							<th style="min-width: 100px">Bobot Akhir</th>
 							<th>Data Pendukung</th>
 							<th>Jenis File</th>
-							<th style="min-width: 50px"></th>
+							<th style="width: 100px"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -45,14 +45,14 @@
 								<td>{{ $loop->iteration }}</td>
 								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
 								<td>{!! $item->keterangan !!}</td>
-								<td><b>{{ $item->pivot->bobot_awal }}</b> - {{ $item->pivot->param_awal }}</td>
-								<td><b>{{ $item->pivot->bobot_akhir }}</b> - {{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td>
+								<td class="text-center"><h4><b>{{ $item->pivot->bobot_awal }}</b></h4>{{ $item->pivot->param_awal }}</td>
+								<td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td>
 								<td>{{ $item->data_pendukung }}</td>
 								<td>{{ $item->tipe_file }}</td>
 								<td>
-									<a href="{{ route('inovasi.indikator.upload.index', ['id' => request()->id, 'indikator' => $item->id]) }}" class="btn btn-sm btn-warning"><i class="fas fa-upload"></i></a>
+									<a href="{{ route('inovasi.indikator.upload.index', ['id' => request()->id, 'indikator' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-warning"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload</a>
 									@if ($inovasi->status == 0 || Auth::user()->role == 2)
-										<button class="btn btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i></button>
+										<button class="btn m-1 btn-block btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Beri Bobot</button>
 									@endif
 								</td>
 							</tr>
