@@ -21,7 +21,7 @@
 						<tr>
 							<th>No.</th>
 							<th>Nama</th>
-							<th style="min-width: 50px"></th>
+							<th style="width: 100px"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -30,10 +30,10 @@
 								<td>{{ $loop->iteration }}</td>
 								<td>{{ $item->nama }}</td>
 								<td>
-									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'urusan')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
+									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'urusan')" class="btn m-1 btn-block btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
 									<form style="all: unset" action="{{ route('master.urusan.delete', ['id' => $item->id]) }}" method="post">
 										@csrf
-										<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
+										<button type="submit" class="btn m-1 btn-block btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
 									</form>
 								</td>
 							</tr>

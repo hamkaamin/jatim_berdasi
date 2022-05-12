@@ -24,7 +24,7 @@
 							<th>Keterangan</th>
 							<th>Data Pendukung</th>
 							<th>Tipe File</th>
-							<th style="min-width: 100px"></th>
+							<th style="width: 100px"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -36,11 +36,11 @@
 								<td>{{ $item->data_pendukung }}</td>
 								<td>{{ $item->tipe_file }}</td>
 								<td>
-									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'indikator')" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></button>
-									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'parameter')" class="btn btn-sm btn-success"><i class="fa fa-list-ul"></i></button>
+									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'indikator')" class="btn m-1 btn-sm btn-block btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
+									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'parameter')" class="btn m-1 btn-sm btn-block btn-success"><i class="fa fa-list-ul"></i>&nbsp;&nbsp;Parameter</button>
 									<form style="all: unset" action="{{ route('master.indikator.delete', ['id' => $item->id]) }}" method="post">
 										@csrf
-										<button type="submit" class="btn btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i></button>
+										<button type="submit" class="btn m-1 btn-sm btn-block btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
 									</form>
 								</td>
 							</tr>

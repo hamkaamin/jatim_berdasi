@@ -12,9 +12,9 @@
 				<div class="col-sm-4 d-flex align-items-center"><label>{{ $item[0] }} @if($item[3] == 1) <span class="text-danger">*</span> @endif</label></div>
 				<div class="col-sm-8">
 					@if ($item[2] != 'textarea')
-						<input type="{{ $item[2] }}" name="{{ $item[1] }}" class="form-control" @if($item[3] == 1) required @endif value="{{ $data != null ? $data->$item[1] : '' }}">
+						<input type="{{ $item[2] }}" name="{{ $item[1] }}" class="form-control" @if($item[3] == 1) required @endif value="{{ $data != null ? $data->{$item[1]} : '' }}">
 					@else
-						<textarea name="{{ $item[1] }}" class="form-control" @if($item[3] == 1) required @endif rows="5">{{ $data != null ? $data->$item[1] : '' }}</textarea>
+						<textarea name="{{ $item[1] }}" class="form-control" @if($item[3] == 1) required @endif rows="5">{{ $data != null ? $data->{$item[1]} : '' }}</textarea>
 					@endif
 				</div>
 			</div>

@@ -26,7 +26,9 @@
 							@foreach ($kolom as $kol)
 								<th>{{ $kol[0] }}</th>
 							@endforeach
-							<th></th>
+							@if ($inovasi->status == 0)
+								<th style="width: 100px"></th>
+							@endif
 						</tr>
 					</thead>
 					<tbody>
@@ -42,13 +44,21 @@
 												-
 											@endif
 										@elseif ($kol[2] == 'date')
-											{{ date('Y-m-d', strtotime($item->{$kol[1]})) }}
+											{{ $item->{$kol[1]} != null ? date('Y-m-d', strtotime($item->{$kol[1]})) : '-' }}
 										@else
 											{{ $item->{$kol[1]} }}
 										@endif
 									</td>
 								@endforeach
-								<td></td>
+								@if ($inovasi->status == 0)
+									<td>
+										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'upload')" class="btn m-1 btn-block btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
+										<form style="all: unset" action="{{ route('inovasi.indikator.upload.delete', ['id' => $item->id]) }}" method="post">
+											@csrf
+											<button type="submit" class="btn m-1 btn-block btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
+										</form>
+									</td>
+								@endif
 							</tr>
 						@endforeach
 					</tbody>
@@ -60,13 +70,7 @@
 
 @section('script')
 	@include('script.dataTable')
-	<div class="modal fade" id="modalPopup" aria-labelledby="modalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg">
-			<div class="modal-content" id="modalContent">
-				
-			</div>
-		</div>
-	</div>
+	@include('script.modal')
 	
 	<script>
 		function uploadNewFile(inovasi_id, indikator_id, upload_id) {

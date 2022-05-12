@@ -6,17 +6,18 @@ use Illuminate\View\Component;
 
 class SelectWilayah extends Component
 {
-    public $label, $wilayah, $labelNext;
+    public $label, $wilayah, $labelNext, $type;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label, $wilayah, $labelNext)
+    public function __construct($label, $wilayah, $labelNext, $type)
     {
         $this->label = $label;
         $this->wilayah = $wilayah;
         $this->labelNext = $labelNext;
+        $this->type = $type;
     }
 
     /**

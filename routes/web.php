@@ -99,12 +99,14 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_upload'])->name('index');
                 Route::post('/add', [App\Http\Controllers\UploadController::class, 'add'])->name('add');
                 Route::post('/', [App\Http\Controllers\UploadController::class, 'save'])->name('save');
+                Route::post('/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('delete');
             });
         });
     });
     
     Route::prefix('pengguna')->name('pengguna.')->group(function () {
-        Route::get('/', [App\Http\Controllers\PenggunaController::class, 'index'])->name('index'); 
+        Route::get('/', [App\Http\Controllers\PenggunaController::class, 'index'])->name('index');
+        Route::get('/filter-area', [App\Http\Controllers\PenggunaController::class, 'index'])->name('filter-area');
         Route::post('/', [App\Http\Controllers\PenggunaController::class, 'save'])->name('save'); 
         Route::post('/change-role', [App\Http\Controllers\PenggunaController::class, 'change_role'])->name('change-role');
         Route::post('/reset-pass', [App\Http\Controllers\PenggunaController::class, 'reset_pass'])->name('reset-pass');
@@ -113,6 +115,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('opd')->name('opd.')->group(function () {
         Route::get('/', [App\Http\Controllers\OpdController::class, 'index'])->name('index');
+        Route::get('/filter-area', [App\Http\Controllers\OpdController::class, 'index'])->name('filter-area');
         Route::post('/change-scope', [App\Http\Controllers\OpdController::class, 'change_scope'])->name('change-scope');
         Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save'); 
         Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete'); 
