@@ -47,6 +47,39 @@
                 </div>
             </div>
         @endif
+        @if (Auth::user()->role != 1 && Auth::user()->role != 2 && Auth::user()->role != 6)
+            <div class="col-12">
+                <form action="{{ route('inovasi.filter-area') }}" method="get">
+                    <div class="row">
+                        <div class="col-auto align-self-center">
+                            <b>Filter Berdasarkan Wilayah Pembuat Inovasi :</b>
+                        </div>
+                        <div class="col">
+                            <select onchange="ubahScopeOpd(this.value, 'col')" class="form-control" required name="scope">
+                                <option selected disabled>-- Pilih Salah Satu --</option>
+                                @if (in_array(Auth::user()->role, [1,2,3]) || Helper::checkOpd('provinsi', Auth::user()))
+                                    <option value="provinsi">Provinsi</option>
+                                    <option value="kota">Kabupaten / Kota</option>
+                                    <option value="kecamatan">Kecamatan</option>
+                                    <option value="kelurahan">Kelurahan</option>
+                                @elseif (Auth::user()->role == 4 || Helper::checkOpd('kota', Auth::user()))
+                                    <option value="kota">Kabupaten / Kota</option>
+                                    <option value="kecamatan">Kecamatan</option>
+                                    <option value="kelurahan">Kelurahan</option>
+                                @elseif (Helper::checkOpd('kecamatan', Auth::user()))
+                                    <option value="kecamatan">Kecamatan</option>
+                                    <option value="kelurahan">Kelurahan</option>
+                                @elseif (Helper::checkOpd('kelurahan', Auth::user()))
+                                    <option value="kelurahan">Kelurahan</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2" id="col_scope_container"></div>
+                    <div class="row mt-2 mb-4 d-flex justify-content-center"><div class="col-4"><button class="btn btn-primary btn-sm btn-block" type="submit">Filter</button></div></div>
+                </form>
+            </div>
+        @endif
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <x-tab-inovasi :tahapan="null" :active="1" />
@@ -65,14 +98,12 @@
 @endsection
 
 @section('script')
+    @include('script.ubahWilayah')
+	@include('script.ubahScopeOpd')
     <script>
         $(document).ready( function () {
             $('#myTable0').DataTable();
         } );
-
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        });
     </script>
     @foreach ($tahapan as $item)
         <script>
@@ -81,4 +112,9 @@
             } );
         </script>
     @endforeach
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]')
+        });
+    </script>
 @endsection

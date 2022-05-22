@@ -74,6 +74,15 @@ class InovasiController extends Controller
             $data = new Inovasi;
             $data->user_id = Auth::user()->id;
             $data->kode = uniqid();
+            if (Auth::user()->role == 4 || (Auth::user()->role == 6 && Auth::user()->regency_id != null)) {
+                $data->kota_id = Auth::user()->regency_id;
+            } elseif (Helper::checkOpd('kota', Auth::user()) || (Auth::user()->role == 6 && Auth::user()->opd_id != null && Auth::user()->opd->kabkota_id != null)) {
+                $data->kota_id = Auth::user()->opd->kabkota_id;
+            } elseif (Helper::checkOpd('kelurahan', Auth::user()) || (Auth::user()->role == 6 && Auth::user()->opd_id != null && Auth::user()->opd->kelurahan_id != null)) {
+                $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
+            } elseif (Helper::checkOpd('kecamatan', Auth::user()) || (Auth::user()->role == 6 && Auth::user()->opd_id != null && Auth::user()->opd->kecamatan_id != null)) {
+                $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
+            }
         } else {
             $data = Inovasi::findOrFail($request->id);
             $temp = [];

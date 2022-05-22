@@ -17,8 +17,8 @@ class Kelurahan extends Model
         static::addGlobalScope(new OrderByIdScope);
     }
 
-    public function kelurahan()
+    public function kecamatan()
     {
-        return $this->hasMany('App\Models\Kelurahan', 'district_id', 'id');
+        return $this->belongsTo(Kecamatan::class, 'district_id', 'id');
     }
 }

@@ -16,4 +16,14 @@ class Kecamatan extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function kota()
+    {
+        return $this->belongsTo(Kota::class, 'regency_id', 'id');
+    }
+
+    public function kelurahan()
+    {
+        return $this->hasMany('App\Models\Kelurahan', 'district_id', 'id');
+    }
 }

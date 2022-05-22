@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('inovasi')->name('inovasi.')->group(function () {
         Route::get('/{area}', [App\Http\Controllers\InovasiController::class, 'index'])->name('index');
+        Route::get('/filter/area', [App\Http\Controllers\InovasiController::class, 'index'])->name('filter-area');
         Route::get('/form/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
