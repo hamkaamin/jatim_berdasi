@@ -48,7 +48,12 @@
 								<td class="text-center"><h4><b>{{ $item->pivot->bobot_awal }}</b></h4>{{ $item->pivot->param_awal }}</td>
 								{{-- <td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td> --}}
 								<td>{{ $item->data_pendukung }}</td>
-								<td>{{ $item->tipe_file }}</td>
+								<td class="text-center">
+                                    {{ $item->tipe_file }}
+                                    @if ($item->upload()->where('inovasi_id', request()->id)->count() > 0)
+                                        <br><span class="badge badge-pill badge-success"><i class="fa fa-check-circle"></i> &nbsp; Ada File</span>
+                                    @endif
+                                </td>
 								<td>
 									<a href="{{ route('inovasi.indikator.upload.index', ['id' => request()->id, 'indikator' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-warning"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload</a>
 									@if ($inovasi->status == 0 || Auth::user()->role == 2)
