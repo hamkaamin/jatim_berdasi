@@ -84,6 +84,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
         Route::get('/detail', [App\Http\Controllers\ProfilPemdaController::class, 'index_detail'])->name('detail');
         Route::post('/upload-pakta', [App\Http\Controllers\ProfilPemdaController::class, 'upload_pakta'])->name('upload-pakta');
+
+        Route::prefix('upload')->name('upload.')->group(function () {
+            Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index_upload'])->name('index');
+            Route::post('/add', [App\Http\Controllers\UploadController::class, 'add'])->name('add');
+            Route::post('/', [App\Http\Controllers\UploadController::class, 'save'])->name('save');
+            Route::post('/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('delete');
+        });
     });
 
     Route::prefix('inovasi')->name('inovasi.')->group(function () {

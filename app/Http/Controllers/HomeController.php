@@ -118,12 +118,13 @@ class HomeController extends Controller
 				break;
 			case "upload":
 				$data = Upload::findOrFail($request->id);
-				$inovasi_id = $data->inovasi_id;
+				$id = $data->inovasi_id != null ? $data->inovasi_id : $data->provinsi_id;
 				$indikator_id = $data->indikator_id;
 				$indikator = Indikator::findOrFail($indikator_id);
 				$kolom = Helper::generateKolomUpload($indikator);
+                $type = $data->label;
 				return response()->json(array(
-					'msg' => view('modal.form-upload', compact('inovasi_id', 'indikator_id', 'kolom', 'data'))->render()
+					'msg' => view('modal.form-upload', compact('id', 'indikator_id', 'kolom', 'data', 'type'))->render()
 				), 200);
 				break;
         }

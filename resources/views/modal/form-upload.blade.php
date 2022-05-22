@@ -1,4 +1,9 @@
-<form action="{{ route('inovasi.indikator.upload.save', ['id' => $data != null ? $data->id : 0, 'indikator_id' => $indikator_id, 'inovasi_id' => $inovasi_id]) }}" method="post" enctype="multipart/form-data">
+<form
+    @if ($type == 1)
+        action="{{ route('profil-pemda.upload.save', ['id' => $data != null ? $data->id : 0, 'indikator_id' => $indikator_id, 'provinsi_id' => $id, 'type' => $type]) }}"
+    @else
+        action="{{ route('inovasi.indikator.upload.save', ['id' => $data != null ? $data->id : 0, 'indikator_id' => $indikator_id, 'inovasi_id' => $id, 'type' => $type]) }}"
+    @endif method="post" enctype="multipart/form-data">
 	@csrf
 	<div class="modal-header">
 		<h5 class="modal-title" id="modalLabel">Tambah / Edit Data Upload</h5>

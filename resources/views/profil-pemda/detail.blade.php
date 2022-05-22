@@ -82,9 +82,9 @@
                                                 <td>{!! $item->keterangan !!}</td>
                                                 <td class="text-center">
                                                     @if ($item->upload()->where('provinsi_id', Auth::user()->province_id)->count() > 0)
-                                                        <br><span class="badge badge-pill badge-success"><i class="fa fa-check-circle"></i> &nbsp; Ada File</span>
+                                                        <br><span class="badge badge-pill badge-success"><i class="fa fa-check-circle"></i> &nbsp; Ada File</span><br>
                                                     @endif
-                                                    <a href="" class="btn m-1 btn-sm btn-warning"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload</a>
+                                                    <a href="{{ route('profil-pemda.upload.index', ['id' => Auth::user()->province_id, 'indikator' => $item->id]) }}" class="btn m-1 btn-sm btn-warning"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload</a>
                                                 </td>
                                             </tr>
                                         @endforeach

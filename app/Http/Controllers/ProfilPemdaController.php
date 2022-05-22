@@ -6,6 +6,7 @@ use Auth;
 use Config;
 use Helper;
 use App\Models\Indikator;
+use App\Models\Upload;
 use Illuminate\Http\Request;
 
 class ProfilPemdaController extends Controller
@@ -27,6 +28,18 @@ class ProfilPemdaController extends Controller
         }
         $data = $provinsi->indikator()->get();
         return view('profil-pemda.detail', compact('data'));
+    }
+
+    public function index_upload(Request $request)
+    {
+        if (count($request->input()) == 2 && $request->has('id') && $request->has('indikator')) {
+            $data = Upload::where('provinsi_id', $request->id)->where('indikator_id', $request->indikator)->get();
+            $indikator = Indikator::findOrFail($request->indikator);
+            $kolom = Helper::generateKolomUpload($indikator);
+            return view('profil-pemda.upload', compact('data', 'kolom', 'indikator'));
+        } else {
+            return redirect()->back();
+        }
     }
 
     public function upload_pakta(Request $request)
