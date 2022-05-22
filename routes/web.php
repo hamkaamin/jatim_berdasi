@@ -82,6 +82,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('profil-pemda')->name('profil-pemda.')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
+        Route::get('/detail', [App\Http\Controllers\ProfilPemdaController::class, 'index_detail'])->name('detail');
+        Route::post('/upload-pakta', [App\Http\Controllers\ProfilPemdaController::class, 'upload_pakta'])->name('upload-pakta');
     });
 
     Route::prefix('inovasi')->name('inovasi.')->group(function () {

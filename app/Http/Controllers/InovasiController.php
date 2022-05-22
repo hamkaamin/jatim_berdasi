@@ -171,7 +171,7 @@ class InovasiController extends Controller
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
             if ($inovasi->indikator()->count() == 0) {
-                $indikator = Indikator::all();
+                $indikator = Indikator::where('label', 0)->get();
                 foreach ($indikator as $item) {
                     $inovasi->indikator()->attach($item->id);
                 }
