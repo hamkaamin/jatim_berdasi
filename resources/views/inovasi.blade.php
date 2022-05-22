@@ -1,16 +1,16 @@
 @extends('layouts.main')
 
 @section('title')
-    Inovasi Masyarakat
+    Inovasi {{ $label }}
 @endsection
 
 @section('title-desc')
-    Daftar Pengajuan Inovasi dari Masyarakat
+    Daftar Pengajuan Inovasi dari {{ $label }}
 @endsection
 
 @if (Auth::user()->role != 2)
     @section('buttons')
-        <a href="{{ route('inovasi.edit', ['id' => 0]) }}" class="btn btn-primary">Tambah Data</a>
+        <a href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Pemda' ? 1 : 0]) }}" class="btn btn-primary">Tambah Data</a>
     @endsection
 @endif
 
@@ -28,7 +28,17 @@
                                         <div class="widget-subheading">Inovasi Tahap <b>{{ $item->nama }}</b></div>
                                     </div>
                                     <div class="widget-content-right">
-                                        <div class="widget-numbers text-white"><span>{{ $item->hasManyInovasi()->count() }}</span></div>
+                                        <div class="widget-numbers text-white">
+                                            <span>
+                                                @if ($label == "Masyarakat")
+                                                    {{ $item->hasManyInovasi()->where('label', 0)->count() }}
+                                                @elseif ($label == "Pemda")
+                                                    {{ $item->hasManyInovasi()->where('label', 1)->count() }}
+                                                @else
+                                                    {{ $item->hasManyInovasi()->count() }}
+                                                @endif
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

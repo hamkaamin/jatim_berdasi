@@ -24,7 +24,7 @@
                             } else {
                                 $data = $inovasi;
                             }
-                            
+
                         @endphp
                         @foreach ($data as $item)
                             <tr>

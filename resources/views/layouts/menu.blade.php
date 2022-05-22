@@ -81,22 +81,26 @@
 			</a>
 		</li>
 		<li class="app-sidebar__heading">Database Inovasi Daerah</li>
-		<li>
-			<a href="#" class="">
-				<i class="metismenu-icon pe-7s-user"></i> Profil Pemda
-			</a>
-		</li>
+		@if (Auth::user()->role == 3)
+            <li>
+                <a href="#" class="">
+                    <i class="metismenu-icon pe-7s-user"></i> Profil Pemda
+                </a>
+            </li>
+        @endif
 		<li>
 			<a href="#" class="">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
 			</a>
 		</li>
 		<li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
-		<li>
-			<a href="#" class="">
-				<i class="metismenu-icon pe-7s-light"></i> Inovasi Pemda
-			</a>
-		</li>
+		@if (Auth::user()->role != 6)
+            <li>
+                <a href="{{ route('inovasi.pemda.index') }}" class="{{ Request::routeIs('inovasi.pemda.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Pemda
+                </a>
+            </li>
+        @endif
 		<li>
 			<a href="{{ route('inovasi.masyarakat.index') }}" class="{{ Request::routeIs('inovasi.masyarakat.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Masyarakat

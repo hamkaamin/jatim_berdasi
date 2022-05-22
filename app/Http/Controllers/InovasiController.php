@@ -20,17 +20,30 @@ class InovasiController extends Controller
     public function index_masyarakat()
     {
         $tahapan = Tahapan::all();
-        $inovasi = Inovasi::all();
+        $inovasi = Inovasi::where('label', 0)->get();
+        $label = "Masyarakat";
         if (Auth::user()->role == 2) {
-            $inovasi = Inovasi::where('status', '<>', 0)->get();
+            $inovasi = Inovasi::where('status', '<>', 0)->where('label', 0)->get();
         }
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-        return view('inovasi', compact('tahapan', 'tahapanKolom', 'inovasi'));
+        return view('inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+    }
+
+    public function index_pemda()
+    {
+        $tahapan = Tahapan::all();
+        $inovasi = Inovasi::where('label', 1)->get();
+        $label = "Pemda";
+        if (Auth::user()->role == 2) {
+            $inovasi = Inovasi::where('status', '<>', 0)->where('label', 1)->get();
+        }
+        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        return view('inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
     public function edit(Request $request)
     {
-        if (count($request->input()) == 1 && $request->has('id')) {
+        if (count($request->input()) <= 2 && $request->has('id')) {
             $data = null;
             $tahapan = Tahapan::all();
             $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
@@ -38,10 +51,15 @@ class InovasiController extends Controller
             $jenis = Jenis::all();
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
+            $label = 0;
+            if ($request->has('label')) {
+                $label = $request->label;
+            }
             if ($request->id != 0) {
                 $data = Inovasi::findOrFail($request->id);
+                $label = $data->label;
             }
-            return view('form-inovasi', compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom'));
+            return view('form-inovasi', compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
         } else {
             return redirect()->back();
         }
@@ -85,7 +103,8 @@ class InovasiController extends Controller
                 } else {
                     $data->status = $request->status;
                     $data->save();
-                    return redirect(route('inovasi.masyarakat.index'))->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
+                    $route = $request->label == 1 ? route('inovasi.pemda.index') : route('inovasi.masyarakat.index');
+                    return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
                 }
             }
         }
@@ -100,6 +119,7 @@ class InovasiController extends Controller
         $data->manfaat = $request->manfaat;
         $data->hasil = $request->hasil;
         $data->status = $request->status;
+        $data->label = $request->label;
 		$data->save();
         $data->urusan()->sync($request->urusan_id);
         foreach ($tahapanKolom as $item) {
@@ -116,7 +136,8 @@ class InovasiController extends Controller
             $data->profil_bisnis = $nama_file;
 		    $data->save();
         }
-        return redirect(route('inovasi.masyarakat.index'))->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
+        $route = $request->label == 1 ? route('inovasi.pemda.index') : route('inovasi.masyarakat.index');
+        return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
     }
 
     public function update(Request $request)

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    Indikator Inovasi Masyarakat
+    Indikator Inovasi {{ Helper::get_label_inovasi($inovasi->label) }}
 @endsection
 
 @section('title-desc')
@@ -10,7 +10,7 @@
 @endsection
 
 @section('buttons')
-    <a href="{{ route('inovasi.masyarakat.index') }}" class="btn btn-light">Kembali</a>
+    <a @if($inovasi->label == 1) href="{{ route('inovasi.pemda.index') }}" @else href="{{ route('inovasi.masyarakat.index') }}" @endif class="btn btn-light">Kembali</a>
 	@if ($inovasi->status == 0)
 		<form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
 			@csrf
