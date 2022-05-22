@@ -6,6 +6,7 @@ use Auth;
 use Config;
 use Helper;
 use App\Models\Indikator;
+use App\Models\Provinsi;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 
@@ -13,12 +14,13 @@ class ProfilPemdaController extends Controller
 {
     public function index()
     {
-        return view('profil-pemda.index');
+        $provinsi = Provinsi::all();
+        return view('profil-pemda.index', compact('provinsi'));
     }
 
-    public function index_detail()
+    public function index_detail(Request $request)
     {
-        $provinsi = Auth::user()->provinsi;
+        $provinsi = Auth::user()->role == 2 ? Provinsi::findOrFail($request->id) : Auth::user()->provinsi;
         $data = [];
         if ($provinsi->indikator()->count() == 0) {
             $indikator = Indikator::where('label', 1)->get();
@@ -27,7 +29,7 @@ class ProfilPemdaController extends Controller
             }
         }
         $data = $provinsi->indikator()->get();
-        return view('profil-pemda.detail', compact('data'));
+        return view('profil-pemda.detail', compact('data', 'provinsi'));
     }
 
     public function index_upload(Request $request)

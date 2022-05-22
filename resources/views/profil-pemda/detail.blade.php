@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    Detail Profil Pemda
+    Detail Profil Pemda {{ $provinsi->name }}
 @endsection
 
 @section('title-desc')
@@ -72,6 +72,9 @@
                                             <th>No.</th>
                                             <th>Indikator SPD</th>
                                             <th>Informasi</th>
+                                            @if (Auth::user()->role == 2)
+                                                <th class="text-center">Bobot</th>
+                                            @endif
                                             <th class="text-center" style="width: 100px; min-width: 100px;">Dokumen Pendukung</th>
                                         </tr>
                                     </thead>
@@ -80,11 +83,20 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
                                                 <td>{!! $item->keterangan !!}</td>
+                                                @if (Auth::user()->role == 2)
+                                                    <td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4></td>
+                                                @endif
                                                 <td class="text-center">
-                                                    @if ($item->upload()->where('provinsi_id', Auth::user()->province_id)->count() > 0)
+                                                    @if ($item->upload()->where('provinsi_id', Auth::user()->role == 3 ? Auth::user()->province_id : request()->id)->count() > 0)
                                                         <br><span class="badge badge-pill badge-success"><i class="fa fa-check-circle"></i> &nbsp; Ada File</span><br>
                                                     @endif
-                                                    <a href="{{ route('profil-pemda.upload.index', ['id' => Auth::user()->province_id, 'indikator' => $item->id]) }}" class="btn m-1 btn-sm btn-warning"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload</a>
+                                                    <a href="{{ route('profil-pemda.upload.index', ['id' => Auth::user()->role == 3 ? Auth::user()->province_id : request()->id, 'indikator' => $item->id]) }}" class="btn m-1 btn-sm btn-warning">
+                                                        @if (Auth::user()->role == 3)
+                                                            <i class="fas fa-upload"></i>&nbsp;&nbsp;Upload
+                                                        @else
+                                                            <i class="fa fa-eye"></i>&nbsp;&nbsp;Lihat
+                                                        @endif
+                                                    </a>
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -81,7 +81,7 @@
 			</a>
 		</li>
 		<li class="app-sidebar__heading">Database Inovasi Daerah</li>
-		@if (Auth::user()->role == 3)
+		@if (Auth::user()->role == 2 || Auth::user()->role == 3)
             <li>
                 <a href="{{ route('profil-pemda.index') }}" class="{{ Request::routeIs('profil-pemda.*') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon pe-7s-user"></i> Profil Pemda
