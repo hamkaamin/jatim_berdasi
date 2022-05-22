@@ -61,17 +61,17 @@ class PenggunaController extends Controller
                 if ($user->province_id != null) {
                     $idWilayah = $user->province_id;
                     $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhereIn('province_id', $idWilayah);
+                        $query->where('maker_id', $user->id)->orWhere('province_id', $idWilayah);
                     });
                 } elseif ($user->regency_id != null) {
                     $idWilayah = $user->regency_id;
                     $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhereIn('regency_id', $idWilayah);
+                        $query->where('maker_id', $user->id)->orWhere('regency_id', $idWilayah);
                     });
                 } elseif ($user->opd_id != null) {
                     $idWilayah = $user->opd_id;
                     $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhereIn('opd_id', $idWilayah);
+                        $query->where('maker_id', $user->id)->orWhere('opd_id', $idWilayah);
                     });
                 }
 
@@ -147,11 +147,11 @@ class PenggunaController extends Controller
                 $data->opd_id = $request->opd_id;
             } elseif ($role_id == 6) {
                 if (Auth::user()->role == 3) {
-                    $data->province_id = $request->provinsi_id;
+                    $data->province_id = Auth::user()->province_id;
                 } elseif (Auth::user()->role == 4) {
-                    $data->regency_id = $request->kota_id;
+                    $data->regency_id = Auth::user()->regency_id;
                 } elseif (Auth::user()->role == 5) {
-                    $data->opd_id = $request->opd_id;
+                    $data->opd_id = Auth::user()->opd_id;
                 }
 
             }

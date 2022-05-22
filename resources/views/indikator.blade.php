@@ -33,7 +33,7 @@
 							<th>Indikator</th>
 							<th>Keterangan</th>
 							<th style="min-width: 100px">Bobot Awal</th>
-							<th style="min-width: 100px">Bobot Akhir</th>
+							{{-- <th style="min-width: 100px">Bobot Akhir</th> --}}
 							<th>Data Pendukung</th>
 							<th>Jenis File</th>
 							<th style="width: 100px"></th>
@@ -46,7 +46,7 @@
 								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
 								<td>{!! $item->keterangan !!}</td>
 								<td class="text-center"><h4><b>{{ $item->pivot->bobot_awal }}</b></h4>{{ $item->pivot->param_awal }}</td>
-								<td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td>
+								{{-- <td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td> --}}
 								<td>{{ $item->data_pendukung }}</td>
 								<td>{{ $item->tipe_file }}</td>
 								<td>
@@ -70,11 +70,11 @@
 	<div class="modal fade" id="modalPopup" aria-labelledby="modalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content" id="modalContent">
-				
+
 			</div>
 		</div>
 	</div>
-	
+
 	<script>
 		function chooseParam(inovasi_id, indikator_id) {
 			$('#modalContent').html("<div class=\"text-center my-3\"><h2>Loading...</h2></div>");
