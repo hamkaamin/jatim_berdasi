@@ -41,6 +41,15 @@ class InovasiController extends Controller
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
+    public function index_daerah()
+    {
+        $tahapan = Tahapan::all();
+        $inovasi = Inovasi::where('status', 2)->get();
+        $label = "Daerah";
+        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+    }
+
     public function edit(Request $request)
     {
         if (count($request->input()) <= 2 && $request->has('id')) {

@@ -89,7 +89,7 @@
             </li>
         @endif
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('inovasi.daerah.index') }}" class="{{ Request::routeIs('inovasi.daerah.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
 			</a>
 		</li>

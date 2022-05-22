@@ -99,6 +99,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
 
+        Route::prefix('daerah')->name('daerah.')->group(function (){
+            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_daerah'])->name('index');
+        });
+
         Route::prefix('masyarakat')->name('masyarakat.')->group(function (){
             Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_masyarakat'])->name('index');
         });
