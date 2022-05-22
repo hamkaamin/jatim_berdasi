@@ -26,7 +26,7 @@ class InovasiController extends Controller
             $inovasi = Inovasi::where('status', '<>', 0)->where('label', 0)->get();
         }
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-        return view('inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
     public function index_pemda()
@@ -38,7 +38,7 @@ class InovasiController extends Controller
             $inovasi = Inovasi::where('status', '<>', 0)->where('label', 1)->get();
         }
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-        return view('inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
     public function edit(Request $request)
@@ -59,7 +59,7 @@ class InovasiController extends Controller
                 $data = Inovasi::findOrFail($request->id);
                 $label = $data->label;
             }
-            return view('form-inovasi', compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
+            return view('inovasi.form-inovasi', compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
         } else {
             return redirect()->back();
         }
@@ -177,7 +177,7 @@ class InovasiController extends Controller
                 }
             }
             $data = $inovasi->indikator()->get();
-            return view('indikator', compact('data', 'inovasi'));
+            return view('inovasi.indikator', compact('data', 'inovasi'));
         } else {
             return redirect()->back();
         }
@@ -190,7 +190,7 @@ class InovasiController extends Controller
             $inovasi = Inovasi::findOrFail($request->id);
             $indikator = Indikator::findOrFail($request->indikator);
             $kolom = Helper::generateKolomUpload($indikator);
-            return view('upload', compact('data', 'kolom', 'inovasi'));
+            return view('inovasi.upload', compact('data', 'kolom', 'inovasi'));
         } else {
             return redirect()->back();
         }

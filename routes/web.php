@@ -80,6 +80,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index_user'])->name('faq.index');
 
+    Route::prefix('profil-pemda')->name('profil-pemda.')->group(function () {
+        Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
+    });
+
     Route::prefix('inovasi')->name('inovasi.')->group(function () {
         Route::get('/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
