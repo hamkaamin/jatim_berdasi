@@ -10,10 +10,11 @@
 @endsection
 
 @section('buttons')
-    <a @if($inovasi->label == 1) href="{{ route('inovasi.pemda.index') }}" @else href="{{ route('inovasi.masyarakat.index') }}" @endif class="btn btn-light">Kembali</a>
+    <a @if($inovasi->label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif class="btn btn-light">Kembali</a>
 	@if ($inovasi->status == 0)
 		<form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
 			@csrf
+            <input type="hidden" name="label" value="{{ $inovasi->label }}">
 			<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>
 		</form>
 	@endif
@@ -33,7 +34,9 @@
 							<th>Indikator</th>
 							<th>Keterangan</th>
 							<th style="min-width: 100px">Bobot Awal</th>
-							{{-- <th style="min-width: 100px">Bobot Akhir</th> --}}
+							@if (Auth::user()->role == 2)
+                                <th style="min-width: 100px">Bobot Akhir</th>
+                            @endif
 							<th>Data Pendukung</th>
 							<th>Jenis File</th>
 							<th style="width: 100px"></th>
@@ -46,7 +49,9 @@
 								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
 								<td>{!! $item->keterangan !!}</td>
 								<td class="text-center"><h4><b>{{ $item->pivot->bobot_awal }}</b></h4>{{ $item->pivot->param_awal }}</td>
-								{{-- <td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td> --}}
+								@if (Auth::user()->role == 2)
+                                    <td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }} @if($item->pivot->catatan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->pivot->catatan }}"></i> @endif</td>
+                                @endif
 								<td>{{ $item->data_pendukung }}</td>
 								<td class="text-center">
                                     {{ $item->tipe_file }}

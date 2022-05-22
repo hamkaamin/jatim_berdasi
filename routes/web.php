@@ -94,25 +94,14 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::prefix('inovasi')->name('inovasi.')->group(function () {
-        Route::get('/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
+        Route::get('/{area}', [App\Http\Controllers\InovasiController::class, 'index'])->name('index');
+        Route::get('/form/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
 
-        Route::prefix('daerah')->name('daerah.')->group(function (){
-            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_daerah'])->name('index');
-        });
-
-        Route::prefix('masyarakat')->name('masyarakat.')->group(function (){
-            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_masyarakat'])->name('index');
-        });
-
-        Route::prefix('pemda')->name('pemda.')->group(function (){
-            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_pemda'])->name('index');
-        });
-
         Route::prefix('indikator')->name('indikator.')->group(function () {
-            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
+            Route::get('/list', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
             Route::post('/chooseParam', [App\Http\Controllers\IndikatorController::class, 'chooseParam'])->name('chooseParam');
             Route::post('/saveParam', [App\Http\Controllers\IndikatorController::class, 'saveParam'])->name('saveParam');
 

@@ -17,36 +17,28 @@ use Illuminate\Http\Request;
 
 class InovasiController extends Controller
 {
-    public function index_masyarakat()
+    public function index(Request $request, $area)
     {
         $tahapan = Tahapan::all();
-        $inovasi = Inovasi::where('label', 0)->get();
-        $label = "Masyarakat";
-        if (Auth::user()->role == 2) {
-            $inovasi = Inovasi::where('status', '<>', 0)->where('label', 0)->get();
+        $inovasi = [];
+        $label = "";
+        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        if ($area == 'daerah') {
+            $inovasi = Inovasi::where('status', 2)->get();
+            $label = "Daerah";
+        } elseif ($area == 'masyarakat') {
+            $inovasi = Inovasi::where('label', 0)->get();
+            $label = "Masyarakat";
+            if (Auth::user()->role == 2) {
+                $inovasi = Inovasi::where('status', '<>', 0)->where('label', 0)->get();
+            }
+        } elseif ($area == 'pemda') {
+            $inovasi = Inovasi::where('label', 1)->get();
+            $label = "Pemda";
+            if (Auth::user()->role == 2) {
+                $inovasi = Inovasi::where('status', '<>', 0)->where('label', 1)->get();
+            }
         }
-        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
-    }
-
-    public function index_pemda()
-    {
-        $tahapan = Tahapan::all();
-        $inovasi = Inovasi::where('label', 1)->get();
-        $label = "Pemda";
-        if (Auth::user()->role == 2) {
-            $inovasi = Inovasi::where('status', '<>', 0)->where('label', 1)->get();
-        }
-        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
-    }
-
-    public function index_daerah()
-    {
-        $tahapan = Tahapan::all();
-        $inovasi = Inovasi::where('status', 2)->get();
-        $label = "Daerah";
-        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
@@ -112,7 +104,7 @@ class InovasiController extends Controller
                 } else {
                     $data->status = $request->status;
                     $data->save();
-                    $route = $request->label == 1 ? route('inovasi.pemda.index') : route('inovasi.masyarakat.index');
+                    $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'masyarakat']);
                     return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
                 }
             }
@@ -145,7 +137,7 @@ class InovasiController extends Controller
             $data->profil_bisnis = $nama_file;
 		    $data->save();
         }
-        $route = $request->label == 1 ? route('inovasi.pemda.index') : route('inovasi.masyarakat.index');
+        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'masyarakat']);
         return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
     }
 
