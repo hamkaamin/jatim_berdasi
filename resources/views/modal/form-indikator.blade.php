@@ -16,8 +16,8 @@
 			<div class="col-sm-8"><textarea name="keterangan" rows="5" class="form-control ck-editor" id="editor1">@if($data != null) {!! $data->keterangan !!} @endif</textarea></div>
 		</div>
 		<div class="row my-2">
-			<div class="col-sm-4 d-flex align-items-center"><label>Data Pendukung <span class="text-danger">*</span></label></div>
-			<div class="col-sm-8"><input type="text" name="data_pendukung" class="form-control" required value="{{ $data != null ? $data->data_pendukung : '' }}"></div>
+			<div class="col-sm-4 d-flex align-items-center"><label>Data Pendukung </label></div>
+			<div class="col-sm-8"><input type="text" name="data_pendukung" class="form-control" value="{{ $data != null ? $data->data_pendukung : '' }}"></div>
 		</div>
 		<div class="row my-2">
 			<div class="col-sm-4 d-flex align-items-center"><label>Tipe File <span class="text-danger">*</span></label></div>
@@ -29,8 +29,15 @@
 		<div class="row my-2">
 			<div class="col-sm-4 d-flex align-items-center"><label>Wajib Diisi <span class="text-danger">*</span></label></div>
 			<div class="col-sm-8">
+                <input type="radio" name="wajib" id="wajib_0" value="0" @if($data == null || ($data != null && $data->wajib == 0)) checked @endif>&nbsp;<label for="wajib_0">Tidak</label><br>
 				<input type="radio" name="wajib" id="wajib_1" value="1" @if($data != null && $data->wajib == 1) checked @endif>&nbsp;<label for="wajib_1">Ya</label><br>
-				<input type="radio" name="wajib" id="wajib_0" value="0" @if($data == null || ($data != null && $data->wajib == 0)) checked @endif>&nbsp;<label for="wajib_0">Tidak</label>
+			</div>
+		</div>
+        <div class="row my-2">
+			<div class="col-sm-4 d-flex align-items-center"><label>Label Indikator <span class="text-danger">*</span></label></div>
+			<div class="col-sm-8">
+                <input type="radio" name="label" id="label_0" value="0" @if($data == null || ($data != null && $data->label == 0)) checked @endif>&nbsp;<label for="label_0">Inovasi</label><br>
+				<input type="radio" name="label" id="label_1" value="1" @if($data != null && $data->label == 1) checked @endif>&nbsp;<label for="label_1">Provinsi</label><br>
 			</div>
 		</div>
 	</div>

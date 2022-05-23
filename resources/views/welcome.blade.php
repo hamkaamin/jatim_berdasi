@@ -9,5 +9,205 @@
 @endsection
 
 @section('content')
+    @if (Auth::user()->role == 3)
+        <div class="row">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header bg-light">Pengumuman</div>
+                    <div class="card-body" style="overflow-y: scroll; height:100px;">
+                        @for ($i = 0; $i < 4; $i++)
+                            <p class="card-text">
+                                <small><b>14/09/2021</b></small> <span class="mx-2">|</span> <a href="" class="text-dark">Radiogram Himbauan Batas Waktu Penginputan Indeks Inovasi Daerah Tahun 2021</a>
+                            </p>
+                        @endfor
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header bg-light">Presentasi Kepala Daerah</div>
+                    <div class="card-body" style="height:100px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header bg-light">Indeks Inovasi Daerah</div>
+                    <div class="card-body">
+                        <div class="table-responsive p-3">
+                            <table class="table align-items-center table-flush" id="myTable">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Kota/Kabupaten</th>
+                                        <th>Skor IID</th>
+                                        <th>Kategori</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($iid as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item['nama'] }}</td>
+                                            <td>{{ $item['iid'] }}</td>
+                                            <td>
+                                                @if ($item['iid'] >= 60)
+                                                    <span class="badge badge-success">Sangat Inovatif</span>
+                                                @elseif ($item['iid'] >= 30)
+                                                    <span class="badge badge-primary">Inovatif</span>
+                                                @elseif ($item['iid'] >= 0.01)
+                                                    <span class="badge badge-warning">Kurang Inovatif</span>
+                                                @else
+                                                    <span class="badge badge-danger">Belum ada data</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Indeks Rata-Rata Kota</div>
+                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Indeks Rata-Rata Kabupaten</div>
+                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Total Inovasi Pemda</div>
+                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $total_inovasi }}</h3>
+                    </div>
+                </div>
+            </div>
+            @foreach ($tahapan as $item)
+                <div class="col my-2">
+                    <div class="card bg-light">
+                        <div class="card-header bg-light justify-content-between">
+                            <div>{{ ucwords($item->nama) }}</div>
+                            <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                        </div>
+                        <div class="card-body">
+                            @php
+                                $totalTahapan = 0;
+                                foreach (Auth::user()->provinsi->kota as $kota) {
+                                    $totalTahapan += $kota->inovasi()->where('status', '<>', 0)->where('tahapan_id', $item->id)->count();
+                                }
+                            @endphp
+                            <h3>{{ $totalTahapan }}</h3>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            <div class="col-12 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Rata - rata Inovasi Per Daerah</div>
+                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Skor Tertinggi</div>
+                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $max['nama'] }} ({{ $max['skor'] }})</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Skor Terendah</div>
+                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $min['nama'] }} ({{ $min['skor'] }})</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Data Daerah</div>
+                        <div><button class="btn btn-primary">Unduh Semua</button></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive p-3">
+                            <table class="table align-items-center table-flush" id="myTable1">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Kota/Kabupaten</th>
+                                        <th>Jumlah Inovasi</th>
+                                        <th>Jumlah Video</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data_daerah as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item['nama'] }}</td>
+                                            <td>{{ $item['inovasi'] }}</td>
+                                            <td>{{ $item['video'] }}</td>
+                                            <td></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+@endsection
 
+@section('script')
+    @include('script.dataTable')
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]')
+        });
+    </script>
+    <script>
+        $(document).ready( function () {
+            $('#myTable1').DataTable();
+        } );
+    </script>
 @endsection

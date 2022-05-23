@@ -149,6 +149,18 @@ class Helper
 		$kolom[] = ['File', 'file', 'file', 0];
 		return $kolom;
 	}
+
+    public static function get_label_inovasi($id)
+    {
+        switch ($id) {
+            case 0:
+                return "Masyarakat";
+                break;
+            case 1:
+                return "Pemda";
+                break;
+        }
+    }
 }
 
 ?>

@@ -21,4 +21,9 @@ class Kota extends Model
     {
         return $this->hasMany('App\Models\Kecamatan', 'regency_id', 'id');
     }
+
+    public function inovasi()
+    {
+        return $this->hasMany('App\Models\Inovasi', 'kota_id', 'id');
+    }
 }

@@ -80,18 +80,29 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index_user'])->name('faq.index');
 
+    Route::prefix('profil-pemda')->name('profil-pemda.')->group(function () {
+        Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
+        Route::get('/detail', [App\Http\Controllers\ProfilPemdaController::class, 'index_detail'])->name('detail');
+        Route::post('/upload-pakta', [App\Http\Controllers\ProfilPemdaController::class, 'upload_pakta'])->name('upload-pakta');
+
+        Route::prefix('upload')->name('upload.')->group(function () {
+            Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index_upload'])->name('index');
+            Route::post('/add', [App\Http\Controllers\UploadController::class, 'add'])->name('add');
+            Route::post('/', [App\Http\Controllers\UploadController::class, 'save'])->name('save');
+            Route::post('/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('delete');
+        });
+    });
+
     Route::prefix('inovasi')->name('inovasi.')->group(function () {
-        Route::get('/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
+        Route::get('/{area}', [App\Http\Controllers\InovasiController::class, 'index'])->name('index');
+        Route::get('/filter/area', [App\Http\Controllers\InovasiController::class, 'index'])->name('filter-area');
+        Route::get('/form/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
 
-        Route::prefix('masyarakat')->name('masyarakat.')->group(function (){
-            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_masyarakat'])->name('index');
-        });
-
         Route::prefix('indikator')->name('indikator.')->group(function () {
-            Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
+            Route::get('/list', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
             Route::post('/chooseParam', [App\Http\Controllers\IndikatorController::class, 'chooseParam'])->name('chooseParam');
             Route::post('/saveParam', [App\Http\Controllers\IndikatorController::class, 'saveParam'])->name('saveParam');
 
@@ -103,22 +114,22 @@ Route::middleware(['auth'])->group(function () {
             });
         });
     });
-    
+
     Route::prefix('pengguna')->name('pengguna.')->group(function () {
         Route::get('/', [App\Http\Controllers\PenggunaController::class, 'index'])->name('index');
         Route::get('/filter-area', [App\Http\Controllers\PenggunaController::class, 'index'])->name('filter-area');
-        Route::post('/', [App\Http\Controllers\PenggunaController::class, 'save'])->name('save'); 
+        Route::post('/', [App\Http\Controllers\PenggunaController::class, 'save'])->name('save');
         Route::post('/change-role', [App\Http\Controllers\PenggunaController::class, 'change_role'])->name('change-role');
         Route::post('/reset-pass', [App\Http\Controllers\PenggunaController::class, 'reset_pass'])->name('reset-pass');
-        Route::post('/delete', [App\Http\Controllers\PenggunaController::class, 'delete'])->name('delete'); 
+        Route::post('/delete', [App\Http\Controllers\PenggunaController::class, 'delete'])->name('delete');
     });
 
     Route::prefix('opd')->name('opd.')->group(function () {
         Route::get('/', [App\Http\Controllers\OpdController::class, 'index'])->name('index');
         Route::get('/filter-area', [App\Http\Controllers\OpdController::class, 'index'])->name('filter-area');
         Route::post('/change-scope', [App\Http\Controllers\OpdController::class, 'change_scope'])->name('change-scope');
-        Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save'); 
-        Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete'); 
+        Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save');
+        Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete');
     });
 });
 

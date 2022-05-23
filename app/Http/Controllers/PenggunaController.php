@@ -27,7 +27,7 @@ class PenggunaController extends Controller
                 $arrKota = [];
                 $idWilayah = $user->role == 3 ? $user->province_id : $user->opd->provinsi_id;
                 $provinsi = Provinsi::findOrFail($idWilayah);
-                $opds = (isset($request->scope) && $request->scope != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : Helper::getOpd('provinsi', $idWilayah, $opds);
+                $opds = (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : Helper::getOpd('provinsi', $idWilayah, $opds);
                 foreach ($provinsi->kota()->get() as $kota) {
                     $arrKota[] = $kota->id;
                 }
@@ -39,7 +39,7 @@ class PenggunaController extends Controller
                 });
             } elseif ($user->role == 4 || Helper::checkOpd('kota', $user)) {
                 $idWilayah = $user->role == 4 ? $user->regency_id : $user->opd->kabkota_id;
-                $opds = isset($request->scope) && $request->scope != null ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : Helper::getOpd('kota', $idWilayah, $opds);
+                $opds = (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : Helper::getOpd('kota', $idWilayah, $opds);
                 foreach ($opds as $opd) {
                     $arrOpd[] = $opd->id;
                 }
@@ -49,7 +49,7 @@ class PenggunaController extends Controller
             } elseif (Helper::checkOpd('kecamatan', $user) || Helper::checkOpd('kelurahan', $user)) {
                 $idWilayah = Helper::checkOpd('kecamatan', $user) ? $user->opd->kecamatan_id : $user->opd->kelurahan_id ;
                 $opds = Helper::checkOpd('kecamatan', $user) ? Helper::getOpd('kecamatan', $idWilayah, $opds) : Helper::getOpd('kelurahan', $idWilayah, $opds);
-                $opds = isset($request->scope) && $request->scope != null ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : $opds;
+                $opds = (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : $opds;
                 foreach ($opds as $opd) {
                     $arrOpd[] = $opd->id;
                 }
@@ -61,20 +61,20 @@ class PenggunaController extends Controller
                 if ($user->province_id != null) {
                     $idWilayah = $user->province_id;
                     $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhereIn('province_id', $idWilayah);
+                        $query->where('maker_id', $user->id)->orWhere('province_id', $idWilayah);
                     });
                 } elseif ($user->regency_id != null) {
                     $idWilayah = $user->regency_id;
                     $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhereIn('regency_id', $idWilayah);
+                        $query->where('maker_id', $user->id)->orWhere('regency_id', $idWilayah);
                     });
                 } elseif ($user->opd_id != null) {
                     $idWilayah = $user->opd_id;
                     $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhereIn('opd_id', $idWilayah);
+                        $query->where('maker_id', $user->id)->orWhere('opd_id', $idWilayah);
                     });
                 }
-                
+
             }
         }
         $data = $data->get();
@@ -147,13 +147,13 @@ class PenggunaController extends Controller
                 $data->opd_id = $request->opd_id;
             } elseif ($role_id == 6) {
                 if (Auth::user()->role == 3) {
-                    $data->province_id = $request->provinsi_id;
+                    $data->province_id = Auth::user()->province_id;
                 } elseif (Auth::user()->role == 4) {
-                    $data->regency_id = $request->kota_id;
+                    $data->regency_id = Auth::user()->regency_id;
                 } elseif (Auth::user()->role == 5) {
-                    $data->opd_id = $request->opd_id;
+                    $data->opd_id = Auth::user()->opd_id;
                 }
-                
+
             }
             if (Auth::user()->role != 1) {
                 $data->maker_id = Auth::user()->id;

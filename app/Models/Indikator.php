@@ -20,4 +20,9 @@ class Indikator extends Model
     {
         return $this->hasMany('App\Models\Parameter', 'indikator_id', 'id');
     }
+
+    public function upload()
+    {
+        return $this->hasMany(Upload::class, 'indikator_id', 'id');
+    }
 }

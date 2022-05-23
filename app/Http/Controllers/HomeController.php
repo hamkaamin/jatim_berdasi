@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Helper;
 use App\Models\Bentuk;
 use App\Models\Faq;
@@ -27,7 +28,61 @@ class HomeController extends Controller
 {
     public function index()
 	{
-		return view('welcome');
+        if (Auth::user()->role == 3) {
+            $tahapan = Tahapan::all();
+            $iid = [];
+            $data_daerah = [];
+            $total_inovasi = 0;
+            $isp = Auth::user()->provinsi->indikator->sum('pivot.bobot_akhir');
+            $max = ['nama' => '', 'skor' => 0];
+            $min = ['nama' => '', 'skor' => 0];
+            $counter = 0;
+            foreach (Auth::user()->provinsi->kota as $kota) {
+                $total_inovasi += $kota->inovasi()->where('status', '<>', 0)->count();
+
+                $isi = 0;
+                $inovasi = Inovasi::where('kota_id', $kota->id)->where('status', 2)->get();
+                if (count($inovasi) > 0) {
+                    $total_kematangan = 0.0;
+                    foreach ($inovasi as $item) {
+                        $total_kematangan += $item->indikator->sum('pivot.bobot_akhir');
+                    }
+                    $isi = $total_kematangan / count($inovasi);
+                }
+                $skor_total = $isi + $isp;
+                $skor_iid = ($skor_total / 250) * 100;
+                $iid[$kota->id] = ['nama' => $kota->name,'iid' => $skor_iid];
+                if ($skor_iid > $max['skor']) {
+                    $max['skor'] = $skor_iid;
+                    $max['nama'] = $kota->name;
+                }
+                if ($counter == 0) {
+                    $min['skor'] = $skor_iid;
+                    $min['nama'] = $kota->name;
+                } else {
+                    if ($skor_iid < $min['skor']) {
+                        $min['skor'] = $skor_iid;
+                        $min['nama'] = $kota->name;
+                    }
+                }
+
+
+                $video = 0;
+                $all_inovasi = Inovasi::where('kota_id', $kota->id)->where('status', '<>', 0)->get();
+                foreach ($all_inovasi as $item) {
+                    $indikator_video = $item->indikator()->where('tipe_file', 'mp4')->get();
+                    foreach ($indikator_video as $indikator) {
+                        $video += $indikator->upload()->where('inovasi_id', $item->id)->count();
+                    }
+                }
+                $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
+                $counter++;
+            }
+            return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min'));
+        } else {
+            return view('welcome');
+        }
+
 	}
 
 	public function modal(Request $request)
@@ -118,12 +173,13 @@ class HomeController extends Controller
 				break;
 			case "upload":
 				$data = Upload::findOrFail($request->id);
-				$inovasi_id = $data->inovasi_id;
+				$id = $data->inovasi_id != null ? $data->inovasi_id : $data->provinsi_id;
 				$indikator_id = $data->indikator_id;
 				$indikator = Indikator::findOrFail($indikator_id);
 				$kolom = Helper::generateKolomUpload($indikator);
+                $type = $data->label;
 				return response()->json(array(
-					'msg' => view('modal.form-upload', compact('inovasi_id', 'indikator_id', 'kolom', 'data'))->render()
+					'msg' => view('modal.form-upload', compact('id', 'indikator_id', 'kolom', 'data', 'type'))->render()
 				), 200);
 				break;
         }

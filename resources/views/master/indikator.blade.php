@@ -15,6 +15,7 @@
 @section('content')
 	<div class="row">
 		<div class="col">
+            <h4>Indikator Inovasi</h4>
 			<div class="table-responsive p-3">
 				<table class="table align-items-center table-flush" id="myTable">
 					<thead class="thead-light">
@@ -28,7 +29,46 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($data as $item)
+						@foreach ($indikator_inovasi as $item)
+							<tr>
+								<td>{{ $loop->iteration }}</td>
+								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
+								<td>{!! $item->keterangan !!}</td>
+								<td>{{ $item->data_pendukung }}</td>
+								<td>{{ $item->tipe_file }}</td>
+								<td>
+									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'indikator')" class="btn m-1 btn-sm btn-block btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
+									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'parameter')" class="btn m-1 btn-sm btn-block btn-success"><i class="fa fa-list-ul"></i>&nbsp;&nbsp;Parameter</button>
+									<form style="all: unset" action="{{ route('master.indikator.delete', ['id' => $item->id]) }}" method="post">
+										@csrf
+										<button type="submit" class="btn m-1 btn-sm btn-block btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
+									</form>
+								</td>
+							</tr>
+						@endforeach
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+    <hr>
+    <div class="row mt-3">
+		<div class="col">
+            <h4>Indikator Provinsi</h4>
+			<div class="table-responsive p-3">
+				<table class="table align-items-center table-flush" id="myTable1">
+					<thead class="thead-light">
+						<tr>
+							<th>No.</th>
+							<th>Nama</th>
+							<th>Keterangan</th>
+							<th>Data Pendukung</th>
+							<th>Tipe File</th>
+							<th style="width: 100px"></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach ($indikator_provinsi as $item)
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
@@ -55,6 +95,11 @@
 @section('script')
 	@include('script.dataTable')
 	@include('script.modal')
+    <script>
+        $(document).ready( function () {
+            $('#myTable1').DataTable();
+        } );
+    </script>
 	<script>
 		function tambahParameter() {
 			$.ajax({

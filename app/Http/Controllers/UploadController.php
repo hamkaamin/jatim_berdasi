@@ -13,12 +13,13 @@ class UploadController extends Controller
     public function add(Request $request)
     {
         $data = ($request->upload_id == 0) ? null : Upload::findOrFail($request->upload_id);
-        $inovasi_id = $request->inovasi_id;
+        $id = $request->type == 1 ? $request->provinsi_id : $request->inovasi_id;
         $indikator_id = $request->indikator_id;
         $indikator = Indikator::findOrFail($request->indikator_id);
         $kolom = Helper::generateKolomUpload($indikator);
+        $type = ($request->upload_id == 0) ? $request->type : $data->label;
         return response()->json(array(
-            'msg' => view('modal.form-upload', compact('inovasi_id', 'indikator_id', 'kolom', 'data'))->render()
+            'msg' => view('modal.form-upload', compact('id', 'indikator_id', 'kolom', 'data', 'type'))->render()
         ), 200);
     }
 
@@ -29,7 +30,12 @@ class UploadController extends Controller
         if ($request->id == 0) {
             $data = new Upload;
             $data->indikator_id = $request->indikator_id;
-            $data->inovasi_id = $request->inovasi_id;
+            if ($request->type == 1) {
+                $data->provinsi_id = $request->provinsi_id;
+            } else {
+                $data->inovasi_id = $request->inovasi_id;
+            }
+
         } else {
             $data = Upload::findOrFail($request->id);
         }

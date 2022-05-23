@@ -1,18 +1,19 @@
 @extends('layouts.main')
 
 @section('title')
-    {{ $data != null ? 'Edit' : 'Tambah' }} Inovasi Masyarakat
+    {{ $data != null ? 'Edit' : 'Tambah' }} Inovasi
 @endsection
 
 @section('title-desc')
-    Form untuk {{ $data != null ? 'Mengedit' : 'Menambah' }} Data Inovasi Masyarakat dalam Sistem
+    Form untuk {{ $data != null ? 'Mengedit' : 'Menambah' }} Data Inovasi dalam Sistem
 @endsection
 
 @section('buttons')
-    <a href="{{ route('inovasi.masyarakat.index') }}" class="btn btn-light">Kembali</a>
+    <a @if($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif class="btn btn-light">Kembali</a>
 	@if ($data != null && $data->status == 0)
 		<form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
 			@csrf
+            <input type="hidden" name="label" value="{{ $data->label }}">
 			<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>
 		</form>
 	@endif
@@ -25,6 +26,7 @@
 	<div class="row">
         <div class="col">
             <form action="{{ route('inovasi.save', ['id' => $data != null ? $data->id : 0]) }}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="label" value="{{ $label }}">
 				@csrf
 				@php
 					$user = $data != null ? $data->user : Auth::user();
@@ -33,7 +35,7 @@
 					<div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
 					<div class="col-sm-8">
 						@if ($user->province_id != null)
-							PROVINSI {{ $user->provinsi->name }}							
+							PROVINSI {{ $user->provinsi->name }}
 						@elseif ($user->regency_id != null)
 							{{ $user->kota->name }}
 						@elseif ($user->opd_id != null)
@@ -165,7 +167,7 @@
 				</div>
 				<div class="row mt-4">
 					<div class="col text-right">
-						<a href="{{ route('inovasi.masyarakat.index') }}" class="btn btn-light btn-lg">Batal</a>
+						<a @if($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif class="btn btn-light btn-lg">Batal</a>
 						<button class="btn btn-success btn-lg" type="submit" name="status" value="0">Simpan</button>
 						@if ($data != null && $data->status == 0)
 							<button type="submit" class="btn btn-primary" name="status" value="1" onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit Inovasi</button>

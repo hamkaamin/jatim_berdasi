@@ -81,24 +81,28 @@
 			</a>
 		</li>
 		<li class="app-sidebar__heading">Database Inovasi Daerah</li>
+		@if (Auth::user()->role == 2 || Auth::user()->role == 3)
+            <li>
+                <a href="{{ route('profil-pemda.index') }}" class="{{ Request::routeIs('profil-pemda.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-user"></i> Profil Pemda
+                </a>
+            </li>
+        @endif
 		<li>
-			<a href="#" class="">
-				<i class="metismenu-icon pe-7s-user"></i> Profil Pemda
-			</a>
-		</li>
-		<li>
-			<a href="#" class="">
+			<a href="{{ route('inovasi.index', ['area' => 'daerah']) }}" class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
 			</a>
 		</li>
 		<li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
+		@if (Auth::user()->role != 6)
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'pemda']) }}" class="{{ request()->is('inovasi/pemda') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Pemda
+                </a>
+            </li>
+        @endif
 		<li>
-			<a href="#" class="">
-				<i class="metismenu-icon pe-7s-light"></i> Inovasi Pemda
-			</a>
-		</li>
-		<li>
-			<a href="{{ route('inovasi.masyarakat.index') }}" class="{{ Request::routeIs('inovasi.masyarakat.*') ? 'mm-active' : '' }}">
+			<a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-light"></i> Inovasi Masyarakat
 			</a>
 		</li>

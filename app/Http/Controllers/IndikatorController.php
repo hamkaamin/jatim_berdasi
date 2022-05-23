@@ -13,8 +13,9 @@ class IndikatorController extends Controller
 {
     public function index()
     {
-        $data = Indikator::all();
-        return view('master.indikator', compact('data'));
+        $indikator_inovasi = Indikator::where('label', 0)->get();
+        $indikator_provinsi = Indikator::where('label', 1)->get();
+        return view('master.indikator', compact('indikator_inovasi', 'indikator_provinsi'));
     }
 
     public function save(Request $request)
@@ -29,6 +30,7 @@ class IndikatorController extends Controller
         $data->data_pendukung = $request->data_pendukung;
         $data->tipe_file = $request->tipe_file;
         $data->wajib = $request->wajib;
+        $data->label = $request->label;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
@@ -66,7 +68,7 @@ class IndikatorController extends Controller
                 'bobot_awal' => $param->bobot
             ]);
         }
-        
+
         return redirect()->back()->with('success', Config::get('save_success'));
     }
 }

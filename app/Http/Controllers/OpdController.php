@@ -17,7 +17,7 @@ class OpdController extends Controller
     public function index(Request $request)
     {
         $data = [];
-        if (isset($request->scope) && $request->scope != null) {
+        if (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) {
             $data = Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $data);
             return view('daftar-opd', compact('data'));
         }
@@ -53,7 +53,7 @@ class OpdController extends Controller
             $dataProvinsi = Provinsi::where('id', Auth::user()->province_id)->get();
         } elseif (Helper::checkOpd('provinsi', Auth::user())) {
             $dataProvinsi = Provinsi::where('id', Auth::user()->opd->provinsi_id)->get();
-        } 
+        }
         if (Auth::user()->role == 4) {
             $dataKota = Kota::where('id', Auth::user()->regency_id)->get();
         } elseif (Helper::checkOpd('kota', Auth::user())) {

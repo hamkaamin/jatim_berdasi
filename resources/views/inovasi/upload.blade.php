@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('title')
-    Upload Indikator Inovasi Masyarakat
+    Upload Indikator Inovasi {{ Helper::get_label_inovasi($inovasi->label) }}
 @endsection
 
 @section('title-desc')
@@ -71,7 +71,7 @@
 @section('script')
 	@include('script.dataTable')
 	@include('script.modal')
-	
+
 	<script>
 		function uploadNewFile(inovasi_id, indikator_id, upload_id) {
 			$('#modalContent').html("<div class=\"text-center my-3\"><h2>Loading...</h2></div>");
@@ -82,7 +82,8 @@
 					'_token': '<?php echo csrf_token() ?>',
 					'inovasi_id': inovasi_id,
 					'indikator_id': indikator_id,
-					'upload_id': upload_id
+					'upload_id': upload_id,
+                    'type': 0,
 				},
 				success: function(data) {
 					$('#modalContent').html(data.msg);
