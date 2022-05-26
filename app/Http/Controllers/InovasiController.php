@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Config;
+use Excel;
 use Helper;
 use App\Models\Bentuk;
 use App\Models\Indikator;
@@ -13,6 +14,7 @@ use App\Models\Jenis;
 use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
+use App\Exports\InovasiExport;
 use Illuminate\Http\Request;
 
 class InovasiController extends Controller
@@ -228,6 +230,17 @@ class InovasiController extends Controller
             return view('inovasi.upload', compact('data', 'kolom', 'inovasi'));
         } else {
             return redirect()->back();
+        }
+    }
+
+    public function export(Request $request, $type)
+    {
+        if ($type == 'excel') {
+            $inovasi = Inovasi::findOrFail($request->id);
+            $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
+            return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
+        } elseif ($type == 'pdf') {
+            # code...
         }
     }
 }
