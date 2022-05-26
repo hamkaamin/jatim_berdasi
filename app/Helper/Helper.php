@@ -161,6 +161,26 @@ class Helper
                 break;
         }
     }
+
+    public static function checkUserUmum($scope, $user)
+	{
+		if ($user->role == 6) {
+			if ($scope == 'provinsi' && $user->province_id != null) {
+				return true;
+			} elseif ($scope == 'kota' && $user->regency_id != null) {
+				return true;
+			} elseif ($scope == 'opd-provinsi' && $user->opd_id != null && $user->opd->provinsi_id != null) {
+				return true;
+			} elseif ($scope == 'opd-kota' && $user->opd_id != null && $user->opd->kabkota_id != null) {
+				return true;
+			} elseif ($scope == 'opd-kecamatan' && $user->opd_id != null && $user->opd->kecamatan_id != null) {
+				return true;
+			} elseif ($scope == 'opd-kelurahan' && $user->opd_id != null && $user->opd->kelurahan_id != null) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 ?>

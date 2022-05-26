@@ -17,6 +17,11 @@ class Kota extends Model
         static::addGlobalScope(new OrderByIdScope);
     }
 
+    public function provinsi()
+    {
+        return $this->belongsTo(Provinsi::class, 'province_id', 'id');
+    }
+
     public function kecamatan()
     {
         return $this->hasMany('App\Models\Kecamatan', 'regency_id', 'id');
