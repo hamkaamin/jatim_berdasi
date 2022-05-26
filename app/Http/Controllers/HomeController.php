@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Excel;
 use Helper;
 use App\Models\Bentuk;
 use App\Models\Faq;
@@ -23,6 +24,7 @@ use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
+use App\Exports\CompileInovasiExport;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -67,7 +69,6 @@ class HomeController extends Controller
                         $min['nama'] = $kota->name;
                     }
                 }
-
 
                 $video = 0;
                 $all_inovasi = Inovasi::where('kota_id', $kota->id)->where('status', '<>', 0)->get();
@@ -222,4 +223,16 @@ class HomeController extends Controller
 			'msg' => $html
 		), 200);
 	}
+
+    public function export(Request $request, $type)
+    {
+        $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        if ($type == 0) {
+            $data = Auth::user()->provinsi->inovasi()->get();
+            return Excel::download(new CompileInovasiExport($data, $kolom), 'inovasi-provinsi-'.Auth::user()->province_id.'-'.uniqid().'.xlsx');
+        } else {
+            $data = Kota::findOrFail($type)->inovasi()->get();
+            return Excel::download(new CompileInovasiExport($data, $kolom), 'inovasi-kota-kabupaten-'.$type.'-'.uniqid().'.xlsx');
+        }
+    }
 }

@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Config;
+use Excel;
 use Helper;
 use App\Models\Indikator;
 use App\Models\Provinsi;
 use App\Models\Upload;
+use App\Exports\ProfilPemdaExport;
 use Illuminate\Http\Request;
 
 class ProfilPemdaController extends Controller
@@ -60,5 +62,14 @@ class ProfilPemdaController extends Controller
         ]);
 
         return redirect()->back()->with('success', Config::get('save_success'));
+    }
+
+    public function export(Request $request, $type)
+    {
+        if ($type == 'excel') {
+            return Excel::download(new ProfilPemdaExport(Auth::user()->provinsi), 'profil-provinsi-'.Auth::user()->province_id.'-'.uniqid().'.xlsx');
+        } elseif ($type == 'pdf') {
+            # code...
+        }
     }
 }

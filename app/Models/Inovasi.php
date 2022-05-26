@@ -41,6 +41,26 @@ class Inovasi extends Model
         return $this->belongsTo('App\Models\Tahapan', 'tahapan_id', 'id')->withTrashed();
     }
 
+    public function provinsi()
+    {
+        return $this->belongsTo('App\Models\Provinsi', 'provinsi_id', 'id');
+    }
+
+    public function kota()
+    {
+        return $this->belongsTo('App\Models\Kota', 'kota_id', 'id');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo('App\Models\Kecamatan', 'kecamatan_id', 'id');
+    }
+
+    public function kelurahan()
+    {
+        return $this->belongsTo('App\Models\Kelurahan', 'kelurahan_id', 'id');
+    }
+
     public function urusan()
     {
         return $this->belongsToMany('App\Models\Urusan', 'urusan_inovasi', 'inovasi_id', 'urusan_id')->withTrashed();

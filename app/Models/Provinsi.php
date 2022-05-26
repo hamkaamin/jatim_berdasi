@@ -26,4 +26,9 @@ class Provinsi extends Model
     {
         return $this->belongsToMany(Indikator::class, 'indikator_provinsi', 'provinsi_id', 'indikator_id')->withPivot('param_akhir', 'bobot_akhir', 'catatan')->withTrashed();
     }
+
+    public function inovasi()
+    {
+        return $this->hasMany('App\Models\Inovasi', 'provinsi_id', 'id');
+    }
 }

@@ -235,8 +235,8 @@ class InovasiController extends Controller
 
     public function export(Request $request, $type)
     {
+        $inovasi = Inovasi::findOrFail($request->id);
         if ($type == 'excel') {
-            $inovasi = Inovasi::findOrFail($request->id);
             $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
             return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
         } elseif ($type == 'pdf') {

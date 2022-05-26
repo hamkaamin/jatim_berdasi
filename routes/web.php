@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
     Route::post('/change-area', [App\Http\Controllers\HomeController::class, 'change_area'])->name('change-area');
 
@@ -89,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('profil-pemda')->name('profil-pemda.')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
         Route::get('/detail', [App\Http\Controllers\ProfilPemdaController::class, 'index_detail'])->name('detail');
+        Route::get('/export/{type}', [App\Http\Controllers\ProfilPemdaController::class, 'export'])->name('export');
         Route::post('/upload-pakta', [App\Http\Controllers\ProfilPemdaController::class, 'upload_pakta'])->name('upload-pakta');
         Route::post('/saveParam', [App\Http\Controllers\ProfilPemdaController::class, 'saveParam'])->name('saveParam');
 

@@ -164,7 +164,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Data Daerah</div>
-                        <div><button class="btn btn-primary">Unduh Semua</button></div>
+                        <div><a target="_blank" href="{{ route('export-inovasi', 0) }}" class="btn btn-primary">Unduh Semua</a></div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive p-3">
@@ -179,13 +179,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data_daerah as $item)
+                                    @foreach ($data_daerah as $key => $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item['nama'] }}</td>
                                             <td>{{ $item['inovasi'] }}</td>
                                             <td>{{ $item['video'] }}</td>
-                                            <td></td>
+                                            <td><a target="_blank" href="{{ route('export-inovasi', $key) }}" class="btn btn-primary">Unduh</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
