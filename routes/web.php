@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
         Route::get('/detail', [App\Http\Controllers\ProfilPemdaController::class, 'index_detail'])->name('detail');
         Route::post('/upload-pakta', [App\Http\Controllers\ProfilPemdaController::class, 'upload_pakta'])->name('upload-pakta');
+        Route::post('/saveParam', [App\Http\Controllers\ProfilPemdaController::class, 'saveParam'])->name('saveParam');
 
         Route::prefix('upload')->name('upload.')->group(function () {
             Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index_upload'])->name('index');

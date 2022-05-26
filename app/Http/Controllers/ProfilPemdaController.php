@@ -51,4 +51,14 @@ class ProfilPemdaController extends Controller
         Auth::user()->save();
         return redirect()->back()->with('success', 'Pakta integritas berhasil di-upload !');
     }
+
+    public function saveParam(Request $request)
+    {
+        $provinsi = Provinsi::findOrFail($request->provinsi_id);
+        $provinsi->indikator()->updateExistingPivot($request->indikator_id, [
+            'bobot_akhir' => $request->bobot_akhir
+        ]);
+
+        return redirect()->back()->with('success', Config::get('save_success'));
+    }
 }

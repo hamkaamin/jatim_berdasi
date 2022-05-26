@@ -196,6 +196,12 @@ class HomeController extends Controller
                     'msg' => view('modal.pengumuman-preview', compact('data'))->render()
                 ), 200);
                 break;
+            case "bobot-provinsi":
+                $data = Pengumuman::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.pengumuman-preview', compact('data'))->render()
+                ), 200);
+                break;
         }
 	}
 
