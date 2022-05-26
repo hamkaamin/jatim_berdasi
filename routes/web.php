@@ -24,6 +24,12 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['superadmin'])->group(function () {
+        Route::prefix('pengumuman')->name('pengumuman.')->group(function () {
+            Route::get('/', [App\Http\Controllers\PengumumanController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\PengumumanController::class, 'save'])->name('save');
+            Route::post('/delete', [App\Http\Controllers\PengumumanController::class, 'delete'])->name('delete');
+        });
+
         Route::prefix('master')->name('master.')->group(function () {
             Route::prefix('indikator')->name('indikator.')->group(function () {
                 Route::get('/', [App\Http\Controllers\IndikatorController::class, 'index'])->name('index');

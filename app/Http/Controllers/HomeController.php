@@ -17,6 +17,7 @@ use App\Models\Kelurahan;
 use App\Models\Kota;
 use App\Models\Opd;
 use App\Models\Parameter;
+use App\Models\Pengumuman;
 use App\Models\Provinsi;
 use App\Models\Tahapan;
 use App\Models\Upload;
@@ -30,6 +31,7 @@ class HomeController extends Controller
 	{
         if (Auth::user()->role == 3) {
             $tahapan = Tahapan::all();
+            $pengumuman = Pengumuman::orderBy('created_at', 'desc')->get();
             $iid = [];
             $data_daerah = [];
             $total_inovasi = 0;
@@ -78,7 +80,7 @@ class HomeController extends Controller
                 $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
                 $counter++;
             }
-            return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min'));
+            return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
         } else {
             return view('welcome');
         }
@@ -182,6 +184,18 @@ class HomeController extends Controller
 					'msg' => view('modal.form-upload', compact('id', 'indikator_id', 'kolom', 'data', 'type'))->render()
 				), 200);
 				break;
+            case "pengumuman":
+                $data = ($request->id == 0) ? null : Pengumuman::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-pengumuman', compact('data'))->render()
+                ), 200);
+                break;
+            case "pengumuman-preview":
+                $data = Pengumuman::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.pengumuman-preview', compact('data'))->render()
+                ), 200);
+                break;
         }
 	}
 
