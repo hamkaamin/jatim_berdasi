@@ -141,6 +141,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete');
     });
+
+    Route::prefix('rekap')->name('rekap.')->group(function () {
+        Route::get('/{type}', [App\Http\Controllers\RekapController::class, 'index'])->name('index');
+    });
 });
 
 Auth::routes(['register' => false]);

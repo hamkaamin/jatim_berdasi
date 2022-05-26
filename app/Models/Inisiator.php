@@ -15,4 +15,9 @@ class Inisiator extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function inovasi()
+    {
+        return $this->hasMany(Inovasi::class, 'inisiator_id', 'id');
+    }
 }

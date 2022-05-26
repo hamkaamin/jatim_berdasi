@@ -15,4 +15,9 @@ class Bentuk extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function inovasi()
+    {
+        return $this->hasMany(Inovasi::class, 'bentuk_id', 'id');
+    }
 }

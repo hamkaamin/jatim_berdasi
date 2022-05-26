@@ -113,22 +113,22 @@
 		</li>
 		<li class="app-sidebar__heading">Laporan</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('rekap.index', 'jenis') }}" class="{{ request()->is('rekap/jenis') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-graph1"></i> Rekap Jenis Inovasi
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('rekap.index', 'bentuk') }}" class="{{ request()->is('rekap/bentuk') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-graph1"></i> Rekap Bentuk Inovasi
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('rekap.index', 'urusan') }}" class="{{ request()->is('rekap/urusan') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-graph1"></i> Rekap Urusan Pemerintah
 			</a>
 		</li>
 		<li>
-			<a href="#" class="">
+			<a href="{{ route('rekap.index', 'inisiator') }}" class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-graph1"></i> Rekap Berdasarkan Inisiator
 			</a>
 		</li>
