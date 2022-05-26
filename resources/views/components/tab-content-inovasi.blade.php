@@ -49,7 +49,7 @@
                                     @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
                                         <a href="{{ route('inovasi.edit', ['id' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Inovasi"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
                                     @endif
-                                    @if ($item->status != 2)
+                                    @if ($item->status != 2 && $item->user_id == Auth::user()->id)
                                         <form style="all: unset" action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
                                             <button type="submit" class="btn m-1 btn-block btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}" data-toggle="tooltip" data-placement="top" title="Hapus Inovasi"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
