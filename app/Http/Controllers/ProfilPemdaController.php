@@ -6,6 +6,7 @@ use Auth;
 use Config;
 use Excel;
 use Helper;
+use PDF;
 use App\Models\Indikator;
 use App\Models\Provinsi;
 use App\Models\Upload;
@@ -69,7 +70,9 @@ class ProfilPemdaController extends Controller
         if ($type == 'excel') {
             return Excel::download(new ProfilPemdaExport(Auth::user()->provinsi), 'profil-provinsi-'.Auth::user()->province_id.'-'.uniqid().'.xlsx');
         } elseif ($type == 'pdf') {
-            # code...
+            $pdf = PDF::loadview('export.profil-pemda-pdf',['provinsi' => Auth::user()->provinsi]);
+            // return $pdf->stream();
+    	    return $pdf->download('profil-pemda-'.Auth::user()->province_id.'.pdf');
         }
     }
 }

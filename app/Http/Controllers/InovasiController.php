@@ -6,6 +6,7 @@ use Auth;
 use Config;
 use Excel;
 use Helper;
+use PDF;
 use App\Models\Bentuk;
 use App\Models\Indikator;
 use App\Models\Inisiator;
@@ -236,11 +237,13 @@ class InovasiController extends Controller
     public function export(Request $request, $type)
     {
         $inovasi = Inovasi::findOrFail($request->id);
+        $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($type == 'excel') {
-            $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
             return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
         } elseif ($type == 'pdf') {
-            # code...
+            $pdf = PDF::loadview('export.inovasi-pdf',['inovasi' => $inovasi, 'kolom' => $kolom]);
+            // return $pdf->stream();
+    	    return $pdf->download('inovasi-'.$inovasi->kode.'.pdf');
         }
     }
 }
