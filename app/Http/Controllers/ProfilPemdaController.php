@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Config;
+use Excel;
 use Helper;
+use PDF;
 use App\Models\Indikator;
 use App\Models\Provinsi;
 use App\Models\Upload;
+use App\Exports\ProfilPemdaExport;
 use Illuminate\Http\Request;
 
 class ProfilPemdaController extends Controller
@@ -50,5 +53,26 @@ class ProfilPemdaController extends Controller
         Auth::user()->pakta_integritas = $nama_file;
         Auth::user()->save();
         return redirect()->back()->with('success', 'Pakta integritas berhasil di-upload !');
+    }
+
+    public function saveParam(Request $request)
+    {
+        $provinsi = Provinsi::findOrFail($request->provinsi_id);
+        $provinsi->indikator()->updateExistingPivot($request->indikator_id, [
+            'bobot_akhir' => $request->bobot_akhir
+        ]);
+
+        return redirect()->back()->with('success', Config::get('save_success'));
+    }
+
+    public function export(Request $request, $type)
+    {
+        if ($type == 'excel') {
+            return Excel::download(new ProfilPemdaExport(Auth::user()->provinsi), 'profil-provinsi-'.Auth::user()->province_id.'-'.uniqid().'.xlsx');
+        } elseif ($type == 'pdf') {
+            $pdf = PDF::loadview('export.profil-pemda-pdf',['provinsi' => Auth::user()->provinsi]);
+            // return $pdf->stream();
+    	    return $pdf->download('profil-pemda-'.Auth::user()->province_id.'.pdf');
+        }
     }
 }

@@ -97,6 +97,9 @@
                                                             <i class="fa fa-eye"></i>&nbsp;&nbsp;Lihat
                                                         @endif
                                                     </a>
+                                                    @if (Auth::user()->role == 2)
+                                                        <br><button class="btn m-1 btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Beri Bobot</button>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -113,5 +116,26 @@
 @endsection
 
 @section('script')
+    @include('script.modal')
     @include('script.dataTable')
+    <script>
+		function chooseParam(provinsi_id, indikator_id) {
+			$('#modalContent').html("<div class=\"text-center my-3\"><h2>Loading...</h2></div>");
+			$.ajax({
+				type: 'POST',
+				url: '{{route("inovasi.indikator.chooseParam")}}',
+				data: {
+					'_token': '<?php echo csrf_token() ?>',
+					'provinsi_id': provinsi_id,
+					'indikator_id': indikator_id,
+				},
+				success: function(data) {
+					$('#modalContent').html(data.msg);
+				},
+				error: function(xhr) {
+					console.log(xhr);
+				}
+			});
+		}
+	</script>
 @endsection

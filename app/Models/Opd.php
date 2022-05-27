@@ -38,12 +38,12 @@ class Opd extends Model
 
     public function maker()
     {
-        return $this->belongsTo('App\Models\User', 'maker_id', 'id');
+        return $this->belongsTo('App\Models\User', 'maker_id', 'id')->withTrashed();
     }
 
     public function updater()
     {
-        return $this->belongsTo('App\Models\User', 'updater_id', 'id');
+        return $this->belongsTo('App\Models\User', 'updater_id', 'id')->withTrashed();
     }
 
     public function users()

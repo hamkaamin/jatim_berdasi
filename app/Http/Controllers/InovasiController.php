@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Config;
+use Excel;
 use Helper;
+use PDF;
 use App\Models\Bentuk;
 use App\Models\Indikator;
 use App\Models\Inisiator;
@@ -13,6 +15,7 @@ use App\Models\Jenis;
 use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
+use App\Exports\InovasiExport;
 use Illuminate\Http\Request;
 
 class InovasiController extends Controller
@@ -20,25 +23,39 @@ class InovasiController extends Controller
     public function index(Request $request, $area)
     {
         $tahapan = Tahapan::all();
-        $inovasi = [];
+        $inovasi = Inovasi::where('deleted_at', 0);
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
-            $inovasi = Inovasi::where('status', 2)->get();
+            $inovasi = Inovasi::where('status', 2);
             $label = "Daerah";
         } elseif ($area == 'masyarakat') {
-            $inovasi = Inovasi::where('label', 0)->get();
+            $inovasi = Inovasi::where('label', 0);
             $label = "Masyarakat";
             if (Auth::user()->role == 2) {
-                $inovasi = Inovasi::where('status', '<>', 0)->where('label', 0)->get();
+                $inovasi = $inovasi->where('status', '<>', 0);
             }
         } elseif ($area == 'pemda') {
-            $inovasi = Inovasi::where('label', 1)->get();
+            $inovasi = Inovasi::where('label', 1);
             $label = "Pemda";
             if (Auth::user()->role == 2) {
-                $inovasi = Inovasi::where('status', '<>', 0)->where('label', 1)->get();
+                $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
+        if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+            $inovasi = $inovasi->where('provinsi_id', Auth::user()->province_id);
+        } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+            $inovasi = $inovasi->where('provinsi_id', Auth::user()->opd->provinsi_id);
+        } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+            $inovasi = $inovasi->where('kota_id', Auth::user()->regency_id);
+        } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+            $inovasi = $inovasi->where('kota_id', Auth::user()->opd->kabkota_id);
+        } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+            $inovasi = $inovasi->where('kecamatan_id', Auth::user()->opd->kecamatan_id);
+        } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+            $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
+        }
+        $inovasi = $inovasi->get();
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
@@ -74,14 +91,25 @@ class InovasiController extends Controller
             $data = new Inovasi;
             $data->user_id = Auth::user()->id;
             $data->kode = uniqid();
-            if (Auth::user()->role == 4 || (Auth::user()->role == 6 && Auth::user()->regency_id != null)) {
+            if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+                $data->provinsi_id = Auth::user()->province_id;
+            } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->provinsi_id;
+            } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+                $data->provinsi_id = Auth::user()->kota->provinsi->id;
                 $data->kota_id = Auth::user()->regency_id;
-            } elseif (Helper::checkOpd('kota', Auth::user()) || (Auth::user()->role == 6 && Auth::user()->opd_id != null && Auth::user()->opd->kabkota_id != null)) {
+            } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
                 $data->kota_id = Auth::user()->opd->kabkota_id;
-            } elseif (Helper::checkOpd('kelurahan', Auth::user()) || (Auth::user()->role == 6 && Auth::user()->opd_id != null && Auth::user()->opd->kelurahan_id != null)) {
-                $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
-            } elseif (Helper::checkOpd('kecamatan', Auth::user()) || (Auth::user()->role == 6 && Auth::user()->opd_id != null && Auth::user()->opd->kecamatan_id != null)) {
+            } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
                 $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
+                $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
+            } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
+                $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
+                $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
+                $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
             }
         } else {
             $data = Inovasi::findOrFail($request->id);
@@ -203,6 +231,19 @@ class InovasiController extends Controller
             return view('inovasi.upload', compact('data', 'kolom', 'inovasi'));
         } else {
             return redirect()->back();
+        }
+    }
+
+    public function export(Request $request, $type)
+    {
+        $inovasi = Inovasi::findOrFail($request->id);
+        $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        if ($type == 'excel') {
+            return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
+        } elseif ($type == 'pdf') {
+            $pdf = PDF::loadview('export.inovasi-pdf',['inovasi' => $inovasi, 'kolom' => $kolom]);
+            // return $pdf->stream();
+    	    return $pdf->download('inovasi-'.$inovasi->kode.'.pdf');
         }
     }
 }

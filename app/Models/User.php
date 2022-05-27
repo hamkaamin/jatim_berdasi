@@ -21,7 +21,7 @@ class User extends Authenticatable
 
     public function opd()
     {
-        return $this->belongsTo('App\Models\Opd', 'opd_id', 'id');
+        return $this->belongsTo('App\Models\Opd', 'opd_id', 'id')->withTrashed();
     }
 
     public function provinsi()

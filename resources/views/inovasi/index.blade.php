@@ -30,13 +30,31 @@
                                     <div class="widget-content-right">
                                         <div class="widget-numbers text-white">
                                             <span>
-                                                @if ($label == "Masyarakat")
-                                                    {{ $item->hasManyInovasi()->where('label', 0)->count() }}
-                                                @elseif ($label == "Pemda")
-                                                    {{ $item->hasManyInovasi()->where('label', 1)->count() }}
-                                                @else
-                                                    {{ $item->hasManyInovasi()->count() }}
-                                                @endif
+                                                @php
+                                                    $inov = $item->hasManyInovasi();
+                                                    if ($label == "Masyarakat") {
+                                                        $inov = $inov->where('label', 0);
+                                                    }
+                                                    elseif ($label == "Pemda") {
+                                                        $inov = $inov->where('label', 1);
+                                                    } elseif ($label == "Daerah") {
+                                                        $inov = $inov->where('status', 2);
+                                                    }
+                                                    if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+                                                        $inov = $inov->where('provinsi_id', Auth::user()->province_id);
+                                                    } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+                                                        $inov = $inov->where('provinsi_id', Auth::user()->opd->provinsi_id);
+                                                    } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+                                                        $inov = $inov->where('kota_id', Auth::user()->regency_id);
+                                                    } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+                                                        $inov = $inov->where('kota_id', Auth::user()->opd->kabkota_id);
+                                                    } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+                                                        $inov = $inov->where('kecamatan_id', Auth::user()->opd->kecamatan_id);
+                                                    } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+                                                        $inov = $inov->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
+                                                    }
+                                                @endphp
+                                                {{ $inov->count() }}
                                             </span>
                                         </div>
                                     </div>
@@ -45,39 +63,6 @@
                         </div>
                     @endforeach
                 </div>
-            </div>
-        @endif
-        @if (Auth::user()->role != 1 && Auth::user()->role != 2 && Auth::user()->role != 6)
-            <div class="col-12">
-                <form action="{{ route('inovasi.filter-area') }}" method="get">
-                    <div class="row">
-                        <div class="col-auto align-self-center">
-                            <b>Filter Berdasarkan Wilayah Pembuat Inovasi :</b>
-                        </div>
-                        <div class="col">
-                            <select onchange="ubahScopeOpd(this.value, 'col')" class="form-control" required name="scope">
-                                <option selected disabled>-- Pilih Salah Satu --</option>
-                                @if (in_array(Auth::user()->role, [1,2,3]) || Helper::checkOpd('provinsi', Auth::user()))
-                                    <option value="provinsi">Provinsi</option>
-                                    <option value="kota">Kabupaten / Kota</option>
-                                    <option value="kecamatan">Kecamatan</option>
-                                    <option value="kelurahan">Kelurahan</option>
-                                @elseif (Auth::user()->role == 4 || Helper::checkOpd('kota', Auth::user()))
-                                    <option value="kota">Kabupaten / Kota</option>
-                                    <option value="kecamatan">Kecamatan</option>
-                                    <option value="kelurahan">Kelurahan</option>
-                                @elseif (Helper::checkOpd('kecamatan', Auth::user()))
-                                    <option value="kecamatan">Kecamatan</option>
-                                    <option value="kelurahan">Kelurahan</option>
-                                @elseif (Helper::checkOpd('kelurahan', Auth::user()))
-                                    <option value="kelurahan">Kelurahan</option>
-                                @endif
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mt-2" id="col_scope_container"></div>
-                    <div class="row mt-2 mb-4 d-flex justify-content-center"><div class="col-4"><button class="btn btn-primary btn-sm btn-block" type="submit">Filter</button></div></div>
-                </form>
             </div>
         @endif
         <div class="col-12">

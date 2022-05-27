@@ -15,11 +15,11 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light">Pengumuman</div>
                     <div class="card-body" style="overflow-y: scroll; height:100px;">
-                        @for ($i = 0; $i < 4; $i++)
+                        @foreach ($pengumuman as $item)
                             <p class="card-text">
-                                <small><b>14/09/2021</b></small> <span class="mx-2">|</span> <a href="" class="text-dark">Radiogram Himbauan Batas Waktu Penginputan Indeks Inovasi Daerah Tahun 2021</a>
+                                <small><b>{{ date('d-m-Y', strtotime($item->created_at)) }}</b></small> <span class="mx-2">|</span> <a href="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengumuman-preview')" class="text-dark">{{ $item->judul }}</a>
                             </p>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -164,7 +164,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Data Daerah</div>
-                        <div><button class="btn btn-primary">Unduh Semua</button></div>
+                        <div><a target="_blank" href="{{ route('export-inovasi', 0) }}" class="btn btn-primary">Unduh Semua</a></div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive p-3">
@@ -179,13 +179,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data_daerah as $item)
+                                    @foreach ($data_daerah as $key => $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item['nama'] }}</td>
                                             <td>{{ $item['inovasi'] }}</td>
                                             <td>{{ $item['video'] }}</td>
-                                            <td></td>
+                                            <td><a target="_blank" href="{{ route('export-inovasi', $key) }}" class="btn btn-primary">Unduh</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -199,6 +199,7 @@
 @endsection
 
 @section('script')
+    @include('script.modal')
     @include('script.dataTable')
     <script>
         $(function () {

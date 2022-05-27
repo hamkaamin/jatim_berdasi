@@ -42,16 +42,14 @@
                                 <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
                                 <td>
                                     @if ($item->status != 0)
-                                        <a href="" class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Download Pdf"><i class="fa fa-file-pdf"></i>&nbsp;&nbsp;PDF</a>
-                                        <a href="" class="btn m-1 btn-block btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
+                                        <a target="_blank" href="{{ route('inovasi.export', ['type' => 'pdf', 'id' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Download Pdf"><i class="fa fa-file-pdf"></i>&nbsp;&nbsp;PDF</a>
+                                        <a target="_blank" href="{{ route('inovasi.export', ['type' => 'excel', 'id' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                     @endif
-                                    @if ($item->status != 2)
-                                        <a href="{{ route('inovasi.indikator.index', ['id' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Upload Indikator"><i class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
-                                    @endif
+                                    <a href="{{ route('inovasi.indikator.index', ['id' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Upload Indikator"><i class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
                                     @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
                                         <a href="{{ route('inovasi.edit', ['id' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Inovasi"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
                                     @endif
-                                    @if ($item->status != 2)
+                                    @if ($item->status != 2 && $item->user_id == Auth::user()->id)
                                         <form style="all: unset" action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
                                             <button type="submit" class="btn m-1 btn-block btn-sm btn-danger" onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}" data-toggle="tooltip" data-placement="top" title="Hapus Inovasi"><i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>

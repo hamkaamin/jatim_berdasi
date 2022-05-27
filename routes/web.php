@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
     Route::post('/change-area', [App\Http\Controllers\HomeController::class, 'change_area'])->name('change-area');
 
@@ -24,6 +25,12 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware(['superadmin'])->group(function () {
+        Route::prefix('pengumuman')->name('pengumuman.')->group(function () {
+            Route::get('/', [App\Http\Controllers\PengumumanController::class, 'index'])->name('index');
+            Route::post('/', [App\Http\Controllers\PengumumanController::class, 'save'])->name('save');
+            Route::post('/delete', [App\Http\Controllers\PengumumanController::class, 'delete'])->name('delete');
+        });
+
         Route::prefix('master')->name('master.')->group(function () {
             Route::prefix('indikator')->name('indikator.')->group(function () {
                 Route::get('/', [App\Http\Controllers\IndikatorController::class, 'index'])->name('index');
@@ -83,7 +90,9 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('profil-pemda')->name('profil-pemda.')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index'])->name('index');
         Route::get('/detail', [App\Http\Controllers\ProfilPemdaController::class, 'index_detail'])->name('detail');
+        Route::get('/export/{type}', [App\Http\Controllers\ProfilPemdaController::class, 'export'])->name('export');
         Route::post('/upload-pakta', [App\Http\Controllers\ProfilPemdaController::class, 'upload_pakta'])->name('upload-pakta');
+        Route::post('/saveParam', [App\Http\Controllers\ProfilPemdaController::class, 'saveParam'])->name('saveParam');
 
         Route::prefix('upload')->name('upload.')->group(function () {
             Route::get('/', [App\Http\Controllers\ProfilPemdaController::class, 'index_upload'])->name('index');
@@ -97,6 +106,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{area}', [App\Http\Controllers\InovasiController::class, 'index'])->name('index');
         Route::get('/filter/area', [App\Http\Controllers\InovasiController::class, 'index'])->name('filter-area');
         Route::get('/form/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
+        Route::get('/export/{type}', [App\Http\Controllers\InovasiController::class, 'export'])->name('export');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
@@ -130,6 +140,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/change-scope', [App\Http\Controllers\OpdController::class, 'change_scope'])->name('change-scope');
         Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete');
+    });
+
+    Route::prefix('rekap')->name('rekap.')->group(function () {
+        Route::get('/{type}', [App\Http\Controllers\RekapController::class, 'index'])->name('index');
     });
 });
 

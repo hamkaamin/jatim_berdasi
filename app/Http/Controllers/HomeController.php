@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Excel;
 use Helper;
 use App\Models\Bentuk;
 use App\Models\Faq;
@@ -17,11 +18,13 @@ use App\Models\Kelurahan;
 use App\Models\Kota;
 use App\Models\Opd;
 use App\Models\Parameter;
+use App\Models\Pengumuman;
 use App\Models\Provinsi;
 use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
+use App\Exports\CompileInovasiExport;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -30,6 +33,7 @@ class HomeController extends Controller
 	{
         if (Auth::user()->role == 3) {
             $tahapan = Tahapan::all();
+            $pengumuman = Pengumuman::orderBy('created_at', 'desc')->get();
             $iid = [];
             $data_daerah = [];
             $total_inovasi = 0;
@@ -66,7 +70,6 @@ class HomeController extends Controller
                     }
                 }
 
-
                 $video = 0;
                 $all_inovasi = Inovasi::where('kota_id', $kota->id)->where('status', '<>', 0)->get();
                 foreach ($all_inovasi as $item) {
@@ -78,7 +81,7 @@ class HomeController extends Controller
                 $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
                 $counter++;
             }
-            return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min'));
+            return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
         } else {
             return view('welcome');
         }
@@ -182,6 +185,24 @@ class HomeController extends Controller
 					'msg' => view('modal.form-upload', compact('id', 'indikator_id', 'kolom', 'data', 'type'))->render()
 				), 200);
 				break;
+            case "pengumuman":
+                $data = ($request->id == 0) ? null : Pengumuman::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-pengumuman', compact('data'))->render()
+                ), 200);
+                break;
+            case "pengumuman-preview":
+                $data = Pengumuman::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.pengumuman-preview', compact('data'))->render()
+                ), 200);
+                break;
+            case "bobot-provinsi":
+                $data = Pengumuman::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.pengumuman-preview', compact('data'))->render()
+                ), 200);
+                break;
         }
 	}
 
@@ -202,4 +223,16 @@ class HomeController extends Controller
 			'msg' => $html
 		), 200);
 	}
+
+    public function export(Request $request, $type)
+    {
+        $kolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        if ($type == 0) {
+            $data = Auth::user()->provinsi->inovasi()->get();
+            return Excel::download(new CompileInovasiExport($data, $kolom), 'inovasi-provinsi-'.Auth::user()->province_id.'-'.uniqid().'.xlsx');
+        } else {
+            $data = Kota::findOrFail($type)->inovasi()->get();
+            return Excel::download(new CompileInovasiExport($data, $kolom), 'inovasi-kota-kabupaten-'.$type.'-'.uniqid().'.xlsx');
+        }
+    }
 }

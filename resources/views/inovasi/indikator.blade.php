@@ -59,11 +59,13 @@
                                         <br><span class="badge badge-pill badge-success"><i class="fa fa-check-circle"></i> &nbsp; Ada File</span>
                                     @endif
                                 </td>
-								<td>
+                                <td>
 									<a href="{{ route('inovasi.indikator.upload.index', ['id' => request()->id, 'indikator' => $item->id]) }}" class="btn m-1 btn-block btn-sm btn-warning"><i class="fas fa-upload"></i>&nbsp;&nbsp;Upload</a>
-									@if ($inovasi->status == 0 || Auth::user()->role == 2)
-										<button class="btn m-1 btn-block btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Beri Bobot</button>
-									@endif
+									@if ($inovasi->status != 2)
+                                        @if ($inovasi->status == 0 || Auth::user()->role == 2)
+                                            <button class="btn m-1 btn-block btn-sm btn-info" type="button" data-toggle="modal" data-target="#modalPopup" onclick="chooseParam({{ request()->id }}, {{ $item->id }})"><i class="fa fa-check-circle"></i>&nbsp;&nbsp;Beri Bobot</button>
+                                        @endif
+                                    @endif
 								</td>
 							</tr>
 						@endforeach

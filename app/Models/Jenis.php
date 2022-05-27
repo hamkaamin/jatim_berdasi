@@ -17,4 +17,9 @@ class Jenis extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function inovasi()
+    {
+        return $this->hasMany(Inovasi::class, 'jenis_id', 'id');
+    }
 }

@@ -73,8 +73,8 @@
                                 <td>
                                     <a href="{{ route('profil-pemda.detail') }}" class="btn m-1 btn-block btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp; Detail</a>
                                     <a target="_blank" href="{{ asset('pakta_integritas/'.Auth::user()->pakta_integritas) }}" class="btn m-1 btn-block btn-sm btn-info"><i class="fa fa-download"></i>&nbsp;&nbsp; Pakta</a>
-                                    <a target="_blank" href="" class="btn m-1 btn-block btn-sm btn-danger"><i class="fa fa-download"></i>&nbsp;&nbsp; PDF</a>
-                                    <a target="_blank" href="" class="btn m-1 btn-block btn-sm btn-success"><i class="fa fa-download"></i>&nbsp;&nbsp; Excel</a>
+                                    <a target="_blank" href="{{ route('profil-pemda.export', ['type' => 'pdf']) }}" class="btn m-1 btn-block btn-sm btn-danger"><i class="fa fa-download"></i>&nbsp;&nbsp; PDF</a>
+                                    <a target="_blank" href="{{ route('profil-pemda.export', ['type' => 'excel']) }}" class="btn m-1 btn-block btn-sm btn-success"><i class="fa fa-download"></i>&nbsp;&nbsp; Excel</a>
                                 </td>
                             </tr>
                         <tbody>

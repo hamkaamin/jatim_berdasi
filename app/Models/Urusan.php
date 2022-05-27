@@ -15,4 +15,9 @@ class Urusan extends Model
     {
         static::addGlobalScope(new OrderByIdScope);
     }
+
+    public function inovasi()
+    {
+        return $this->belongsToMany(Inovasi::class, 'urusan_inovasi', 'urusan_id', 'inovasi_id');
+    }
 }

@@ -44,11 +44,12 @@ class IndikatorController extends Controller
 
     public function chooseParam(Request $request)
     {
-        $inovasi_id = $request->inovasi_id;
         $indikator = Indikator::findOrFail($request->indikator_id);
         $param = $indikator->param()->get();
+        $data_id = isset($request->provinsi_id) ? $request->provinsi_id : $request->inovasi_id;
+        $type = isset($request->provinsi_id) ? 'provinsi' : 'inovasi';
         return response()->json(array(
-            'msg' => view('modal.form-param', compact('inovasi_id', 'indikator', 'param'))->render()
+            'msg' => view('modal.form-param', compact('data_id', 'indikator', 'param', 'type'))->render()
         ), 200);
     }
 
