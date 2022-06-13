@@ -47,7 +47,7 @@
 							</span>
 						</button>
 					</div>
-				</div>  
+				</div>
 				<div class="app-header__content">
 					<div class="app-header-right">
 						<div class="header-btn-lg pr-0">
@@ -72,7 +72,7 @@
 									</div>
 								</div>
 							</div>
-						</div>        
+						</div>
 					</div>
 				</div>
 			</div>
@@ -105,7 +105,7 @@
 							@include('layouts.menu')
 						</div>
 					</div>
-				</div>    
+				</div>
 				<div class="app-main__outer">
 					<div class="app-main__inner">
 						<div class="app-page-title">
@@ -146,7 +146,7 @@
 								</div>
 							</div>
 						</div>
-					</div>    
+					</div>
 				</div>
 			</div>
 		</div>

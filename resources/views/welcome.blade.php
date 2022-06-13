@@ -195,20 +195,71 @@
                 </div>
             </div>
         </div>
+    @elseif (Auth::user()->role == 1)
+        <div class="row">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Daftar OPD
+                    </div>
+                    <div class="card-body text-center p-1">
+                        <h1>{{ $count_opd }}</h1>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('opd.index') }}">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        Daftar Pengguna
+                    </div>
+                    <div class="card-body text-center p-1">
+                        <h1>{{ $count_user }}</h1>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('pengguna.index') }}">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="row">
+            @for ($j = 0; $j <= 1; $j++)
+                @for ($i = 1; $i <= 4; $i++)
+                    <div class="col-6">
+                        <div class="card m-2">
+                            <div class="card-header">
+                                Jumlah Inovasi {{ Helper::get_label_inovasi($j) }} &nbsp; {!! Helper::getStatusInovasi($i) !!}
+                            </div>
+                            <div class="card-body text-center p-1">
+                                <h1>{{ $arrayCount[$j][$i] }}</h1>
+                            </div>
+                            <div class="card-footer">
+                                <a href="">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                @endfor
+            @endfor
+        </div>
     @endif
 @endsection
 
-@section('script')
-    @include('script.modal')
-    @include('script.dataTable')
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]')
-        });
-    </script>
-    <script>
-        $(document).ready( function () {
-            $('#myTable1').DataTable();
-        } );
-    </script>
-@endsection
+@if (Auth::user()->role == 3)
+    @section('script')
+        @include('script.modal')
+        @include('script.dataTable')
+        <script>
+            $(function () {
+                $('[data-toggle="tooltip"]')
+            });
+        </script>
+        <script>
+            $(document).ready( function () {
+                $('#myTable1').DataTable();
+            } );
+        </script>
+    @endsection
+@endif

@@ -82,8 +82,18 @@ class HomeController extends Controller
                 $counter++;
             }
             return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
+        } elseif (Auth::user()->role == 1) {
+            $count_opd = Opd::count();
+            $count_user = User::count();
+            return view('welcome', compact('count_opd', 'count_user'));
         } else {
-            return view('welcome');
+            $arrayCount = [];
+            for ($i=0; $i <= 1 ; $i++) {
+                for ($j=1; $j <= 4 ; $j++) {
+                    $arrayCount[$i][$j] = Inovasi::where('status', $j)->where('label', $i)->count();
+                }
+            }
+            return view('welcome', compact('arrayCount'));
         }
 
 	}
