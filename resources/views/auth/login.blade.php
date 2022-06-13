@@ -42,7 +42,10 @@
                 <div class="card border border-dark">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
+			    <div class="col-sm-6 d-flex align-items-center">
+                                <img src="{{ asset('admin_asset/logo-inovasi-daerah.png') }}" style="max-width: 100%" alt="">
+                            </div>
+                            <div class="col-sm-6">
                                 <h3>Sign In</h3>
                                 <hr>
                                 <form method="POST" action="{{ route('login') }}">
@@ -86,9 +89,6 @@
                                         </div>
                                     </div>
                                 </form>
-                            </div>
-                            <div class="col-6 d-flex align-items-center">
-                                <img src="https://indeks.inovasi.litbang.kemendagri.go.id/assets/logoIGA2021.png" style="max-width: 100%" alt="">
                             </div>
                         </div>
                     </div>
