@@ -6,31 +6,36 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>SI Inovasi - Login</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <style>
+        .box-shadow {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
+        }
+    </style>
 </head>
-<body style="background-image: url({{ asset('bg-login.jpg') }}); background-repeat: no-repeat; background-size: cover; height: 100vh;">
+<body style="background-image: url({{ asset('bg-login-40.png') }}); background-repeat: no-repeat; background-size: cover; height: 100vh;">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row w-75">
             <div class="col-12 d-flex justify-content-center">
                 <div class="row w-100 mb-4">
-                    <div class="col mx-4 bg-white border border-dark text-center" style="border-radius: 10%">
+                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%;">
                         <a href="https://indeks.inovasi.litbang.kemendagri.go.id/pengumuman" class="text-dark">
                             <img class="" src="{{ asset('pengumuman.png') }}" style="max-width: 100%; max-height: 100px" alt="">
                             <h6>Pengumuman</h6>
                         </a>
                     </div>
-                    <div class="col mx-4 bg-white border border-dark text-center" style="border-radius: 10%">
+                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
                         <a href="https://indeks.inovasi.litbang.kemendagri.go.id/panduan" class="text-dark">
                             <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px" alt="">
                             <h6>Manual Book</h6>
                         </a>
                     </div>
-                    <div class="col mx-4 bg-white border border-dark text-center" style="border-radius: 10%">
+                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
                         <a href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen" class="text-dark">
                             <img src="{{ asset('buku-petunjuk-teknis.png') }}" style="max-width: 100%; max-height: 100px" alt="">
                             <h6>Petunjuk Teknis</h6>
                         </a>
                     </div>
-                    <div class="col mx-4 bg-white border border-dark text-center" style="border-radius: 10%">
+                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
                         <a href="{{ route('login') }}" class="text-dark">
                             <img src="{{ asset('login.png') }}" style="max-width: 100%; max-height: 100px" alt="">
                             <h6>Login Aplikasi</h6>
@@ -39,10 +44,10 @@
                 </div>
             </div>
             <div class="col-12">
-                <div class="card border border-dark">
+                <div class="card box-shadow" style="border-radius: 1em">
                     <div class="card-body">
                         <div class="row">
-			    <div class="col-sm-6 d-flex align-items-center">
+			                <div class="col-sm-6 d-flex align-items-center">
                                 <img src="{{ asset('admin_asset/logo-inovasi-daerah.png') }}" style="max-width: 100%" alt="">
                             </div>
                             <div class="col-sm-6">

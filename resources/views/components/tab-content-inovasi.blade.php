@@ -10,6 +10,7 @@
                             <th style="min-width: 200px">Nama</th>
                             <th>Tahapan</th>
                             <th style="width: 100px; min-width: 100px">Status</th>
+                            <th>Keterangan</th>
                             @foreach ($kolom as $thp)
                                 <th style="min-width: 100px">Waktu {{ $thp->nama }} Inovasi</th>
                             @endforeach
@@ -32,7 +33,8 @@
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->belongsToTahapan->nama }}</td>
-                                <td>{!! Helper::getStatusInovasi($item->status) !!} @if($item->keterangan != null) <i class="fa fa-question-circle" data-toggle="tooltip" data-html="true" title="{{ $item->keterangan }}"></i> @endif</td>
+                                <td>{!! Helper::getStatusInovasi($item->status) !!}</td>
+                                <td>@if($item->keterangan != null) {{ $item->keterangan }} @else - @endif</td>
                                 @foreach ($kolom as $thp)
                                     @php
                                         $temp = $thp->belongsToManyInovasi()->where('inovasi_id', $item->id)->first();
