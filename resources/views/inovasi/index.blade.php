@@ -87,7 +87,8 @@
 	@include('script.ubahScopeOpd')
     <script>
         $(document).ready( function () {
-            $('#myTable0').DataTable();
+            $('#myTable0').DataTable({  
+            });
         } );
     </script>
     @foreach ($tahapan as $item)

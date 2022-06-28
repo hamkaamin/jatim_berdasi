@@ -75,11 +75,11 @@
 				<i class="metismenu-icon pe-7s-home"></i> Dashboard IGA
 			</a>
 		</li>
-		<li>
+		{{-- <li>
 			<a href="#" class="">
 				<i class="metismenu-icon pe-7s-file"></i> Arsip
 			</a>
-		</li>
+		</li> --}}
 		<li>
 			<a href="{{ route('faq.index') }}" class="{{ Request::routeIs('faq.*') ? 'mm-active' : '' }}">
 				<i class="metismenu-icon pe-7s-info"></i> FAQ
@@ -143,10 +143,10 @@
 				<i class="metismenu-icon pe-7s-note2"></i> Daftar OPD
 			</a>
 		</li>
-		<li>
+		{{-- <li>
 			<a href="#" class="">
 				<i class="metismenu-icon pe-7s-global"></i> Akses API
 			</a>
-		</li>
+		</li> --}}
 	@endif
 </ul>

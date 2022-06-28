@@ -1,7 +1,7 @@
 <div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $tahapan == null ? 0 : $tahapan->id }}" role="tabpanel" aria-labelledby="{{ $tahapan == null ? 0 : $tahapan->id }}-tab">
     <div class="row">
-        <div class="col">
-            <div class="table-responsive p-3">
+        <div class="col-md-12">
+            <div style="width: 100%">
                 <table class="table align-items-center table-flush" id="myTable{{ $tahapan == null ? 0 : $tahapan->id }}">
                     <thead class="thead-light">
                         <tr>
@@ -18,6 +18,7 @@
                             <th style="width: 100px; min-width: 100px"></th>
                         </tr>
                     </thead>
+                    <tbody>
                         @php
                             $data = [];
                             if ($tahapan != null) {
@@ -60,7 +61,6 @@
                                 </td>
                             </tr>
                         @endforeach
-                    <tbody>
                     </tbody>
                 </table>
             </div>

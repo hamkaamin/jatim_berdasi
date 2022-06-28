@@ -31,6 +31,12 @@ class HomeController extends Controller
 {
     public function index()
 	{
+        // $rata = 
+        // $skor_total = $isp + $rata - $rata_isi;
+
+        // $rata_kota = 0;
+        // print_r($rata_kota);
+        // dd($rata_kota);
         if (Auth::user()->role == 3) {
             $tahapan = Tahapan::all();
             $pengumuman = Pengumuman::orderBy('created_at', 'desc')->get();

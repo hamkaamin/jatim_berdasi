@@ -64,17 +64,19 @@
 							<th>Keterangan</th>
 							<th>Data Pendukung</th>
 							<th>Tipe File</th>
+							<th>Bobot</th>
 							<th style="width: 100px"></th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach ($indikator_provinsi as $item)
+						@foreach ($indikator_provinsi as $item) 
 							<tr>
 								<td>{{ $loop->iteration }}</td>
 								<td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
 								<td>{!! $item->keterangan !!}</td>
 								<td>{{ $item->data_pendukung }}</td>
 								<td>{{ $item->tipe_file }}</td>
+								<td>{{ $item->param->sum('bobot') }}</td>
 								<td>
 									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'indikator')" class="btn m-1 btn-sm btn-block btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
 									<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'parameter')" class="btn m-1 btn-sm btn-block btn-success"><i class="fa fa-list-ul"></i>&nbsp;&nbsp;Parameter</button>
