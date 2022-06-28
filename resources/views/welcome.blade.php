@@ -39,7 +39,7 @@
                         {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
                     </div>
                     <div class="card-body">
-                        <h3 class="text-primary">{{ $rata_kota }} <small>{{ $rata_total }}</small></h3>
+                        <h3 class="text-primary">{{ $rata_kota }} <small>/ {{ $rata_total }}</small></h3>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                         {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
                     </div>
                     <div class="card-body">
-                        <h3 class="text-primary">{{ $rata_kab }} <small>{{ $rata_total }}</small></h3>
+                        <h3 class="text-primary">{{ $rata_kab }} <small>/ {{ $rata_total }}</small></h3>
                     </div>
                 </div>
             </div>
