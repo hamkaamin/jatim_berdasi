@@ -271,7 +271,7 @@
                 $('#myTable1').DataTable();
                 
                 $('#myTable_iid').DataTable({
-                    order: [[1, 'desc']],
+                    order: [[1, 'desc'], [0, 'asc']],
                 });
             } );
         </script>
