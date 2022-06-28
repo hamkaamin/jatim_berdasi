@@ -36,18 +36,24 @@ class HomeController extends Controller
         $rata_isi_kab = 0;
         $isp = 0;
 
+        $jml_inovasi_kota = 0;
+        $jml_inovasi_kab = 0;
         $inovasi = Inovasi::where('status', 2)->get();
         foreach ($inovasi as $item) {
             $rata_isi += $item->indikator->sum('pivot.bobot_akhir');
             if(strpos(" " . @$item->kota->name,"KOTA") == 1) {
+                $jml_inovasi_kota ++;
                 $rata_isi_kota += $item->indikator->sum('pivot.bobot_akhir');
             }
             if(strpos(" " . @$item->kota->name,"KABUPATEN") == 1) {
+                $jml_inovasi_kab ++;
                 $rata_isi_kab += $item->indikator->sum('pivot.bobot_akhir');
             } 
         }  
         if(sizeof($inovasi) > 0){
             $rata_isi = $rata_isi / sizeof($inovasi);
+            $rata_isi_kota = $rata_isi_kota / $jml_inovasi_kota;
+            $rata_isi_kab = $rata_isi_kab / $jml_inovasi_kab;
         } 
 
         $indikator_provinsi = Indikator::where('label', 1)->get();
