@@ -23,10 +23,97 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+            {{-- <div class="col">
                 <div class="card bg-light">
                     <div class="card-header bg-light">Presentasi Kepala Daerah</div>
                     <div class="card-body" style="height:100px;">
+                    </div>
+                </div>
+            </div> --}}
+        </div>
+        <div class="row mt-5">
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Indeks Rata-Rata Kota</div>
+                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Indeks Rata-Rata Kabupaten</div>
+                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Total Inovasi Pemda</div>
+                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $total_inovasi }}</h3>
+                    </div>
+                </div>
+            </div>
+            @foreach ($tahapan as $item)
+                <div class="col my-2">
+                    <div class="card bg-light">
+                        <div class="card-header bg-light justify-content-between">
+                            <div>{{ ucwords($item->nama) }}</div>
+                            {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                        </div>
+                        <div class="card-body">
+                            @php
+                                $totalTahapan = 0;
+                                foreach (Auth::user()->provinsi->kota as $kota) {
+                                    $totalTahapan += $kota->inovasi()->where('status', '<>', 0)->where('tahapan_id', $item->id)->count();
+                                }
+                            @endphp
+                            <h3>{{ $totalTahapan }}</h3>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+            <div class="col-12 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Rata - rata Inovasi Per Daerah</div>
+                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Skor Tertinggi</div>
+                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $max['nama'] }} ({{ $max['skor'] }})</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Skor Terendah</div>
+                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $min['nama'] }} ({{ $min['skor'] }})</h3>
                     </div>
                 </div>
             </div>
@@ -68,93 +155,6 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-6 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Indeks Rata-Rata Kota</div>
-                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Indeks Rata-Rata Kabupaten</div>
-                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Total Inovasi Pemda</div>
-                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                    </div>
-                    <div class="card-body">
-                        <h3>{{ $total_inovasi }}</h3>
-                    </div>
-                </div>
-            </div>
-            @foreach ($tahapan as $item)
-                <div class="col my-2">
-                    <div class="card bg-light">
-                        <div class="card-header bg-light justify-content-between">
-                            <div>{{ ucwords($item->nama) }}</div>
-                            <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                        </div>
-                        <div class="card-body">
-                            @php
-                                $totalTahapan = 0;
-                                foreach (Auth::user()->provinsi->kota as $kota) {
-                                    $totalTahapan += $kota->inovasi()->where('status', '<>', 0)->where('tahapan_id', $item->id)->count();
-                                }
-                            @endphp
-                            <h3>{{ $totalTahapan }}</h3>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-            <div class="col-12 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Rata - rata Inovasi Per Daerah</div>
-                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="text-danger">{{ rand(0,1000) }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Skor Tertinggi</div>
-                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                    </div>
-                    <div class="card-body">
-                        <h3>{{ $max['nama'] }} ({{ $max['skor'] }})</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Skor Terendah</div>
-                        <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div>
-                    </div>
-                    <div class="card-body">
-                        <h3>{{ $min['nama'] }} ({{ $min['skor'] }})</h3>
                     </div>
                 </div>
             </div>
@@ -228,7 +228,7 @@
         <div class="row">
             @for ($j = 0; $j <= 1; $j++)
                 @for ($i = 1; $i <= 4; $i++)
-                    <div class="col-6">
+                    <div class="col-sm-4">
                         <div class="card m-2">
                             <div class="card-header">
                                 Jumlah Inovasi {{ Helper::get_label_inovasi($j) }} &nbsp; {!! Helper::getStatusInovasi($i) !!}
@@ -236,9 +236,9 @@
                             <div class="card-body text-center p-1">
                                 <h1>{{ $arrayCount[$j][$i] }}</h1>
                             </div>
-                            <div class="card-footer">
+                            {{-- <div class="card-footer">
                                 <a href="">View Details</a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 @endfor
