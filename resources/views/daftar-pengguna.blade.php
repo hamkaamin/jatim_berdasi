@@ -90,7 +90,7 @@
 										<button data-target="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengguna')" class="btn m-1 btn-block btn-sm btn-warning"><i class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
 										<form style="all: unset" action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
 											@csrf
-											<button type="submit" class="btn m-1 btn-block btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-reset password pengguna ini ?')){return false;}"><i class="fa fa-key"></i>&nbsp;&nbsp;Reset Pass</button>
+											<button type="submit" class="btn m-1 btn-block btn-sm btn-success" onclick="if(!confirm('Apakah Anda yakin akan me-Reset Passwords pengguna ini ?')){return false;}"><i class="fa fa-key"></i>&nbsp;&nbsp;Reset Pass</button>
 										</form>
 										<form style="all: unset" action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
 											@csrf
