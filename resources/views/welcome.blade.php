@@ -90,7 +90,7 @@
                         <div>Rata - rata Kematangan</div> 
                     </div>
                     <div class="card-body">
-                        <h3 class="text-danger">{{ $rata_isi }}</h3>
+                        <h3 class="text-primary">{{ $rata_isi }}</h3>
                     </div>
                 </div>
             </div>
