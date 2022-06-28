@@ -36,7 +36,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Indeks Rata-Rata Kota</div>
-                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                        
                     </div>
                     <div class="card-body">
                         <h3 class="text-primary">{{ $rata_kota }} </h3>
@@ -47,21 +47,32 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Indeks Rata-Rata Kabupaten</div>
-                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                        
                     </div>
                     <div class="card-body">
                         <h3 class="text-primary">{{ $rata_kab }} </h3>
                     </div>
                 </div>
             </div>
-            <div class="col-12 my-2">
+            <div class="col-6 my-2">
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Total Inovasi Pemda</div>
-                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                        
                     </div>
                     <div class="card-body">
                         <h3>{{ $total_inovasi }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
+                        <div>Total Perangkat Daerah Melapor</div>
+                        
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ $total_opd_melapor }}</h3>
                     </div>
                 </div>
             </div>
@@ -70,7 +81,7 @@
                     <div class="card bg-light">
                         <div class="card-header bg-light justify-content-between">
                             <div>{{ ucwords($item->nama) }}</div>
-                            {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                            
                         </div>
                         <div class="card-body">
                             @php
@@ -98,7 +109,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Skor Tertinggi</div>
-                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                        
                     </div>
                     <div class="card-body">
                         <h3>{{ $max['nama'] }} ({{ $max['skor'] }})</h3>
@@ -109,7 +120,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Skor Terendah</div>
-                        {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
+                        
                     </div>
                     <div class="card-body">
                         <h3>{{ $min['nama'] }} ({{ $min['skor'] }})</h3>

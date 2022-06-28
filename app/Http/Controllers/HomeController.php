@@ -73,6 +73,11 @@ class HomeController extends Controller
 
         $skor_kab = $isp + $rata_isi_kab;
         $rata_kab = ($skor_kab / 250) * 100;
+
+        $total_opd_melapor = Inovasi::join('users as u', 'u.id', '=', 'inovasis.user_id')
+                        ->select('opd_id')
+                        ->distinct()
+                        ->count(); 
         
         if (Auth::user()->role == 3) {
             $tahapan = Tahapan::all();
@@ -124,11 +129,11 @@ class HomeController extends Controller
                 $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
                 $counter++;
             }
-            return view('welcome', compact('rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
         } elseif (Auth::user()->role == 1) {
             $count_opd = Opd::count();
             $count_user = User::count();
-            return view('welcome', compact('rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user'));
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user'));
         } else {
             $arrayCount = [];
             for ($i=0; $i <= 1 ; $i++) {
@@ -136,7 +141,7 @@ class HomeController extends Controller
                     $arrayCount[$i][$j] = Inovasi::where('status', $j)->where('label', $i)->count();
                 }
             }
-            return view('welcome', compact('rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount'));
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount'));
         }
 
 	}
