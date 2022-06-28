@@ -30,13 +30,26 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index()
-	{
-        // $rata = 
-        // $skor_total = $isp + $rata - $rata_isi;
+	{ 
+        $rata_isi = 0;
+        $isp = 0;
 
-        // $rata_kota = 0;
-        // print_r($rata_kota);
-        // dd($rata_kota);
+        $inovasi = Inovasi::where('status', 2)->get();
+        foreach ($inovasi as $item) {
+            $rata_isi += $item->indikator->sum('pivot.bobot_akhir'); 
+        } 
+        if(sizeof($inovasi) > 0){
+            $rata_isi = $rata_isi / sizeof($inovasi);
+        } 
+
+        $indikator_provinsi = Indikator::where('label', 1)->get();
+        foreach ($indikator_provinsi as $item) {
+            $isp += $item->param->sum('bobot'); 
+        } 
+        $skor_total = $isp + $rata_isi;
+
+        $rata_kota = ($skor_total / 250) * 100;
+        
         if (Auth::user()->role == 3) {
             $tahapan = Tahapan::all();
             $pengumuman = Pengumuman::orderBy('created_at', 'desc')->get();
@@ -87,11 +100,11 @@ class HomeController extends Controller
                 $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
                 $counter++;
             }
-            return view('welcome', compact('tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
+            return view('welcome', compact('rata_kota', 'tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
         } elseif (Auth::user()->role == 1) {
             $count_opd = Opd::count();
             $count_user = User::count();
-            return view('welcome', compact('count_opd', 'count_user'));
+            return view('welcome', compact('rata_kota', 'count_opd', 'count_user'));
         } else {
             $arrayCount = [];
             for ($i=0; $i <= 1 ; $i++) {
@@ -99,7 +112,7 @@ class HomeController extends Controller
                     $arrayCount[$i][$j] = Inovasi::where('status', $j)->where('label', $i)->count();
                 }
             }
-            return view('welcome', compact('arrayCount'));
+            return view('welcome', compact('rata_kota', 'arrayCount'));
         }
 
 	}
