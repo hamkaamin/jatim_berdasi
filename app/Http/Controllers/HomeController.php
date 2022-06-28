@@ -75,7 +75,7 @@ class HomeController extends Controller
         $rata_kab = ($skor_kab / 250) * 100;
 
         $total_opd_melapor = Inovasi::join('users as u', 'u.id', '=', 'inovasis.user_id')
-                        ->select('opd_id')
+                        ->select('u.opd_id')
                         ->distinct()
                         ->count(); 
         
@@ -128,7 +128,8 @@ class HomeController extends Controller
                 }
                 $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
                 $counter++;
-            }
+            } 
+
             return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
         } elseif (Auth::user()->role == 1) {
             $count_opd = Opd::count();
@@ -145,6 +146,15 @@ class HomeController extends Controller
         }
 
 	}
+
+    public function array_sort_by_column(&$arr, $col, $dir = SORT_DESC) {
+        $sort_col = array();
+        foreach ($arr as $key => $row) {
+            $sort_col[$key] = $row[$col];
+        }
+    
+        array_multisort($sort_col, $dir, $arr);
+    }
 
 	public function modal(Request $request)
 	{

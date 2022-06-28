@@ -134,10 +134,10 @@
                     <div class="card-header bg-light">Indeks Inovasi Daerah</div>
                     <div class="card-body">
                         <div class="table-responsive p-3">
-                            <table class="table align-items-center table-flush" id="myTable">
+                            <table class="table align-items-center table-flush" id="myTable_iid">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>No.</th>
+                                        {{-- <th>No.</th> --}}
                                         <th>Kota/Kabupaten</th>
                                         <th>Skor IID</th>
                                         <th>Kategori</th>
@@ -146,7 +146,7 @@
                                 <tbody>
                                     @foreach ($iid as $item)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
+                                            {{-- <td>{{ $loop->iteration }}</td> --}}
                                             <td>{{ $item['nama'] }}</td>
                                             <td>{{ $item['iid'] }}</td>
                                             <td>
@@ -269,6 +269,10 @@
         <script>
             $(document).ready( function () {
                 $('#myTable1').DataTable();
+                
+                $('#myTable_iid').DataTable({
+                    order: [[1, 'desc']],
+                });
             } );
         </script>
     @endsection
