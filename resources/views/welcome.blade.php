@@ -57,6 +57,16 @@
             <div class="col-12 my-2">
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
+                        <div>Rata - rata Kematangan</div> 
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-primary">{{ $rata_isi }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 my-2">
+                <div class="card bg-light">
+                    <div class="card-header bg-light justify-content-between">
                         <div>Total Inovasi Pemda</div>
                         {{-- <div><h4 class="p-0 m-0"><i class="fa fa-info-circle" data-toggle="tooltip" data-html="true" title="Halo"></i></h4></div> --}}
                     </div>
@@ -84,16 +94,6 @@
                     </div>
                 </div>
             @endforeach
-            <div class="col-12 my-2">
-                <div class="card bg-light">
-                    <div class="card-header bg-light justify-content-between">
-                        <div>Rata - rata Kematangan</div> 
-                    </div>
-                    <div class="card-body">
-                        <h3 class="text-primary">{{ $rata_isi }}</h3>
-                    </div>
-                </div>
-            </div>
             <div class="col-6 my-2">
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
