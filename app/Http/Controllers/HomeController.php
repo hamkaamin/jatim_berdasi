@@ -32,12 +32,20 @@ class HomeController extends Controller
     public function index()
 	{ 
         $rata_isi = 0;
+        $rata_isi_kota = 0;
+        $rata_isi_kab = 0;
         $isp = 0;
 
         $inovasi = Inovasi::where('status', 2)->get();
         foreach ($inovasi as $item) {
-            $rata_isi += $item->indikator->sum('pivot.bobot_akhir'); 
-        } 
+            $rata_isi += $item->indikator->sum('pivot.bobot_akhir');
+            if(strpos(" " . @$item->kota->name,"KOTA") == 1) {
+                $rata_isi_kota += $item->indikator->sum('pivot.bobot_akhir');
+            }
+            if(strpos(" " . @$item->kota->name,"KABUPATEN") == 1) {
+                $rata_isi_kab += $item->indikator->sum('pivot.bobot_akhir');
+            } 
+        }  
         if(sizeof($inovasi) > 0){
             $rata_isi = $rata_isi / sizeof($inovasi);
         } 
@@ -46,9 +54,15 @@ class HomeController extends Controller
         foreach ($indikator_provinsi as $item) {
             $isp += $item->param->sum('bobot'); 
         } 
-        $skor_total = $isp + $rata_isi;
 
-        $rata_kota = ($skor_total / 250) * 100;
+        $skor_total = $isp + $rata_isi;
+        $rata_total = ($skor_total / 250) * 100;
+
+        $skor_kota = $isp + $rata_isi_kota;
+        $rata_kota = ($skor_kota / 250) * 100;
+
+        $skor_kab = $isp + $rata_isi_kab;
+        $rata_kab = ($skor_kab / 250) * 100;
         
         if (Auth::user()->role == 3) {
             $tahapan = Tahapan::all();
@@ -100,11 +114,11 @@ class HomeController extends Controller
                 $data_daerah[$kota->id] = ['nama' => $kota->name, 'inovasi' => count($all_inovasi), 'video' => $video];
                 $counter++;
             }
-            return view('welcome', compact('rata_kota', 'tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
+            return view('welcome', compact('rata_total', 'rata_kab', 'rata_kota', 'tahapan', 'iid', 'data_daerah', 'total_inovasi', 'max', 'min', 'pengumuman'));
         } elseif (Auth::user()->role == 1) {
             $count_opd = Opd::count();
             $count_user = User::count();
-            return view('welcome', compact('rata_kota', 'count_opd', 'count_user'));
+            return view('welcome', compact('rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user'));
         } else {
             $arrayCount = [];
             for ($i=0; $i <= 1 ; $i++) {
@@ -112,7 +126,7 @@ class HomeController extends Controller
                     $arrayCount[$i][$j] = Inovasi::where('status', $j)->where('label', $i)->count();
                 }
             }
-            return view('welcome', compact('rata_kota', 'arrayCount'));
+            return view('welcome', compact('rata_total', 'rata_kab', 'rata_kota', 'arrayCount'));
         }
 
 	}
