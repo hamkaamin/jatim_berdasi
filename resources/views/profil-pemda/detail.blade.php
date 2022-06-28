@@ -72,9 +72,9 @@
                                             <th>No.</th>
                                             <th>Indikator SPD</th>
                                             <th>Informasi</th>
-                                            @if (Auth::user()->role == 2)
+                                            {{-- @if (Auth::user()->role == 2) --}}
                                                 <th class="text-center">Bobot</th>
-                                            @endif
+                                            {{-- @endif --}}
                                             <th class="text-center" style="width: 100px; min-width: 100px;">Dokumen Pendukung</th>
                                         </tr>
                                     </thead>
@@ -83,9 +83,9 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }} @if($item->wajib == 1) <span class="text-danger">*</span> @endif</td>
                                                 <td>{!! $item->keterangan !!}</td>
-                                                @if (Auth::user()->role == 2)
+                                                {{-- @if (Auth::user()->role == 2) --}}
                                                     <td class="text-center"><h4><b>{{ $item->pivot->bobot_akhir }}</b></h4></td>
-                                                @endif
+                                                {{-- @endif --}}
                                                 <td class="text-center">
                                                     @if ($item->upload()->where('provinsi_id', Auth::user()->role == 3 ? Auth::user()->province_id : request()->id)->count() > 0)
                                                         <br><span class="badge badge-pill badge-success"><i class="fa fa-check-circle"></i> &nbsp; Ada File</span><br>
