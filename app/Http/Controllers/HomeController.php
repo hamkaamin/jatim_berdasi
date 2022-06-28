@@ -51,10 +51,14 @@ class HomeController extends Controller
             } 
         }  
         if(sizeof($inovasi) > 0){
-            $rata_isi = $rata_isi / sizeof($inovasi);
-            $rata_isi_kota = $rata_isi_kota / $jml_inovasi_kota;
-            $rata_isi_kab = $rata_isi_kab / $jml_inovasi_kab;
+            $rata_isi = $rata_isi / sizeof($inovasi); 
         } 
+        if($jml_inovasi_kota > 0){ 
+            $rata_isi_kota = $rata_isi_kota / $jml_inovasi_kota; 
+        } 
+        if($jml_inovasi_kab > 0){ 
+            $rata_isi_kab = $rata_isi_kab / $jml_inovasi_kab; 
+        }  
 
         $indikator_provinsi = Indikator::where('label', 1)->get();
         foreach ($indikator_provinsi as $item) {
