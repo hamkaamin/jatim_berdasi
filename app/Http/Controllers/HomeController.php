@@ -30,6 +30,10 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index()
+    {
+        return view('public.index');
+    }
+    public function home()
 	{ 
         $rata_isi = 0;
         $rata_isi_kota = 0;
