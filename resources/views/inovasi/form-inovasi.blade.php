@@ -157,7 +157,7 @@
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Urusan Inovasi</b> <span
                                 class="text-danger">*</span></label></div>
                     <div class="col-sm-8">
-                        <select name="urusan_id[]" required class="js-example-basic-multiple w-100" multiple>
+                        <select name="urusan_id[]" style="widows: 100%" required class="js-example-basic-multiple w-100" multiple>
                             <option value="" disabled>-- Pilih Salah Satu --</option>
                             @foreach ($urusan as $item)
                                 <option value="{{ $item->id }}" @if (
