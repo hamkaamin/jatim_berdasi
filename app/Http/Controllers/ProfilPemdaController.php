@@ -34,6 +34,19 @@ class ProfilPemdaController extends Controller
         $data = $provinsi->indikator()->get();
         return view('profil-pemda.detail', compact('data', 'provinsi'));
     }
+    public function index_detail_kota_kab(Request $request)
+    {
+        $kota_kab = Auth::user()->role == 3 ? Kota::findOrFail($request->id) : Auth::user()->kota_kab;
+        $data = [];
+        if ($kota_kab->indikator()->count() == 0) {
+            $indikator = Indikator::where('label', 1)->get();
+            foreach ($indikator as $item) {
+                $kota_kab->indikator()->attach($item->id);
+            }
+        }
+        $data = $provinsi->indikator()->get();
+        return view('profil-pemda.detail', compact('data', 'provinsi'));
+    }
 
     public function index_upload(Request $request)
     {

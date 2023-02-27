@@ -83,8 +83,27 @@ class InovasiController extends Controller
         }
     }
 
+    public function limit_words($string, $word_limit) {
+        $string = strip_tags($string);
+        $words = explode(' ', strip_tags($string));
+        $return = trim(implode(' ', array_slice($words, 0, $word_limit)));
+        if(strlen($return) < strlen($string)){
+            $return = 'Maximal 300 kata';
+        }
+        return $return;
+    }
+
     public function save(Request $request)
     {
+        $max_kata = 300;
+        $rancang_bangun = $request->rancang_bangun;  
+        $string = strip_tags($rancang_bangun);
+        $words = explode(' ', strip_tags($rancang_bangun));
+        $return = trim(implode(' ', array_slice($words, 0, 300)));
+        $kata = count($words);
+        if($kata < $max_kata){
+            return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
+        }
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         $tempArr = [];
         if ($request->id == 0) {
