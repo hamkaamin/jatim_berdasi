@@ -245,7 +245,7 @@
                 @php
                     $anggaran = 'Anggaran (Jika diperlukan)';
                 @endphp
-                @if (Auth::user()->role == 5)
+                @if (Auth::user()->role == 4 || Auth::user()->role == 5)
                     @php $anggaran = 'Surat Pengantar Pemda'; @endphp
                 @endif
                 <div class="row my-2">

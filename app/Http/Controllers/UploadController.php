@@ -7,6 +7,7 @@ use Helper;
 use App\Models\Indikator;
 use App\Models\Upload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UploadController extends Controller
 {
@@ -40,9 +41,23 @@ class UploadController extends Controller
             $data = Upload::findOrFail($request->id);
         }
         foreach ($kolom as $col) {
-            if ($col[2] == "file" && $request->hasFile($col[1])) {
-                $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
-                $data->{$col[1]} = $nama_file;
+            if ($col[2] == "file") {
+                $validator = Validator::make($request->all(), [ 
+                    'file' => 'max:2048', 
+                ]);
+                if ($validator->fails()) {
+                    $msg = "";
+                    foreach ($validator->messages()->all() as $message) {
+                        $msg .= $message . ". ";
+                    }
+                    return redirect()->back()->with('error','Maximal 2MB');
+                } else {
+                    $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
+                    $data->{$col[1]} = $nama_file;
+                }
+
+
+                
             } else {
                 $data->{$col[1]} = $request->{$col[1]};
             }
