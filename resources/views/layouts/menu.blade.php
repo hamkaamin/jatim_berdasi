@@ -153,21 +153,23 @@
                 <i class="metismenu-icon pe-7s-graph1"></i> Rekap Berdasarkan Inisiator
             </a>
         </li>
-        <li class="app-sidebar__heading">Konfigurasi</li>
-        <li>
-            <a href="{{ route('pengguna.index') }}" class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-users"></i> Accounts
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('opd.index') }}" class="{{ Request::routeIs('opd.*') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-note2"></i> Daftar OPD
-            </a>
-        </li>
-        {{-- <li>
+        @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
+            <li class="app-sidebar__heading">Konfigurasi</li>
+            <li>
+                <a href="{{ route('pengguna.index') }}"
+                    class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-users"></i> Accounts
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('opd.index') }}" class="{{ Request::routeIs('opd.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-note2"></i> Daftar OPD
+                </a>
+            </li>
+            {{-- <li>
 			<a href="#" class="">
 				<i class="metismenu-icon pe-7s-global"></i> Akses API
 			</a>
 		</li> --}}
-    @endif
+        @endif
 </ul>
