@@ -22,7 +22,11 @@
                         @php
                             $data = [];
                             if ($tahapan != null) {
-                                $data = $tahapan->hasManyInovasi()->get();
+                                if(Auth::user()->role == 4){
+                                    $data = $tahapan->hasManyInovasi()->where('user_id', Auth::user()->id)->get();
+                                } else {
+                                    $data = $tahapan->hasManyInovasi()->get();
+                                }
                             } else {
                                 $data = $inovasi;
                             }
