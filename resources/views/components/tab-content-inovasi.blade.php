@@ -24,6 +24,8 @@
                             if ($tahapan != null) {
                                 if(Auth::user()->role == 4){
                                     $data = $tahapan->hasManyInovasi()->where('user_id', Auth::user()->id)->get();
+                                } else if(Auth::user()->role == 3){
+                                    $data = $tahapan->hasManyInovasi()->where('user_id', Auth::user()->id)->get();
                                 } else {
                                     $data = $tahapan->hasManyInovasi()->get();
                                 }
