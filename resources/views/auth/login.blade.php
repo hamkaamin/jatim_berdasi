@@ -56,7 +56,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6 d-flex align-items-center">
-                                <img src="{{ asset('admin_asset/logo-inovasi-daerah.png') }}" style="max-width: 100%"
+                                <img src="{{ asset('admin_asset/logo-inovasi-daerah2.png') }}" style="max-width: 100%"
                                     alt="">
                             </div>
                             <div class="col-sm-6">
