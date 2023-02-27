@@ -222,7 +222,7 @@ class InovasiController extends Controller
     }
 
     public function index_upload(Request $request)
-    {
+    {  
         if (count($request->input()) == 2 && $request->has('id') && $request->has('indikator')) {
             $data = Upload::where('inovasi_id', $request->id)->where('indikator_id', $request->indikator)->get();
             $inovasi = Inovasi::findOrFail($request->id);
