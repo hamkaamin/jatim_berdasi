@@ -34,7 +34,7 @@ class InovasiController extends Controller
             $label = "Masyarakat";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
-            }
+            } 
         } elseif ($area == 'pemda') {
             $inovasi = Inovasi::where('label', 1);
             $label = "Pemda";
@@ -42,6 +42,11 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
+        
+        if (Auth::user()->role == 4) {
+            $inovasi = $inovasi->where('user_id', Auth::user()->id);
+        }
+
         if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
             $inovasi = $inovasi->where('provinsi_id', Auth::user()->province_id);
         } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
