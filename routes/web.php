@@ -152,6 +152,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('rekap')->name('rekap.')->group(function () {
         Route::get('/{type}', [App\Http\Controllers\RekapController::class, 'index'])->name('index');
     });
+    Route::get('/panduan', [App\Http\Controllers\PanduanController::class, 'index'])->name('panduan');
 });
 
 Auth::routes(['register' => false]);

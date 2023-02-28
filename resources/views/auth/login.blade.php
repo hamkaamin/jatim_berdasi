@@ -21,19 +21,37 @@
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row w-75">
             <div class="col-12 d-flex justify-content-center">
+                <div class="row w-100 mb-4">
+
+                    <div class="col mx-4" style="border-radius: 10%">
+                        {{-- <a href="https://indeks.inovasi.litbang.kemendagri.go.id/panduan" class="text-dark">
+                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
+                                alt="">
+                            <h6>Manual Book</h6> --}}
+                        </a>
+                    </div>
+                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
+                        <a href="{{ asset('user-manual/Pengajuan Inovasi Daerah.mp4') }}" target="_blank"
+                            class="text-dark">
+                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
+                                alt="">
+                            <h6>Video Panduan</h6>
+                        </a>
+                    </div>
+                    <div class="col mx-4" style="border-radius: 10%">
+                        {{-- <a href="https://indeks.inovasi.litbang.kemendagri.go.id/panduan" class="text-dark">
+                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
+                                alt="">
+                            <h6>Manual Book</h6>
+                        </a> --}}
+                    </div>
+                </div>
                 {{-- <div class="row w-100 mb-4">
                     <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%;">
                         <a href="/" class="text-dark">
                             <img class="" src="{{ asset('pengumuman.png') }}"
                                 style="max-width: 100%; max-height: 100px" alt="">
                             <h6>Pengumuman</h6>
-                        </a>
-                    </div>
-                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
-                        <a href="https://indeks.inovasi.litbang.kemendagri.go.id/panduan" class="text-dark">
-                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
-                                alt="">
-                            <h6>Manual Book</h6>
                         </a>
                     </div>
                     <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
