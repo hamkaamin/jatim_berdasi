@@ -16,7 +16,7 @@
 </head>
 
 <body
-    style="background-image: url({{ asset('bg-login-40.png') }}); background-repeat: no-repeat; background-size: cover; height: 100vh;">
+    style="background-image: url({{ asset('background-login.png') }}); background-repeat: no-repeat; background-size: cover; height: 100vh;">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row w-75">
             <div class="col-12 d-flex justify-content-center">
@@ -56,8 +56,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6 d-flex align-items-center">
-                                <img src="{{ asset('admin_asset/logo-inovasi-daerah2.png') }}" style="max-width: 100%"
-                                    alt="">
+                                <img src="{{ asset('login.png') }}" style="max-width: 100%" alt="">
                             </div>
                             <div class="col-sm-6">
                                 <h3>Sign In</h3>
