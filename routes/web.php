@@ -83,6 +83,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/', [App\Http\Controllers\FaqController::class, 'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\FaqController::class, 'delete'])->name('delete');
             });
+            Route::prefix('kategori')->name('kategori.')->group(function () {
+                Route::get('/', [App\Http\Controllers\KategoriController::class, 'index'])->name('index');
+                Route::post('/', [App\Http\Controllers\KategoriController::class, 'save'])->name('save');
+                Route::post('/delete', [App\Http\Controllers\KategoriController::class, 'delete'])->name('delete');
+            });
         });
     });
 

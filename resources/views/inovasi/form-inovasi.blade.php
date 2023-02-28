@@ -87,6 +87,27 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b> <span
+                                class="text-danger">*</span></label></div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            @foreach ($kategori as $item)
+                                <div class="col-6 d-flex align-items-center">
+                                    <input type="radio" id="kategori_{{ $item->id }}" value="{{ $item->id }}"
+                                        name="kategori_id" @if (old('kategori_id') == $item->id ||
+                                                ($data == null && $loop->iteration == 1) ||
+                                                ($data != null && $data->kategori_id == $item->id)) checked @endif><label
+                                        class="pb-0 mb-0 ml-2"
+                                        for="kategori_{{ $item->id }}">{{ $item->nama }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Inisiator Inovasi</b> <span
                                 class="text-danger">*</span></label></div>
@@ -157,7 +178,8 @@
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Urusan Inovasi</b> <span
                                 class="text-danger">*</span></label></div>
                     <div class="col-sm-8">
-                        <select name="urusan_id[]" style="widows: 100%" required class="js-example-basic-multiple w-100" multiple>
+                        <select name="urusan_id[]" style="widows: 100%" required class="js-example-basic-multiple w-100"
+                            multiple>
                             <option value="" disabled>-- Pilih Salah Satu --</option>
                             @foreach ($urusan as $item)
                                 <option value="{{ $item->id }}" @if (

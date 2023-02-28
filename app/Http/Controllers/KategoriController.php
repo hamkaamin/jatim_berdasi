@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Config;
-use App\Models\Golongan;
+use App\Models\KategoriInvoasi;
 use Illuminate\Http\Request;
+use Config;
 
-class GolonganController extends Controller
+class KategoriController extends Controller
 {
     public function index()
     {
-        $data = Golongan::all();
-        return view('master.golongan', compact('data'));
+        $data = KategoriInvoasi::all();
+        return view('master.kategori', compact('data'));
     }
 
     public function save(Request $request)
     {
         if ($request->id == 0) {
-            $data = new Golongan;
+            $data = new KategoriInvoasi;
         } else {
-            $data = Golongan::findOrFail($request->id);
+            $data = KategoriInvoasi::findOrFail($request->id);
         }
         $data->nama = $request->nama;
 		$data->save();
@@ -28,7 +28,7 @@ class GolonganController extends Controller
 
     public function delete(Request $request)
     {
-        $data = Golongan::findOrFail($request->id);
+        $data = KategoriInvoasi::findOrFail($request->id);
         $data->delete();
         return redirect()->back()->with('success', Config::get('delete_success'));
     }

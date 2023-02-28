@@ -16,6 +16,7 @@ use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
+use App\Models\KategoriInvoasi;
 use Illuminate\Http\Request;
 
 class InovasiController extends Controller
@@ -74,6 +75,7 @@ class InovasiController extends Controller
             $jenis = Jenis::all();
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
+            $kategori = KategoriInvoasi::all();
             $label = 0;
             if ($request->has('label')) {
                 $label = $request->label;
@@ -82,7 +84,7 @@ class InovasiController extends Controller
                 $data = Inovasi::findOrFail($request->id);
                 $label = $data->label;
             }
-            return view('inovasi.form-inovasi', compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
+            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
         } else {
             return redirect()->back();
         }
@@ -100,11 +102,11 @@ class InovasiController extends Controller
 
     public function save(Request $request)
     {
-        $max_kata = 300;
+        $max_kata = 10;
         $rancang_bangun = $request->rancang_bangun;  
         $string = strip_tags($rancang_bangun);
         $words = explode(' ', strip_tags($rancang_bangun));
-        $return = trim(implode(' ', array_slice($words, 0, 300)));
+        $return = trim(implode(' ', array_slice($words, 0, 10)));
         $kata = count($words);
         if($kata < $max_kata){
             return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
@@ -172,6 +174,7 @@ class InovasiController extends Controller
         }
         $data->nama = $request->nama;
         $data->tahapan_id = $request->tahapan_id;
+        $data->kategori_id = $request->kategori_id;
         $data->inisiator_id = $request->inisiator_id;
         $data->jenis_id = $request->jenis_id;
         $data->bentuk_id = $request->bentuk_id;

@@ -61,6 +61,12 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('master.kategori.index') }}"
+                class="{{ Request::routeIs('master.kategori.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Kategori Inovasi
+            </a>
+        </li>
+        <li>
             <a href="{{ route('master.faq.index') }}"
                 class="{{ Request::routeIs('master.faq.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> FAQ

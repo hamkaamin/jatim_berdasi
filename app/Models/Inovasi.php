@@ -80,4 +80,9 @@ class Inovasi extends Model
     {
         return $this->hasMany('App\Models\Upload', 'inovasi_id', 'id');
     }
+
+    public function kategori()
+    {
+        return $this->belongsTo('App\Models\Kategori', 'kategori_id', 'id');
+    }
 }

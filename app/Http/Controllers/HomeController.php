@@ -25,6 +25,7 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
+use App\Models\KategoriInvoasi;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -273,6 +274,12 @@ class HomeController extends Controller
                 $data = Pengumuman::findOrFail($request->id);
                 return response()->json(array(
                     'msg' => view('modal.pengumuman-preview', compact('data'))->render()
+                ), 200);
+                break;
+            case "kategori":
+				$data = ($request->id == 0) ? null : KategoriInvoasi::findOrFail($request->id);
+                return response()->json(array(
+					'msg' => view('modal.form-kategori', compact('data'))->render()
                 ), 200);
                 break;
         }
