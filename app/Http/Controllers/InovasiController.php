@@ -102,15 +102,6 @@ class InovasiController extends Controller
 
     public function save(Request $request)
     {
-        $max_kata = 10;
-        $rancang_bangun = $request->rancang_bangun;  
-        $string = strip_tags($rancang_bangun);
-        $words = explode(' ', strip_tags($rancang_bangun));
-        $return = trim(implode(' ', array_slice($words, 0, 10)));
-        $kata = count($words);
-        if($kata < $max_kata){
-            return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
-        }
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         $tempArr = [];
         if ($request->id == 0) {
@@ -171,6 +162,15 @@ class InovasiController extends Controller
                     return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
                 }
             }
+        }
+        $max_kata = 10;
+        $rancang_bangun = $request->rancang_bangun;  
+        $string = strip_tags($rancang_bangun);
+        $words = explode(' ', strip_tags($rancang_bangun));
+        $return = trim(implode(' ', array_slice($words, 0, 10)));
+        $kata = count($words);
+        if($kata < $max_kata){
+            return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
         }
         $data->nama = $request->nama;
         $data->tahapan_id = $request->tahapan_id;
