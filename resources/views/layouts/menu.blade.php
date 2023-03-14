@@ -87,7 +87,7 @@
         <li class="app-sidebar__heading">Dashboard</li>
         <li>
             <a href="{{ route('home') }}" class="{{ Request::routeIs('home') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-home"></i> Dashboard IGA
+                <i class="metismenu-icon pe-7s-home"></i> Dashboard
             </a>
         </li>
         {{-- <li>
