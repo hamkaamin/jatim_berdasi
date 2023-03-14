@@ -86,6 +86,7 @@ class InovasiController extends Controller
             }
             return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
         } else {
+            dd($request->all());
             return redirect()->back();
         }
     }
