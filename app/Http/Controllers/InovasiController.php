@@ -67,7 +67,7 @@ class InovasiController extends Controller
 
     public function edit(Request $request)
     {
-        if (count($request->input()) <= 2 && isset($request->id)) {
+        if (isset($request->id)) {
             $data = null;
             $tahapan = Tahapan::all();
             $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
@@ -85,8 +85,7 @@ class InovasiController extends Controller
                 $label = $data->label;
             }
             return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
-        } else {
-            dd($request->all());
+        } else { 
             return redirect()->back();
         }
     }
