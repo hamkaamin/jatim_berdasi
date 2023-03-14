@@ -35,7 +35,7 @@
                                                     if ($label == "Masyarakat" || $label == "Awards") {
                                                         $inov = $inov->where('label', 0);
                                                     }
-                                                    elseif ($label == "Pemda") {
+                                                    elseif ($label == "Pemda") { 
                                                         $inov = $inov->where('label', 1);
                                                     } elseif ($label == "Daerah") {
                                                         $inov = $inov->where('status', 2);
