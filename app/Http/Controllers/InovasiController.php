@@ -232,7 +232,7 @@ class InovasiController extends Controller
 
     public function index_indikator(Request $request)
     {
-        if (count($request->input()) == 1 && isset($request->id)) {
+        if (count($request->input()) == 2 && isset($request->id)) {
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
             if ($inovasi->indikator()->count() == 0) {
@@ -250,7 +250,7 @@ class InovasiController extends Controller
 
     public function index_upload(Request $request)
     {  
-        if (count($request->input()) == 2 && isset($request->id) && isset($request->indikator)) {
+        if (count($request->input()) == 3 && isset($request->id) && isset($request->indikator)) {
             $data = Upload::where('inovasi_id', $request->id)->where('indikator_id', $request->indikator)->get();
             $inovasi = Inovasi::findOrFail($request->id);
             $indikator = Indikator::findOrFail($request->indikator);
