@@ -66,9 +66,8 @@ class InovasiController extends Controller
     }
 
     public function edit(Request $request)
-    {
-        dd($request->all());
-        if (count($request->input()) <= 2 && isset($request->id)) {
+    { 
+        if (count($request->input()) <= 3 && isset($request->id)) {
             $data = null;
             $tahapan = Tahapan::all();
             $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
