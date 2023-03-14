@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,16 +10,26 @@
         .border {
             border: 1px solid black;
         }
-        h1, h2, h3, h4, h5, h6 {
-            padding: 0px; margin: 0px;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            padding: 0px;
+            margin: 0px;
         }
     </style>
 </head>
+
 <body>
     <table>
         <tr>
-            <td><img src="https://1.bp.blogspot.com/-b3vWcyqsWP8/YUncfnrwd3I/AAAAAAAAI9E/UtKFWrrbQ8EirvaiRerip6iQrUvYawqoACLcBGAsYHQ/s752/logo-kemendagri.png" width="50" alt=""></td>
-            <td><h2>KEMENTERIAN<br>DALAM NEGERI</h2></td>
+            <td><img src="{{ public_path('brida-logo.png') }}" width="50" alt=""></td>
+            <td>
+                <h2>Badan Riset dan Inovasi Daerah (BRIDA)</h2>
+            </td>
         </tr>
     </table>
     <br>
@@ -45,7 +56,9 @@
     <br><br>
     <table>
         <tr>
-            <td><h2>1. PROFIL INOVASI</h2></td>
+            <td>
+                <h2>1. PROFIL INOVASI</h2>
+            </td>
         </tr>
         <tr>
             <td>
@@ -87,7 +100,9 @@
             <td>
                 <b>1.7. Urusan Inovasi Daerah</b><br>
                 @foreach ($inovasi->urusan()->get() as $item)
-                    {{ $item->nama }}@if (!$loop->last),&nbsp; @endif
+                    {{ $item->nama }}@if (!$loop->last)
+                        ,&nbsp;
+                    @endif
                 @endforeach <br><br>
             </td>
         </tr>
@@ -123,9 +138,13 @@
                 <td>
                     <b>1.1{{ $counter }}. Waktu {{ $item->nama }} Inovasi</b><br>
                     @php
-                        $temp = $item->belongsToManyInovasi()->where('inovasi_id', $inovasi->id)->first();
+                        $temp = $item
+                            ->belongsToManyInovasi()
+                            ->where('inovasi_id', $inovasi->id)
+                            ->first();
                     @endphp
-                    {{ $temp != null && $temp->pivot->waktu != null ? date('d-m-Y', strtotime($temp->pivot->waktu)) : '-'  }} <br><br>
+                    {{ $temp != null && $temp->pivot->waktu != null ? date('d-m-Y', strtotime($temp->pivot->waktu)) : '-' }}
+                    <br><br>
                 </td>
             </tr>
             @php
@@ -135,32 +154,39 @@
         <tr>
             <td>
                 <b>1.1{{ $counter }}. Anggaran</b><br>
-                @if ($inovasi->anggaran != null && file_exists(public_path('/file_anggaran/'.$inovasi->anggaran)))
-                    {{ asset('file_anggaran/'.$inovasi->anggaran) }}
-                @else - @endif <br><br>
+                @if ($inovasi->anggaran != null && file_exists(public_path('/file_anggaran/' . $inovasi->anggaran)))
+                    {{ asset('file_anggaran/' . $inovasi->anggaran) }}
+                @else
+                    -
+                @endif <br><br>
             </td>
         </tr>
         <tr>
             @php $counter++; @endphp
             <td>
                 <b>1.1{{ $counter }}. Profil Bisnis</b><br>
-                @if ($inovasi->profil_bisnis != null && file_exists(public_path('/file_profil_bisnis/'.$inovasi->profil_bisnis)))
-                    {{ asset('file_profil_bisnis/'.$inovasi->profil_bisnis) }}
-                @else - @endif <br><br>
+                @if ($inovasi->profil_bisnis != null && file_exists(public_path('/file_profil_bisnis/' . $inovasi->profil_bisnis)))
+                    {{ asset('file_profil_bisnis/' . $inovasi->profil_bisnis) }}
+                @else
+                    -
+                @endif <br><br>
             </td>
         </tr>
         <tr>
             @php $counter++; @endphp
             <td>
                 <b>1.1{{ $counter }}. Kematangan</b><br>
-                {{ $inovasi->indikator->sum('pivot.bobot_akhir') != null ? $inovasi->indikator->sum('pivot.bobot_akhir') : 0 }} <br><br>
+                {{ $inovasi->indikator->sum('pivot.bobot_akhir') != null ? $inovasi->indikator->sum('pivot.bobot_akhir') : 0 }}
+                <br><br>
             </td>
         </tr>
     </table>
     <br>
     <table>
         <tr>
-            <td><h2>2. INDIKATOR INOVASI</h2></td>
+            <td>
+                <h2>2. INDIKATOR INOVASI</h2>
+            </td>
         </tr>
     </table>
     <table class="border" style="margin-top: 0.5em; width: 100%">
@@ -177,12 +203,16 @@
                 <td>{{ $item->pivot->param_awal != null ? $item->pivot->param_awal : '-' }}</td>
                 <td>
                     @php
-                        $temp = $inovasi->upload()->where('indikator_id', $item->id)->where('file', '<>', null);
+                        $temp = $inovasi
+                            ->upload()
+                            ->where('indikator_id', $item->id)
+                            ->where('file', '<>', null);
                     @endphp
                     @if ($temp->count() > 0)
                         @foreach ($temp->get() as $upload)
-                            @if (file_exists(public_path('/indikator_uploads/'.$upload->file)))
-                                <a href="{{ asset('indikator_uploads/'.$upload->file) }}">File {{ $loop->iteration }}</a><br>
+                            @if (file_exists(public_path('/indikator_uploads/' . $upload->file)))
+                                <a href="{{ asset('indikator_uploads/' . $upload->file) }}">File
+                                    {{ $loop->iteration }}</a><br>
                             @endif
                         @endforeach
                     @else
@@ -193,4 +223,5 @@
         @endforeach
     </table>
 </body>
+
 </html>

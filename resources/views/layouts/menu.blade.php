@@ -131,7 +131,7 @@
         <li>
             <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
                 class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-light"></i> Inovasi Masyarakat
+                <i class="metismenu-icon pe-7s-light"></i> Inotek Awards
             </a>
         </li>
         <li class="app-sidebar__heading">Laporan</li>
