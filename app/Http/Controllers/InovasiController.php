@@ -32,7 +32,7 @@ class InovasiController extends Controller
             $label = "Daerah";
         } elseif ($area == 'masyarakat') {
             $inovasi = Inovasi::where('label', 0);
-            $label = "Masyarakat";
+            $label = "Awards";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             } 

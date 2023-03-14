@@ -32,7 +32,7 @@
                                             <span>
                                                 @php
                                                     $inov = $item->hasManyInovasi();
-                                                    if ($label == "Masyarakat") {
+                                                    if ($label == "Masyarakat" || $label == "Awards") {
                                                         $inov = $inov->where('label', 0);
                                                     }
                                                     elseif ($label == "Pemda") {

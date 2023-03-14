@@ -154,7 +154,7 @@ class Helper
     {
         switch ($id) {
             case 0:
-                return "Masyarakat";
+                return "Awards";
                 break;
             case 1:
                 return "Pemda";
