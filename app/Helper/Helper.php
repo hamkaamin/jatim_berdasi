@@ -106,12 +106,17 @@ class Helper
 
 	public static function save_file($file, $name, $folder, $existing)
 	{
-		if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
-			unlink(public_path('/'.$folder.'/'.$existing));
+		try {
+			if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
+				unlink(public_path('/'.$folder.'/'.$existing));
+			}
+			$nama_file = $name.'.'.$file->getClientOriginalExtension();
+			$file->move($folder, $nama_file);
+			return $nama_file;
+		} catch (\Throwable $th) {
+			$nama_file = "file_error";
+			return $nama_file;
 		}
-		$nama_file = $name.'.'.$file->getClientOriginalExtension();
-		$file->move($folder, $nama_file);
-		return $nama_file;
 	}
 
 	public static function getStatusInovasi($id)

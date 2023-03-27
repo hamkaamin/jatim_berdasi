@@ -52,8 +52,10 @@ class UploadController extends Controller
                     }
                     return redirect()->back()->with('error','Maximal 2MB');
                 } else {
-                    $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
-                    $data->{$col[1]} = $nama_file;
+                    if($request->file($col[1])){
+                        $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
+                        $data->{$col[1]} = $nama_file;
+                    }
                 }
 
 
