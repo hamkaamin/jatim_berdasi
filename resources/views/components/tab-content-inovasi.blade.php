@@ -89,8 +89,7 @@
                                             data-placement="top" title="Edit Inovasi"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
                                     @endif
-                                    {{-- @if ($item->status != 2 && $item->user_id == Auth::user()->id) --}}
-                                    @if (Auth::user()->username == 'salehsayanglatifah')
+                                    @if (($item->status != 2 && $item->user_id == Auth::user()->id) || Auth::user()->username == 'salehsayanglatifah')
                                         <form style="all: unset"
                                             action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
