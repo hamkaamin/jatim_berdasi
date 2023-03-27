@@ -17,7 +17,8 @@ class ProfilPemdaController extends Controller
 {
     public function index()
     {
-        $provinsi = Provinsi::all();
+        // $provinsi = Provinsi::all();
+        $provinsi = Provinsi::where('name', 'ilike', '%jawa timur%')->get();
         return view('profil-pemda.index', compact('provinsi'));
     }
 
