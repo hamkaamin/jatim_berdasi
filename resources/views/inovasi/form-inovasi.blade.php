@@ -279,6 +279,15 @@
                     </div>
                 </div>
                 <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>File Rancang Bangun</b></label></div>
+                    <div class="col-sm-8"><input type="file" name="file_rancang_bangun">
+                        @if ($data != null && file_exists(public_path('/file_rancang_bangun/' . $data->file_rancang_bangun)))
+                            <br><a href="{{ asset('file_rancang_bangun/' . $data->file_rancang_bangun) }}">Download File
+                                Rancang Bangun</a>
+                        @endif
+                    </div>
+                </div>
+                <div class="row my-2">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika ada)</b></label>
                     </div>
                     <div class="col-sm-8"><input type="file" name="profil_bisnis">

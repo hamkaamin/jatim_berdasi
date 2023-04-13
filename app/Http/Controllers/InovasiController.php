@@ -196,6 +196,11 @@ class InovasiController extends Controller
             $data->anggaran = $nama_file;
 		    $data->save();
         }
+        if ($request->hasFile('file_rancang_bangun')) {
+            $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
+            $data->file_rancang_bangun = $nama_file;
+		    $data->save();
+        }
         if ($request->hasFile('profil_bisnis')) {
             $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
             $data->profil_bisnis = $nama_file;
