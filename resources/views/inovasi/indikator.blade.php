@@ -11,16 +11,18 @@
 @endsection
 
 @section('buttons')
-    <a @if ($inovasi->label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
-        class="btn btn-light">Kembali</a>
-    @if ($inovasi->status == 0)
-        <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
-            @csrf
-            <input type="hidden" name="label" value="{{ $inovasi->label }}">
-            <button type="submit" class="btn btn-primary" name="status" value="1"
-                onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                Inovasi</button>
-        </form>
+    @if (env('APP_CLOSE_APP') == 1)
+        <a @if ($inovasi->label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
+            class="btn btn-light">Kembali</a>
+        @if ($inovasi->status == 0)
+            <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
+                @csrf
+                <input type="hidden" name="label" value="{{ $inovasi->label }}">
+                <button type="submit" class="btn btn-primary" name="status" value="1"
+                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                    Inovasi</button>
+            </form>
+        @endif
     @endif
     @if (Auth::user()->role == 2)
         <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
