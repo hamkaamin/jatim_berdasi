@@ -11,7 +11,7 @@
 @endsection
 
 @section('buttons')
-    @if (env('APP_CLOSE_APP') == 1)
+    @if (env('APP_CLOSE_APP') == 0)
         <a @if ($inovasi->label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
             class="btn btn-light">Kembali</a>
         @if ($inovasi->status == 0)
