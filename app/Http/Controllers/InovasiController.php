@@ -273,6 +273,7 @@ class InovasiController extends Controller
         if ($type == 'excel') {
             return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
         } elseif ($type == 'pdf') {
+           
             $pdf = PDF::loadview('export.inovasi-pdf',['inovasi' => $inovasi, 'kolom' => $kolom]);
             // return $pdf->stream();
     	    return $pdf->download('inovasi-'.$inovasi->kode.'.pdf');
