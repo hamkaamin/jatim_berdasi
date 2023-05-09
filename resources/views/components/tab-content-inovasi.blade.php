@@ -10,6 +10,7 @@
                             <th style="min-width: 100px">Dibuat Oleh</th>
                             <th style="min-width: 200px">Nama</th>
                             <th>Tahapan</th>
+                            <th>Kategori</th>
                             <th style="width: 100px; min-width: 100px">Status</th>
                             <th>Keterangan</th>
                             @foreach ($kolom as $thp)
@@ -47,6 +48,7 @@
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ $item->belongsToTahapan->nama }}</td>
+                                <td>{{ $item->kategori->nama ?? ' ' }}</td>
                                 <td>{!! Helper::getStatusInovasi($item->status) !!}</td>
                                 <td>
                                     @if ($item->keterangan != null)
@@ -89,7 +91,10 @@
                                             data-placement="top" title="Edit Inovasi"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
                                     @endif
-                                    @if (($item->status != 2 && $item->user_id == Auth::user()->id) || Auth::user()->username == 'salehsayanglatifah' || Auth::user()->username == 'pemdkotkabatest')
+                                    @if (
+                                        ($item->status != 2 && $item->user_id == Auth::user()->id) ||
+                                            Auth::user()->username == 'salehsayanglatifah' ||
+                                            Auth::user()->username == 'pemdkotkabatest')
                                         <form style="all: unset"
                                             action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
