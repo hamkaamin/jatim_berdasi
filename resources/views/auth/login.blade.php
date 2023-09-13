@@ -17,68 +17,15 @@
 </head>
 
 <body
-    style="background-image: url({{ asset('background-login.png') }}); background-repeat: no-repeat; background-size: cover; height: 100vh;">
+    style="background-image: url({{ asset('logo-login.jpg') }}); background-repeat: no-repeat; background-size: cover; height: 100vh;">
     <div class="container h-100 d-flex align-items-center justify-content-center">
-        <div class="row w-75">
-            <div class="col-12 d-flex justify-content-center">
-                {{-- <div class="row w-100 mb-4">
-
-                    <div class="col mx-4" style="border-radius: 10%">
-                        <a href="https://indeks.inovasi.litbang.kemendagri.go.id/panduan" class="text-dark">
-                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
-                                alt="">
-                            <h6>Manual Book</h6>
-                        </a>
-                    </div>
-                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
-                        <a href="{{ asset('user-manual/Pengajuan Inovasi Daerah.mp4') }}" target="_blank"
-                            class="text-dark">
-                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
-                                alt="">
-                            <h6>Video Panduan</h6>
-                        </a>
-                    </div>
-                    <div class="col mx-4" style="border-radius: 10%">
-                        <a href="https://indeks.inovasi.litbang.kemendagri.go.id/panduan" class="text-dark">
-                            <img src="{{ asset('manual-book.png') }}" style="max-width: 100%; max-height: 100px"
-                                alt="">
-                            <h6>Manual Book</h6>
-                        </a>
-                    </div>
-                </div> --}}
-                {{-- <div class="row w-100 mb-4">
-                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%;">
-                        <a href="/" class="text-dark">
-                            <img class="" src="{{ asset('pengumuman.png') }}"
-                                style="max-width: 100%; max-height: 100px" alt="">
-                            <h6>Pengumuman</h6>
-                        </a>
-                    </div>
-                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
-                        <a href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen" class="text-dark">
-                            <img src="{{ asset('buku-petunjuk-teknis.png') }}"
-                                style="max-width: 100%; max-height: 100px" alt="">
-                            <h6>Petunjuk Teknis</h6>
-                        </a>
-                    </div>
-                    <div class="col mx-4 bg-white text-center box-shadow" style="border-radius: 10%">
-                        <a href="{{ route('login') }}" class="text-dark">
-                            <img src="{{ asset('login.png') }}" style="max-width: 100%; max-height: 100px"
-                                alt="">
-                            <h6>Login Aplikasi</h6>
-                        </a>
-                    </div>
-                </div> --}}
-            </div>
-            <div class="col-12">
-                <div class="card box-shadow" style="border-radius: 1em">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card box-shadow" style="border-radius: 1em;background-color: rgba(255,255,255,0.4)">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-sm-6 d-flex align-items-center">
-                                <img src="{{ asset('login.png') }}" style="max-width: 100%" alt="">
-                            </div>
-                            <div class="col-sm-6">
-                                <h3>Sign In</h3>
+                            <div class="col-sm-12">
+                                <p style="text-align: center; font-size: 14pt"><b>Log In</b></p>
                                 <hr>
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
