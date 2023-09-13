@@ -17,7 +17,7 @@
 </head>
 
 <body
-    style="background-image: url({{ asset('logo-login.jpg') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
+    style="background-image: url({{ asset('login-inovasi-navy.png') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row">
             <div class="col-lg-12">
