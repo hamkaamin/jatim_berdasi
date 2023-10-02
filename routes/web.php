@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
     Route::post('/change-area', [App\Http\Controllers\HomeController::class, 'change_area'])->name('change-area');
