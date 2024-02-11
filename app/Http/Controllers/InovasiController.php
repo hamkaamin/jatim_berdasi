@@ -237,20 +237,20 @@ class InovasiController extends Controller
 
     public function index_indikator(Request $request)
     {
-        if (count($request->input()) == 2 && isset($request->id)) {
+        // if (count($request->input()) == 2 && isset($request->id)) {
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
             if ($inovasi->indikator()->count() == 0) {
-                $indikator = Indikator::where('label', 0)->get();
+                $indikator = Indikator::where('label', 0)->where('kategori_id',$inovasi->kategori_id)->get();
                 foreach ($indikator as $item) {
-                    $inovasi->indikator()->attach($item->id);
+                    $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
                 }
             }
             $data = $inovasi->indikator()->get();
             return view('inovasi.indikator', compact('data', 'inovasi'));
-        } else {
-            return redirect()->back();
-        }
+        // } else {
+        //     return redirect()->back();
+        // }
     }
 
     public function index_upload(Request $request)
