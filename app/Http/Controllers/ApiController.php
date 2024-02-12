@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Opd;
+use Exception;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -13,7 +14,7 @@ class ApiController extends Controller
     }
     public function all_opd()
     {
-
+        try{
         $opd = Opd::all();
 
         return response()->json([
@@ -21,6 +22,13 @@ class ApiController extends Controller
             'message' => "All OPD!",
             'opd' => $opd
         ], 200);
+    }
+        catch (Exception $error) {
+            return response()->json([
+                'status' => true,
+                'message' => $error
+            ], 500);
+        }
         
     }
 }
