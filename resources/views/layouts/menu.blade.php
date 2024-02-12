@@ -121,12 +121,12 @@
         @endif
         <li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
         @if (Auth::user()->role != 6)
-            <li>
+            {{-- <li>
                 <a href="{{ route('inovasi.index', ['area' => 'pemda']) }}"
                     class="{{ request()->is('inovasi/pemda') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon pe-7s-light"></i> Inovasi Pemda
                 </a>
-            </li>
+            </li> --}}
         @endif
         <li>
             <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"

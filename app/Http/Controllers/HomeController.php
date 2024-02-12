@@ -26,6 +26,8 @@ use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
 use App\Models\KategoriInvoasi;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -314,4 +316,68 @@ class HomeController extends Controller
             return Excel::download(new CompileInovasiExport($data, $kolom), 'inovasi-kota-kabupaten-'.$type.'-'.uniqid().'.xlsx');
         }
     }
+    
+    public function get_all_opd(Request $request)
+    {
+        $client = new Client();
+        $username = 'saleh';
+        $password = 'salehsayanglatifah';
+        // Authenticate against the login endpoint
+        $response = $client->post('http://127.0.0.1:8003/login', [
+            'json' => [
+                'username' => $username,
+                'password' => $password
+            ]
+        ]);
+        dd($response);
+        $data = json_decode($response->getBody(), true);
+
+        // Extract the token from the response
+        $token = $data['token'];
+
+
+ 
+        $response = $client->post('http://127.0.0.1:8003/api/all_opd', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$token
+            ]
+        ]);
+    
+        $responsPembayaran = json_decode($response->getBody(), true);
+    
+        return response()->json($responsPembayaran);
+    }
+
+    public function get_opd_client()
+    {
+        $client = new \GuzzleHttp\Client(); 
+    try {
+        $response = $client->request('POST', 'http://127.0.0.1:8008/api/login', [
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ], 
+            'body' => json_encode([
+                'username' => 'superadmin',
+                'password' => 'salehsayanglatifah',
+            ])
+        ]);
+        
+        $respon = json_decode($response->getBody()->getContents(), true);
+        return $respon;
+        } catch (RequestException $e) {
+            // Handle specific request exceptions
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                echo $response->getStatusCode(); // HTTP status code
+                echo $response->getBody();       // Response body
+            } else {
+                echo $e->getMessage(); // No response received
+            }
+        } catch (\Throwable $th) {
+            // Catch any other exceptions
+            return $th;
+        }
+    }
+
+    
 }

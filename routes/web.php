@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 // Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_opd_client'])->name('get_all_opd');
+Route::get('/get_all_opds', [App\Http\Controllers\HomeController::class, 'get_opd_client'])->name('get_all_opds');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
