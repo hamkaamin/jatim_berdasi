@@ -40,7 +40,7 @@
                             } else {
                                 $data = $inovasi;
                             }
-                            
+
                         @endphp
                         @foreach ($data as $item)
                             <tr>
@@ -86,7 +86,7 @@
                                         data-placement="top" title="Upload Indikator"><i
                                             class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
                                     @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
-                                        <a href="{{ route('inovasi.edit', ['id' => $item->id]) }}"
+                                        <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id)]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Inovasi"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>

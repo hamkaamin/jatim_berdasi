@@ -320,45 +320,44 @@ class HomeController extends Controller
     public function get_all_opd(Request $request)
     {
         $client = new Client();
-        $username = 'saleh';
-        $password = 'salehsayanglatifah';
+        $username = 'superadmin';
+        $password = 'superadmin';
         // Authenticate against the login endpoint
-        $response = $client->post('http://127.0.0.1:8003/login', [
+        $response = $client->post('http://jatim-inovasi.prototypetim.com/api/login', [
             'json' => [
                 'username' => $username,
                 'password' => $password
             ]
         ]);
-        dd($response);
         $data = json_decode($response->getBody(), true);
 
         // Extract the token from the response
-        $token = $data['token'];
+        $token = $data['authorisation']['token'];
 
 
  
-        $response = $client->post('http://127.0.0.1:8003/api/all_opd', [
+        $respon = $client->get('http://jatim-inovasi.prototypetim.com/api/all_opd', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token
             ]
         ]);
     
-        $responsPembayaran = json_decode($response->getBody(), true);
+        $respon_opd = json_decode($respon->getBody(), true);
     
-        return response()->json($responsPembayaran);
+        return response()->json($respon_opd);
     }
 
     public function get_opd_client()
     {
         $client = new \GuzzleHttp\Client(); 
     try {
-        $response = $client->request('POST', 'http://127.0.0.1:8008/api/login', [
+        $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/login', [
             'headers' => [
                 'Content-Type' => 'application/json'
             ], 
             'body' => json_encode([
                 'username' => 'superadmin',
-                'password' => 'salehsayanglatifah',
+                'password' => 'superadmin',
             ])
         ]);
         

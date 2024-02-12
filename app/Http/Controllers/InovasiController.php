@@ -18,6 +18,7 @@ use App\Models\Urusan;
 use App\Exports\InovasiExport;
 use App\Models\KategoriInvoasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class InovasiController extends Controller
 {
@@ -81,7 +82,11 @@ class InovasiController extends Controller
                 $label = $request->label;
             }
             if ($request->id != 0) {
-                $data = Inovasi::findOrFail($request->id);
+                $id = decrypt($request->id);
+                $data = Inovasi::findOrFail($id);
+                if($data->user_id != Auth::user()->id){
+                    return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
+                }
                 $label = $data->label;
             }
             return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
@@ -102,6 +107,26 @@ class InovasiController extends Controller
 
     public function save(Request $request)
     {
+        $validator = Validator::make($request->all(), [ 
+            'file_rancang_bangun' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048', 
+            'profil_bisnis' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
+            'anggaran' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
+        ], [  
+            'file_rancang_bangun.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
+            'file_rancang_bangun.max' => 'File maksimal berukuran 2MB', 
+            'profil_bisnis.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
+            'profil_bisnis.max' => 'File maksimal berukuran 2MB', 
+            'anggaran.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
+            'anggaran.max' => 'File maksimal berukuran 2MB', 
+        ]);
+        if ($validator->fails()) {
+            $msg = "";
+            foreach ($validator->messages()->all() as $message) {
+                $msg .= $message . ". ";
+            }
+            return redirect()->back()->with('error', $msg)->withInput($request->input());
+
+        } else {
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         $tempArr = [];
         if ($request->id == 0) {
@@ -208,6 +233,7 @@ class InovasiController extends Controller
         }
         $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'masyarakat']);
         return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
+    }
     }
 
     public function update(Request $request)

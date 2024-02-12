@@ -275,7 +275,7 @@
                     @endif
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>{{ $anggaran }}</b></label></div>
-                        <div class="col-sm-8"><input type="file" name="anggaran">
+                        <div class="col-sm-8"><input type="file" name="anggaran" accept=".jpg,.jpeg,.png,.pdf">
                             @if ($data != null && file_exists(public_path('/file_anggaran/' . $data->anggaran)))
                                 <br><a href="{{ asset('file_anggaran/' . $data->anggaran) }}">Download File Anggaran</a>
                             @endif
@@ -283,7 +283,8 @@
                     </div>
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>File Rancang Bangun</b></label></div>
-                        <div class="col-sm-8"><input type="file" name="file_rancang_bangun">
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf"
+                                name="file_rancang_bangun">
                             @if ($data != null && file_exists(public_path('/file_rancang_bangun/' . $data->file_rancang_bangun)))
                                 <br><a href="{{ asset('file_rancang_bangun/' . $data->file_rancang_bangun) }}">Download
                                     File
@@ -295,7 +296,7 @@
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika
                                     ada)</b></label>
                         </div>
-                        <div class="col-sm-8"><input type="file" name="profil_bisnis">
+                        <div class="col-sm-8"><input accept=".jpg,.jpeg,.png,.pdf" type="file" name="profil_bisnis">
                             @if ($data != null && file_exists(public_path('/file_profil_bisnis/' . $data->profil_bisnis)))
                                 <br><a href="{{ asset('file_profil_bisnis/' . $data->profil_bisnis) }}">Download File
                                     Profil
