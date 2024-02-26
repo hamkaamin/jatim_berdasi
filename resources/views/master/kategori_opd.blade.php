@@ -111,9 +111,8 @@
                                                         <button class="btn m-1 btn-block btn-sm btn-success" type="submit"
                                                             onclick="if(!confirm('Apakah anda ingin mengubah data ini menjadi No?')){return false;}">Yes</button>
                                                     @else
-                                                        <button type="submit"
-                                                            onclick="if(!confirm('Apakah anda ingin mengubah data ini menjadi Yes?')){return false;}"><span
-                                                                class="btn m-1 btn-block btn-sm btn-danger">No</span></button>
+                                                        <button class="btn m-1 btn-block btn-sm btn-danger" type="submit"
+                                                            onclick="if(!confirm('Apakah anda ingin mengubah data ini menjadi Yes?')){return false;}">No</button>
                                                     @endif
                                                 </form>
                                             </td>
