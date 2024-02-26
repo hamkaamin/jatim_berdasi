@@ -126,6 +126,9 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 
+    Route::prefix('bank_data')->name('bank_data.')->group(function () {
+        Route::get('/', [App\Http\Controllers\InovasiController::class, 'bank_data'])->name('index');
+    });
     Route::prefix('inovasi')->name('inovasi.')->group(function () {
         Route::get('/{area}', [App\Http\Controllers\InovasiController::class, 'index'])->name('index');
         Route::get('/filter/area', [App\Http\Controllers\InovasiController::class, 'index'])->name('filter-area');

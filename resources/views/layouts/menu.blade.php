@@ -184,6 +184,13 @@
                 <i class="metismenu-icon pe-7s-graph1"></i> Rekap Berdasarkan Inisiator
             </a>
         </li>
+
+        <li>
+            <a href="{{ route('bank_data.index') }}"
+                class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-light"></i> Bank Data
+            </a>
+        </li>
         @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
             <li class="app-sidebar__heading">Konfigurasi</li>
             <li>
@@ -194,7 +201,7 @@
             </li>
             <li>
                 <a href="{{ route('opd.index') }}" class="{{ Request::routeIs('opd.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon pe-7s-note2"></i> Daftar OPD
+                    <i class="metismenu-icon pe-7s-note2"></i> Daftar PD
                 </a>
             </li>
             {{-- <li>

@@ -80,6 +80,12 @@ class InovasiController extends Controller
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
 
+    public function bank_data(Request $request)
+    {
+        $inovasi = Inovasi::where('status',2)->get();
+        return view('inovasi.bank_data', compact('inovasi'));
+    }
+
     public function edit(Request $request)
     { 
         if (count($request->input()) <= 3 && isset($request->id)) {
