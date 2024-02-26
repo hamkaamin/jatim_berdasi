@@ -6,7 +6,7 @@ use Auth;
 use Config;
 use App\Models\Indikator;
 use App\Models\Inovasi;
-use App\Models\KategoriInvoasi;
+use App\Models\KategoriInovasi;
 use App\Models\Parameter;
 use Illuminate\Http\Request;
 
@@ -16,7 +16,7 @@ class IndikatorController extends Controller
     {
         $indikator_inovasi = Indikator::where('label', 0)->get();
         $indikator_provinsi = Indikator::where('label', 1)->get();
-        $data_kategori = KategoriInvoasi::all();
+        $data_kategori = KategoriInovasi::all();
         return view('master.indikator', compact('indikator_inovasi', 'indikator_provinsi','data_kategori'));
     }
 

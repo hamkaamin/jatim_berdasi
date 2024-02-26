@@ -34,6 +34,11 @@
                                         ->hasManyInovasi()
                                         ->where('user_id', Auth::user()->id)
                                         ->get();
+                                } elseif (Auth::user()->role == 5) {
+                                    $data = $tahapan
+                                        ->hasManyInovasi()
+                                        ->where('kota_id', Auth::user()->regency_id)
+                                        ->get();
                                 } else {
                                     $data = $tahapan->hasManyInovasi()->get();
                                 }

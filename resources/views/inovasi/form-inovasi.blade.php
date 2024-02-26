@@ -94,16 +94,31 @@
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
                             <div class="row">
-                                @foreach ($kategori as $item)
-                                    <div class="col-6 d-flex align-items-center">
-                                        <input type="radio" id="kategori_{{ $item->id }}"
-                                            value="{{ $item->id }}" name="kategori_id"
-                                            @if (old('kategori_id') == $item->id ||
-                                                    ($data == null && $loop->iteration == 1) ||
-                                                    ($data != null && $data->kategori_id == $item->id)) checked @endif><label class="pb-0 mb-0 ml-2"
-                                            for="kategori_{{ $item->id }}">{{ $item->nama }}</label>
-                                    </div>
-                                @endforeach
+                                @if (Auth::user()->role == 5)
+                                    @foreach ($kategori as $item)
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input type="radio" id="kategori_{{ $item->id }}"
+                                                value="{{ $item->id }}" name="kategori_id"
+                                                @if (old('kategori_id') == $item->id ||
+                                                        ($data == null && $loop->iteration == 1) ||
+                                                        ($data != null && $data->kategori_id == $item->id)) checked @endif><label
+                                                class="pb-0 mb-0 ml-2"
+                                                for="kategori_{{ $item->id }}">{{ $item->kategori->nama }}</label>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @foreach ($kategori as $item)
+                                        <div class="col-6 d-flex align-items-center">
+                                            <input type="radio" id="kategori_{{ $item->id }}"
+                                                value="{{ $item->id }}" name="kategori_id"
+                                                @if (old('kategori_id') == $item->id ||
+                                                        ($data == null && $loop->iteration == 1) ||
+                                                        ($data != null && $data->kategori_id == $item->id)) checked @endif><label
+                                                class="pb-0 mb-0 ml-2"
+                                                for="kategori_{{ $item->id }}">{{ $item->nama }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -152,7 +167,8 @@
                             <select name="bentuk_id" class="form-control">
                                 <option value="" selected disabled>-- Pilih Salah Satu --</option>
                                 @foreach ($bentuk as $item)
-                                    <option value="{{ $item->id }}" @if (($data != null && $data->bentuk_id == $item->id) || old('bentuk_id') == $item->id) selected @endif>
+                                    <option value="{{ $item->id }}"
+                                        @if (($data != null && $data->bentuk_id == $item->id) || old('bentuk_id') == $item->id) selected @endif>
                                         {{ $item->nama }}</option>
                                 @endforeach
                             </select>
@@ -218,7 +234,11 @@
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Rancang bangun dan pokok perubahan yang
                                     dilakukan</b><span class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
-                            <textarea name="rancang_bangun" class="ck-editor" required id="editor1">
+                            {{-- <textarea id="inputText" oninput="countWords()" rows="4" cols="50"></textarea> --}}
+
+
+
+                            <textarea name="rancang_bangun" oninput="countWords()" class="form-control" required id="inputText">
 @if ($data != null)
 {!! $data->rancang_bangun !!}
 @else
@@ -226,6 +246,9 @@
 @endif
 </textarea>
                             <b><span class="text-danger"> * Minimal 300 Kata</span></b>
+                            <p>Jumlah Kata: <span id="wordCount">0</span></p>
+                            <p>Kurang Kata: <span id="wordCountLess">300</span></p>
+                            <p id="warningMessage" style="color: red; display: none;">Minimum 300 words required.</p>
                         </div>
                     </div>
                     <div class="row my-2">
@@ -326,7 +349,26 @@
         </h3>
     @endif
 @endsection
+<script>
+    function countWords() {
+        var inputElement = document.getElementById("inputText");
+        var wordCountElement = document.getElementById("wordCount");
+        var wordCountLessElement = document.getElementById("wordCountLess");
+        var warningMessage = document.getElementById("warningMessage");
 
+        var text = inputElement.value.trim();
+        var words = text.split(/\s+/);
+
+        if (words.length < 300) {
+            warningMessage.style.display = "block";
+        } else {
+            warningMessage.style.display = "none";
+        }
+
+        wordCountElement.textContent = words.length;
+        wordCountLessElement.textContent = 300 - words.length;
+    }
+</script>
 @section('script')
     @include('script.select2-multiple')
     @include('script.ck-editor')

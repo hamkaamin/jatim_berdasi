@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\KategoriOPDController;
+use App\Http\Controllers\KategoriTahapanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_all_opd'])->name('get_all_opd');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+    Route::get('/insert_user_opd/{kota}', [App\Http\Controllers\HomeController::class, 'insert_user_opd'])->name('insert_user_opd');
+    Route::get('/insert_all_opd_kategori', [App\Http\Controllers\HomeController::class, 'insert_all_opd_kategori'])->name('insert_all_opd_kategori');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
@@ -49,6 +53,17 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [App\Http\Controllers\TahapanController::class, 'index'])->name('index');
                 Route::post('/', [App\Http\Controllers\TahapanController::class, 'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\TahapanController::class, 'delete'])->name('delete');
+            });
+            Route::prefix('kategoritahapan')->name('kategoritahapan.')->group(function () {
+                Route::get('/', [KategoriTahapanController::class, 'index'])->name('index');
+                Route::post('/', [KategoriTahapanController::class, 'save'])->name('save');
+                Route::post('/delete', [KategoriTahapanController::class, 'delete'])->name('delete');
+            });
+            Route::prefix('kategoriopd')->name('kategoriopd.')->group(function () {
+                Route::get('/', [KategoriOPDController::class, 'index'])->name('index');
+                Route::post('/', [KategoriOPDController::class, 'save'])->name('save');
+                Route::post('/switch', [KategoriOPDController::class, 'switch'])->name('switch');
+                Route::post('/delete', [KategoriOPDController::class, 'delete'])->name('delete');
             });
             Route::prefix('inisiator')->name('inisiator.')->group(function () {
                 Route::get('/', [App\Http\Controllers\InisiatorController::class, 'index'])->name('index');

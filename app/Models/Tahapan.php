@@ -30,4 +30,9 @@ class Tahapan extends Model
     {
         return $this->belongsToMany('App\Models\Inovasi', 'tahapan_inovasi', 'tahapan_id', 'inovasi_id')->withPivot('waktu');
     }
+
+    public function kategoritahapan()
+    {
+        return $this->hasMany('App\Models\KategoriTahapan', 'tahapan_id', 'id');
+    }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKategoriInvoasisTable extends Migration
+class AddKategoriColumn extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateKategoriInvoasisTable extends Migration
      */
     public function up()
     {
-        Schema::create('kategori_inovasis', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama')->nullable();
-            $table->timestamps();
+        Schema::table('kategori_inovasis', function (Blueprint $table) {
+            $table->integer('kode')->nullable();
+            $table->integer('is_aktif')->defailt(0)->nullable();
         });
     }
 
@@ -27,6 +26,6 @@ class CreateKategoriInvoasisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kategori_invoasis');
+        //
     }
 }

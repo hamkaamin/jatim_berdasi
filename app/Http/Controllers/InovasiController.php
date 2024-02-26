@@ -16,7 +16,8 @@ use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
-use App\Models\KategoriInvoasi;
+use App\Models\KategoriInovasi;
+use App\Models\KategoriOpd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -40,6 +41,19 @@ class InovasiController extends Controller
         } elseif ($area == 'pemda') {
             $inovasi = Inovasi::where('label', 1);
             $label = "Pemda";
+            if (Auth::user()->role == 2) {
+                $inovasi = $inovasi->where('status', '<>', 0);
+            }
+        } elseif($area == 'kota'){
+            $inovasi = Inovasi::where('label', 2)->where('kota_id',Auth::user()->regency_id);
+            $label = "Kota / Kab";
+            if (Auth::user()->role == 2) {
+                $inovasi = $inovasi->where('status', '<>', 0);
+            }
+        }
+        elseif($area == 'provinsi'){
+            $inovasi = Inovasi::where('label', 2)->where('provinsi_id',Auth::user()->province_id);
+            $label = "Provinsi";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
@@ -76,7 +90,10 @@ class InovasiController extends Controller
             $jenis = Jenis::all();
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
-            $kategori = KategoriInvoasi::all();
+            $kategori = KategoriInovasi::all();
+            if(Auth::user()->role == 4 || Auth::user()->role == 5){
+                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1)->get();
+            }
             $label = 0;
             if (isset($request->label)) {
                 $label = $request->label;

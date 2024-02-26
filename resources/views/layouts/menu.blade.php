@@ -25,6 +25,12 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('master.kategoritahapan.index') }}"
+                class="{{ Request::routeIs('master.kategoritahapan.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Kategori Per Tahapan Inovasi
+            </a>
+        </li>
+        <li>
             <a href="{{ route('master.inisiator.index') }}"
                 class="{{ Request::routeIs('master.inisiator.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> Inisiator Inovasi
@@ -78,6 +84,13 @@
                 <i class="metismenu-icon pe-7s-note2"></i> Daftar OPD
             </a>
         </li>
+
+        <li>
+            <a href="{{ route('master.kategoriopd.index') }}"
+                class="{{ Request::routeIs('master.kategoriopd.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Kategori OPD
+            </a>
+        </li>
         <li>
             <a href="{{ route('pengguna.index') }}" class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-users"></i> Pengguna
@@ -110,12 +123,24 @@
             </li>
         @endif
         @if (Auth::user()->role != 4)
-            <li class="app-sidebar__heading">Database Inovasi Daerah</li>
+            <li class="app-sidebar__heading">Data Inovasi Daerah</li>
 
             <li>
                 <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
                     class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                    class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                    class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
                 </a>
             </li>
         @endif

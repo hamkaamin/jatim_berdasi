@@ -25,7 +25,9 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
-use App\Models\KategoriInvoasi;
+use App\Models\KategoriInovasi;
+use App\Models\KategoriOpd;
+use App\Models\KategoriTahapan;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
@@ -174,6 +176,22 @@ class HomeController extends Controller
                     'msg' => view('modal.form-tahapan', compact('data', 'urutan'))->render()
                 ), 200);
                 break;
+            case "kategori_tahapan":
+                $data = ($request->id == 0) ? null : KategoriTahapan::findOrFail($request->id);
+                $kategori = KategoriInovasi::all();
+                $tahapan = Tahapan::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-kategori_tahapan', compact('data', 'kategori','tahapan'))->render()
+                ), 200);
+                break;
+            case "kategori_opd":
+                $data = ($request->id == 0) ? null : KategoriOpd::findOrFail($request->id);
+                $kategori = KategoriInovasi::all();
+                $opd = Opd::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-kategori_opd', compact('data', 'kategori','opd'))->render()
+                ), 200);
+                break;
 			case "inisiator":
                 $data = ($request->id == 0) ? null : Inisiator::findOrFail($request->id);
                 return response()->json(array(
@@ -279,7 +297,7 @@ class HomeController extends Controller
                 ), 200);
                 break;
             case "kategori":
-				$data = ($request->id == 0) ? null : KategoriInvoasi::findOrFail($request->id);
+				$data = ($request->id == 0) ? null : KategoriInovasi::findOrFail($request->id);
                 return response()->json(array(
 					'msg' => view('modal.form-kategori', compact('data'))->render()
                 ), 200);
@@ -375,6 +393,44 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
             // Catch any other exceptions
             return $th;
+        }
+    }
+
+    public function insert_user_opd($kota){
+        if($kota == 'bangkalan'){
+            $opd = Opd::where('kabkota_id',3526)->get();
+            foreach($opd as $r){
+                if($r->kode_opd != NULL || !empty($r->kode_opd)){
+                    $users = User::where('username',$r->kode_opd)->first();
+                    if($users == NULL){
+                        $user = new User();
+                        $user->name = $r->nama;
+                        $user->username = $r->kode_opd;
+                        $user->opd_id = $r->id;
+                        $user->role = 5;
+                        $user->regency_id = 3526;
+                        $user->password = bcrypt($r->kode_opd);
+                        $user->save();
+                    }
+                }
+                // dd($user);
+                }
+        }
+    }
+
+    public function insert_all_opd_kategori()
+    {
+        $kategori = KategoriInovasi::all();
+        $opd = Opd::all();
+        foreach($kategori as $item)
+        {
+            foreach($opd as $data)
+            {
+                $kategori_opd = new KategoriOpd();
+                $kategori_opd->opd_id = $data->id;
+                $kategori_opd->kategori_id = $item->id;
+                $kategori_opd->save();
+            }
         }
     }
 
