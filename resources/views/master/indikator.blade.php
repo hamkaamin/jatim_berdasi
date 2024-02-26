@@ -104,7 +104,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($indikator_provinsi as $item)
+                        @foreach ($indikator_inovasi as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }} @if ($item->wajib == 1)
