@@ -236,8 +236,9 @@ class HomeController extends Controller
 				break;
 			case "indikator":
 				$data = ($request->id == 0) ? null : Indikator::findOrFail($request->id);
+                $kategori = KategoriInovasi::all();
 				return response()->json(array(
-					'msg' => view('modal.form-indikator', compact('data'))->render()
+					'msg' => view('modal.form-indikator', compact('data','kategori'))->render()
 				), 200);
 				break;
 			case "parameter":

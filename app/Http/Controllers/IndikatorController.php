@@ -15,6 +15,7 @@ class IndikatorController extends Controller
     public function index()
     {
         $indikator_inovasi = Indikator::where('label', 0)->get();
+        // dd($indikator_inovasi);
         $indikator_provinsi = Indikator::where('label', 1)->get();
         $data_kategori = KategoriInovasi::all();
         return view('master.indikator', compact('indikator_inovasi', 'indikator_provinsi','data_kategori'));
@@ -33,6 +34,7 @@ class IndikatorController extends Controller
         $data->tipe_file = $request->tipe_file;
         $data->wajib = $request->wajib;
         $data->label = $request->label;
+        $data->kategori_id = $request->kategori_id;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
