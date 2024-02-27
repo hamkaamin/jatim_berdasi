@@ -140,6 +140,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/form/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
         Route::get('/export/{type}', [App\Http\Controllers\InovasiController::class, 'export'])->name('export');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
+        Route::post('/show_tahapan', [App\Http\Controllers\InovasiController::class, 'show_tahapan'])->name('show_tahapan');
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
 

@@ -18,6 +18,7 @@ use App\Models\Urusan;
 use App\Exports\InovasiExport;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
+use App\Models\KategoriTahapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -78,6 +79,18 @@ class InovasiController extends Controller
         }
         $inovasi = $inovasi->get();
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+    }
+
+    public function show_tahapan(Request $request)
+    {
+        $data = KategoriTahapan::where('kategori_id',$request->kategori_id)->get();
+        $str='';
+        $str .= '<option value="0"> -- Tampilkan Semua --  </option>';
+        foreach($data as $item){
+           $str .= '<option value="'.$item->tahapan->id.'"> '.$item->tahapan->nama.''.'</option>';
+        }
+        return $str;
+        // return view('inovasi.show_tahapan',compact($data));
     }
 
     public function bank_data(Request $request)
@@ -309,7 +322,7 @@ class InovasiController extends Controller
 
     public function index_upload(Request $request)
     {  
-        if (count($request->input()) == 3 && isset($request->id) && isset($request->indikator)) {
+        if (isset($request->indikator)) {
             $data = Upload::where('inovasi_id', $request->id)->where('indikator_id', $request->indikator)->get();
             $inovasi = Inovasi::findOrFail($request->id);
             $indikator = Indikator::findOrFail($request->indikator);

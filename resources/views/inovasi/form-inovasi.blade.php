@@ -32,7 +32,7 @@
         <div class="row">
             <div class="col">
                 <form action="{{ route('inovasi.save', ['id' => $data != null ? $data->id : 0]) }}" method="post"
-                    enctype="multipart/form-data">
+                    enctype="multipart/form-data" id="form-edit-inovasi">
                     <input type="hidden" name="label" value="{{ $label }}">
                     @csrf
                     @php
@@ -70,42 +70,31 @@
                         <div class="col-sm-8"><input type="text" required name="nama" class="form-control"
                                 value="{{ $data != null ? $data->nama : old('nama') }}"></div>
                     </div>
-                    <div class="row my-3">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Tahapan Inovasi</b> <span
-                                    class="text-danger">*</span></label></div>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                @foreach ($tahapan as $item)
-                                    <div class="col-6 d-flex align-items-center">
-                                        <input type="radio" id="tahapan_{{ $item->id }}" value="{{ $item->id }}"
-                                            name="tahapan_id" @if (old('tahapan_id') == $item->id ||
-                                                    ($data == null && $loop->iteration == 1) ||
-                                                    ($data != null && $data->tahapan_id == $item->id)) checked @endif><label
-                                            class="pb-0 mb-0 ml-2"
-                                            for="tahapan_{{ $item->id }}">{{ $item->nama }}</label>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row my-3">
+                    <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b> <span
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
                             <div class="row">
                                 @if (Auth::user()->role == 5)
-                                    @foreach ($kategori as $item)
-                                        <div class="col-6 d-flex align-items-center">
-                                            <input type="radio" id="kategori_{{ $item->id }}"
-                                                value="{{ $item->kategori->id }}" name="kategori_id"
-                                                @if (old('kategori_id') == $item->id ||
-                                                        ($data == null && $loop->iteration == 1) ||
-                                                        ($data != null && $data->kategori_id == $item->id)) checked @endif><label
-                                                class="pb-0 mb-0 ml-2"
-                                                for="kategori_{{ $item->id }}">{{ $item->kategori->nama }}</label>
-                                        </div>
-                                    @endforeach
+                                    {{-- @foreach ($kategori as $item) --}}
+                                    <div class="col-12 d-flex align-items-center">
+                                        {{-- <input type="radio" id="kategori_{{ $item->id }}"
+                                            value="{{ $item->kategori->id }}" name="kategori_id"
+                                            @if (old('kategori_id') == $item->id || ($data == null && $loop->iteration == 1) || ($data != null && $data->kategori_id == $item->id))  @endif><label class="pb-0 mb-0 ml-2"
+                                            for="kategori_{{ $item->id }}"
+                                            onclick="div_tahapan('{{ csrf_token() }}','#div_tahapan','#form-edit-inovasi')">{{ $item->kategori->nama }}</label> --}}
+                                        <select name="kategori_id" id="kategori_id" class="form-control" required
+                                            onchange="div_tahapan('{{ csrf_token() }}','#div_tahapan','#form-edit-inovasi')">
+                                            <option value="">-- Pilih Kategori --</option>
+                                            @foreach ($kategori as $item)
+                                                <option value="{{ $item->kategori->id }}">
+                                                    {{ $item->kategori->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    {{-- @endforeach --}}
                                 @else
                                     @foreach ($kategori as $item)
                                         <div class="col-6 d-flex align-items-center">
@@ -113,8 +102,8 @@
                                                 value="{{ $item->id }}" name="kategori_id"
                                                 @if (old('kategori_id') == $item->id ||
                                                         ($data == null && $loop->iteration == 1) ||
-                                                        ($data != null && $data->kategori_id == $item->id)) checked @endif><label
-                                                class="pb-0 mb-0 ml-2"
+                                                        ($data != null && $data->kategori_id == $item->id))  @endif><label class="pb-0 mb-0 ml-2"
+                                                onclick="div_tahapan('{{ csrf_token() }}','#div_tahapan','#form-edit-inovasi')">{{ $item->kategori->nama }}
                                                 for="kategori_{{ $item->id }}">{{ $item->nama }}</label>
                                         </div>
                                     @endforeach
@@ -122,6 +111,25 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="row my-3">
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Tahapan Inovasi</b> <span
+                                    class="text-danger">*</span></label></div>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-12 d-flex align-items-center">
+
+                                    <select name="tahapan" id="tahapan" class="form-control" required>
+                                        <option value="" selected disabled>-- Pilih Salah Satu --</option>
+                                        <div id="div_tahapan">
+
+                                        </div>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
 
                     <div class="row my-3">
@@ -367,6 +375,22 @@
 
         wordCountElement.textContent = words.length;
         wordCountLessElement.textContent = 300 - words.length;
+    }
+
+    function div_tahapan(token, target, form_id) {
+        var kategori_id = $(form_id).find('select[name="kategori_id"] option:selected').val();
+        var act = '{{ route('inovasi.show_tahapan') }}';
+
+        $(form_id).find('#div_tahapan').html('<option value="">Waiting Data ...</option>');
+        $.post(act, {
+                _token: token,
+                kategori_id: kategori_id
+            },
+            function(data) {
+                $('#tahapan').prop("disabled", false);
+                $(form_id).find('#tahapan').html(data);
+                $(form_id).find('#tahapan').trigger('change');
+            });
     }
 </script>
 @section('script')
