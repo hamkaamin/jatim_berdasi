@@ -10,7 +10,8 @@
 
 @if (Auth::user()->role != 2)
     @section('buttons')
-        <a href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Pemda' ? 1 : 0]) }}" class="btn btn-primary">Tambah Data</a>
+        <a href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
+            class="btn btn-primary">Tambah Data</a>
     @endsection
 @endif
 
@@ -32,12 +33,11 @@
                                             <span>
                                                 @php
                                                     $inov = $item->hasManyInovasi();
-                                                    if ($label == "Masyarakat" || $label == "Awards") {
+                                                    if ($label == 'Masyarakat' || $label == 'Awards') {
                                                         $inov = $inov->where('label', 0);
-                                                    }
-                                                    elseif ($label == "Pemda") { 
+                                                    } elseif ($label == 'Pemda') {
                                                         $inov = $inov->where('label', 1);
-                                                    } elseif ($label == "Daerah") {
+                                                    } elseif ($label == 'Daerah') {
                                                         $inov = $inov->where('status', 2);
                                                     }
                                                     if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
@@ -84,22 +84,21 @@
 
 @section('script')
     @include('script.ubahWilayah')
-	@include('script.ubahScopeOpd')
+    @include('script.ubahScopeOpd')
     <script>
-        $(document).ready( function () {
-            $('#myTable0').DataTable({  
-            });
-        } );
+        $(document).ready(function() {
+            $('#myTable0').DataTable({});
+        });
     </script>
     @foreach ($tahapan as $item)
         <script>
-            $(document).ready( function () {
+            $(document).ready(function() {
                 $('#myTable{{ $item->id }}').DataTable();
-            } );
+            });
         </script>
     @endforeach
     <script>
-        $(function () {
+        $(function() {
             $('[data-toggle="tooltip"]')
         });
     </script>

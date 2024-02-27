@@ -78,12 +78,14 @@
                 <i class="metismenu-icon pe-7s-ribbon"></i> Kategori Inovasi
             </a>
         </li>
-        <li>
-            <a href="{{ route('master.faq.index') }}"
-                class="{{ Request::routeIs('master.faq.*') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-ribbon"></i> FAQ
-            </a>
-        </li>
+        @if (env('APP_HIDE_FAQ') == 0)
+            <li>
+                <a href="{{ route('master.faq.index') }}"
+                    class="{{ Request::routeIs('master.faq.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-ribbon"></i> FAQ
+                </a>
+            </li>
+        @endif
         <li class="app-sidebar__heading">Pengaturan Akun</li>
         <li>
             <a href="{{ route('opd.index') }}" class="{{ Request::routeIs('opd.*') ? 'mm-active' : '' }}">

@@ -98,7 +98,7 @@
                                     @foreach ($kategori as $item)
                                         <div class="col-6 d-flex align-items-center">
                                             <input type="radio" id="kategori_{{ $item->id }}"
-                                                value="{{ $item->id }}" name="kategori_id"
+                                                value="{{ $item->kategori->id }}" name="kategori_id"
                                                 @if (old('kategori_id') == $item->id ||
                                                         ($data == null && $loop->iteration == 1) ||
                                                         ($data != null && $data->kategori_id == $item->id)) checked @endif><label

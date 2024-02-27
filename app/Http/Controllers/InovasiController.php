@@ -98,12 +98,16 @@ class InovasiController extends Controller
             $urusan = Urusan::all();
             $kategori = KategoriInovasi::all();
             if(Auth::user()->role == 4 || Auth::user()->role == 5){
-                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1)->get();
+                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
             }
             $label = 0;
             if (isset($request->label)) {
                 $label = $request->label;
             }
+            if($label == 0){
+                $kategori = $kategori->where('kategori_id',1);
+            }
+            $kategori = $kategori->get();
             if ($request->id != 0) {
                 $id = decrypt($request->id);
                 $data = Inovasi::findOrFail($id);
@@ -220,6 +224,7 @@ class InovasiController extends Controller
         if($kata < $max_kata){
             return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
         }
+
         $data->nama = $request->nama;
         $data->tahapan_id = $request->tahapan_id;
         $data->kategori_id = $request->kategori_id;
