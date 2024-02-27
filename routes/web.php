@@ -44,6 +44,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/', [App\Http\Controllers\IndikatorController::class, 'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\IndikatorController::class, 'delete'])->name('delete');
             });
+            Route::prefix('definisi')->name('definisi.')->group(function () {
+                Route::get('/', [App\Http\Controllers\DefinisiController::class, 'index'])->name('index');
+                Route::post('/', [App\Http\Controllers\DefinisiController::class, 'save'])->name('save');
+                Route::post('/delete', [App\Http\Controllers\DefinisiController::class, 'delete'])->name('delete');
+            });
             Route::prefix('parameter')->name('parameter.')->group(function () {
                 Route::post('/add', [App\Http\Controllers\ParameterController::class, 'add'])->name('add');
                 Route::post('/', [App\Http\Controllers\ParameterController::class, 'save'])->name('save');
@@ -142,6 +147,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/list', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
             Route::post('/chooseParam', [App\Http\Controllers\IndikatorController::class, 'chooseParam'])->name('chooseParam');
             Route::post('/saveParam', [App\Http\Controllers\IndikatorController::class, 'saveParam'])->name('saveParam');
+            Route::post('/show_definisi_parameter', [App\Http\Controllers\ParameterController::class, 'show'])->name('show');
 
             Route::prefix('upload')->name('upload.')->group(function () {
                 Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_upload'])->name('index');

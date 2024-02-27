@@ -50,10 +50,21 @@ class IndikatorController extends Controller
     {
         $indikator = Indikator::findOrFail($request->indikator_id);
         $param = $indikator->param()->get();
+        $definisi_operasional = 0;
+        $definisi = NULL;
+        foreach($param as $item){
+            if($item->definisi_operasional != null){
+                $definisi_operasional ++;
+                $definisi = Parameter::select('definisi_operasional')
+                ->distinct('definisi_operasional')
+                ->orderBy('definisi_operasional')
+                ->get();
+            }
+        }
         $data_id = isset($request->provinsi_id) ? $request->provinsi_id : $request->inovasi_id;
         $type = isset($request->provinsi_id) ? 'provinsi' : 'inovasi';
         return response()->json(array(
-            'msg' => view('modal.form-param', compact('data_id', 'indikator', 'param', 'type'))->render()
+            'msg' => view('modal.form-param', compact('data_id','definisi','definisi_operasional', 'indikator', 'param', 'type'))->render()
         ), 200);
     }
 

@@ -7,14 +7,16 @@ use Illuminate\View\Component;
 class FieldParameter extends Component
 {
     public $param;
+    public $param2;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($param)
+    public function __construct($param,$param2)
     {
         $this->param = $param;
+        $this->param2 = $param2;
     }
 
     /**

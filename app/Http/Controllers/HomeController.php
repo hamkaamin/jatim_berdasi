@@ -25,6 +25,7 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
+use App\Models\DefinisiOperasional;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
@@ -244,8 +245,19 @@ class HomeController extends Controller
 			case "parameter":
 				$data = Parameter::where('indikator_id', $request->id)->get();
 				$indi = Indikator::findOrFail($request->id);
+                $parameters = Parameter::select('definisi_operasional')
+                ->distinct('definisi_operasional')
+                ->orderBy('definisi_operasional')
+                ->get();
 				return response()->json(array(
-					'msg' => view('modal.form-parameter', compact('data', 'indi'))->render()
+					'msg' => view('modal.form-parameter', compact('data', 'indi','parameters'))->render()
+				), 200);
+				break;
+
+			case "definisi":
+                $data = ($request->id == 0) ? null : DefinisiOperasional::findOrFail($request->id);
+				return response()->json(array(
+					'msg' => view('modal.form-definisi', compact('data'))->render()
 				), 200);
 				break;
 			case "opd":

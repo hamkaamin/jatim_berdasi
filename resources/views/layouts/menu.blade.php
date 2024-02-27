@@ -61,6 +61,12 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('master.definisi.index') }}"
+                class="{{ Request::routeIs('master.definisi.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Definisi Operasional
+            </a>
+        </li>
+        <li>
             <a href="{{ route('master.golongan.index') }}"
                 class="{{ Request::routeIs('master.golongan.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> Golongan Inovasi
