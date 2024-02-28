@@ -119,7 +119,7 @@
                             <div class="row">
                                 <div class="col-12 d-flex align-items-center">
 
-                                    <select name="tahapan" id="tahapan" class="form-control" required>
+                                    <select name="tahapan_id" id="tahapan_id" class="form-control" required>
                                         <option value="" selected disabled>-- Pilih Salah Satu --</option>
                                         <div id="div_tahapan">
 
@@ -387,9 +387,9 @@
                 kategori_id: kategori_id
             },
             function(data) {
-                $('#tahapan').prop("disabled", false);
-                $(form_id).find('#tahapan').html(data);
-                $(form_id).find('#tahapan').trigger('change');
+                $('#tahapan_id').prop("disabled", false);
+                $(form_id).find('#tahapan_id').html(data);
+                $(form_id).find('#tahapan_id').trigger('change');
             });
     }
 </script>
