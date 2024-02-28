@@ -439,10 +439,13 @@ class HomeController extends Controller
         {
             foreach($opd as $data)
             {
-                $kategori_opd = new KategoriOpd();
-                $kategori_opd->opd_id = $data->id;
-                $kategori_opd->kategori_id = $item->id;
-                $kategori_opd->save();
+                $opd_kategori = KategoriOpd::where('opd_id',$data->id)->first();
+                // if($opd_kategori == NULL){
+                    $kategori_opd = new KategoriOpd();
+                    $kategori_opd->opd_id = $data->id;
+                    $kategori_opd->kategori_id = $item->id;
+                    $kategori_opd->save();   
+                // }
             }
         }
     }
