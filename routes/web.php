@@ -20,6 +20,7 @@ Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_all
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/insert_user_opd/{kota}', [App\Http\Controllers\HomeController::class, 'insert_user_opd'])->name('insert_user_opd');
+    Route::get('/insert_all_user_opd_prov_jatim', [App\Http\Controllers\HomeController::class, 'insert_all_user_opd_prov_jatim'])->name('insert_all_user_opd_prov_jatim');
     Route::get('/insert_all_opd_kategori', [App\Http\Controllers\HomeController::class, 'insert_all_opd_kategori'])->name('insert_all_opd_kategori');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
     Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');

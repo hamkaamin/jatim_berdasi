@@ -447,5 +447,28 @@ class HomeController extends Controller
         }
     }
 
+    public function insert_all_user_opd_prov_jatim()
+    {
+        $opd = Opd::where('provinsi_id',35)->get();
+            foreach($opd as $r){
+                if($r->kode_opd != NULL || !empty($r->kode_opd)){
+                    $users = User::where('username',$r->kode_opd)->first();
+                    if($users == NULL){
+                        $user = new User();
+                        $user->name = $r->nama;
+                        $user->username = $r->kode_opd;
+                        $user->opd_id = $r->id;
+                        $user->role = 5;
+                    $user->province_id = 35;
+                        $user->password = bcrypt($r->kode_opd);
+                        $user->save();
+                    }
+                    
+                }
+            }
+                // dd($user);
+               
+    }
+
     
 }
