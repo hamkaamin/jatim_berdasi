@@ -222,7 +222,7 @@
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu
                                         {{ $item->nama }}
-                                        Inovasi</b><span class="text-danger">*</span></label></div>
+                                        Penerapan Inovasi</b><span class="text-danger">*</span></label></div>
                             @php
                                 $temp =
                                     $data != null
