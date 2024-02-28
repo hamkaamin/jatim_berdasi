@@ -53,13 +53,12 @@ class InovasiController extends Controller
             }
         }
         elseif($area == 'provinsi'){
-            $inovasi = Inovasi::where('label', 2)->where('provinsi_id',Auth::user()->province_id);
+            $inovasi = Inovasi::where('label', 0)->where('provinsi_id',Auth::user()->province_id);
             $label = "Provinsi";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
-        
         if (Auth::user()->role == 4) {
             $inovasi = $inovasi->where('user_id', Auth::user()->id);
         }
@@ -110,7 +109,7 @@ class InovasiController extends Controller
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $kategori = KategoriInovasi::all();
-            if(Auth::user()->role == 4 || Auth::user()->role == 5){
+            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
                 $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
             }
             $label = 0;
@@ -120,6 +119,7 @@ class InovasiController extends Controller
             if($label == 0){
                 $kategori = $kategori->where('kategori_id',1);
             }
+            
             $kategori = $kategori->get();
             if ($request->id != 0) {
                 $id = decrypt($request->id);

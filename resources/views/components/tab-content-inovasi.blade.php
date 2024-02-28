@@ -35,10 +35,18 @@
                                         ->where('user_id', Auth::user()->id)
                                         ->get();
                                 } elseif (Auth::user()->role == 5) {
-                                    $data = $tahapan
-                                        ->hasManyInovasi()
-                                        ->where('kota_id', Auth::user()->regency_id)
-                                        ->get();
+                                    if (Auth::user()->province_id != null) {
+                                        $data = $tahapan
+                                            ->hasManyInovasi()
+                                            ->where('provinsi_id', Auth::user()->province_id)
+                                            ->where('label', 0)
+                                            ->get();
+                                    } else {
+                                        $data = $tahapan
+                                            ->hasManyInovasi()
+                                            ->where('kota_id', Auth::user()->regency_id)
+                                            ->get();
+                                    }
                                 } else {
                                     $data = $tahapan->hasManyInovasi()->get();
                                 }
