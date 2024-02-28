@@ -116,11 +116,13 @@
 				<i class="metismenu-icon pe-7s-file"></i> Arsip
 			</a>
 		</li> --}}
-        <li>
-            <a href="{{ route('faq.index') }}" class="{{ Request::routeIs('faq.*') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-info"></i> FAQ
-            </a>
-        </li>
+        @if (env('APP_HIDE_FAQ') == 0)
+            <li>
+                <a href="{{ route('faq.index') }}" class="{{ Request::routeIs('faq.*') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-info"></i> FAQ
+                </a>
+            </li>
+        @endif
         @if (Auth::user()->role == 2 || Auth::user()->role == 3)
             <li class="app-sidebar__heading">Database Inovasi Daerah</li>
             <li>
@@ -132,70 +134,80 @@
         @endif
         @if (Auth::user()->role != 4)
             <li class="app-sidebar__heading">Data Inovasi Daerah</li>
-
-            <li>
-                <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
-                    class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
-                    class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                    class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
-                </a>
-            </li>
+            @if (env('APP_PROVINSI_JATIM') == 0)
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
+                        class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                        class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                        class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                        class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
+                    </a>
+                </li>
+            @endif
         @endif
-        <li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
-        @if (Auth::user()->role != 6)
-            {{-- <li>
+
+        @if (env('APP_PROVINSI_JATIM') == 0)
+            <li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
+            @if (Auth::user()->role != 6)
+                {{-- <li>
                 <a href="{{ route('inovasi.index', ['area' => 'pemda']) }}"
                     class="{{ request()->is('inovasi/pemda') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon pe-7s-light"></i> Inovasi Pemda
                 </a>
             </li> --}}
+            @endif
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                    class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inotek Awards
+                </a>
+            </li>
+            <li class="app-sidebar__heading">Laporan</li>
+            <li>
+                <a href="{{ route('rekap.index', 'jenis') }}"
+                    class="{{ request()->is('rekap/jenis') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-graph1"></i> Rekap Jenis Inovasi
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('rekap.index', 'bentuk') }}"
+                    class="{{ request()->is('rekap/bentuk') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-graph1"></i> Rekap Bentuk Inovasi
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('rekap.index', 'urusan') }}"
+                    class="{{ request()->is('rekap/urusan') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-graph1"></i> Rekap Urusan Pemerintah
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('rekap.index', 'inisiator') }}"
+                    class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-graph1"></i> Rekap Berdasarkan Inisiator
+                </a>
+            </li>
         @endif
-        <li>
-            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
-                class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-light"></i> Inotek Awards
-            </a>
-        </li>
-        <li class="app-sidebar__heading">Laporan</li>
-        <li>
-            <a href="{{ route('rekap.index', 'jenis') }}"
-                class="{{ request()->is('rekap/jenis') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-graph1"></i> Rekap Jenis Inovasi
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('rekap.index', 'bentuk') }}"
-                class="{{ request()->is('rekap/bentuk') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-graph1"></i> Rekap Bentuk Inovasi
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('rekap.index', 'urusan') }}"
-                class="{{ request()->is('rekap/urusan') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-graph1"></i> Rekap Urusan Pemerintah
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('rekap.index', 'inisiator') }}"
-                class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-graph1"></i> Rekap Berdasarkan Inisiator
-            </a>
-        </li>
 
         <li>
-            <a href="{{ route('bank_data.index') }}"
-                class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+            <a href="{{ route('bank_data.index') }}" class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-light"></i> Bank Data
             </a>
         </li>

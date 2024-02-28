@@ -462,8 +462,7 @@ class HomeController extends Controller
                     $user->province_id = 35;
                         $user->password = bcrypt($r->kode_opd);
                         $user->save();
-                    }
-                    
+                    }   
                 }
             }
                 // dd($user);
