@@ -444,6 +444,7 @@ class HomeController extends Controller
                     $kategori_opd = new KategoriOpd();
                     $kategori_opd->opd_id = $data->id;
                     $kategori_opd->kategori_id = $item->id;
+                    $kategori_opd->is_aktif = 1;
                     $kategori_opd->save();   
                 // }
             }

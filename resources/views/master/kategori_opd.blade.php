@@ -89,16 +89,16 @@
                                     @foreach ($datas->opd as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->opd->nama }}</td>
+                                            <td>{{ @$item->opd->nama }}</td>
                                             <td>
-                                                @if ($item->opd->provinsi_id != null)
-                                                    PROVINSI {{ $item->opd->provinsi->name }}
-                                                @elseif ($item->opd->kabkota_id != null)
-                                                    {{ ucwords($item->opd->kota->name) }}
-                                                @elseif ($item->opd->kecamatan_id != null)
-                                                    KECAMATAN {{ $item->opd->kecamatan->name }}
-                                                @elseif ($item->opd->kelurahan_id != null)
-                                                    KELURAHAN {{ $item->opd->kelurahan->name }}
+                                                @if (@$item->opd->provinsi_id != null)
+                                                    PROVINSI {{ @$item->opd->provinsi->name }}
+                                                @elseif (@$item->opd->kabkota_id != null)
+                                                    {{ ucwords(@$item->opd->kota->name) }}
+                                                @elseif (@$item->opd->kecamatan_id != null)
+                                                    KECAMATAN {{ @$item->opd->kecamatan->name }}
+                                                @elseif (@$item->opd->kelurahan_id != null)
+                                                    KELURAHAN {{ @$item->opd->kelurahan->name }}
                                                 @endif
                                             </td>
                                             <td>
