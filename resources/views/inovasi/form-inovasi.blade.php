@@ -182,7 +182,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row my-3">
+                    <div class="row my-3" style="display: none">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Covid 19</b> <span
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
