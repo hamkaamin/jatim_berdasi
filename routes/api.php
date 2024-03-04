@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiSyncController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
@@ -26,3 +27,6 @@ Route::post('refresh', [AuthController::class,'refresh']);
 Route::post('logout', [AuthController::class,'logout']);
 
 Route::get('all_opd',[ApiController::class,'all_opd']);
+Route::post('insert_inovasi', [ApiController::class,'insert_inovasi']);
+Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
+// Route::post('insert_inovasi_list', [ApiController::class,'insert_inovasi_list']);

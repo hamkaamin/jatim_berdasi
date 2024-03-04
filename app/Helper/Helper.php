@@ -110,7 +110,7 @@ class Helper
 			if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
 				unlink(public_path('/'.$folder.'/'.$existing));
 			}
-			$nama_file = $name.'.'.$file->getClientOriginalExtension();
+			$nama_file = env('APP_URL').'/'.$folder.'/'.$name.'.'.$file->getClientOriginalExtension();
 			$file->move($folder, $nama_file);
 			return $nama_file;
 		} catch (\Throwable $th) {

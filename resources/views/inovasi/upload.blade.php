@@ -38,9 +38,8 @@
                                 @foreach ($kolom as $kol)
                                     <td>
                                         @if ($kol[2] == 'file')
-                                            @if ($item->{$kol[1]} != null && file_exists(public_path('/indikator_uploads/' . $item->{$kol[1]})))
-                                                <a href="{{ asset('/indikator_uploads/' . $item->{$kol[1]}) }}"
-                                                    target="_blank">View</a>
+                                            @if ($item->{$kol[1]} != null)
+                                                <a href="{{ $item->{$kol[1]} }}" target="_blank">View</a>
                                             @else
                                                 -
                                             @endif

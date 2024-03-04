@@ -251,6 +251,7 @@ class InovasiController extends Controller
         $data->hasil = $request->hasil;
         $data->status = $request->status;
         $data->label = $request->label;
+        $data->url = env('APP_URL');
 		$data->save();
         $data->urusan()->sync($request->urusan_id);
         foreach ($tahapanKolom as $item) {

@@ -51,6 +51,7 @@ class ProfilPemdaController extends Controller
 
     public function index_upload(Request $request)
     {
+        dd('a');
         if (count($request->input()) == 3 && isset($request->id) && isset($request->indikator)) {
             $data = Upload::where('provinsi_id', $request->id)->where('indikator_id', $request->indikator)->get();
             $indikator = Indikator::findOrFail($request->indikator);
