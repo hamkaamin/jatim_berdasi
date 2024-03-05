@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 // Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/coba_insert_inovasi', [App\Http\Controllers\HomeController::class, 'coba_insert_inovasi'])->name('coba_insert_inovasi');
 Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_all_opd'])->name('get_all_opd');
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');

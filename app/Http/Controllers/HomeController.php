@@ -473,5 +473,23 @@ class HomeController extends Controller
                
     }
 
+
+    public function coba_insert_inovasi(Request $request)
+    {
+        $client = new \GuzzleHttp\Client(); 
+            try {
+                $response = $client->request('GET', 'http://localhost:8000/api/kab_hit_data', [
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ]
+                ]);
+                $respon = json_decode($response->getBody()->getContents(), true);
+                dd($respon);
+              
+            } catch (\Throwable $th) {
+                echo $th;
+            }
+    }  
+
     
 }

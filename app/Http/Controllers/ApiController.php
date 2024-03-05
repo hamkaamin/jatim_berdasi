@@ -36,7 +36,7 @@ class ApiController extends Controller
         
     }
 
-    public function insert_inovasi(Request $request)
+    public function insert_inovasi_test(Request $request)
     {
         try{
             $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
@@ -95,5 +95,22 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
+    public function insert_inovasi(Request $request)
+    {
+        $client = new \GuzzleHttp\Client(); 
+            try {
+                $response = $client->request('GET', 'http://localhost:8000/api/kab_hit_data', [
+                    'headers' => [
+                        'Content-Type' => 'application/x-www-form-urlencoded',
+                    ]
+                ]);
+                $respon = json_decode($response->getBody()->getContents(), true);
+                dd($respon);
+              
+            } catch (\Throwable $th) {
+                echo $th;
+            }
+        }  
 
 }

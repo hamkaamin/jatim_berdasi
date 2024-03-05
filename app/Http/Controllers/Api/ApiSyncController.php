@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inovasi;
+use Exception;
 use Illuminate\Http\Request;
 
 class ApiSyncController extends Controller
@@ -11,46 +12,66 @@ class ApiSyncController extends Controller
     
     public function kab_hit_data(Request $request)
     {
-        $inovasi = Inovasi::where('id',58)->first();
-        $indikator_inovasi = $inovasi->indikator()->get();
-        $tahapan_inovasi = $inovasi->tahapan()->get();
-        $urusan_inovasi = $inovasi->urusan()->get();
-        $upload_inovasi = $inovasi->upload()->get();
-        $data = [
-            'inovasi'=>$inovasi,
-            'indikator_inovasi'=>$indikator_inovasi,
-            'tahapan_inovasi'=>$tahapan_inovasi,
-            'urusan_inovasi'=>$urusan_inovasi,
-            'upload_inovasi'=>$upload_inovasi,
-        ];
-            
-        $client = new \GuzzleHttp\Client(); 
-        $penghuni = Penghuni_rusuns::select('ktp')->distinct()->whereIn('is_mbr',[0])->get(); 
-        foreach($penghuni as $p)
-        {
-            try {
-                $response = $client->request('POST', 'https://sikeluargamiskin.surabaya.go.id/api/ciptakarya/cek_gakin', [
-                    'headers' => [
-                        'Content-Type' => 'application/x-www-form-urlencoded',
-                        'Access-Key' => '11,W85KVGsuMpk1i0g52OR8Gp3wQlqZWVIuct5zRMJ3',
-                        'Access-Id' => '11,6P6C1ocgxbufQ5cEaizOIxh03TY1ZYR1XaUj2a9m'
-                    ],
-                    'form_params' => [
-                        'nik' => $p->ktp
-                    ]
-                ]);
-                $respon = json_decode($response->getBody()->getContents(), true);
-                if($respon['status'] == 1)
-                {
-                    $upd = Penghuni_rusuns::where('ktp', $p->ktp)->update(['is_mbr'=>1]); 
-                    echo $p->ktp . '<br>';
-                } else { 
-                    $upd = Penghuni_rusuns::where('ktp', $p->ktp)->update(['is_mbr'=>3]); 
-                }
-            } catch (\Throwable $th) {
-                $upd = Penghuni_rusuns::where('ktp', $p->ktp)->update(['is_mbr'=>2]); 
-                echo $p->ktp . '  ' . $th->getMessage() . '<br>';
-            }
-        }  
+        try{
+            $inovasi = Inovasi::where('hit_data',1)->first();
+            $indikator_inovasi = $inovasi->indikator()->get();
+            $tahapan_inovasi = $inovasi->tahapan()->get();
+            $urusan_inovasi = $inovasi->urusan()->get();
+            $upload_inovasi = $inovasi->upload()->get();
+            $data = [
+                'inovasi'=>$inovasi,
+                'indikator_inovasi'=>$indikator_inovasi,
+                'tahapan_inovasi'=>$tahapan_inovasi,
+                'urusan_inovasi'=>$urusan_inovasi,
+                'upload_inovasi'=>$upload_inovasi,
+            ];
+            return response()->json([
+                'status' => true,
+                'message' => "All Data Inovasi!",
+                'data' => $data
+            ], 200);
+        }catch(Exception $error) {
+            return response()->json([
+                'status' => true,
+                'message' => $error
+            ], 500);
+        }
     }
+
+    // public function hit_data_test(Request $request)
+    // {
+    //     $inovasi = Inovasi::where('hit_data', 1)->get();
+
+    //     // Initialize arrays to hold data
+    //     $indikator_inovasi = [];
+    //     $tahapan_inovasi = [];
+    //     $urusan_inovasi = [];
+    //     $upload_inovasi = [];
+
+    //     foreach ($inovasi as $item) {
+    //         // Get related data for each inovasi
+    //         $indikator_inovasi[] = $item->indikator()->get();
+    //         $tahapan_inovasi[] = $item->tahapan()->get();
+    //         $urusan_inovasi[] = $item->urusan()->get();
+    //         $upload_inovasi[] = $item->upload()->get();
+    //     }
+
+    //     // Construct the data array
+    //     $data = [
+    //         'inovasi' => $inovasi,
+    //         'indikator_inovasi' => $indikator_inovasi,
+    //         'tahapan_inovasi' => $tahapan_inovasi,
+    //         'urusan_inovasi' => $urusan_inovasi,
+    //         'upload_inovasi' => $upload_inovasi,
+    //     ];
+
+    //     // Convert the data array to JSON
+    //     $jsonData = json_encode($data);
+
+    //     // Set appropriate headers for JSON response
+    //     // header('Content-Type: application/json');
+
+    //     // Return the JSON response
+    //     dd($data['indikator_inovasi'][0]['nama']);
+    // }
 }

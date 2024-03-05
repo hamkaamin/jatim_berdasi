@@ -27,6 +27,10 @@ Route::post('refresh', [AuthController::class,'refresh']);
 Route::post('logout', [AuthController::class,'logout']);
 
 Route::get('all_opd',[ApiController::class,'all_opd']);
+if(env('APP_OPD_JATIM') == 0){
+    Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
+}else{
+    Route::post('insert_inovasi', [ApiController::class,'insert_inovasi']);
+}
 Route::post('insert_inovasi', [ApiController::class,'insert_inovasi']);
-Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
 // Route::post('insert_inovasi_list', [ApiController::class,'insert_inovasi_list']);
