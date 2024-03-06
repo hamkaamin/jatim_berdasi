@@ -30,7 +30,7 @@ class ApiSyncController extends Controller
                 ];
                 array_push($arr_data,$data);
             }
-            $response = $client->request('POST', 'http://jatim-berdasi.prototypeyim.com/api/insert_inovasi', [
+            $response = $client->request('POST', 'http://127.0.0.1:8008/api/insert_inovasi', [
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
