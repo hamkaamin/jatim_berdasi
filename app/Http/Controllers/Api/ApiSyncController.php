@@ -46,6 +46,7 @@ class ApiSyncController extends Controller
                 'verify' => false, // Disable SSL verification
             ]);
             
+            dd($response->getBody());
             $respon = json_decode($response->getBody()->getContents(), true);
             return response()->json([
                 'status' => true,
