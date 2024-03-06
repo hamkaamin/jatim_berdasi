@@ -46,12 +46,11 @@ class ApiSyncController extends Controller
                 'verify' => false, // Disable SSL verification
             ]);
             
-            dd($response);
             $respon = json_decode($response->getBody()->getContents(), true);
             return response()->json([
                 'status' => true,
                 'message' => "All Data Inovasi!",
-                'data' => $arr_data
+                'data' => $json_data
             ], 200);
         }catch(RequestException $e) {
             echo 'Error: ' . $e->getMessage();
