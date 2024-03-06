@@ -16,11 +16,13 @@ class ApiSyncController extends Controller
         try{
             $arr_data = array();
             $inovasis = Inovasi::where('hit_data',1)->get();
+            
             foreach($inovasis as $inovasi){
                 $indikator_inovasi = $inovasi->indikator()->get();
                 $tahapan_inovasi = $inovasi->tahapan()->get();
                 $urusan_inovasi = $inovasi->urusan()->get();
                 $upload_inovasi = $inovasi->upload()->get();
+                
                 $data = [
                     'inovasi'=>$inovasi,
                     'indikator_inovasi'=>$indikator_inovasi,
@@ -28,25 +30,20 @@ class ApiSyncController extends Controller
                     'urusan_inovasi'=>$urusan_inovasi,
                     'upload_inovasi'=>$upload_inovasi,
                 ];
-                array_push($arr_data,$data);
+                
+                array_push($arr_data, $data);
             }
-            $response = $client->request('POST', 'http://127.0.0.1:8009/api/insert_inovasi', [
+            
+            // Convert the array to JSON
+            $json_data = json_encode($arr_data);
+            $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/insert_inovasi', [
                 'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Content-Type' => 'application/json',
                 ],
-                'form_params' => [
-                    'arr_data' => $arr_data
-                ],                
-                'verify' => false, // Disable SSL verification
-
+                'body' => $json_data, // Use 'body' instead of 'form_params'
             ]);
             dd($response);
-            $respon = json_decode($response->getBody()->getContents(), true);
-            return response()->json([
-                'status' => true,
-                'message' => "All Data Inovasi!",
-                'data' => $arr_data
-            ], 200);
+            
         }catch(Exception $error) {
             return response()->json([
                 'status' => true,
