@@ -22,16 +22,22 @@
                     </thead>
                     <tbody>
                         @php
+                            $status_label = 0;
+                            if ($label == 'Awards') {
+                                $status_label = 1;
+                            }
                             $data = [];
                             if ($tahapan != null) {
                                 if (Auth::user()->role == 4) {
                                     $data = $tahapan
                                         ->hasManyInovasi()
                                         ->where('user_id', Auth::user()->id)
+                                        ->where('label', $status_label)
                                         ->get();
                                 } elseif (Auth::user()->role == 3) {
                                     $data = $tahapan
                                         ->hasManyInovasi()
+                                        ->where('label', $status_label)
                                         ->where('user_id', Auth::user()->id)
                                         ->get();
                                 } elseif (Auth::user()->role == 5) {
@@ -44,6 +50,7 @@
                                     } else {
                                         $data = $tahapan
                                             ->hasManyInovasi()
+                                            ->where('label', $status_label)
                                             ->where('kota_id', Auth::user()->regency_id)
                                             ->get();
                                     }

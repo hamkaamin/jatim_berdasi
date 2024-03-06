@@ -12,23 +12,38 @@ class ApiSyncController extends Controller
     
     public function kab_hit_data(Request $request)
     {
+        $client = new \GuzzleHttp\Client(); 
         try{
-            $inovasi = Inovasi::where('hit_data',1)->first();
-            $indikator_inovasi = $inovasi->indikator()->get();
-            $tahapan_inovasi = $inovasi->tahapan()->get();
-            $urusan_inovasi = $inovasi->urusan()->get();
-            $upload_inovasi = $inovasi->upload()->get();
-            $data = [
-                'inovasi'=>$inovasi,
-                'indikator_inovasi'=>$indikator_inovasi,
-                'tahapan_inovasi'=>$tahapan_inovasi,
-                'urusan_inovasi'=>$urusan_inovasi,
-                'upload_inovasi'=>$upload_inovasi,
-            ];
+            $arr_data = array();
+            $inovasis = Inovasi::where('hit_data',1)->get();
+            foreach($inovasis as $inovasi){
+                $indikator_inovasi = $inovasi->indikator()->get();
+                $tahapan_inovasi = $inovasi->tahapan()->get();
+                $urusan_inovasi = $inovasi->urusan()->get();
+                $upload_inovasi = $inovasi->upload()->get();
+                $data = [
+                    'inovasi'=>$inovasi,
+                    'indikator_inovasi'=>$indikator_inovasi,
+                    'tahapan_inovasi'=>$tahapan_inovasi,
+                    'urusan_inovasi'=>$urusan_inovasi,
+                    'upload_inovasi'=>$upload_inovasi,
+                ];
+                array_push($arr_data,$data);
+            }
+            $response = $client->request('POST', 'http://jatim-berdasi.prototypeyim.com/api/insert_inovasi', [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                ],
+                'form_params' => [
+                    'arr_data' => $arr_data
+                ]
+            ]);
+            dd($response);
+            $respon = json_decode($response->getBody()->getContents(), true);
             return response()->json([
                 'status' => true,
                 'message' => "All Data Inovasi!",
-                'data' => $data
+                'data' => $arr_data
             ], 200);
         }catch(Exception $error) {
             return response()->json([

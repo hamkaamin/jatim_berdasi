@@ -40,18 +40,45 @@
                                                     } elseif ($label == 'Daerah') {
                                                         $inov = $inov->where('status', 2);
                                                     }
-                                                    if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+                                                    if (
+                                                        Auth::user()->role == 3 ||
+                                                        Helper::checkUserUmum('provinsi', Auth::user())
+                                                    ) {
                                                         $inov = $inov->where('provinsi_id', Auth::user()->province_id);
-                                                    } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
-                                                        $inov = $inov->where('provinsi_id', Auth::user()->opd->provinsi_id);
-                                                    } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+                                                    } elseif (
+                                                        Helper::checkOpd('provinsi', Auth::user()) ||
+                                                        Helper::checkUserUmum('opd-provinsi', Auth::user())
+                                                    ) {
+                                                        $inov = $inov->where(
+                                                            'provinsi_id',
+                                                            Auth::user()->opd->provinsi_id,
+                                                        );
+                                                    } elseif (
+                                                        Auth::user()->role == 4 ||
+                                                        Helper::checkUserUmum('kota', Auth::user())
+                                                    ) {
                                                         $inov = $inov->where('kota_id', Auth::user()->regency_id);
-                                                    } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+                                                    } elseif (
+                                                        Helper::checkOpd('kota', Auth::user()) ||
+                                                        Helper::checkUserUmum('opd-kota', Auth::user())
+                                                    ) {
                                                         $inov = $inov->where('kota_id', Auth::user()->opd->kabkota_id);
-                                                    } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
-                                                        $inov = $inov->where('kecamatan_id', Auth::user()->opd->kecamatan_id);
-                                                    } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
-                                                        $inov = $inov->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
+                                                    } elseif (
+                                                        Helper::checkOpd('kecamatan', Auth::user()) ||
+                                                        Helper::checkUserUmum('opd-kecamatan', Auth::user())
+                                                    ) {
+                                                        $inov = $inov->where(
+                                                            'kecamatan_id',
+                                                            Auth::user()->opd->kecamatan_id,
+                                                        );
+                                                    } elseif (
+                                                        Helper::checkOpd('kelurahan', Auth::user()) ||
+                                                        Helper::checkUserUmum('opd-kelurahan', Auth::user())
+                                                    ) {
+                                                        $inov = $inov->where(
+                                                            'kelurahan_id',
+                                                            Auth::user()->opd->kelurahan_id,
+                                                        );
                                                     }
                                                 @endphp
                                                 {{ $inov->count() }}
@@ -73,9 +100,11 @@
                 @endforeach
             </ul>
             <div class="tab-content" id="myTabContent">
-                <x-tab-content-inovasi :tahapan="null" :active="1" :kolom="$tahapanKolom" :inovasi="$inovasi" />
+                <x-tab-content-inovasi :tahapan="null" :active="1" :kolom="$tahapanKolom" :inovasi="$inovasi"
+                    :label="$label" />
                 @foreach ($tahapan as $item)
-                    <x-tab-content-inovasi :tahapan="$item" :active="0" :kolom="$tahapanKolom" :inovasi="[]" />
+                    <x-tab-content-inovasi :tahapan="$item" :active="0" :kolom="$tahapanKolom" :inovasi="[]"
+                        :label="$label" />
                 @endforeach
             </div>
         </div>

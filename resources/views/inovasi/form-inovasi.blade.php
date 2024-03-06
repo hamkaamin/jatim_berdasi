@@ -21,6 +21,7 @@
                 Inovasi</button>
         </form>
     @endif
+
     @if (Auth::user()->role == 2)
         <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
             onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>

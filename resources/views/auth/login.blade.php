@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SI Inovasi - Login</title>
-    <link rel="icon" href="{{ asset('login.png') }}">
+    <title>{{ env('APP_NAME') }} - Login</title>
+    <link rel="icon" href="{{ asset(env('APP_LOGO', 'login.png')) }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
         integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <style>
@@ -17,7 +17,7 @@
 </head>
 
 <body
-    style="background-image: url({{ asset('login-inovasi-navy.png') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
+    style="background-image: url({{ asset(env('APP_BACKGROUND_LOGIN') ?? 'login-inovasi-navy.png') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row">
             <div class="col-lg-12">

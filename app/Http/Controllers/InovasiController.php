@@ -34,7 +34,7 @@ class InovasiController extends Controller
             $inovasi = Inovasi::where('status', 2);
             $label = "Daerah";
         } elseif ($area == 'masyarakat') {
-            $inovasi = Inovasi::where('label', 0);
+            $inovasi = Inovasi::where('label', 1);
             $label = "Awards";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
@@ -46,7 +46,7 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         } elseif($area == 'kota'){
-            $inovasi = Inovasi::where('label', 2)->where('kota_id',Auth::user()->regency_id);
+            $inovasi = Inovasi::where('label', 0)->where('kota_id',Auth::user()->regency_id);
             $label = "Kota / Kab";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
@@ -273,7 +273,7 @@ class InovasiController extends Controller
             $data->profil_bisnis = $nama_file;
 		    $data->save();
         }
-        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'masyarakat']);
+        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'kota']);
         return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
     }
     }
