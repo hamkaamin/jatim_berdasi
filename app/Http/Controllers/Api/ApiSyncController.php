@@ -30,13 +30,15 @@ class ApiSyncController extends Controller
                 ];
                 array_push($arr_data,$data);
             }
-            $response = $client->request('POST', 'http://127.0.0.1:8008/api/insert_inovasi', [
+            $response = $client->request('POST', 'http://127.0.0.1:8009/api/insert_inovasi', [
                 'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
                 'form_params' => [
                     'arr_data' => $arr_data
-                ]
+                ],                
+                'verify' => false, // Disable SSL verification
+
             ]);
             dd($response);
             $respon = json_decode($response->getBody()->getContents(), true);
