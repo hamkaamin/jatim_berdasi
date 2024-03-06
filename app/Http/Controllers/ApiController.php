@@ -170,9 +170,10 @@ class ApiController extends Controller
 
     public function insert_inovasi2(Request $request)
     {
+        $arr_data = json_decode($request->arr_data,true);
         return response()->json([
             'status' => true,
-            'message' => $request->arr_data
+            'message' => $arr_data
         ], 200);
         // return $request->all();
     }
