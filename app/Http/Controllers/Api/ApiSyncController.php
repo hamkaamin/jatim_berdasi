@@ -42,8 +42,14 @@ class ApiSyncController extends Controller
                 ],
                 'body' => $json_data, // Use 'body' instead of 'form_params'
             ]);
-            dd($response);
             
+            
+            $respon = json_decode($response->getBody()->getContents(), true);
+            return response()->json([
+                'status' => true,
+                'message' => "All Data Inovasi!",
+                'data' => $arr_data
+            ], 200);
         }catch(Exception $error) {
             return response()->json([
                 'status' => true,

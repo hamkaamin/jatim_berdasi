@@ -98,7 +98,7 @@ class ApiController extends Controller
 
     public function insert_inovasi(Request $request)
     {
-        dd('a');
+        dd($request->all());
             try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
