@@ -35,20 +35,19 @@ class ApiSyncController extends Controller
             }
             
             // Convert the array to JSON
-            $json_data = json_encode($arr_data);
+            $json_data = json_encode($inovasis);
             $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/insert_inovasi', [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
                 'body' => $json_data, // Use 'body' instead of 'form_params'
             ]);
-            
-            
+            // dd($json_data);
             $respon = json_decode($response->getBody()->getContents(), true);
             return response()->json([
                 'status' => true,
                 'message' => "All Data Inovasi!",
-                'data' => $arr_data
+                'data' => $respon
             ], 200);
         }catch(Exception $error) {
             return response()->json([
