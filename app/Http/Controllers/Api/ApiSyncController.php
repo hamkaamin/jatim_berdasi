@@ -38,7 +38,7 @@ class ApiSyncController extends Controller
             
             // Convert the array to JSON
             $json_data = json_encode($arr_data);
-            $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/insert_inovasi', [
+            $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/insert_inovasi2', [
                 'headers' => [
                     'Content-Type' => 'application/json',
                 ],
