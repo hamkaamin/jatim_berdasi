@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Inovasi;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 
 class ApiSyncController extends Controller
@@ -12,7 +14,7 @@ class ApiSyncController extends Controller
     
     public function kab_hit_data(Request $request)
     {
-        $client = new \GuzzleHttp\Client(); 
+        $client = new Client(); 
         try{
             $arr_data = array();
             $inovasis = Inovasi::where('hit_data',1)->get();
@@ -33,10 +35,9 @@ class ApiSyncController extends Controller
                 
                 array_push($arr_data, $data);
             }
-            
+            dd($arr_data);
             // Convert the array to JSON
             $json_data = json_encode($arr_data);
-            
             $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/insert_inovasi', [
                 'headers' => [
                     'Content-Type' => 'application/json',
@@ -52,11 +53,8 @@ class ApiSyncController extends Controller
                 'message' => "All Data Inovasi!",
                 'data' => $arr_data
             ], 200);
-        }catch(Exception $error) {
-            return response()->json([
-                'status' => true,
-                'message' => $error
-            ], 500);
+        }catch(RequestException $e) {
+            echo 'Error: ' . $e;
         }
     }
 

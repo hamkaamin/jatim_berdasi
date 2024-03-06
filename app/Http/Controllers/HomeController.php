@@ -477,7 +477,6 @@ class HomeController extends Controller
 
     public function coba_insert_inovasi(Request $request)
     {
-        $client = new \GuzzleHttp\Client(); 
         dd($request->all());
             try {
                 $inovasi = new Inovasi();
