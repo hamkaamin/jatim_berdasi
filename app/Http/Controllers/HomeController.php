@@ -477,7 +477,7 @@ class HomeController extends Controller
 
     public function coba_insert_inovasi(Request $request)
     {
-        dd($request->all());
+        print_r($request->all());
             try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
