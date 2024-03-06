@@ -170,7 +170,7 @@ class ApiController extends Controller
 
     public function insert_inovasi2(Request $request)
     {
-        return $request->all().'SALEH ATT';
+        return $request->all();
     }
 
 }
