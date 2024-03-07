@@ -46,8 +46,8 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         } elseif($area == 'kota'){
-            $inovasi = Inovasi::where('label', 0)->where('kota_id',Auth::user()->regency_id);
             $label = "Kota / Kab";
+            $inovasi = Inovasi::where('label', 0)->where('kota_id',Auth::user()->regency_id);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }

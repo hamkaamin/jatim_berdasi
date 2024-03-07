@@ -219,7 +219,7 @@
                             </select>
                         </div>
                     </div>
-                    @foreach ($tahapanKolom as $item)
+                    {{-- @foreach ($tahapanKolom as $item)
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu
                                         {{ $item->nama }}
@@ -238,7 +238,7 @@
                                     @if ($data != null && $temp != null && $temp->pivot->waktu != null) value="{{ date('Y-m-d', strtotime($temp->pivot->waktu)) }}" @else value="{{ old('waktu_tahapan_' . $item->id) }}" @endif>
                             </div>
                         </div>
-                    @endforeach
+                    @endforeach --}}
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Rancang bangun dan pokok perubahan yang
                                     dilakukan</b><span class="text-danger">*</span></label></div>
