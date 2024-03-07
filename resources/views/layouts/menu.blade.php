@@ -186,12 +186,21 @@
                 </a>
             </li> --}}
             @endif
-            <li>
-                <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
-                    class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> Inotek Awards
-                </a>
-            </li>
+            @if (env('APP_OPD_JATIM') == 1)
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                        class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Bravo Inotek Awards
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                        class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Inotek Awards
+                    </a>
+                </li>
+            @endif
             {{-- <li class="app-sidebar__heading">Laporan</li>
             <li>
                 <a href="{{ route('rekap.index', 'jenis') }}"
