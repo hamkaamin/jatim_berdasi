@@ -24,10 +24,12 @@
         <div class="row">
             <div class="col-10">
             </div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim Berdasi</b></button>
-                <br><br>
-            </div>
+            @if (env('APP_OPD_JATIM') == 1)
+                <div class="col-2">
+                    <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim Berdasi</b></button>
+                    <br><br>
+                </div>
+            @endif
         </div>
         <div class="row">
             @if (Auth::user()->role != 2)
