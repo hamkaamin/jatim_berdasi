@@ -174,6 +174,13 @@ class ApiController extends Controller
         $arr_data = $request->arr_data;
         // $arr_data = json_encode($arr_data);
         $arr_data = json_decode($arr_data,true);
+        foreach($arr_data as $r){
+            return response()->json([
+                'status' => true,
+                'message' => "All Data Inovasi!",
+                'data' => $r
+            ], 200);
+        }
         $test = 0;
         foreach($arr_data as $item)
         {
@@ -204,7 +211,46 @@ class ApiController extends Controller
 
                 // Save the changes
                 $inovasi->save();
-                
+                $inovasi->urusan()->sync($inovasi->urusan_id);
+
+                $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+                $tempArr = [];
+                foreach ($tahapanKolom as $item) {
+                    $tempArr[$item->id] = ['waktu' => $inovasi->{'waktu_tahapan_'.$item->id}];
+                }
+                $inovasi->tahapan()->sync($tempArr);
+                // $indikator = Indikator::where('label', 0)->where('kategori_id',$inovasi->kategori_id)->get();
+                // foreach ($indikator as $item) {
+                //     $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
+                // }
+                foreach($data_indikator_inovasi as $dataindikator){
+                    $inovasi_indikator= DB::table('indikator_inovasi')->insert([
+                        'indikator_id'=>$dataindikator['pivot']['indikator_id'],
+                        'inovasi_id'=>$inovasi->id,
+                        'param_awal'=>$dataindikator['pivot']['param_awal'],
+                        'param_akhir'=>$dataindikator['pivot']['param_akhir'],
+                        'bobot_awal'=>$dataindikator['pivot']['bobot_awal'],
+                        'bobot_akhir'=>$dataindikator['pivot']['bobot_akhir'],
+                        'catatan'=>$dataindikator['pivot']['catatan'],
+                    ]);
+                }
+
+                foreach($data_upload_inovasi as $item){
+                    $inovasi_uploads= DB::table('uploads')->insert([
+                        'judul'=>$item['judul'],
+                        'inovasi_id'=>$inovasi->id,
+                        'no_dokumen'=>$item['no_dokumen'],
+                        'tgl_dokumen'=>$item['tgl_dokumen'],
+                        'tentang'=>$item['tentang'],
+                        'url'=>$item['url'],
+                        'cover'=>$item['cover'],
+                        'file'=>$item['file'],
+                        'created_at'=>$item['created_at'],
+                        'updated_at'=>$item['updated_at'],
+                        'indikator_id'=>$item['indikator_id'],
+                        'provinsi_id'=>$item['provinsi_id'],
+                    ]);
+                }
                 $test++;
         }
         return response()->json([
