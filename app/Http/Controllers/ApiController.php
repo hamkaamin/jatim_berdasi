@@ -174,19 +174,6 @@ class ApiController extends Controller
         $arr_data = $request->arr_data;
         // $arr_data = json_encode($arr_data);
         $arr_data = json_decode($arr_data,true);
-        $data= [];
-        $datas = array();
-        foreach($arr_data as $r){
-            $data = [$r['inovasi']];
-            array_push($datas, $data);
-
-        }
-        return response()->json([
-            'status' => true,
-            'message' => "All Data Inovasi!",
-            'data' => $datas
-        ], 200);
-        $test = 0;
         foreach($arr_data as $item)
         {
             $data_inovasi = $item['inovasi'];
@@ -209,7 +196,7 @@ class ApiController extends Controller
                 $inovasi->status = $data_inovasi['status'];
                 $inovasi->label = $data_inovasi['label'];
                 $inovasi->kota_id = $data_inovasi['kota_id'];
-                $inovasi->user_id = $data_inovasi['user_id'];
+                $inovasi->user_id = 69;
                 $inovasi->anggaran = $data_inovasi['anggaran'];
                 $inovasi->file_rancang_bangun = $data_inovasi['file_rancang_bangun'];
                 $inovasi->profil_bisnis = $data_inovasi['profil_bisnis'];
@@ -256,7 +243,6 @@ class ApiController extends Controller
                         'provinsi_id'=>$item['provinsi_id'],
                     ]);
                 }
-                $test++;
         }
         return response()->json([
             'status' => true,
