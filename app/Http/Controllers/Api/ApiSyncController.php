@@ -27,10 +27,10 @@ class ApiSyncController extends Controller
                 
                 $data = [
                     'inovasi'=>$inovasi,
-                    // 'indikator_inovasi'=>$indikator_inovasi,
-                    // 'tahapan_inovasi'=>$tahapan_inovasi,
-                    // 'urusan_inovasi'=>$urusan_inovasi,
-                    // 'upload_inovasi'=>$upload_inovasi,
+                    'indikator_inovasi'=>$indikator_inovasi,
+                    'tahapan_inovasi'=>$tahapan_inovasi,
+                    'urusan_inovasi'=>$urusan_inovasi,
+                    'upload_inovasi'=>$upload_inovasi,
                 ];
                 
                 array_push($arr_data, $data);

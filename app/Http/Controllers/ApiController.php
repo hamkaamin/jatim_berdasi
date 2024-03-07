@@ -9,6 +9,7 @@ use App\Models\Tahapan;
 use App\Models\Upload;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -175,8 +176,84 @@ class ApiController extends Controller
         $arr_data = json_decode($arr_data,true);
         foreach($arr_data as $item)
         {
-            return response()->json($item, 200);
+            $data_inovasi = $item['inovasi'];
+            $data_indikator_inovasi = $item['indikator_inovasi'];
+            $data_upload_inovasi = $item['upload_inovasi'];
+            try {
+                $inovasi = new Inovasi();
+                $inovasi->kode = $data_inovasi['kode'];
+                $inovasi->nama = $data_inovasi['nama'];
+                $inovasi->tahapan_id = $data_inovasi['tahapan_id'];
+                $inovasi->kategori_id = $data_inovasi['kategori_id'];
+                $inovasi->inisiator_id = $data_inovasi['inisiator_id'];
+                $inovasi->jenis_id = $data_inovasi['jenis_id'];
+                $inovasi->bentuk_id = $data_inovasi['bentuk_id'];
+                $inovasi->covid = $data_inovasi['covid'];
+                $inovasi->rancang_bangun = $data_inovasi['rancang_bangun'];
+                $inovasi->tujuan = $data_inovasi['tujuan'];
+                $inovasi->manfaat = $data_inovasi['manfaat'];
+                $inovasi->hasil = $data_inovasi['hasil'];
+                $inovasi->status = $data_inovasi['status'];
+                $inovasi->label = $data_inovasi['label'];
+                $inovasi->kota_id = $data_inovasi['kota_id'];
+                $inovasi->user_id = $data_inovasi['user_id'];
+                $inovasi->anggaran = $data_inovasi['anggaran'];
+                $inovasi->file_rancang_bangun = $data_inovasi['file_rancang_bangun'];
+                $inovasi->profil_bisnis = $data_inovasi['profil_bisnis'];
+
+                // Save the changes
+                $inovasi->save();
+                $inovasi->urusan()->sync($inovasi->urusan_id);
+
+                $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+                $tempArr = [];
+                foreach ($tahapanKolom as $item) {
+                    $tempArr[$item->id] = ['waktu' => $inovasi->{'waktu_tahapan_'.$item->id}];
+                }
+                $inovasi->tahapan()->sync($tempArr);
+                // $indikator = Indikator::where('label', 0)->where('kategori_id',$inovasi->kategori_id)->get();
+                // foreach ($indikator as $item) {
+                //     $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
+                // }
+                foreach($data_indikator_inovasi as $item){
+                    $inovasi_indikator= DB::table('indikator_inovasi')->insert([
+                        'indikator_id'=>$item['pivot']['indikator_id'],
+                        'inovasi_id'=>$item['pivot']['inovasi_id'],
+                        'param_awal'=>$item['pivot']['param_awal'],
+                        'param_akhir'=>$item['pivot']['param_akhir'],
+                        'bobot_awal'=>$item['pivot']['bobot_awal'],
+                        'bobot_akhir'=>$item['pivot']['bobot_akhir'],
+                        'catatan'=>$item['pivot']['catatan'],
+                    ]);
+                }
+
+                foreach($data_upload_inovasi as $item){
+                    $inovasi_uploads= DB::table('uploads')->insert([
+                        'judul'=>$item['judul'],
+                        'inovasi_id'=>$inovasi->id,
+                        'no_dokumen'=>$item['no_dokumen'],
+                        'tgl_dokumen'=>$item['tgl_dokumen'],
+                        'tentang'=>$item['tentang'],
+                        'url'=>$item['url'],
+                        'cover'=>$item['cover'],
+                        'file'=>$item['file'],
+                        'created_at'=>$item['created_at'],
+                        'updated_at'=>$item['updated_at'],
+                        'indikator_id'=>$item['indikator_id'],
+                        'provinsi_id'=>$item['provinsi_id'],
+                    ]);
+                }
+                
+                
+            } catch (\Throwable $th) {
+                echo $th;
+            }
         }
+        return response()->json([
+            'status' => true,
+            'message' => "All Data Inovasi!",
+            'data' => $arr_data
+        ], 200);
         // $arr_data_decode = json_encode($arr_data,true);
         // return $request->all();
     }
