@@ -174,13 +174,18 @@ class ApiController extends Controller
         $arr_data = $request->arr_data;
         // $arr_data = json_encode($arr_data);
         $arr_data = json_decode($arr_data,true);
+        $data= [];
+        $datas = array();
         foreach($arr_data as $r){
-            return response()->json([
-                'status' => true,
-                'message' => "All Data Inovasi!",
-                'data' => $r['inovasi']
-            ], 200);
+            $data = [$r['inovasi']];
+            array_push($datas, $data);
+
         }
+        return response()->json([
+            'status' => true,
+            'message' => "All Data Inovasi!",
+            'data' => $datas
+        ], 200);
         $test = 0;
         foreach($arr_data as $item)
         {
