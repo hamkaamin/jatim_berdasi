@@ -151,14 +151,14 @@
                     <li>
                         <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
                             class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
+                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
                         </a>
                     </li>
                 @else
                     <li>
                         <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
                             class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
+                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
                         </a>
                     </li>
                 @endif
