@@ -147,26 +147,17 @@
                         <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
                     </a>
                 </li>
-                @if (env('APP_OPD_JATIM') == 1)
-                    <li>
-                        <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                            class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
-                        </a>
-                    </li>
-                @else
-                    <li>
-                        <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                            class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
-                        </a>
-                    </li>
-                @endif
-            @else
                 <li>
                     <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
                         class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                        class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
                     </a>
                 </li>
             @endif
