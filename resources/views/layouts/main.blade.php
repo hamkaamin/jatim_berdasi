@@ -22,7 +22,11 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
-    <link href="{{ asset('admin_asset/main.css') }}" rel="stylesheet">
+    @if (env('APP_OPD_JATIM') == 1)
+        <link href="{{ asset('admin_asset/main_bravo.css') }}" rel="stylesheet">
+    @else
+        <link href="{{ asset('admin_asset/main.css') }}" rel="stylesheet">
+    @endif
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
