@@ -252,11 +252,6 @@ class ApiController extends Controller
             }
         }
         
-        return response()->json([
-            'status' => true,
-            'message' => "All Data Inovasi!",
-            'data' => $data_upload_inovasi
-        ], 200);
         // $arr_data_decode = json_encode($arr_data,true);
         // return $request->all();
     }
