@@ -181,11 +181,6 @@ class ApiController extends Controller
             $data_indikator_inovasi = $item['indikator_inovasi'];
             $data_upload_inovasi = $item['upload_inovasi'];
 
-            return response()->json([
-                'status' => true,
-                'message' => "All Data Inovasi!",
-                'data' => $data_indikator_inovasi
-            ], 200);
             try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
@@ -222,15 +217,15 @@ class ApiController extends Controller
                 // foreach ($indikator as $item) {
                 //     $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
                 // }
-                foreach($data_indikator_inovasi as $item){
+                foreach($data_indikator_inovasi as $dataindikator){
                     $inovasi_indikator= DB::table('indikator_inovasi')->insert([
-                        'indikator_id'=>$item['pivot']['indikator_id'],
-                        'inovasi_id'=>$item['pivot']['inovasi_id'],
-                        'param_awal'=>$item['pivot']['param_awal'],
-                        'param_akhir'=>$item['pivot']['param_akhir'],
-                        'bobot_awal'=>$item['pivot']['bobot_awal'],
-                        'bobot_akhir'=>$item['pivot']['bobot_akhir'],
-                        'catatan'=>$item['pivot']['catatan'],
+                        'indikator_id'=>$dataindikator['pivot']['indikator_id'],
+                        'inovasi_id'=>$dataindikator['pivot']['inovasi_id'],
+                        'param_awal'=>$dataindikator['pivot']['param_awal'],
+                        'param_akhir'=>$dataindikator['pivot']['param_akhir'],
+                        'bobot_awal'=>$dataindikator['pivot']['bobot_awal'],
+                        'bobot_akhir'=>$dataindikator['pivot']['bobot_akhir'],
+                        'catatan'=>$dataindikator['pivot']['catatan'],
                     ]);
                 }
 
