@@ -180,6 +180,12 @@ class ApiController extends Controller
             $data_inovasi = $item['inovasi'];
             $data_indikator_inovasi = $item['indikator_inovasi'];
             $data_upload_inovasi = $item['upload_inovasi'];
+
+            return response()->json([
+                'status' => true,
+                'message' => "All Data Inovasi!",
+                'data' => $data_indikator_inovasi
+            ], 200);
             try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
@@ -245,11 +251,6 @@ class ApiController extends Controller
                     ]);
                 }
 
-                return response()->json([
-                    'status' => true,
-                    'message' => "All Data Inovasi!",
-                    'data' => $data_upload_inovasi
-                ], 200);
                 
                 
             } catch (\Throwable $th) {
@@ -257,6 +258,11 @@ class ApiController extends Controller
             }
         }
         
+        return response()->json([
+            'status' => true,
+            'message' => "All Data Inovasi!",
+            'data' => $data_upload_inovasi
+        ], 200);
         // $arr_data_decode = json_encode($arr_data,true);
         // return $request->all();
     }
