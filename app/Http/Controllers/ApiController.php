@@ -220,7 +220,7 @@ class ApiController extends Controller
                 foreach($data_indikator_inovasi as $dataindikator){
                     $inovasi_indikator= DB::table('indikator_inovasi')->insert([
                         'indikator_id'=>$dataindikator['pivot']['indikator_id'],
-                        'inovasi_id'=>$item['inovasi_id'],
+                        'inovasi_id'=>$inovasi->id,
                         'param_awal'=>$dataindikator['pivot']['param_awal'],
                         'param_akhir'=>$dataindikator['pivot']['param_akhir'],
                         'bobot_awal'=>$dataindikator['pivot']['bobot_awal'],
