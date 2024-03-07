@@ -63,7 +63,14 @@
 
                         @endphp
                         @foreach ($data as $item)
+                            @php $disabled = ''; @endphp
                             <tr>
+                                @if ($item->status != 2)
+                                    @php $disabled = 'disabled'; @endphp
+                                @endif
+                                <td><input {!! $disabled !!} type="checkbox" style="transform: scale(2)"
+                                        name="is_sent[]" id="is_sent[]" value="{{ $item->id }}">
+                                </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->user->name }}</td>
                                 <td>{{ $item->nama }}</td>

@@ -196,6 +196,8 @@ class ApiController extends Controller
                 $inovasi->status = $data_inovasi['status'];
                 $inovasi->label = $data_inovasi['label'];
                 $inovasi->kota_id = $data_inovasi['kota_id'];
+                $inovasi->waktu_uji_coba = $data_inovasi['waktu_uji_coba'];
+                $inovasi->waktu_penerapan = $data_inovasi['waktu_penerapan'];
                 $inovasi->user_id = 34;
                 $inovasi->anggaran = $data_inovasi['anggaran'];
                 $inovasi->file_rancang_bangun = $data_inovasi['file_rancang_bangun'];

@@ -145,6 +145,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/show_tahapan', [App\Http\Controllers\InovasiController::class, 'show_tahapan'])->name('show_tahapan');
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
+        Route::post('/sent', [App\Http\Controllers\InovasiController::class, 'sent'])->name('sent');
 
         Route::prefix('indikator')->name('indikator.')->group(function () {
             Route::get('/list', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');

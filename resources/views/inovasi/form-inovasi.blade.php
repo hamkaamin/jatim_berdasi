@@ -219,6 +219,22 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Ujicoba Inovasi</b> <span
+                                    class="text-danger">*</span></label></div>
+                        <div class="col-sm-8"><input type="date" required name="waktu_uji_coba" class="form-control"
+                                value="{{ $data != null ? $data->waktu_uji_coba : old('waktu_uji_coba') }}">
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Penerapan Inovasi</b> <span
+                                    class="text-danger">*</span></label></div>
+                        <div class="col-sm-8"><input type="date" required name="waktu_penerapan" class="form-control"
+                                value="{{ $data != null ? $data->waktu_penerapan : old('waktu_penerapan') }}">
+                        </div>
+                    </div>
                     {{-- @foreach ($tahapanKolom as $item)
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu

@@ -132,6 +132,8 @@ class Helper
 			$status = "<span class='badge badge-danger'>Ditolak</span>";
 		} elseif ($id == 4) {
 			$status = "<span class='badge badge-warning'>Revisi</span>";
+		} elseif ($id == 5) {
+			$status = "<span class='badge badge-info'>Dikirim</span>";
 		}
 		return $status;
 	}

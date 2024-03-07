@@ -251,6 +251,8 @@ class InovasiController extends Controller
         $data->hasil = $request->hasil;
         $data->status = $request->status;
         $data->label = $request->label;
+        $data->waktu_uji_coba = $request->waktu_uji_coba;
+        $data->waktu_penerapan = $request->waktu_penerapan;
         $data->url = env('APP_URL');
 		$data->save();
         $data->urusan()->sync($request->urusan_id);
@@ -347,4 +349,20 @@ class InovasiController extends Controller
     	    return $pdf->download('inovasi-'.$inovasi->kode.'.pdf');
         }
     }
+
+    public function sent(Request $request) {
+        // Process the request, perform actions based on the data received
+        // Example:
+        $is_sent = $request->is_sent;
+        foreach($is_sent as $id){
+            $hit_data = 0;
+            $data = Inovasi::find($id);
+            $data->hit_data = 1;
+            $data->status = 5;
+            $data->save();
+        }
+        return redirect()->back()->with('success', 'Data Berhasil Dikirim ke Jatim Berdasi');
+    }
+        // Return a response
+        // return response()->json(['message' => 'Data received successfully']);
 }

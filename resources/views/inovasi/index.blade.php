@@ -16,99 +16,119 @@
 @endif
 
 @section('content')
-    <div class="row">
-        @if (Auth::user()->role != 2)
-            <div class="col-12">
-                <div class="row">
-                    @foreach ($tahapan as $item)
-                        <div class="col-3">
-                            <div class="card mb-3 widget-content bg-midnight-bloom">
-                                <div class="widget-content-wrapper text-white">
-                                    <div class="widget-content-left">
-                                        <div class="widget-heading">{{ $item->nama }}</div>
-                                        <div class="widget-subheading">Inovasi Tahap <b>{{ $item->nama }}</b></div>
-                                    </div>
-                                    <div class="widget-content-right">
-                                        <div class="widget-numbers text-white">
-                                            <span>
-                                                @php
-                                                    $inov = $item->hasManyInovasi();
-                                                    if ($label == 'Masyarakat' || $label == 'Awards') {
-                                                        $inov = $inov->where('label', 0);
-                                                    } elseif ($label == 'Pemda') {
-                                                        $inov = $inov->where('label', 1);
-                                                    } elseif ($label == 'Daerah') {
-                                                        $inov = $inov->where('status', 2);
-                                                    }
-                                                    if (
-                                                        Auth::user()->role == 3 ||
-                                                        Helper::checkUserUmum('provinsi', Auth::user())
-                                                    ) {
-                                                        $inov = $inov->where('provinsi_id', Auth::user()->province_id);
-                                                    } elseif (
-                                                        Helper::checkOpd('provinsi', Auth::user()) ||
-                                                        Helper::checkUserUmum('opd-provinsi', Auth::user())
-                                                    ) {
-                                                        $inov = $inov->where(
-                                                            'provinsi_id',
-                                                            Auth::user()->opd->provinsi_id,
-                                                        );
-                                                    } elseif (
-                                                        Auth::user()->role == 4 ||
-                                                        Helper::checkUserUmum('kota', Auth::user())
-                                                    ) {
-                                                        $inov = $inov->where('kota_id', Auth::user()->regency_id);
-                                                    } elseif (
-                                                        Helper::checkOpd('kota', Auth::user()) ||
-                                                        Helper::checkUserUmum('opd-kota', Auth::user())
-                                                    ) {
-                                                        $inov = $inov->where('kota_id', Auth::user()->opd->kabkota_id);
-                                                    } elseif (
-                                                        Helper::checkOpd('kecamatan', Auth::user()) ||
-                                                        Helper::checkUserUmum('opd-kecamatan', Auth::user())
-                                                    ) {
-                                                        $inov = $inov->where(
-                                                            'kecamatan_id',
-                                                            Auth::user()->opd->kecamatan_id,
-                                                        );
-                                                    } elseif (
-                                                        Helper::checkOpd('kelurahan', Auth::user()) ||
-                                                        Helper::checkUserUmum('opd-kelurahan', Auth::user())
-                                                    ) {
-                                                        $inov = $inov->where(
-                                                            'kelurahan_id',
-                                                            Auth::user()->opd->kelurahan_id,
-                                                        );
-                                                    }
-                                                @endphp
-                                                {{ $inov->count() }}
-                                            </span>
+
+    <form action="{{ route('inovasi.sent') }}" method="POST" name="kirimInovasi" id="kirimInovasi"
+        onsubmit="return confirmSubmit()">
+        @csrf
+
+        <div class="row">
+            <div class="col-10">
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim Berdasi</b></button>
+                <br><br>
+            </div>
+        </div>
+        <div class="row">
+            @if (Auth::user()->role != 2)
+                <div class="col-12">
+                    <div class="row">
+                        @foreach ($tahapan as $item)
+                            <div class="col-3">
+                                <div class="card mb-3 widget-content bg-midnight-bloom">
+                                    <div class="widget-content-wrapper text-white">
+                                        <div class="widget-content-left">
+                                            <div class="widget-heading">{{ $item->nama }}</div>
+                                            <div class="widget-subheading">Inovasi Tahap <b>{{ $item->nama }}</b></div>
+                                        </div>
+                                        <div class="widget-content-right">
+                                            <div class="widget-numbers text-white">
+                                                <span>
+                                                    @php
+                                                        $inov = $item->hasManyInovasi();
+                                                        if ($label == 'Masyarakat' || $label == 'Awards') {
+                                                            $inov = $inov->where('label', 0);
+                                                        } elseif ($label == 'Pemda') {
+                                                            $inov = $inov->where('label', 1);
+                                                        } elseif ($label == 'Daerah') {
+                                                            $inov = $inov->where('status', 2);
+                                                        }
+                                                        if (
+                                                            Auth::user()->role == 3 ||
+                                                            Helper::checkUserUmum('provinsi', Auth::user())
+                                                        ) {
+                                                            $inov = $inov->where(
+                                                                'provinsi_id',
+                                                                Auth::user()->province_id,
+                                                            );
+                                                        } elseif (
+                                                            Helper::checkOpd('provinsi', Auth::user()) ||
+                                                            Helper::checkUserUmum('opd-provinsi', Auth::user())
+                                                        ) {
+                                                            $inov = $inov->where(
+                                                                'provinsi_id',
+                                                                Auth::user()->opd->provinsi_id,
+                                                            );
+                                                        } elseif (
+                                                            Auth::user()->role == 4 ||
+                                                            Helper::checkUserUmum('kota', Auth::user())
+                                                        ) {
+                                                            $inov = $inov->where('kota_id', Auth::user()->regency_id);
+                                                        } elseif (
+                                                            Helper::checkOpd('kota', Auth::user()) ||
+                                                            Helper::checkUserUmum('opd-kota', Auth::user())
+                                                        ) {
+                                                            $inov = $inov->where(
+                                                                'kota_id',
+                                                                Auth::user()->opd->kabkota_id,
+                                                            );
+                                                        } elseif (
+                                                            Helper::checkOpd('kecamatan', Auth::user()) ||
+                                                            Helper::checkUserUmum('opd-kecamatan', Auth::user())
+                                                        ) {
+                                                            $inov = $inov->where(
+                                                                'kecamatan_id',
+                                                                Auth::user()->opd->kecamatan_id,
+                                                            );
+                                                        } elseif (
+                                                            Helper::checkOpd('kelurahan', Auth::user()) ||
+                                                            Helper::checkUserUmum('opd-kelurahan', Auth::user())
+                                                        ) {
+                                                            $inov = $inov->where(
+                                                                'kelurahan_id',
+                                                                Auth::user()->opd->kelurahan_id,
+                                                            );
+                                                        }
+                                                    @endphp
+                                                    {{ $inov->count() }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <x-tab-inovasi :tahapan="null" :active="1" />
+                    @foreach ($tahapan as $item)
+                        <x-tab-inovasi :tahapan="$item" :active="0" />
+                    @endforeach
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <x-tab-content-inovasi :tahapan="null" :active="1" :kolom="$tahapanKolom" :inovasi="$inovasi"
+                        :label="$label" />
+                    @foreach ($tahapan as $item)
+                        <x-tab-content-inovasi :tahapan="$item" :active="0" :kolom="$tahapanKolom" :inovasi="[]"
+                            :label="$label" />
                     @endforeach
                 </div>
             </div>
-        @endif
-        <div class="col-12">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <x-tab-inovasi :tahapan="null" :active="1" />
-                @foreach ($tahapan as $item)
-                    <x-tab-inovasi :tahapan="$item" :active="0" />
-                @endforeach
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <x-tab-content-inovasi :tahapan="null" :active="1" :kolom="$tahapanKolom" :inovasi="$inovasi"
-                    :label="$label" />
-                @foreach ($tahapan as $item)
-                    <x-tab-content-inovasi :tahapan="$item" :active="0" :kolom="$tahapanKolom" :inovasi="[]"
-                        :label="$label" />
-                @endforeach
-            </div>
         </div>
-    </div>
+    </form>
 @endsection
 
 @section('script')
@@ -118,6 +138,28 @@
         $(document).ready(function() {
             $('#myTable0').DataTable({});
         });
+
+        function sent_inovasi(token) {
+            // Get the checkbox element
+            // var checkbox = document.getElementById('is_sent[]');
+            var form = document.forms.namedItem("kirimInovasi");
+            const item = [];
+            var act = '/inovasi/sent_inovasi';
+            var i;
+            for (i = 0; i < form.length; i++) {
+                if (form[i].checked) {
+                    item.push(form[i].value);
+                }
+            }
+            $.post(act, {
+                    _token: token,
+                    item: item
+                },
+                function(data) {
+                    // $(modal + 'Isi').html(data);
+                    console.log(data);
+                });
+        }
     </script>
     @foreach ($tahapan as $item)
         <script>
@@ -129,6 +171,36 @@
     <script>
         $(function() {
             $('[data-toggle="tooltip"]')
+        });
+    </script>
+    <script>
+        function confirmSubmit() {
+            // Display a confirmation dialog
+            return confirm("Apakah Anda yakin ingin mengirimkan ini?");
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var checkboxes = document.querySelectorAll('input[name="is_sent[]"]');
+            var submitButton = document.getElementById('submitButton');
+
+            function updateSubmitButton() {
+                var atLeastOneChecked = false;
+
+                checkboxes.forEach(function(checkbox) {
+                    if (checkbox.checked) {
+                        atLeastOneChecked = true;
+                    }
+                });
+
+                submitButton.disabled = !atLeastOneChecked;
+            }
+
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', updateSubmitButton);
+            });
+
+            // Call the function initially to set the initial state of the submit button
+            updateSubmitButton();
         });
     </script>
 @endsection
