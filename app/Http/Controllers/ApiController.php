@@ -178,7 +178,7 @@ class ApiController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => "All Data Inovasi!",
-                'data' => $r
+                'data' => $r['inovasi']
             ], 200);
         }
         $test = 0;
