@@ -179,7 +179,7 @@ class ApiController extends Controller
             $data_inovasi = $item['inovasi'];
             $data_indikator_inovasi = $item['indikator_inovasi'];
             $data_upload_inovasi = $item['upload_inovasi'];
-            dd($data_inovasi);
+            dd($item);
             try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
