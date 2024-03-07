@@ -174,7 +174,11 @@ class ApiController extends Controller
         $arr_data = $request->arr_data;
         // $arr_data = json_encode($arr_data);
         $arr_data = json_decode($arr_data,true);
-        dd($arr_data);
+        return response()->json([
+            'status' => true,
+            'message' => "All Data Inovasi!",
+            'data' => $arr_data
+        ], 200);
         foreach($arr_data as $item)
         {
             $data_inovasi = $item['inovasi'];
@@ -250,11 +254,7 @@ class ApiController extends Controller
                 echo $th;
             }
         }
-        return response()->json([
-            'status' => true,
-            'message' => "All Data Inovasi!",
-            'data' => $arr_data
-        ], 200);
+        
         // $arr_data_decode = json_encode($arr_data,true);
         // return $request->all();
     }
