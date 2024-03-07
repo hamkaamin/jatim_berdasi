@@ -181,7 +181,6 @@ class ApiController extends Controller
             $data_indikator_inovasi = $item['indikator_inovasi'];
             $data_upload_inovasi = $item['upload_inovasi'];
 
-            try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
                 $inovasi->nama = $data_inovasi['nama'];
@@ -246,12 +245,6 @@ class ApiController extends Controller
                     ]);
                 }
                 $test++;
-
-                
-                
-            } catch (\Throwable $th) {
-                echo $th;
-            }
         }
         return response()->json([
             'status' => true,
