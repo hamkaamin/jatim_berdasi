@@ -204,11 +204,6 @@ class ApiController extends Controller
 
                 // Save the changes
                 $inovasi->save();
-                return response()->json([
-                    'status' => true,
-                    'message' => "All Data Inovasi!",
-                    'data' => $inovasi
-                ], 200);
                 $inovasi->urusan()->sync($inovasi->urusan_id);
 
                 $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
@@ -249,6 +244,12 @@ class ApiController extends Controller
                         'provinsi_id'=>$item['provinsi_id'],
                     ]);
                 }
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "All Data Inovasi!",
+                    'data' => $inovasi
+                ], 200);
                 
                 
             } catch (\Throwable $th) {
