@@ -174,6 +174,7 @@ class ApiController extends Controller
         $arr_data = $request->arr_data;
         // $arr_data = json_encode($arr_data);
         $arr_data = json_decode($arr_data,true);
+        $test = 0;
         foreach($arr_data as $item)
         {
             $data_inovasi = $item['inovasi'];
@@ -244,6 +245,7 @@ class ApiController extends Controller
                         'provinsi_id'=>$item['provinsi_id'],
                     ]);
                 }
+                $test++;
 
                 
                 
@@ -251,6 +253,11 @@ class ApiController extends Controller
                 echo $th;
             }
         }
+        return response()->json([
+            'status' => true,
+            'message' => "All Data Inovasi!",
+            'data' => $test
+        ], 200);
         
         // $arr_data_decode = json_encode($arr_data,true);
         // return $request->all();
