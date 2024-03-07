@@ -179,6 +179,22 @@ class ApiController extends Controller
         {
             $data_inovasi = $item['inovasi'];
             $data_indikator_inovasi = $item['indikator_inovasi'];
+            foreach($data_indikator_inovasi as $dataindikator){
+                return response()->json([
+                    'status' => true,
+                    'message' => "All Data Inovasi!",
+                    'data' => $dataindikator
+                ], 200);
+                $inovasi_indikator= DB::table('indikator_inovasi')->insert([
+                    'indikator_id'=>$dataindikator['pivot']['indikator_id'],
+                    'inovasi_id'=>$dataindikator['pivot']['inovasi_id'],
+                    'param_awal'=>$dataindikator['pivot']['param_awal'],
+                    'param_akhir'=>$dataindikator['pivot']['param_akhir'],
+                    'bobot_awal'=>$dataindikator['pivot']['bobot_awal'],
+                    'bobot_akhir'=>$dataindikator['pivot']['bobot_akhir'],
+                    'catatan'=>$dataindikator['pivot']['catatan'],
+                ]);
+            }
             $data_upload_inovasi = $item['upload_inovasi'];
 
             try {
@@ -217,17 +233,7 @@ class ApiController extends Controller
                 // foreach ($indikator as $item) {
                 //     $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
                 // }
-                foreach($data_indikator_inovasi as $dataindikator){
-                    $inovasi_indikator= DB::table('indikator_inovasi')->insert([
-                        'indikator_id'=>$dataindikator['pivot']['indikator_id'],
-                        'inovasi_id'=>$dataindikator['pivot']['inovasi_id'],
-                        'param_awal'=>$dataindikator['pivot']['param_awal'],
-                        'param_akhir'=>$dataindikator['pivot']['param_akhir'],
-                        'bobot_awal'=>$dataindikator['pivot']['bobot_awal'],
-                        'bobot_akhir'=>$dataindikator['pivot']['bobot_akhir'],
-                        'catatan'=>$dataindikator['pivot']['catatan'],
-                    ]);
-                }
+                
 
                 foreach($data_upload_inovasi as $item){
                     $inovasi_uploads= DB::table('uploads')->insert([
