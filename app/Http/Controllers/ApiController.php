@@ -180,11 +180,6 @@ class ApiController extends Controller
             $data_inovasi = $item['inovasi'];
             $data_indikator_inovasi = $item['indikator_inovasi'];
             $data_upload_inovasi = $item['upload_inovasi'];
-            return response()->json([
-                'status' => true,
-                'message' => "All Data Inovasi!",
-                'data' => $data_indikator_inovasi
-            ], 200);
             try {
                 $inovasi = new Inovasi();
                 $inovasi->kode = $data_inovasi['kode'];
@@ -209,6 +204,11 @@ class ApiController extends Controller
 
                 // Save the changes
                 $inovasi->save();
+                return response()->json([
+                    'status' => true,
+                    'message' => "All Data Inovasi!",
+                    'data' => $inovasi
+                ], 200);
                 $inovasi->urusan()->sync($inovasi->urusan_id);
 
                 $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
