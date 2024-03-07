@@ -112,11 +112,10 @@ class Helper
 			}
 			$nama_file = env('APP_URL').'/'.$folder.'/'.$name.'.'.$file->getClientOriginalExtension();
 			$file->move($folder, $nama_file);
-			dd($file->move($folder, $nama_file));
 			return $nama_file;
 		} catch (\Throwable $th) {
 			$nama_file = "file_error";
-			return $th;
+			return $nama_file;
 		}
 	}
 
