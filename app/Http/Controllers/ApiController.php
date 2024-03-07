@@ -196,7 +196,7 @@ class ApiController extends Controller
                 $inovasi->status = $data_inovasi['status'];
                 $inovasi->label = $data_inovasi['label'];
                 $inovasi->kota_id = $data_inovasi['kota_id'];
-                $inovasi->user_id = 69;
+                $inovasi->user_id = 34;
                 $inovasi->anggaran = $data_inovasi['anggaran'];
                 $inovasi->file_rancang_bangun = $data_inovasi['file_rancang_bangun'];
                 $inovasi->profil_bisnis = $data_inovasi['profil_bisnis'];
@@ -247,7 +247,7 @@ class ApiController extends Controller
         return response()->json([
             'status' => true,
             'message' => "All Data Inovasi!",
-            'data' => $test
+            'data' => $arr_data
         ], 200);
         
         // $arr_data_decode = json_encode($arr_data,true);

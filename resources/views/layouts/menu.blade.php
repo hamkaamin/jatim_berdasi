@@ -60,12 +60,12 @@
                 <i class="metismenu-icon pe-7s-ribbon"></i> Jabatan Inovasi
             </a>
         </li>
-        <li>
+        {{-- <li>
             <a href="{{ route('master.definisi.index') }}"
                 class="{{ Request::routeIs('master.definisi.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> Definisi Operasional
             </a>
-        </li>
+        </li> --}}
         <li>
             <a href="{{ route('master.golongan.index') }}"
                 class="{{ Request::routeIs('master.golongan.*') ? 'mm-active' : '' }}">
@@ -147,12 +147,21 @@
                         <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                        class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
-                    </a>
-                </li>
+                @if (env('APP_OPD_JATIM') == 1)
+                    <li>
+                        <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                            class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
+                        </a>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                            class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
+                        </a>
+                    </li>
+                @endif
             @else
                 <li>
                     <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
@@ -164,7 +173,11 @@
         @endif
 
         @if (env('APP_PROVINSI_JATIM') == 0)
-            <li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
+            @if (env('APP_OPD_JATIM') == 1)
+                <li class="app-sidebar__heading">Lomba Inovasi</li>
+            @else
+                <li class="app-sidebar__heading">Lomba Inovasi Daerah</li>
+            @endif
             @if (Auth::user()->role != 6)
                 {{-- <li>
                 <a href="{{ route('inovasi.index', ['area' => 'pemda']) }}"
@@ -179,7 +192,7 @@
                     <i class="metismenu-icon pe-7s-light"></i> Inotek Awards
                 </a>
             </li>
-            <li class="app-sidebar__heading">Laporan</li>
+            {{-- <li class="app-sidebar__heading">Laporan</li>
             <li>
                 <a href="{{ route('rekap.index', 'jenis') }}"
                     class="{{ request()->is('rekap/jenis') ? 'mm-active' : '' }}">
@@ -203,7 +216,7 @@
                     class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
                     <i class="metismenu-icon pe-7s-graph1"></i> Rekap Berdasarkan Inisiator
                 </a>
-            </li>
+            </li> --}}
         @endif
 
         <li>
