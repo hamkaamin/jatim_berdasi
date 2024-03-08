@@ -78,7 +78,7 @@
                                 <td>
                                     {{ Helper::getRole($item->role) }}
                                     @if ($item->role == 5)
-                                        @if (@$item->opd->provinsi_id != null)
+                                        @if ($item->opd->provinsi_id != null)
                                             - Provinsi
                                         @elseif ($item->opd->kabkota_id != null)
                                             - Kota

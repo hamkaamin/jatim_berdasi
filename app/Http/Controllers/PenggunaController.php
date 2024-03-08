@@ -78,6 +78,7 @@ class PenggunaController extends Controller
             }
         }
         $data = $data->get();
+        // dd($data);
         return view('daftar-pengguna', compact('data'));
     }
 
