@@ -556,5 +556,29 @@ class HomeController extends Controller
             }
     }  
 
+    public function insert_data_opd_sekolah()
+    {
+        $dataawal = DB::table('dataawal_sekolahs')->get();
+        foreach($dataawal as $item){
+            $data_user = User::where('username',$item->username)->first();
+            if($data_user == null){
+                $opd = new Opd();
+                $opd->nama = $item->opd;
+                $opd->kode_opd = $item->username;
+                $opd->provinsi_id = 35;
+                $opd->save();
+
+                $users =new User();
+                $users->name = $item->opd;
+                $users->username = $item->username;
+                $users->opd_id = $opd->id;
+                $users->role = 5;
+                $users->province_id = 35;
+                $users->password = bcrypt($item->username);
+                $users->save();
+            }
+        }
+    }
+
     
 }

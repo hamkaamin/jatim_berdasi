@@ -132,35 +132,33 @@
                 </a>
             </li>
         @endif
-        @if (Auth::user()->role != 4)
-            <li class="app-sidebar__heading">Data Inovasi Daerah</li>
-            @if (env('APP_OPD_JATIM') == 0)
-                <li>
-                    <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
-                        class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
-                        class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                        class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
-                    </a>
-                </li>
-            @else
-                <li>
-                    <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                        class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
-                    </a>
-                </li>
-            @endif
+        <li class="app-sidebar__heading">Data Inovasi Daerah</li>
+        @if (env('APP_OPD_JATIM') == 0)
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
+                    class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                    class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Provinsi)
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                    class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah (Kota / Kab)
+                </a>
+            </li>
+        @else
+            <li>
+                <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                    class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> Inovasi Daerah
+                </a>
+            </li>
         @endif
 
         @if (env('APP_PROVINSI_JATIM') == 0)

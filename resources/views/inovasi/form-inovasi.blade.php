@@ -77,7 +77,7 @@
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
                             <div class="row">
-                                @if (Auth::user()->role == 5)
+                                @if (Auth::user()->role == 4 || Auth::user()->role == 5)
                                     {{-- @foreach ($kategori as $item) --}}
                                     <div class="col-12 d-flex align-items-center">
                                         {{-- <input type="radio" id="kategori_{{ $item->id }}"

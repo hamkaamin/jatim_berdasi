@@ -21,6 +21,5 @@ class RoleSeeder extends Seeder
         DB::table('roles')->insert(['id' => 4, 'nama' => 'Kab / Kota']);
         DB::table('roles')->insert(['id' => 5, 'nama' => 'OPD']);
         DB::table('roles')->insert(['id' => 6, 'nama' => 'GUEST']);
-        DB::table('roles')->insert(['id' => 7, 'nama' => 'OPD PROVINSI']);
     }
 }
