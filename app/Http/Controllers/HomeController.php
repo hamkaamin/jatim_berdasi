@@ -440,14 +440,15 @@ class HomeController extends Controller
         {
             foreach($opd as $data)
             {
-                $opd_kategori = KategoriOpd::where('opd_id',$data->id)->first();
-                // if($opd_kategori == NULL){
+                $opd_kategori = KategoriOpd::where('opd_id',$data->id)->where('kategori_id',$item->id)->first();
+                if($opd_kategori == NULL){
+                    dd($opd_kategori);
                     $kategori_opd = new KategoriOpd();
                     $kategori_opd->opd_id = $data->id;
                     $kategori_opd->kategori_id = $item->id;
                     $kategori_opd->is_aktif = 1;
                     $kategori_opd->save();   
-                // }
+                }
             }
         }
     }

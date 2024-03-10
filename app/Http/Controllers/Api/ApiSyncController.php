@@ -47,6 +47,12 @@ class ApiSyncController extends Controller
                 'verify' => false, // Disable SSL verification
             ]);
             $respon = json_decode($response->getBody()->getContents(), true);
+            if($respon['status'] == true){
+                $inovasis = Inovasi::where('hit_data',1)->update(
+                    [
+                        'hit_data' =>2
+                    ]);
+            }
             
             return response()->json([
                 'status' => true,
