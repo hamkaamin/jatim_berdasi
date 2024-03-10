@@ -442,7 +442,6 @@ class HomeController extends Controller
             {
                 $opd_kategori = KategoriOpd::where('opd_id',$data->id)->where('kategori_id',$item->id)->first();
                 if($opd_kategori == NULL){
-                    dd($data);
                     $kategori_opd = new KategoriOpd();
                     $kategori_opd->opd_id = $data->id;
                     $kategori_opd->kategori_id = $item->id;
