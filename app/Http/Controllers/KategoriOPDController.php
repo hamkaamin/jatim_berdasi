@@ -83,4 +83,10 @@ class KategoriOPDController extends Controller
         $data->delete();
         return redirect()->back()->with('success', Config::get('delete_success'));
     }
+
+    public function show(Request $request)
+    {
+        $data_kategori = KategoriInovasi::with('opd')->orderBy('kode','asc')->get();
+        return view('master.show_kategoriopd',compact('data_kategori'));
+    }
 }
