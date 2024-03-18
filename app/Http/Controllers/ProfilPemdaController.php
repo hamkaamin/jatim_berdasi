@@ -12,6 +12,7 @@ use App\Models\Provinsi;
 use App\Models\Upload;
 use App\Exports\ProfilPemdaExport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProfilPemdaController extends Controller
 {
@@ -51,7 +52,6 @@ class ProfilPemdaController extends Controller
 
     public function index_upload(Request $request)
     {
-        dd('a');
         if (count($request->input()) == 3 && isset($request->id) && isset($request->indikator)) {
             $data = Upload::where('provinsi_id', $request->id)->where('indikator_id', $request->indikator)->get();
             $indikator = Indikator::findOrFail($request->indikator);
@@ -64,10 +64,25 @@ class ProfilPemdaController extends Controller
 
     public function upload_pakta(Request $request)
     {
-        $nama_file = Helper::save_file($request->file('pakta_integritas'), uniqid(), 'pakta_integritas', Auth::user()->pakta_integritas);
-        Auth::user()->pakta_integritas = $nama_file;
-        Auth::user()->save();
-        return redirect()->back()->with('success', 'Pakta integritas berhasil di-upload !');
+        $validator = Validator::make($request->all(), [ 
+            'pakta_integritas' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048', 
+        ], [  
+            'pakta_integritas.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
+            'pakta_integritas.max' => 'File maksimal berukuran 2MB', 
+        ]);
+        if ($validator->fails()) {
+            $msg = "";
+            foreach ($validator->messages()->all() as $message) {
+                $msg .= $message . ". ";
+            }
+            return redirect()->back()->with('error', $msg)->withInput($request->input());
+
+        } else {
+            $nama_file = Helper::save_file($request->file('pakta_integritas'), uniqid(), 'pakta_integritas', Auth::user()->pakta_integritas);
+            Auth::user()->pakta_integritas = $nama_file;
+            Auth::user()->save();
+            return redirect()->back()->with('success', 'Pakta integritas berhasil di-upload !');
+        }
     }
 
     public function saveParam(Request $request)

@@ -6,7 +6,6 @@
                 <thead class="thead-light">
                     <tr>
                         <th>No.</th>
-                        <th>Kategori</th>
                         <th>Nama</th>
                         <th>Wilayah</th>
                         <th>Aktif</th>
@@ -17,7 +16,6 @@
                     @foreach ($datas->opd as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $datas->nama }}</td>
                             <td>{{ @$item->opd->nama }}</td>
                             <td>
                                 @if (@$item->opd->provinsi_id != null)
@@ -61,6 +59,7 @@
                             </td>
                         </tr>
                     @endforeach
+
                 </tbody>
             </table>
         </div>

@@ -70,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('kategoriopd')->name('kategoriopd.')->group(function () {
                 Route::get('/', [KategoriOPDController::class, 'index'])->name('index');
                 Route::get('/show', [KategoriOPDController::class, 'show'])->name('show');
+                Route::get('/table', [KategoriOPDController::class, 'table'])->name('table');
                 Route::post('/', [KategoriOPDController::class, 'save'])->name('save');
                 Route::post('/switch', [KategoriOPDController::class, 'switch'])->name('switch');
                 Route::post('/delete', [KategoriOPDController::class, 'delete'])->name('delete');

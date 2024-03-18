@@ -89,4 +89,6 @@ class KategoriOPDController extends Controller
         $data_kategori = KategoriInovasi::with('opd')->orderBy('kode','asc')->get();
         return view('master.show_kategoriopd',compact('data_kategori'));
     }
+
+    
 }

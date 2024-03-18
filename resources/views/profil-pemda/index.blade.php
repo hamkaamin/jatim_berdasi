@@ -49,7 +49,8 @@
                         <div class="col-auto d-flex align-items-center"><label class="m-0 p-0">Upload Pakta
                                 Integritas</label></div>
                         <div class="col">
-                            <input type="file" name="pakta_integritas" class="mr-2" required>
+                            <input type="file" accept=".jpg,.jpeg,.png,.pdf" name="pakta_integritas" class="mr-2"
+                                required>
                             <button class="btn btn-sm btn-primary mr-2" type="submit">Upload File (Maks 2MB)</button>
                             @if (Auth::user()->pakta_integritas != null &&
                                     file_exists(public_path('/pakta_integritas/' . Auth::user()->pakta_integritas)))
