@@ -416,7 +416,7 @@ class HomeController extends Controller
             foreach($opd as $r){
                 if($r->kode_opd != NULL || !empty($r->kode_opd)){
                     $users = User::where('username',$r->kode_opd)->first();
-                    if($users == NULL || empty($users)){
+                    if($users == NULL){
                         $user = new User();
                         $user->name = $r->nama;
                         $user->username = $r->kode_opd;
