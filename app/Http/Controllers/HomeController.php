@@ -421,7 +421,7 @@ class HomeController extends Controller
                         $user->name = $r->nama;
                         $user->username = $r->kode_opd;
                         $user->opd_id = $r->id;
-                        $user->role = 5;
+                        $user->role = 4;
                         $user->regency_id = 3526;
                         $user->password = bcrypt($r->kode_opd);
                         $user->save();
