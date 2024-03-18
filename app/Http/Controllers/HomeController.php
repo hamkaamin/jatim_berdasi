@@ -417,7 +417,6 @@ class HomeController extends Controller
                 if($r->kode_opd != NULL || !empty($r->kode_opd)){
                     $users = User::where('username',$r->kode_opd)->first();
                     if($users == NULL){
-                        dd($users);
                         $user = new User();
                         $user->name = $r->nama;
                         $user->username = $r->kode_opd;
@@ -425,6 +424,7 @@ class HomeController extends Controller
                         $user->role = 4;
                         $user->regency_id = 3526;
                         $user->password = bcrypt($r->kode_opd);
+                        dd($user);
                         $user->save();
                     }
                 }
