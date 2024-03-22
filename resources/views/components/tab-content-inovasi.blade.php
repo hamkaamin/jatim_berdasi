@@ -55,7 +55,11 @@
                                             ->get();
                                     }
                                 } else {
-                                    $data = $tahapan->hasManyInovasi()->where('status', '<>', 0)->get();
+                                    $data = $tahapan
+                                        ->hasManyInovasi()
+                                        ->where('label', $status_label)
+                                        ->where('status', '<>', 0)
+                                        ->get();
                                 }
                             } else {
                                 $data = $inovasi;
