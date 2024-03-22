@@ -55,7 +55,7 @@
                                             ->get();
                                     }
                                 } else {
-                                    $data = $tahapan->hasManyInovasi()->get();
+                                    $data = $tahapan->hasManyInovasi()->where('status', '<>', 0)->get();
                                 }
                             } else {
                                 $data = $inovasi;
