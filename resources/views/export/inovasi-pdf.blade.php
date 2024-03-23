@@ -54,7 +54,7 @@
             @endphp
             @if (env('APP_NAME') == 'BRAVO BANGKALAN')
                 @php
-                    $logo = 'admin_asset/logo-bravo.png';
+                    $logo = 'admin_asset/logo-bangkalan.png';
                     $width = '100';
                 @endphp ?>
             @endif
@@ -63,10 +63,11 @@
                 @php $nama_app = 'Badan Riset dan Inovasi Daerah (BRIDA)'; @endphp
                 @if (env('APP_NAME') == 'BRAVO BANGKALAN')
                     @php
-                        $nama_app = 'Bangkalan Kreatif, Inovatif dan Teknologi ( BRAVO )';
+                        $nama_app = 'Pemerintah Kabupaten Bangkalan <br>
+Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
                     @endphp
                 @endif
-                <h2>{{ $nama_app }}</h2>
+                <h2>{!! $nama_app !!}</h2>
             </td>
         </tr>
     </table>
@@ -76,17 +77,19 @@
             <td>
                 <h1>LAPORAN INOVASI DAERAH</h1>
                 <br>
-                <h2>Pemerintah Daerah:
-                    @if ($inovasi->kelurahan_id != null)
-                        KELURAHAN {{ $inovasi->kelurahan->name }}
-                    @elseif ($inovasi->kecamatan_id != null)
-                        KECAMATAN {{ $inovasi->kecamatan->name }}
-                    @elseif ($inovasi->kota_id != null)
-                        {{ $inovasi->kota->name }}
-                    @else
-                        {{ $inovasi->provinsi->name }}
-                    @endif
-                </h2>
+                @if ('APP_NAME' == 'INOVASI DAERAH')
+                    <h2>Pemerintah Daerah:
+                        @if ($inovasi->kelurahan_id != null)
+                            KELURAHAN {{ $inovasi->kelurahan->name }}
+                        @elseif ($inovasi->kecamatan_id != null)
+                            KECAMATAN {{ $inovasi->kecamatan->name }}
+                        @elseif ($inovasi->kota_id != null)
+                            {{ $inovasi->kota->name }}
+                        @else
+                            {{ $inovasi->provinsi->name }}
+                        @endif
+                    </h2>
+                @endif
                 <h3>Nomor Registrasi : {{ $inovasi->kode }}</h3>
             </td>
         </tr>
