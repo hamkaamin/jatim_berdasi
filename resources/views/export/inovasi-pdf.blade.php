@@ -48,9 +48,25 @@
 <body>
     <table>
         <tr>
-            <td><img src="{{ public_path('brida-logo.png') }}" width="50" alt=""></td>
+            @php
+                $logo = 'brida-logo.png';
+                $width = '50';
+            @endphp
+            @if (env('APP_NAME') == 'BRAVO BANGKALAN')
+                @php
+                    $logo = 'admin_asset/logo-bravo.png';
+                    $width = '100';
+                @endphp ?>
+            @endif
+            <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
             <td>
-                <h2>Badan Riset dan Inovasi Daerah (BRIDA)</h2>
+                @php $nama_app = 'Badan Riset dan Inovasi Daerah (BRIDA)'; @endphp
+                @if (env('APP_NAME') == 'BRAVO BANGKALAN')
+                    @php
+                        $nama_app = 'Bangkalan Kreatif, Inovatif dan Teknologi ( BRAVO )';
+                    @endphp
+                @endif
+                <h2>{{ $nama_app }}</h2>
             </td>
         </tr>
     </table>

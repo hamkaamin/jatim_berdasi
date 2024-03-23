@@ -47,7 +47,7 @@ class InovasiController extends Controller
             }
         } elseif($area == 'kota'){
             $label = "Kota / Kab";
-            $inovasi = Inovasi::where('label', 0)->where('kota_id',Auth::user()->regency_id);
+            $inovasi = Inovasi::where('label', 0);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
@@ -346,7 +346,7 @@ class InovasiController extends Controller
            
             $pdf = PDF::loadview('export.inovasi-pdf',['inovasi' => $inovasi, 'kolom' => $kolom]);
             // return $pdf->stream();
-    	    return $pdf->download('inovasi-'.$inovasi->kode.'.pdf');
+    	    return $pdf->stream('inovasi-'.$inovasi->kode.'.pdf');
         }
     }
 
