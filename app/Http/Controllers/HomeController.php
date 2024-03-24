@@ -417,6 +417,7 @@ class HomeController extends Controller
                 if($r->kode_opd != NULL || !empty($r->kode_opd)){
                     $users = User::where('username',$r->kode_opd)->first();
                     if($users == NULL){
+                        dd($users);
                         $user = new User();
                         $user->name = $r->nama;
                         $user->username = $r->kode_opd;
