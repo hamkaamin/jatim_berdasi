@@ -49,6 +49,7 @@ class InovasiController extends Controller
         } elseif($area == 'kota'){
             $label = "Kota / Kab";
             $tahapan = Tahapan::where('id','<>',6)->get();
+            dd($tahapan);
             $inovasi = Inovasi::where('label', 0);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
@@ -61,7 +62,6 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
-        dd($tahapan);
         if (Auth::user()->role == 4) {
             $inovasi = $inovasi->where('user_id', Auth::user()->id);
         }
