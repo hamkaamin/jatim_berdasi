@@ -65,7 +65,6 @@ class InovasiController extends Controller
         if (Auth::user()->role == 4 || Auth::user()->role == 5) {
             $inovasi = $inovasi->where('user_id', Auth::user()->id);
         }
-
         if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
             $inovasi = $inovasi->where('provinsi_id', Auth::user()->province_id);
         } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
