@@ -183,6 +183,21 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Tematik</b> <span
+                                    class="text-danger">*</span></label></div>
+                        <div class="col-sm-8">
+                            <select name="tematik_id" class="form-control">
+                                <option value="" selected disabled>-- Pilih Salah Satu --</option>
+                                @foreach ($tematik as $item)
+                                    <option value="{{ $item->id }}"
+                                        @if (($data != null && $data->tematik_id == $item->id) || old('tematik_id') == $item->id) selected @endif>
+                                        {{ $item->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="row my-3" style="display: none">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Covid 19</b> <span
                                     class="text-danger">*</span></label></div>

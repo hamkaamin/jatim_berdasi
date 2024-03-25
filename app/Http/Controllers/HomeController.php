@@ -29,6 +29,7 @@ use App\Models\DefinisiOperasional;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
+use App\Models\Tematik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
@@ -316,6 +317,12 @@ class HomeController extends Controller
 					'msg' => view('modal.form-kategori', compact('data'))->render()
                 ), 200);
                 break;
+			case "tematik":
+				$data = ($request->id == 0) ? null : Tematik::findOrFail($request->id);
+				return response()->json(array(
+					'msg' => view('modal.form-tematik', compact('data'))->render()
+				), 200);
+				break;
         }
 	}
 

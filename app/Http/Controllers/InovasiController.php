@@ -19,6 +19,7 @@ use App\Exports\InovasiExport;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
+use App\Models\Tematik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -108,6 +109,7 @@ class InovasiController extends Controller
             $jenis = Jenis::all();
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
+            $tematik = Tematik::all();
             $kategori = KategoriInovasi::all();
             if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
                 $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
@@ -129,7 +131,7 @@ class InovasiController extends Controller
                 }
                 $label = $data->label;
             }
-            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label'));
+            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
         } else { 
             return redirect()->back();
         }
@@ -244,6 +246,7 @@ class InovasiController extends Controller
         $data->inisiator_id = $request->inisiator_id;
         $data->jenis_id = $request->jenis_id;
         $data->bentuk_id = $request->bentuk_id;
+        $data->tematik_id = $request->tematik_id;
         $data->covid = $request->covid;
         $data->rancang_bangun = $request->rancang_bangun;
         $data->tujuan = $request->tujuan;

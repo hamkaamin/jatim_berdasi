@@ -78,6 +78,13 @@
                 <i class="metismenu-icon pe-7s-ribbon"></i> Kategori Inovasi
             </a>
         </li>
+
+        <li>
+            <a href="{{ route('master.tematik.index') }}"
+                class="{{ Request::routeIs('master.tematik.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Tematik
+            </a>
+        </li>
         @if (env('APP_HIDE_FAQ') == 0)
             <li>
                 <a href="{{ route('master.faq.index') }}"

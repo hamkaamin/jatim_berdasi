@@ -115,6 +115,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/', [App\Http\Controllers\KategoriController::class, 'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\KategoriController::class, 'delete'])->name('delete');
             });
+            Route::prefix('tematik')->name('tematik.')->group(function () {
+                Route::get('/', [App\Http\Controllers\TematikController::class, 'index'])->name('index');
+                Route::post('/', [App\Http\Controllers\TematikController::class, 'save'])->name('save');
+                Route::post('/delete', [App\Http\Controllers\TematikController::class, 'delete'])->name('delete');
+            });
         });
     });
 
