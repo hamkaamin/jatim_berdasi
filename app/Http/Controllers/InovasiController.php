@@ -56,12 +56,12 @@ class InovasiController extends Controller
         }
         elseif($area == 'provinsi'){
             $inovasi = Inovasi::where('label', 0)->where('provinsi_id',Auth::user()->province_id);
+            $tahapan = Tahapan::where('id','<>',6)->get();
             $label = "Provinsi";
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
-        dd($area);
         if (Auth::user()->role == 4) {
             $inovasi = $inovasi->where('user_id', Auth::user()->id);
         }
