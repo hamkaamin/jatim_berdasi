@@ -62,7 +62,7 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
-        if (Auth::user()->role == 4) {
+        if (Auth::user()->role == 4 || Auth::user()->role == 5) {
             $inovasi = $inovasi->where('user_id', Auth::user()->id);
         }
 
