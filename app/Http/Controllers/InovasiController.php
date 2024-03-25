@@ -61,6 +61,7 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         }
+        dd($tahapan);
         if (Auth::user()->role == 4) {
             $inovasi = $inovasi->where('user_id', Auth::user()->id);
         }
