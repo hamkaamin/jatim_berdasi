@@ -130,15 +130,17 @@
                 </a>
             </li>
         @endif
-        @if (Auth::user()->role == 2 || Auth::user()->role == 3)
-            <li class="app-sidebar__heading">Database Inovasi Daerah</li>
-            <li>
-                <a href="{{ route('profil-pemda.index') }}"
-                    class="{{ Request::routeIs('profil-pemda.*') ? 'mm-active' : '' }}">
-                    <i class="metismenu-icon pe-7s-user"></i> Profil Pemda
-                </a>
-            </li>
-        @endif
+        <div style="display: none">
+            @if (Auth::user()->role == 2 || Auth::user()->role == 3)
+                <li class="app-sidebar__heading">Database Inovasi Daerah</li>
+                <li>
+                    <a href="{{ route('profil-pemda.index') }}"
+                        class="{{ Request::routeIs('profil-pemda.*') ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-user"></i> Profil Pemda
+                    </a>
+                </li>
+            @endif
+        </div>
         <li class="app-sidebar__heading">Data Inovasi Daerah</li>
         @if (env('APP_OPD_JATIM') == 0)
 
