@@ -149,9 +149,16 @@ class HomeController extends Controller
             return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user'));
         } else {
             $arrayCount = [];
-            for ($i=0; $i <= 1 ; $i++) {
-                for ($j=1; $j <= 4 ; $j++) {
-                    $arrayCount[$i][$j] = Inovasi::where('status', $j)->where('label', $i)->count();
+            for ($i = 0; $i <= 1; $i++) {
+                for ($j = 1; $j <= 4; $j++) {
+                    $query = Inovasi::where('status', $j)->where('label', $i);
+            
+                    if (Auth::user()->role == 4 || Auth::user()->role == 5) {
+                        $query->where('user_id', Auth::user()->id);
+                    }
+            
+                    $count = $query->count();
+                    $arrayCount[$i][$j] = $count;
                 }
             }
             return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount'));
