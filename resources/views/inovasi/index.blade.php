@@ -16,7 +16,11 @@
 @endif
 
 @section('content')
-
+    @php
+    $status_label = 0; @endphp
+    @if ($label == 'Awards')
+        @php $status_label = '1'; @endphp
+    @endif
     <form action="{{ route('inovasi.sent') }}" method="POST" name="kirimInovasi" id="kirimInovasi"
         onsubmit="return confirmSubmit()">
         @csrf
@@ -48,13 +52,6 @@
                                                 <span>
                                                     @php
                                                         $inov = $item->hasManyInovasi();
-                                                        if ($label == 'Masyarakat' || $label == 'Awards') {
-                                                            $inov = $inov->where('label', 0);
-                                                        } elseif ($label == 'Pemda') {
-                                                            $inov = $inov->where('label', 1);
-                                                        } elseif ($label == 'Daerah') {
-                                                            $inov = $inov->where('status', 2);
-                                                        }
                                                         if (
                                                             Auth::user()->role == 3 ||
                                                             Helper::checkUserUmum('provinsi', Auth::user())
@@ -64,26 +61,18 @@
                                                                 Auth::user()->province_id,
                                                             );
                                                         } elseif (
-                                                            Helper::checkOpd('provinsi', Auth::user()) ||
-                                                            Helper::checkUserUmum('opd-provinsi', Auth::user())
-                                                        ) {
-                                                            $inov = $inov->where(
-                                                                'provinsi_id',
-                                                                Auth::user()->opd->provinsi_id,
-                                                            );
-                                                        } elseif (
                                                             Auth::user()->role == 4 ||
                                                             Helper::checkUserUmum('kota', Auth::user())
                                                         ) {
-                                                            $inov = $inov->where('kota_id', Auth::user()->regency_id);
-                                                        } elseif (
-                                                            Helper::checkOpd('kota', Auth::user()) ||
-                                                            Helper::checkUserUmum('opd-kota', Auth::user())
-                                                        ) {
-                                                            $inov = $inov->where(
-                                                                'kota_id',
-                                                                Auth::user()->opd->kabkota_id,
-                                                            );
+                                                            $inov = $inov
+                                                                ->where('user_id', Auth::user()->id)
+                                                                ->where('label', $status_label)
+                                                                ->get();
+                                                        } elseif (Auth::user()->role == 5) {
+                                                            $inov = $inov
+                                                                ->where('kota_id', Auth::user()->opd->kabkota_id)
+                                                                ->where('user_id', Auth::user()->id)
+                                                                ->where('label', $status_label);
                                                         } elseif (
                                                             Helper::checkOpd('kecamatan', Auth::user()) ||
                                                             Helper::checkUserUmum('opd-kecamatan', Auth::user())

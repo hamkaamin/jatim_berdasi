@@ -55,7 +55,7 @@ class InovasiController extends Controller
             }
         }
         elseif($area == 'provinsi'){
-            $inovasi = Inovasi::where('label', 0)->where('provinsi_id',Auth::user()->province_id);
+            $inovasi = Inovasi::where('label', 0);
             $tahapan = Tahapan::where('id','<>',6)->get();
             $label = "Provinsi";
             if (Auth::user()->role == 2) {
@@ -68,7 +68,7 @@ class InovasiController extends Controller
         if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
             $inovasi = $inovasi->where('provinsi_id', Auth::user()->province_id);
         } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
-            $inovasi = $inovasi->where('provinsi_id', Auth::user()->opd->provinsi_id);
+            // $inovasi = $inovasi->where('provinsi_id', Auth::user()->opd->provinsi_id);
         } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
             $inovasi = $inovasi->where('kota_id', Auth::user()->regency_id);
         } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
