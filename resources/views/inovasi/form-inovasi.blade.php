@@ -374,10 +374,16 @@
                             <button class="btn btn-success btn-lg" type="submit" name="status"
                                 value="0">Simpan</button>
                             @if ($data != null && $data->status == 0)
-                                <button type="submit" class="btn btn-primary" name="status" value="1"
-                                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                                    Inovasi</button>
-                            @endif
+                                @if (env('APP_NAME') == 'INOVASI DAERAH')
+                                    <button style="display: none" type="submit" class="btn btn-primary" name="status"
+                                        value="1"
+                                        onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                                        Inovasi</button>
+                                @else
+                                    <button type="submit" class="btn btn-primary" name="status" value="1"
+                                        onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                                        Inovasi</button>
+                                @endif
                         </div>
                     </div>
                 </form>
