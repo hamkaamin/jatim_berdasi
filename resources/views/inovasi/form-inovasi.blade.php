@@ -384,6 +384,7 @@
                                         onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
                                         Inovasi</button>
                                 @endif
+                            @endif
                         </div>
                     </div>
                 </form>

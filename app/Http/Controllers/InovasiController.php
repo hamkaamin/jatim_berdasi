@@ -306,7 +306,11 @@ class InovasiController extends Controller
             unlink(public_path('/file_profil_bisnis/'.$data->profil_bisnis));
         }
         $data->delete();
-        return redirect()->back()->with('success', Config::get('delete_success'));
+        // return redirect()->back()->with('success', Config::get('delete_success'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil dihapus.'
+        ]);
     }
 
     public function index_indikator(Request $request)

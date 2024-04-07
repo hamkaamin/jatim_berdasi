@@ -118,15 +118,22 @@
                                     @endif
                                     @if (
                                         ($item->status != 2 && $item->user_id == Auth::user()->id) ||
-                                            Auth::user()->username == 'salehsayanglatifah' ||
+                                            Auth::user()->username == 'superadmin' ||
                                             Auth::user()->username == 'pemdkotkabatest')
-                                        <form style="all: unset"
+                                        <form id="deleteConfirm" style="all: unset"
                                             action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
-                                            <button type="submit" class="btn m-1 btn-block btn-sm btn-danger"
-                                                onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"
-                                                data-toggle="tooltip" data-placement="top" title="Hapus Inovasi"><i
-                                                    class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
+                                            {{-- <button type="button"
+                                                class="btn m-1 btn-block btn-sm btn-danger delete-btn"
+                                                data-toggle="modal" data-target="#confirmDeleteModal"
+                                                data-toggle="tooltip" data-placement="top" title="Hapus Inovasi">
+                                                <i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus
+                                            </button> --}}
+                                            <button onclick="hapus_data('{{ csrf_token() }}','{{ $item->id }}')"
+                                                type="button" class="btn m-1 btn-block btn-sm btn-danger delete-btn"
+                                                data-toggle="modal" data-target="#confirmDeleteModal"
+                                                data-toggle="tooltip" data-placement="top" title="Hapus Inovasi">
+                                                <i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus
                                         </form>
                                     @endif
                                 </td>

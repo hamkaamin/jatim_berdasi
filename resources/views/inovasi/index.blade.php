@@ -194,4 +194,38 @@
             updateSubmitButton();
         });
     </script>
+
+    <script>
+        function hapus_data(token, id) {
+            if (confirm('Apakah anda yakin menghapus data ini ? ')) {
+                if (confirm('Apakah anda benar-benar yakin menghapus ini ? ')) {
+                    var routeUrl = "{{ route('inovasi.delete') }}"; // Define the route URL
+
+                    $.post(routeUrl, {
+                            _token: token,
+                            id: id
+                        },
+                        function(data) {
+                            if (data.success) {
+                                $('#container-alert').html(
+                                    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                                    '<strong>Success!</strong> ' + data.message +
+                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                    '<span aria-hidden="true">&times;</span>' +
+                                    '</button>' +
+                                    '</div>');
+
+                                // Reload the page after showing the success message
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000); // Adjust the delay time as needed
+                            } else {
+                                // If there's an error, display the error message
+                                alert('Failed to delete data: ' + data.message);
+                            }
+                        });
+                }
+            }
+        }
+    </script>
 @endsection
