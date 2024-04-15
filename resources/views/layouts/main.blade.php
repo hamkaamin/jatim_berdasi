@@ -27,6 +27,7 @@
     @else
         <link href="{{ asset('admin_asset/main.css') }}" rel="stylesheet">
     @endif
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>

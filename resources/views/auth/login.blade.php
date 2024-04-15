@@ -14,6 +14,8 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.5);
         }
     </style>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+
 </head>
 
 <body
@@ -27,7 +29,8 @@
                             <div class="col-sm-12">
                                 <p style="text-align: center; font-size: 14pt"><b>Log In</b></p>
                                 <hr>
-                                <form method="POST" action="{{ route('login') }}">
+                                <form onsubmit="return loginUser('{{ csrf_token() }}');" method="POST"
+                                    action="{{ route('login') }}">
                                     @csrf
                                     <div class="row mb-3">
                                         <div class="col">
@@ -61,8 +64,15 @@
                                     </div>
 
                                     <div class="row mb-0">
+
                                         <div class="col text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">
+                                            <div class="g-recaptcha mt-4"
+                                                data-sitekey="{{ config('services.recaptcha.key') }}"></div>
+                                            <div id="txt_google_captcha_usulan"></div>
+                                            {{-- <button class="g-recaptcha"
+                                                data-sitekey="6LdNA7wpAAAAAEP3b_5cVPE7Y5KN-JEn4j4Y9CG0"
+                                                data-callback='onSubmit' data-action='submit'>Submit</button> --}}
+                                            <button type="submit" class="btn btn-primary btn-block btnSubmitForm">
                                                 {{ __('Login') }}
                                             </button>
                                             {{-- @if (Route::has('password.request'))
@@ -80,6 +90,20 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function loginUser(token) {
+            var response = grecaptcha.getResponse();
+            if (response.length == 0) {
+                $('.btnSubmitForm').prop('disabled', false);
+                $('#txt_google_captcha_usulan').html('Google Captcha Harus Diisi');
+                return false;
+            } else {
+                $('.btnSubmitForm').prop('disabled', true);
+                return true;
+            }
+        }
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
