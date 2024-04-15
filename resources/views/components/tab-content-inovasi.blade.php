@@ -6,6 +6,7 @@
                 <table class="table align-items-center table-flush" id="myTable{{ $tahapan == null ? 0 : $tahapan->id }}">
                     <thead class="thead-light">
                         <tr>
+                            <th></th>
                             <th>No.</th>
                             <th style="min-width: 100px">Dibuat Oleh</th>
                             <th style="min-width: 200px">Nama</th>
@@ -17,7 +18,7 @@
                                 <th style="min-width: 100px">Waktu {{ $thp->nama }} Inovasi</th>
                             @endforeach
                             <th>Kematangan</th>
-                            <th style="width: 100px; min-width: 100px"></th>
+                            <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
                     </thead>
                     <tbody>

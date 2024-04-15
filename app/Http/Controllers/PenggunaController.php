@@ -133,8 +133,7 @@ class PenggunaController extends Controller
         if ($request->id == 0) {
             $validated = $request->validate([
                 'role' => 'required',
-                'username' => 'unique:users,username',
-                'email' => 'unique:users,email',
+                'email' => 'unique:users,email,NULL,id,deleted_at,NULL',
             ]);
             $data = new User;
             $data->password = Hash::make($username);
