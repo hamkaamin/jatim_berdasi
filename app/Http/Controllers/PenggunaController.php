@@ -90,7 +90,7 @@ class PenggunaController extends Controller
         if ($request->type == 3) {
             $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::all(), 'labelNext' => null];
         } elseif ($request->type == 4) {
-            $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::all(), 'labelNext' => 'kota'];
+            $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::where('id',35)->get(), 'labelNext' => 'kota'];
             $temp[] = ['label' => 'Kota', 'wilayah' => [], 'labelNext' => null];
         } elseif ($request->type == 5) {
             $opdAll = Opd::doesntHave('users');

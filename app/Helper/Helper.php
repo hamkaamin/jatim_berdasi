@@ -18,9 +18,9 @@ class Helper
 			$role = "Verifikator";
 		} elseif ($role_id == 3) {
 			$role = "Admin - Provinsi";
-		} elseif ($role_id == 4) {
-			$role = "Admin - Kab/Kota";
 		} elseif ($role_id == 5) {
+			$role = "Admin - Kab/Kota";
+		} elseif ($role_id == 4) {
 			$role = "OPD";
 		} elseif ($role_id == 6) {
 			$role = "Umum";
