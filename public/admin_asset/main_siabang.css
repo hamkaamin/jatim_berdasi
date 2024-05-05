@@ -10299,7 +10299,7 @@ button,
 .app-header__logo .logo-src {
     height: 60px;
     width: 100%;
-    background-image: url(logo-kabupaten-jember.png);
+    background-image: url(bappeda.png);
     background-size: cover;
 }
 
@@ -10426,7 +10426,7 @@ button,
 }
 
 .app-header.header-text-light .app-header__logo .logo-src {
-    background: url(logo-kabupaten-jember.png)
+    background: url(bappeda.png)
 }
 
 .app-header.header-text-light .app-header__mobile-menu .hamburger-inner,
@@ -10524,7 +10524,7 @@ button,
 }
 
 .app-header.header-text-dark .app-header__logo .logo-src {
-    background: url(logo-kabupaten-jember.png)
+    background: url(bappeda.png)
 }
 
 .app-sidebar {
@@ -10803,7 +10803,7 @@ button,
 }
 
 .app-sidebar.sidebar-text-light .app-header__logo .logo-src {
-    background: url(logo-kabupaten-jember.png)
+    background: url(bappeda.png)
 }
 
 .app-sidebar.sidebar-text-light .app-header__logo .hamburger-inner,
