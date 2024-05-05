@@ -51,6 +51,8 @@
                     </div>
                 </div>
             </div>
+            {{ env('APP_NAME') }}
+
             <div class="app-header__mobile-menu">
                 <div>
                     <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
