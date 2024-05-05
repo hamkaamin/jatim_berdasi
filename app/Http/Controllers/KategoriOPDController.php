@@ -9,6 +9,7 @@ use App\Models\Opd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Yajra\DataTables\DataTables;
 
 class KategoriOPDController extends Controller
 {
@@ -88,6 +89,44 @@ class KategoriOPDController extends Controller
     {
         $data_kategori = KategoriInovasi::with('opd')->orderBy('kode','asc')->get();
         return view('master.show_kategoriopd',compact('data_kategori'));
+    }
+
+    public function table(Request $request) {
+        if ($request->ajax()) {
+            $data = KategoriInovasi::with('opd')->orderBy('kode','asc')->get();
+
+            dd(DataTables::of($data)
+                ->addIndexColumn()
+                // ->addColumn('action', function($query){
+                //     $action = [
+                //         [
+                //             'title' => '<i class="fa fa-edit"></i> Edit',
+                //             'route_name' => 'master_data.lokasi.edit',
+                //             'url' => route('master_data.lokasi.edit', ['id' => $query->id]),
+                //         ],
+                //         [
+                //             'title' => '<i class="fa fa-trash"></i> Delete',
+                //             'is_delete' => true,
+                //             'route_name' => 'master_data.lokasi.delete',
+                //             'url' => route('master_data.lokasi.delete'),
+                //             'data_id' => $query->id
+                //         ]
+                //     ];
+
+                //     return view('global_components.action_menu_dt', [
+                //         'q' => $query,
+                //         'action' => $action
+                //     ]);
+                // })
+                // ->editColumn('created_at', function($query) {
+                //     return formatDate($query->created_at);
+                // })
+                // ->editColumn('updated_at', function($query) {
+                //     return formatDate($query->updated_at);
+                // })
+                // ->rawColumns(['action'])
+                ->make(true));
+        }
     }
 
     
