@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Inovasi extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $guarded = [];
+
 
     protected static function booted()
     {

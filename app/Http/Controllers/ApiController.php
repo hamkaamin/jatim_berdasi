@@ -185,7 +185,7 @@ class ApiController extends Controller
     
                 $inovasi = new Inovasi();
                 // Fill Inovasi attributes
-                Inovasi::create($data_inovasi);
+                $inovasi->fill($data_inovasi);
                 $inovasi->user_id = 34; // Assuming the user ID is fixed
                 $inovasi->save();
     
@@ -246,7 +246,7 @@ class ApiController extends Controller
     
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage(),
+                'message' => "Failed to save data: " . $e->getMessage(),
             ], 500);
         }
         
