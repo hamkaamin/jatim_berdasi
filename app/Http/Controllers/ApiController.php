@@ -246,7 +246,7 @@ class ApiController extends Controller
     
             return response()->json([
                 'status' => false,
-                'message' => "Failed to save data: " . $e->getMessage(),
+                'message' => $e->getMessage(),
             ], 500);
         }
         
