@@ -194,11 +194,11 @@ class ApiController extends Controller
     
                 // Sync 'tahapan' relationship
                 $tempArr = [];
-                $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-                foreach ($tahapanKolom as $tahapan) {
-                    $tempArr[$tahapan->id] = ['waktu' => $data_inovasi['waktu_tahapan_'.$tahapan->id]];
-                }
-                $inovasi->tahapan()->sync($tempArr);
+                // $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+                // foreach ($tahapanKolom as $tahapan) {
+                //     $tempArr[$tahapan->id] = ['waktu' => $data_inovasi['waktu_tahapan_'.$tahapan->id]];
+                // }
+                // $inovasi->tahapan()->sync($tempArr);
     
                 // Insert 'indikator_inovasi' records
                 foreach ($data_indikator_inovasi as $dataindikator) {
