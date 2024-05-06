@@ -245,6 +245,7 @@ class ApiController extends Controller
             DB::rollback();
     
             return response()->json([
+                'status' => false,
                 'message' => "Failed to save data: " . $e->getMessage(),
             ], 500);
         }
