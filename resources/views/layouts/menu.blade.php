@@ -241,6 +241,7 @@
             </li> --}}
         @endif
 
+
         <li>
             <a href="{{ route('bank_data.index') }}" class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-light"></i> Bank Data
@@ -266,10 +267,12 @@
 		</li> --}}
         @endif
     @endif
-    <li class="app-sidebar__heading">Panduan Aplikasi</li>
-    <li>
-        <a href="{{ route('panduan') }}" class="{{ Request::routeIs('panduan.*') ? 'mm-active' : '' }}">
-            <i class="metismenu-icon pe-7s-notebook"></i> Panduan
-        </a>
-    </li>
+    @if (env('APP_NAME') != 'SIABANG JEMBER')
+        <li class="app-sidebar__heading">Panduan Aplikasi</li>
+        <li>
+            <a href="{{ route('panduan') }}" class="{{ Request::routeIs('panduan.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-notebook"></i> Panduan
+            </a>
+        </li>
+    @endif
 </ul>
