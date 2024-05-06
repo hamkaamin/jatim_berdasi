@@ -175,7 +175,6 @@ class ApiController extends Controller
         DB::beginTransaction();
 
         try {
-            dd($request->all());
             $arr_data = $request->arr_data;
             $arr_data = json_decode($arr_data, true);
     
