@@ -186,7 +186,7 @@ class ApiController extends Controller
                 $inovasi = new Inovasi();
                 // Fill Inovasi attributes
                 $inovasi->fill($data_inovasi);
-                $inovasi->user_id = 34; // Assuming the user ID is fixed
+                $inovasi->user_id = $request->kabkota_kode; // Assuming the user ID is fixed
                 $inovasi->save();
     
                 // Sync 'urusan' relationship
@@ -246,7 +246,7 @@ class ApiController extends Controller
     
             return response()->json([
                 'status' => false,
-                'message' => "Failed to save data: " . $e->getMessage(),
+                'message' => "Failed to save data: " . $request->kabkota_kode,
             ], 500);
         }
         
