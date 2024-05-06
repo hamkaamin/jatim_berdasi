@@ -59,7 +59,7 @@
                 @endphp
             @elseif(env('APP_NAME') == 'JEMBER SIABANG')
                 @php
-                    $logo = 'admin_asset/logo-kabupaten-jember.png';
+                    $logo = 'admin_asset/bappeda.png';
                     $width = '100';
                 @endphp
             @endif
