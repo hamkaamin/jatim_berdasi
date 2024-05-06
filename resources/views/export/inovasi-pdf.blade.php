@@ -59,7 +59,7 @@
                 @endphp
             @elseif(env('APP_NAME') == 'JEMBER SIABANG')
                 @php
-                    $logo = 'admin_asset/bappeda.png';
+                    $logo = 'admin_asset/logo-kabupatenjember.png';
                     $width = '100';
                 @endphp
             @endif
@@ -270,9 +270,8 @@ Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
                     @endphp
                     @if ($temp->count() > 0)
                         @foreach ($temp->get() as $upload)
-                            @if (file_exists(public_path('/indikator_uploads/' . $upload->file)))
-                                <a href="{{ asset('indikator_uploads/' . $upload->file) }}">File
-                                    {{ $loop->iteration }}</a><br>
+                            @if ($upload->file != null)
+                                <a href="{{ $upload->file }}">File {{ $loop->iteration }}</a><br>
                             @endif
                         @endforeach
                     @else
