@@ -172,7 +172,6 @@ class ApiController extends Controller
 
     public function insert_inovasi2(Request $request)
     {
-        dd($request->all());
         DB::beginTransaction();
 
         try {
