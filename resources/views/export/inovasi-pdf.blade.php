@@ -56,7 +56,12 @@
                 @php
                     $logo = 'admin_asset/logo-bangkalan.png';
                     $width = '100';
-                @endphp ?>
+                @endphp
+            @elseif(env('APP_NAME') == 'JEMBER SIABANG')
+                @php
+                    $logo = 'admin_asset/logo-kabupaten-jember.png';
+                    $width = '100';
+                @endphp
             @endif
             <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
             <td>
@@ -65,6 +70,10 @@
                     @php
                         $nama_app = 'Pemerintah Kabupaten Bangkalan <br>
 Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
+                    @endphp
+                @elseif(env('APP_NAME') == 'JEMBER SIABANG')
+                    @php
+                        $nama_app = 'SIABANG, Pemerintah Kabupaten Jember ';
                     @endphp
                 @endif
                 <h2>{!! $nama_app !!}</h2>
