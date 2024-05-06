@@ -176,6 +176,7 @@ class ApiController extends Controller
 
         try {
             $arr_data = $request->arr_data;
+            dd($request->all());
             $arr_data = json_decode($arr_data, true);
     
             foreach ($arr_data as $item) {
