@@ -267,12 +267,10 @@
 		</li> --}}
         @endif
     @endif
-    @if (env('APP_NAME') != 'JEMBER SIABANG')
-        <li class="app-sidebar__heading">Panduan Aplikasi</li>
-        <li>
-            <a href="{{ route('panduan') }}" class="{{ Request::routeIs('panduan.*') ? 'mm-active' : '' }}">
-                <i class="metismenu-icon pe-7s-notebook"></i> Panduan
-            </a>
-        </li>
-    @endif
+    <li class="app-sidebar__heading">Panduan Aplikasi</li>
+    <li>
+        <a href="{{ route('panduan') }}" class="{{ Request::routeIs('panduan.*') ? 'mm-active' : '' }}">
+            <i class="metismenu-icon pe-7s-notebook"></i> Panduan
+        </a>
+    </li>
 </ul>
