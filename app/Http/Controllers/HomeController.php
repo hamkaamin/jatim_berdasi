@@ -449,7 +449,6 @@ class HomeController extends Controller
             foreach($opd as $r){
                 if($r->kode_opd != NULL || !empty($r->kode_opd)){
                     $users = User::where('username',$r->kode_opd)->first();
-                    dd($users);
                     if($users == NULL){
                         $user = new User();
                         $user->name = $r->nama;
@@ -458,6 +457,7 @@ class HomeController extends Controller
                         $user->role = 4;
                         $user->regency_id = 3509;
                         $user->password = bcrypt($r->kode_opd);
+                        dd($user);
                         $user->save();
                     }
                 }
