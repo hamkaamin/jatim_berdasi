@@ -18,7 +18,8 @@ class ApiSyncController extends Controller
         try{
             $arr_data = array();
             $inovasis = Inovasi::where('hit_data',1)->get();
-            
+            $users = User::where('name', 'ilike', '%'.env('APP_KABKOTA_NAME').'%')->first();
+
             foreach($inovasis as $inovasi){
                 $indikator_inovasi = $inovasi->indikator()->get();
                 $tahapan_inovasi = $inovasi->tahapan()->get();
@@ -42,7 +43,8 @@ class ApiSyncController extends Controller
                     'Accept' => 'application/json',
                 ],
                 'form_params' =>[
-                    'arr_data'=>$arr_data
+                    'arr_data'=>$arr_data,
+                    'kabkota_kode'=>$users->id
                 ], // Use 'body' instead of 'form_params'
                 'verify' => false, // Disable SSL verification
             ]);

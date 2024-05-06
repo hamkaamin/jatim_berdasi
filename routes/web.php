@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
 use App\Http\Controllers\KategoriTahapanController;
 use Illuminate\Support\Facades\Route;
@@ -75,6 +76,16 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/switch', [KategoriOPDController::class, 'switch'])->name('switch');
                 Route::post('/delete', [KategoriOPDController::class, 'delete'])->name('delete');
             });
+
+            Route::prefix('kategori_opd')->name('kategori_opd.')->group(function () {
+                Route::get('/{kategori_id}', [KategoriOPDAjaxController::class, 'index'])->name('index');
+                Route::get('/show', [KategoriOPDAjaxController::class, 'show'])->name('show');
+                Route::get('/table/{kategori_id}', [KategoriOPDAjaxController::class, 'table'])->name('table');
+                Route::post('/', [KategoriOPDAjaxController::class, 'save'])->name('save');
+                Route::post('/switch', [KategoriOPDAjaxController::class, 'switch'])->name('switch');
+                Route::post('/delete', [KategoriOPDAjaxController::class, 'delete'])->name('delete');
+            });
+
             Route::prefix('inisiator')->name('inisiator.')->group(function () {
                 Route::get('/', [App\Http\Controllers\InisiatorController::class, 'index'])->name('index');
                 Route::post('/', [App\Http\Controllers\InisiatorController::class, 'save'])->name('save');

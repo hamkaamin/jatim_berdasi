@@ -100,12 +100,23 @@
             </a>
         </li>
 
-        <li>
+        <li style="display: none;">
             <a href="{{ route('master.kategoriopd.index') }}"
                 class="{{ Request::routeIs('master.kategoriopd.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> Kategori OPD
             </a>
         </li>
+        @for ($i = 1; $i < 5; $i++)
+            <li>
+                <a href="{{ route('master.kategori_opd.index', $i) }}"
+                    class="{{ Request::routeIs('master.kategori_opd.index', $i) ? 'mm-active' : '' }}">
+                    <i class="metismenu-icon pe-7s-ribbon"></i> Kategori {{ $i }}
+                </a>
+            </li>
+        @endfor
+
+
+
         <li>
             <a href="{{ route('pengguna.index') }}" class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-users"></i> Pengguna

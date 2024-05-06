@@ -444,6 +444,27 @@ class HomeController extends Controller
                 // dd($user);
                 }
         }
+        if($kota == 'jember'){
+            $opd = Opd::where('kabkota_id',3509)->get();
+            dd($opd);
+            foreach($opd as $r){
+                if($r->kode_opd != NULL || !empty($r->kode_opd)){
+                    $users = User::where('username',$r->kode_opd)->first();
+                    if($users == NULL){
+                        $user = new User();
+                        $user->name = $r->nama;
+                        $user->username = $r->kode_opd;
+                        $user->opd_id = $r->id;
+                        $user->role = 4;
+                        $user->regency_id = 3509;
+                        $user->password = bcrypt($r->kode_opd);
+                        dd($users);
+                        $user->save();
+                    }
+                }
+                // dd($user);
+                }
+        }
     }
 
     public function insert_all_opd_kategori()
