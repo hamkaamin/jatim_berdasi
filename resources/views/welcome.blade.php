@@ -17,7 +17,10 @@
                     <div class="card-body" style="overflow-y: scroll; height:100px;">
                         @foreach ($pengumuman as $item)
                             <p class="card-text">
-                                <small><b>{{ date('d-m-Y', strtotime($item->created_at)) }}</b></small> <span class="mx-2">|</span> <a href="#modalPopup" data-toggle="modal" onclick="modal({{ $item->id }}, 'pengumuman-preview')" class="text-dark">{{ $item->judul }}</a>
+                                <small><b>{{ date('d-m-Y', strtotime($item->created_at)) }}</b></small> <span
+                                    class="mx-2">|</span> <a href="#modalPopup" data-toggle="modal"
+                                    onclick="modal({{ $item->id }}, 'pengumuman-preview')"
+                                    class="text-dark">{{ $item->judul }}</a>
                             </p>
                         @endforeach
                     </div>
@@ -36,7 +39,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Indeks Rata-Rata Kota</div>
-                        
+
                     </div>
                     <div class="card-body">
                         <h3 class="text-primary">{{ $rata_kota }} </h3>
@@ -47,7 +50,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Indeks Rata-Rata Kabupaten</div>
-                        
+
                     </div>
                     <div class="card-body">
                         <h3 class="text-primary">{{ $rata_kab }} </h3>
@@ -58,7 +61,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Total Inovasi Pemda</div>
-                        
+
                     </div>
                     <div class="card-body">
                         <h3>{{ $total_inovasi }}</h3>
@@ -69,7 +72,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Total Perangkat Daerah Melapor</div>
-                        
+
                     </div>
                     <div class="card-body">
                         <h3>{{ $total_opd_melapor }}</h3>
@@ -81,13 +84,17 @@
                     <div class="card bg-light">
                         <div class="card-header bg-light justify-content-between">
                             <div>{{ ucwords($item->nama) }}</div>
-                            
+
                         </div>
                         <div class="card-body">
                             @php
                                 $totalTahapan = 0;
                                 foreach (Auth::user()->provinsi->kota as $kota) {
-                                    $totalTahapan += $kota->inovasi()->where('status', '<>', 0)->where('tahapan_id', $item->id)->count();
+                                    $totalTahapan += $kota
+                                        ->inovasi()
+                                        ->where('status', '<>', 0)
+                                        ->where('tahapan_id', $item->id)
+                                        ->count();
                                 }
                             @endphp
                             <h3>{{ $totalTahapan }}</h3>
@@ -98,7 +105,7 @@
             <div class="col-12 my-2">
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
-                        <div>Rata - rata Kematangan</div> 
+                        <div>Rata - rata Kematangan</div>
                     </div>
                     <div class="card-body">
                         <h3 class="text-primary">{{ $rata_isi }}</h3>
@@ -109,7 +116,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Skor Tertinggi</div>
-                        
+
                     </div>
                     <div class="card-body">
                         <h3>{{ $max['nama'] }} ({{ $max['skor'] }})</h3>
@@ -120,7 +127,7 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Skor Terendah</div>
-                        
+
                     </div>
                     <div class="card-body">
                         <h3>{{ $min['nama'] }} ({{ $min['skor'] }})</h3>
@@ -174,7 +181,8 @@
                 <div class="card bg-light">
                     <div class="card-header bg-light justify-content-between">
                         <div>Data Daerah</div>
-                        <div><a target="_blank" href="{{ route('export-inovasi', 0) }}" class="btn btn-primary">Unduh Semua</a></div>
+                        <div><a target="_blank" href="{{ route('export-inovasi', 0) }}" class="btn btn-primary">Unduh
+                                Semua</a></div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive p-3">
@@ -195,7 +203,8 @@
                                             <td>{{ $item['nama'] }}</td>
                                             <td>{{ $item['inovasi'] }}</td>
                                             <td>{{ $item['video'] }}</td>
-                                            <td><a target="_blank" href="{{ route('export-inovasi', $key) }}" class="btn btn-primary">Unduh</a></td>
+                                            <td><a target="_blank" href="{{ route('export-inovasi', $key) }}"
+                                                    class="btn btn-primary">Unduh</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -241,7 +250,7 @@
                     <div class="col-sm-4">
                         <div class="card m-2">
                             <div class="card-header">
-                                Jumlah Inovasi {{ Helper::get_label_inovasi($j) }} &nbsp; {!! Helper::getStatusInovasi($i) !!}
+                                Jumlah {{ Helper::get_label_inovasi($j) }} &nbsp; {!! Helper::getStatusInovasi($i) !!}
                             </div>
                             <div class="card-body text-center p-1">
                                 <h1>{{ $arrayCount[$j][$i] }}</h1>
@@ -262,18 +271,21 @@
         @include('script.modal')
         @include('script.dataTable')
         <script>
-            $(function () {
+            $(function() {
                 $('[data-toggle="tooltip"]')
             });
         </script>
         <script>
-            $(document).ready( function () {
+            $(document).ready(function() {
                 $('#myTable1').DataTable();
-                
+
                 $('#myTable_iid').DataTable({
-                    order: [[1, 'desc'], [0, 'asc']],
+                    order: [
+                        [1, 'desc'],
+                        [0, 'asc']
+                    ],
                 });
-            } );
+            });
         </script>
     @endsection
 @endif

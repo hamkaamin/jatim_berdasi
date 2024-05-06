@@ -161,10 +161,10 @@ class Helper
     {
         switch ($id) {
             case 0:
-                return "Awards";
+                return "Inovasi Daerah";
                 break;
             case 1:
-                return "Pemda";
+                return "Inotek Awards";
                 break;
         }
     }

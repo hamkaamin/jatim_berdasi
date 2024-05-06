@@ -203,7 +203,7 @@
                 <li>
                     <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
                         class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> {{ env('APP_NAME') }} Inotek Awards
+                        <i class="metismenu-icon pe-7s-light"></i> Inotek Awards {{ env('APP_NAMA_APLIKASI') }}
                     </a>
                 </li>
             @else
