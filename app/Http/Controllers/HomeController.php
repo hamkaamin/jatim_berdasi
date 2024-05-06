@@ -446,7 +446,6 @@ class HomeController extends Controller
         }
         if($kota == 'jember'){
             $opd = Opd::where('kabkota_id',3509)->get();
-            // dd($opd);
             foreach($opd as $r){
                 if($r->kode_opd != NULL || !empty($r->kode_opd)){
                     $users = User::where('username',$r->kode_opd)->first();
@@ -458,6 +457,7 @@ class HomeController extends Controller
                         $user->role = 4;
                         $user->regency_id = 3509;
                         $user->password = bcrypt($r->kode_opd);
+                        dd($users);
                         $user->save();
                     }
                 }
