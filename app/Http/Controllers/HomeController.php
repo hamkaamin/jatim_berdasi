@@ -457,7 +457,7 @@ class HomeController extends Controller
                         $user->role = 4;
                         $user->regency_id = 3509;
                         $user->password = bcrypt($r->kode_opd);
-                        dd($user);
+                        // dd($user);
                         $user->save();
                     }
                 }
