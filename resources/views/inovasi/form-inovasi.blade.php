@@ -9,7 +9,7 @@
 @endsection
 
 @section('buttons')
-    <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
+    <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
         class="btn btn-light">
         Kembali</a>
     @if ($data != null && $data->status == 0)
