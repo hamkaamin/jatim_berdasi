@@ -59,14 +59,17 @@ class KategoriOPDAjaxController extends Controller
                     return @$query->opd->nama; // Assuming 'lokasiDepartemen' is your relationship
                 })
                 ->addColumn('aktif', function($query) {
-                    return $query->aktif; // Assuming 'lokasiDepartemen' is your relationship
+                    $button = $query->is_aktif == 1
+                ? '<button class="btn m-1 btn-block btn-sm btn-success" type="submit" onclick="if(!confirm(\'Apakah anda ingin mengubah data ini menjadi No?\')){return false;}">Yes</button>'
+                : '<button class="btn m-1 btn-block btn-sm btn-danger" type="submit" onclick="if(!confirm(\'Apakah anda ingin mengubah data ini menjadi Yes?\')){return false;}">No</button>';
+            return $button;
                 })
                 ->addColumn('action', function($query){
                     return view('master.action_form_kategori', [
                         'q' => $query
                     ]);
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['aktif', 'action']) // Specify columns containing HTML content
                 ->make(true);
         }
     }
