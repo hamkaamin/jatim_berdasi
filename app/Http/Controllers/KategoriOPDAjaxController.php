@@ -7,6 +7,7 @@ use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class KategoriOPDAjaxController extends Controller
@@ -40,7 +41,11 @@ class KategoriOPDAjaxController extends Controller
 
     public function table(Request $request,$kategori_id) {
         if ($request->ajax()) {
-            $data = KategoriOpd::where('kategori_id',$kategori_id)->orderBy('id','asc')->get();
+            $data = KategoriOpd::whereIn('opd_id', function ($query) {
+                $query->select('id')->from('opds');
+            })
+            ->orderBy('id', 'asc')
+            ->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -48,13 +53,13 @@ class KategoriOPDAjaxController extends Controller
                     return $query->id; // Assuming 'lokasiDepartemen' is your relationship
                 })
                 ->addColumn('nama', function($query) {
-                    return $query->id; // Assuming 'lokasiDepartemen' is your relationship
+                    return $query->kategori->nama; // Assuming 'lokasiDepartemen' is your relationship
                 })
                 ->addColumn('wilayah', function($query) {
-                    return $query->id; // Assuming 'lokasiDepartemen' is your relationship
+                    return @$query->opd->nama; // Assuming 'lokasiDepartemen' is your relationship
                 })
                 ->addColumn('aktif', function($query) {
-                    return $query->id; // Assuming 'lokasiDepartemen' is your relationship
+                    return $query->aktif; // Assuming 'lokasiDepartemen' is your relationship
                 })
                 ->addColumn('action', function($query){
                     return view('master.action_form_kategori', [

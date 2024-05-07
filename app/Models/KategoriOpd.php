@@ -15,6 +15,6 @@ class KategoriOpd extends Model
     }
     public function opd()
     {
-        return $this->belongsTo('App\Models\Opd', 'opd_id', 'id');
+        return $this->belongsTo('App\Models\Opd', 'opd_id', 'id')->withTrashed();        ;
     }
 }
