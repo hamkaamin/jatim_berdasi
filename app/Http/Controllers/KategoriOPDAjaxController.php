@@ -41,13 +41,13 @@ class KategoriOPDAjaxController extends Controller
 
     public function table(Request $request,$kategori_id) {
         if ($request->ajax()) {
-            $data = KategoriOpd::whereIn('opd_id', function ($query) {
+            $query = KategoriOpd::with('kategori', 'opd')
+            ->where('kategori_id', $kategori_id)
+            ->whereIn('opd_id', function ($query) {
                 $query->select('id')->from('opds');
-            })
-            ->orderBy('id', 'asc')
-            ->get();
+            });
 
-            return DataTables::of($data)
+            return DataTables::of($query)
                 ->addIndexColumn()
                 ->addColumn('id', function($query) {
                     return $query->id; // Assuming 'lokasiDepartemen' is your relationship
