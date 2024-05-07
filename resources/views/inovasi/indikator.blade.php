@@ -13,7 +13,7 @@
 @section('buttons')
     @if (env('APP_CLOSE_APP') == 0)
         <a @if ($inovasi->label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
-            class="btn btn-light">Kembali {{ $label }}</a>
+            class="btn btn-light">Kembali</a>
         @if ($inovasi->status == 0 || $inovasi->status == 4)
             <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
                 @csrf
