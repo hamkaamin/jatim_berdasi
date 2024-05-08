@@ -6,10 +6,10 @@
                 <i class="metismenu-icon pe-7s-home"></i> Dashboard
             </a>
         </li>
-        <li>
+        {{-- <li>
             <a href="{{ route('pengumuman.index') }}" class="{{ Request::routeIs('pengumuman') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-home"></i> Pengumuman
-            </a>
+            </a> --}}
         </li>
         <li class="app-sidebar__heading">Master Data</li>
         <li>
