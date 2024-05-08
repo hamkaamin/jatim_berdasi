@@ -21,12 +21,15 @@
             <td>{{ $item->pivot->param_akhir != null ? $item->pivot->param_akhir : '-' }}</td>
             <td>{{ $item->pivot->catatan }}</td>
             @php
-                $temp = $inovasi->upload()->where('indikator_id', $item->id)->where('file', '<>', null);
+                $temp = $inovasi
+                    ->upload()
+                    ->where('indikator_id', $item->id)
+                    ->where('file', '<>', null);
             @endphp
             @if ($temp->count() > 0)
                 @foreach ($temp->get() as $upload)
-                    @if (file_exists(public_path('/indikator_uploads/'.$upload->file)))
-                        <td>{{ asset('indikator_uploads/'.$upload->file) }}</td>
+                    @if ($upload->file != null)
+                        <a href="{{ $upload->file }}">File {{ $loop->iteration }}</a><br>
                     @endif
                 @endforeach
             @else
