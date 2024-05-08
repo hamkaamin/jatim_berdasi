@@ -28,9 +28,7 @@
             @endphp
             @if ($temp->count() > 0)
                 @foreach ($temp->get() as $upload)
-                    @if ($upload->file != null)
-                        <a href="{{ $upload->file }}">File {{ $loop->iteration }}</a><br>
-                    @endif
+                    <td><a href="{{ $upload->file }}">File {{ $loop->iteration }}</a></td>
                 @endforeach
             @else
                 <td>Tidak ada data</td>
