@@ -88,26 +88,29 @@
             ],
             ajax: "{{ route('master.kategori_opd.table', $kategori_id) }}",
             columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
+                    data: 'id',
+                    name: 'id',
                     width: "5px"
                 },
                 {
-                    data: 'nama'
-                },
+                    data: 'nama',
+                    name: 'kategori.nama'
+                }, // Assuming 'nama' is a column in the 'kategori' relationship
                 {
-                    data: 'wilayah'
-                },
+                    data: 'wilayah',
+                    name: 'opd.nama'
+                }, // Assuming 'wilayah' is a column in the 'opd' relationship
                 {
-                    data: 'aktif'
-                },
+                    data: 'aktif',
+                    name: 'is_aktif'
+                }, // Assuming 'aktif' corresponds to 'is_aktif' directly in the dataset
                 {
                     data: 'action',
                     name: 'action',
                     class: 'text-center',
                     orderable: true,
                     searchable: true
-                },
+                }
             ]
         });
     </script>
