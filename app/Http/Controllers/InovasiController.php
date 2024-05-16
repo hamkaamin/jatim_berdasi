@@ -226,7 +226,7 @@ class InovasiController extends Controller
                 } else {
                     $data->status = $request->status;
                     $data->save();
-                    $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'masyarakat']);
+                    $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
                     return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
                 }
             }
@@ -279,7 +279,7 @@ class InovasiController extends Controller
             $data->profil_bisnis = $nama_file;
 		    $data->save();
         }
-        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'pemda']) : route('inovasi.index', ['area' => 'kota']);
+        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
         return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
     }
     }
