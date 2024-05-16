@@ -18,6 +18,13 @@ class SiabangMasterPanduanSeeder extends Seeder
 
         DB::table('master_panduans')->insert([
             [
+                'nama' => '1. Manual Book_Superadmin_Siabang.pdf',
+                'role' => 1,
+                'path' => 'user-manual/siabang/Manual Book_Superadmin_Siabang.pdf'
+            ]
+        ]);
+        DB::table('master_panduans')->insert([
+            [
                 'nama' => '1. Ubah Password (Verifikator).mp4',
                 'role' => 2,
                 'path' => 'user-manual/siabang/1. Panduan User Verifikator/1. Ubah Password (Verifikator).mp4'

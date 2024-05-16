@@ -12,9 +12,6 @@ class PanduanController extends Controller
     {
         $role = Auth::user()->role;
         $data = MasterPanduan::where('role',$role)->get();
-        if($role == 1 || $role ==3){
-            $data = MasterPanduan::all();
-        }
         return view('panduan.index',compact('data'));
     }
 }
