@@ -88,5 +88,38 @@ class SiabangMasterPanduanSeeder extends Seeder
                 'path' => 'user-manual/siabang/2. Panduan User Pengusul/6. Menu Panduan (Pengusul).mp4'
             ]
         ]);
+
+        DB::table('master_panduans')->insert([
+            [
+                'nama' => '1. Ubah Password (Pengusul).mp4',
+                'role' => 5,
+                'path' => 'user-manual/siabang/2. Panduan User Pengusul/1. Ubah Password (Pengusul).mp4'
+            ],
+            [
+                'nama' => '2. Dashboard (Pengusul).mp4',
+                'role' => 5,
+                'path' => 'user-manual/siabang/2. Panduan User Pengusul/2. Dashboard (Pengusul).mp4'
+            ],
+            [
+                'nama' => '3. Menu Inovasi Daerah (Pengusul).mp4',
+                'role' => 5,
+                'path' => 'user-manual/siabang/2. Panduan User Pengusul/3. Menu Inovasi Daerah (Pengusul).mp4'
+            ],
+            [
+                'nama' => '4. Menu Inotek Award SIABANG (Pengusul).mp4',
+                'role' => 5,
+                'path' => 'user-manual/siabang/2. Panduan User Pengusul/4. Menu Inotek Award SIABANG (Pengusul).mp4'
+            ],
+            [
+                'nama' => '5. Menu Bank Data (Pengusul).mp4',
+                'role' => 5,
+                'path' => 'user-manual/siabang/2. Panduan User Pengusul/5. Menu Bank Data (Pengusul).mp4'
+            ],
+            [
+                'nama' => '6. Menu Panduan (Pengusul).mp4',
+                'role' => 5,
+                'path' => 'user-manual/siabang/2. Panduan User Pengusul/6. Menu Panduan (Pengusul).mp4'
+            ]
+        ]);
     }
 }
