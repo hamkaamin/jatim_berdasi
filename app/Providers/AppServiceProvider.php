@@ -24,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        if(env('APP_HTTPS',0) == 1) {
+            \URL::forceScheme('https');
+        }
         Config::set([
             'save_success' => 'Data berhasil disimpan',
             'delete_success' => 'Data berhasil dihapus',

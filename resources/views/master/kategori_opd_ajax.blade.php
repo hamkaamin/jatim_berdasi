@@ -86,7 +86,7 @@
                 [5, 10, 15, 20],
                 [5, 10, 15, 20]
             ],
-            ajax: "{{ route('master.kategori_opd.table', $kategori_id) }}",
+            ajax: "{{ route('master.kategori_opd.table', $kategori_id, ['https']) }}", // Ensuring route uses HTTPS
             columns: [{
                     data: 'id',
                     name: 'id',
