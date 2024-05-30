@@ -86,7 +86,7 @@ class InovasiController extends Controller
     {
         $data = KategoriTahapan::where('kategori_id',$request->kategori_id)->get();
         $str='';
-        $str .= '<option value="0"> -- Tampilkan Semua --  </option>';
+        $str .= '<option value=""> -- Tampilkan Semua --  </option>';
         foreach($data as $item){
            $str .= '<option value="'.$item->tahapan->id.'"> '.$item->tahapan->nama.''.'</option>';
         }
