@@ -315,7 +315,7 @@ class InovasiController extends Controller
 
     public function index_indikator(Request $request)
     {
-        $area = $request->area;
+        $area_label = $request->area;
         // if (count($request->input()) == 2 && isset($request->id)) {
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
@@ -326,7 +326,7 @@ class InovasiController extends Controller
                 }
             }
             $data = $inovasi->indikator()->get();
-            return view('inovasi.indikator', compact('data', 'inovasi','area'));
+            return view('inovasi.indikator', compact('data', 'inovasi','area_label'));
         // } else {
         //     return redirect()->back();
         // }
