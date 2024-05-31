@@ -62,7 +62,7 @@
                                                     data-placement="top" title="Download Excel"><i
                                                         class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                             @endif
-                                            <a href="{{ route('inovasi.indikator.index', ['id' => $item->id]) }}"
+                                            <a href="{{ route('inovasi.indikator.index', ['id' => $item->id], ['area' => 'bank_data']) }}"
                                                 class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
                                                 data-placement="top" title="Upload Indikator"><i
                                                     class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
