@@ -94,10 +94,10 @@ class InovasiController extends Controller
         // return view('inovasi.show_tahapan',compact($data));
     }
 
-    public function bank_data(Request $request)
+    public function bank_data(Request $reques,$area)
     {
         $inovasi = Inovasi::where('status',2)->get();
-        return view('inovasi.bank_data', compact('inovasi'));
+        return view('inovasi.bank_data', compact('inovasi','area'));
     }
 
     public function edit(Request $request)
@@ -315,6 +315,7 @@ class InovasiController extends Controller
 
     public function index_indikator(Request $request)
     {
+        $area = $request->area;
         // if (count($request->input()) == 2 && isset($request->id)) {
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
@@ -325,7 +326,7 @@ class InovasiController extends Controller
                 }
             }
             $data = $inovasi->indikator()->get();
-            return view('inovasi.indikator', compact('data', 'inovasi'));
+            return view('inovasi.indikator', compact('data', 'inovasi','area'));
         // } else {
         //     return redirect()->back();
         // }

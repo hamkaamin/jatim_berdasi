@@ -243,7 +243,8 @@
 
 
         <li>
-            <a href="{{ route('bank_data.index') }}" class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
+            <a href="{{ route('bank_data.index', ['area' => 'bank_data']) }}"
+                class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-light"></i> Bank Data
             </a>
         </li>

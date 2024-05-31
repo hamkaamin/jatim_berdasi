@@ -12,8 +12,13 @@
 
 @section('buttons')
     @if (env('APP_CLOSE_APP') == 0)
-        <a @if ($inovasi->label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @elseif($inovasi->label == 0) href="{{ route('inovasi.index', ['area' => 'kota']) }}" @else href="{{ route('bank_data.index') }}" @endif
-            class="btn btn-light">Kembali {{ $inovasi->label }}</a>
+        @php $label=$inovasi->label; @endphp
+
+        @if ($area == 'bank_data')
+            @php $label=2; @endphp
+        @endif
+        <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @elseif($label == 0) href="{{ route('inovasi.index', ['area' => 'kota']) }}" @else href="{{ route('bank_data.index') }}" @endif
+            class="btn btn-light">Kembali {{ $label }}</a>
         @if ($inovasi->status == 0 || $inovasi->status == 4)
             <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
                 @csrf
