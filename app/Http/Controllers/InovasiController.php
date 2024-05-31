@@ -316,6 +316,7 @@ class InovasiController extends Controller
     public function index_indikator(Request $request)
     {
         $area = $request->area;
+        dd($area);
         // if (count($request->input()) == 2 && isset($request->id)) {
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
