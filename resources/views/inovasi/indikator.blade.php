@@ -14,7 +14,7 @@
     @if (env('APP_CLOSE_APP') == 0)
         @php
             $label = $inovasi->label;
-            dd($area);
+            dd($area . '-saleh');
         @endphp
         @if ($area == 'bank_data')
             @php $label=2; @endphp
