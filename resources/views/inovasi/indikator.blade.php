@@ -14,10 +14,12 @@
     @if (env('APP_CLOSE_APP') == 0)
         @php
             $label = $inovasi->label;
-            dd($area . '-saleh');
         @endphp
         @if ($area == 'bank_data')
-            @php $label=2; @endphp
+            @php
+                $label = 2;
+                dd($label);
+            @endphp ?>
         @endif
         <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @elseif($label == 0) href="{{ route('inovasi.index', ['area' => 'kota']) }}" @else href="{{ route('bank_data.index') }}" @endif
             class="btn btn-light">Kembali {{ $label }}</a>
