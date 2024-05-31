@@ -12,7 +12,10 @@
 
 @section('buttons')
     @if (env('APP_CLOSE_APP') == 0)
-        @php $label=$inovasi->label; @endphp
+        @php
+            $label = $inovasi->label;
+            dd($area);
+        @endphp
         @if ($area == 'bank_data')
             @php $label=2; @endphp
         @endif
