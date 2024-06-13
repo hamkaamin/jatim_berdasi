@@ -49,9 +49,9 @@
                             <th>Indikator</th>
                             <th>Keterangan</th>
                             <th style="min-width: 100px">Bobot Awal</th>
+                            <th>Catatan</th>
                             @if (Auth::user()->role == 2)
                                 <th style="min-width: 100px">Bobot Akhir</th>
-                                <th>Catatan</th>
                             @endif
                             <th>Data Pendukung</th>
                             <th>Jenis File</th>
@@ -70,16 +70,17 @@
                                 <td class="text-center">
                                     <h4><b>{{ $item->pivot->bobot_awal }}</b></h4>{{ $item->pivot->param_awal }}
                                 </td>
+
+                                <td>
+                                    @if ($item->pivot->catatan != null)
+                                        {{ $item->pivot->catatan }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 @if (Auth::user()->role == 2)
                                     <td class="text-center">
                                         <h4><b>{{ $item->pivot->bobot_akhir }}</b></h4>{{ $item->pivot->param_akhir }}
-                                    </td>
-                                    <td>
-                                        @if ($item->pivot->catatan != null)
-                                            {{ $item->pivot->catatan }}
-                                        @else
-                                            -
-                                        @endif
                                     </td>
                                 @endif
                                 <td>{{ $item->data_pendukung }}</td>
