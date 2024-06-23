@@ -33,6 +33,7 @@
             onchange="updateDefinisi(this)">
             <option value="">-- Pilih Atau Kosongi --</option>
             @foreach ($definisi_operasional as $item)
+                @php $selected = ''; @endphp
                 @if ($param != null)
                     @if ($item->id == $param->definisi_operasional_id)
                         @php $selected = 'selected'; @endphp
