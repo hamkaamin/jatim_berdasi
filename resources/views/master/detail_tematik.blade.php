@@ -1,16 +1,16 @@
 @extends('layouts.main')
 
 @section('title')
-    Master Definisi Operasional
+    Master Detail Tematik Inovasi
 @endsection
 
 @section('title-desc')
-    Daftar Definisi Operasional untuk Data Pengguna
+    Daftar Detai; Tematik Inovasi
 @endsection
 
 @section('buttons')
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup"
-        onclick="modal(0, 'definisi')">Tambah Data</button>
+        onclick="modal(0, 'detail-tematik')">Tambah Data</button>
 @endsection
 
 @section('content')
@@ -21,10 +21,9 @@
                     <thead class="thead-light">
                         <tr>
                             <th>No.</th>
-                            <th>Nama</th>
-                            <th>Indikator</th>
-                            <th>Kategori</th>
-                            <th style="width: 100px"></th>
+                            <th>Nama Tematik</th>
+                            <th>Detail Tematik</th>
+                            <th style="width: 100px">
                         </tr>
                     </thead>
                     <tbody>
@@ -32,15 +31,17 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
-                                <td>{{ @$item->indikator->nama ?? 'Belum Ada Data' }}</td>
-                                <td>{{ @$item->kategori->nama ?? 'Belum Ada Data' }}</td>
+                                <td>
+                                    {{ $item->tematik->nama }}</td>
+                                </td>
                                 <td>
                                     <button data-target="#modalPopup" data-toggle="modal"
-                                        onclick="modal({{ $item->id }}, 'definisi')"
+                                        onclick="modal({{ $item->id }}, 'detail-tematik')"
                                         class="btn m-1 btn-block btn-sm btn-warning"><i
                                             class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
                                     <form style="all: unset"
-                                        action="{{ route('master.definisi.delete', ['id' => $item->id]) }}" method="post">
+                                        action="{{ route('master.detail_tematik.delete', ['id' => $item->id]) }}"
+                                        method="post">
                                         @csrf
                                         <button type="submit" class="btn m-1 btn-block btn-sm btn-danger"
                                             onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i

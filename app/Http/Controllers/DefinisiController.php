@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\DefinisiOperasional;
+use App\Models\Indikator;
+use App\Models\KategoriInovasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -27,6 +29,8 @@ class DefinisiController extends Controller
             $data = DefinisiOperasional::findOrFail($request->id);
         }
         $data->nama = $request->nama;
+        $data->kategori_id = $request->kategori_id;
+        $data->indikator_id = $request->indikator_id;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
@@ -36,5 +40,17 @@ class DefinisiController extends Controller
         $data = DefinisiOperasional::findOrFail($request->id);
         $data->delete();
         return redirect()->back()->with('success', Config::get('delete_success'));
+    }
+
+    public function show_indikator(Request $request)
+    {
+        $data = Indikator::where('kategori_id',$request->kategori_id)->get();
+        $str='';
+        $str .= '<option value=""> -- Tampilkan Semua --  </option>';
+        foreach($data as $item){
+           $str .= '<option value="'.$item->id.'"> '.$item->nama.''.'</option>';
+        }
+        return $str;
+        // return view('inovasi.show_tahapan',compact($data));
     }
 }

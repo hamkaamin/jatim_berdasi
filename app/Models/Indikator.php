@@ -25,4 +25,9 @@ class Indikator extends Model
     {
         return $this->hasMany(Upload::class, 'indikator_id', 'id');
     }
+
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriInovasi::class, 'kategori_id', 'id');
+    }
 }

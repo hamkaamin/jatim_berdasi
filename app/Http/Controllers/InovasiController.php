@@ -16,6 +16,7 @@ use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
+use App\Models\DetailTematik;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
@@ -248,6 +249,8 @@ class InovasiController extends Controller
         $data->jenis_id = $request->jenis_id;
         $data->bentuk_id = $request->bentuk_id;
         $data->tematik_id = $request->tematik_id;
+        $data->detail_tematik_id = $request->detail_tematik_id;
+        $data->nama_inisiator = $request->nama_inisiator;
         $data->covid = $request->covid;
         $data->rancang_bangun = $request->rancang_bangun;
         $data->tujuan = $request->tujuan;
@@ -257,6 +260,8 @@ class InovasiController extends Controller
         $data->label = $request->label;
         $data->waktu_uji_coba = $request->waktu_uji_coba;
         $data->waktu_penerapan = $request->waktu_penerapan;
+        $data->waktu_pengembangan = $request->waktu_pengembangan;
+        $data->is_pengembangan = $request->is_pengembangan;
         $data->url = env('APP_URL');
 		$data->save();
         $data->urusan()->sync($request->urusan_id);
@@ -274,6 +279,30 @@ class InovasiController extends Controller
             $data->file_rancang_bangun = $nama_file;
 		    $data->save();
         }
+        if ($request->hasFile('profil_bisnis')) {
+            $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
+            $data->profil_bisnis = $nama_file;
+		    $data->save();
+        }
+
+        if ($request->hasFile('file_anggaran')) {
+            $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
+            $data->file_anggaran = $nama_file;
+		    $data->save();
+        }
+        
+        if ($request->hasFile('file_dokumen_haki')) {
+            $nama_file = Helper::save_file($request->file('file_dokumen_haki'), uniqid(), 'file_dokumen_haki', $data->file_dokumen_haki);
+            $data->file_dokumen_haki = $nama_file;
+		    $data->save();
+        }
+        
+        if ($request->hasFile('file_penghargaan')) {
+            $nama_file = Helper::save_file($request->file('file_penghargaan'), uniqid(), 'file_penghargaan', $data->file_penghargaan);
+            $data->file_dokumen_haki = $nama_file;
+		    $data->save();
+        }
+
         if ($request->hasFile('profil_bisnis')) {
             $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
             $data->profil_bisnis = $nama_file;
@@ -374,4 +403,18 @@ class InovasiController extends Controller
     }
         // Return a response
         // return response()->json(['message' => 'Data received successfully']);
+
+    public function detail_tematik(Request $request)
+    {
+        $tematik_id = $request->tematik_id;
+        $inovasi_id = $request->inovasi_id;
+        # detail tematik using tematik_id
+        $data = Inovasi::find($inovasi_id);
+        $detail_tematik = DetailTematik::where('tematik_id', $tematik_id)->get();
+        if($detail_tematik == NULL || empty($detail_tematik) || $detail_tematik->count() == 0){
+            return 'failed';
+        }
+        # move data to the <select>
+        return view('inovasi.detail_tematik', compact('detail_tematik','data'));
+    }
 }

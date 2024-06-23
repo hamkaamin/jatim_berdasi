@@ -60,12 +60,12 @@
                 <i class="metismenu-icon pe-7s-ribbon"></i> Jabatan Inovasi
             </a>
         </li>
-        {{-- <li>
+        <li>
             <a href="{{ route('master.definisi.index') }}"
                 class="{{ Request::routeIs('master.definisi.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> Definisi Operasional
             </a>
-        </li> --}}
+        </li>
         <li>
             <a href="{{ route('master.golongan.index') }}"
                 class="{{ Request::routeIs('master.golongan.*') ? 'mm-active' : '' }}">
@@ -83,6 +83,12 @@
             <a href="{{ route('master.tematik.index') }}"
                 class="{{ Request::routeIs('master.tematik.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-ribbon"></i> Tematik
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('master.detail_tematik.index') }}"
+                class="{{ Request::routeIs('master.detail_tematik.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Detail Tematik
             </a>
         </li>
         @if (env('APP_HIDE_FAQ') == 0)

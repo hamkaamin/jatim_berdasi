@@ -33,10 +33,10 @@
                                 class="text-danger">*</span></label></div>
                     <div class="col-sm-8">
                         <select name="definisi_operasional" id="definisi_operasional" class="form-control" required
-                            onchange="div_definisi_parameter('{{ csrf_token() }}','#div_parameter','#form-param-indikator')">
+                            onchange="div_definisi_parameter('{{ csrf_token() }}','#div_parameter','#form-param-indikator','indikator_id')">
                             <option value="">-- Pilih Definisi --</option>
-                            @foreach ($definisi as $item)
-                                <option value="{{ $item->definisi_operasional }}">{{ $item->definisi_operasional }}
+                            @foreach ($definisi_operasional_list as $item)
+                                <option value="{{ $item->nama }}">{{ $item->nama }}
                                 </option>
                             @endforeach
                         </select>
@@ -78,14 +78,15 @@
 </form>
 
 <script>
-    function div_definisi_parameter(token, target, form_id) {
+    function div_definisi_parameter(token, target, form_id, indikator_id) {
         var definisi_operasional = $(form_id).find('select[name="definisi_operasional"] option:selected').val();
         var act = '{{ route('inovasi.indikator.show') }}';
 
         $(form_id).find('#param').html('<option value="">Waiting Data ...</option>');
         $.post(act, {
                 _token: token,
-                definisi_operasional: definisi_operasional
+                definisi_operasional: definisi_operasional,
+                indikator_id: indikator_id
             },
             function(data) {
                 $('#param').prop("disabled", false);

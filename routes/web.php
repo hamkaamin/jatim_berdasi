@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
 use App\Http\Controllers\KategoriTahapanController;
@@ -52,6 +53,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [App\Http\Controllers\DefinisiController::class, 'index'])->name('index');
                 Route::post('/', [App\Http\Controllers\DefinisiController::class, 'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\DefinisiController::class, 'delete'])->name('delete');
+                // route post show_indikator
+                Route::post('/show_indikator', [App\Http\Controllers\DefinisiController::class,'show_indikator'])->name('show_indikator');
             });
             Route::prefix('parameter')->name('parameter.')->group(function () {
                 Route::post('/add', [App\Http\Controllers\ParameterController::class, 'add'])->name('add');
@@ -131,6 +134,12 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/', [App\Http\Controllers\TematikController::class, 'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\TematikController::class, 'delete'])->name('delete');
             });
+            Route::prefix('detail_tematik')->name('detail_tematik.')->group(function () {
+                Route::get('/', [App\Http\Controllers\DetailTematikController::class, 'index'])->name('index');
+                Route::post('/', [App\Http\Controllers\DetailTematikController::class,'save'])->name('save');
+                Route::post('/delete', [App\Http\Controllers\DetailTematikController::class, 'delete'])->name('delete');
+            });
+
         });
     });
 
@@ -165,6 +174,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
         Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
         Route::post('/sent', [App\Http\Controllers\InovasiController::class, 'sent'])->name('sent');
+        #get detail tematik using post
+        Route::post('/inovasi/ajax_detail_tematik', [InovasiController::class, 'detail_tematik'])->name('ajax_detail_tematik');
+
 
         Route::prefix('indikator')->name('indikator.')->group(function () {
             Route::get('/list', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');

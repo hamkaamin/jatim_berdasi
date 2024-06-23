@@ -15,9 +15,10 @@ class ParameterController extends Controller
                 ->distinct('definisi_operasional')
                 ->orderBy('definisi_operasional')
                 ->get();
+        $definisi_operasional = null;
         $append_data = $request->appendCount;
         return response()->json(array(
-            'msg' => view('components.field-parameter', compact('param','param2','append_data'))->render()
+            'msg' => view('components.field-parameter', compact('param','param2','append_data','definisi_operasional'))->render()
         ), 200);
     }
 
@@ -32,7 +33,9 @@ class ParameterController extends Controller
             $data->nama = $request->nama[$key];
             $data->bobot = $request->bobot[$key];
             $data->definisi_operasional = $request->div_definisi[$key];
+            $data->definisi_operasional_id = @$request->definisi_operasional_id[$key];
             $data->indikator_id = $request->indikator_id;
+            // dd($data);
             $data->save();
         }
         return redirect()->back()->with('success', Config::get('save_success'));
@@ -46,8 +49,7 @@ class ParameterController extends Controller
 
     public function show(Request $request)
     {
-        $data = Parameter::where('definisi_operasional',$request->definisi_operasional)
-        ->get();
+        $data = Parameter::where('definisi_operasional',$request->definisi_operasional)->where('indikator_id',$request->indikator_id)->get();
         // dd($lantai);
         $str='';
         $str .= '<option value="0"> -- Tampilkan Semua --  </option>';

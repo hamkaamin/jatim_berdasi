@@ -26,6 +26,7 @@ use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
 use App\Models\DefinisiOperasional;
+use App\Models\DetailTematik;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
@@ -258,15 +259,17 @@ class HomeController extends Controller
                 ->distinct('definisi_operasional')
                 ->orderBy('definisi_operasional')
                 ->get();
+                $data_definisi = DefinisiOperasional::where('indikator_id', $request->id)->get();
 				return response()->json(array(
-					'msg' => view('modal.form-parameter', compact('data', 'indi','parameters'))->render()
+					'msg' => view('modal.form-parameter', compact('data', 'indi','parameters','data_definisi'))->render()
 				), 200);
 				break;
 
 			case "definisi":
                 $data = ($request->id == 0) ? null : DefinisiOperasional::findOrFail($request->id);
+                $kategori = KategoriInovasi::get();
 				return response()->json(array(
-					'msg' => view('modal.form-definisi', compact('data'))->render()
+					'msg' => view('modal.form-definisi', compact('data','kategori'))->render()
 				), 200);
 				break;
 			case "opd":
@@ -329,6 +332,13 @@ class HomeController extends Controller
 				return response()->json(array(
 					'msg' => view('modal.form-tematik', compact('data'))->render()
 				), 200);
+            // Add Case Detail Tematik here
+            case "detail-tematik":
+                $data = ($request->id == 0) ? null : DetailTematik::findOrFail($request->id);
+                $tematik = Tematik::get();
+                return response()->json(array(
+                    'msg' => view('modal.form-detail-tematik', compact('data', 'tematik'))->render()
+                ), 200);
 				break;
         }
 	}
@@ -369,7 +379,7 @@ class HomeController extends Controller
         $username = 'superadmin';
         $password = 'superadmin';
         // Authenticate against the login endpoint
-        $response = $client->post('http://jatim-inovasi.prototypetim.com/api/login', [
+        $response = $client->post('http://jatimberdasi.brida.jatimprov.go.id/api/login', [
             'json' => [
                 'username' => $username,
                 'password' => $password
@@ -382,7 +392,7 @@ class HomeController extends Controller
 
 
  
-        $respon = $client->get('http://jatim-inovasi.prototypetim.com/api/all_opd', [
+        $respon = $client->get('http://jatimberdasi.brida.jatimprov.go.id/api/all_opd', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token
             ]
@@ -397,7 +407,7 @@ class HomeController extends Controller
     {
         $client = new \GuzzleHttp\Client(); 
     try {
-        $response = $client->request('POST', 'http://jatim-inovasi.prototypetim.com/api/login', [
+        $response = $client->request('POST', 'http://jatimberdasi.brida.jatimprov.go.id/api/login', [
             'headers' => [
                 'Content-Type' => 'application/json'
             ], 

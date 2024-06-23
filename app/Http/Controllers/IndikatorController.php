@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DefinisiOperasional;
 use Auth;
 use Config;
 use App\Models\Indikator;
@@ -49,6 +50,7 @@ class IndikatorController extends Controller
     public function chooseParam(Request $request)
     {
         $indikator = Indikator::findOrFail($request->indikator_id);
+        $indikator_id = $indikator->id;
         $param = $indikator->param()->get();
         $definisi_operasional = 0;
         $definisi = NULL;
@@ -62,9 +64,10 @@ class IndikatorController extends Controller
             }
         }
         $data_id = isset($request->provinsi_id) ? $request->provinsi_id : $request->inovasi_id;
+        $definisi_operasional_list = DefinisiOperasional::where('indikator_id', $request->indikator_id)->get();
         $type = isset($request->provinsi_id) ? 'provinsi' : 'inovasi';
         return response()->json(array(
-            'msg' => view('modal.form-param', compact('data_id','definisi','definisi_operasional', 'indikator', 'param', 'type'))->render()
+            'msg' => view('modal.form-param', compact('data_id','definisi','definisi_operasional', 'indikator', 'param', 'type','definisi_operasional_list','indikator_id'))->render()
         ), 200);
     }
 
