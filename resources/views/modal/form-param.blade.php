@@ -33,7 +33,7 @@
                                 class="text-danger">*</span></label></div>
                     <div class="col-sm-8">
                         <select name="definisi_operasional" id="definisi_operasional" class="form-control" required
-                            onchange="div_definisi_parameter('{{ csrf_token() }}','#div_parameter','#form-param-indikator','indikator_id')">
+                            onchange="div_definisi_parameter('{{ csrf_token() }}','#div_parameter','#form-param-indikator','{{ $indikator->id }}')">
                             <option value="">-- Pilih Definisi --</option>
                             @foreach ($definisi_operasional_list as $item)
                                 <option value="{{ $item->nama }}">{{ $item->nama }}
