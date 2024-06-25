@@ -294,7 +294,7 @@
                             <label><b>Waktu Pengembangan Inovasi</b> <span class="text-danger">*</span></label>
                         </div>
                         <div class="col-sm-8">
-                            <input type="date" required name="waktu_pengembangan" class="form-control"
+                            <input type="date" name="waktu_pengembangan" class="form-control"
                                 value="{{ $data != null ? $data->waktu_pengembangan : old('waktu_pengembangan') }}">
                         </div>
                     </div>

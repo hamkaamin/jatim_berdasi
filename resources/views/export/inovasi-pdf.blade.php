@@ -156,9 +156,32 @@ Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
                 @endforeach <br><br>
             </td>
         </tr>
+
         <tr>
             <td>
-                <b>1.8 Kategori</b><br>
+                <b>1.8. Waktu Ujicoba Inovasi</b><br>
+                {{ $inovasi->waktu_uji_coba ?? '-' }} <br><br>
+                <br><br>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <b>1.9. Waktu Penerapan Inovasi</b><br>
+                {{ $inovasi->waktu_penerapan ?? '-' }} <br><br>
+                <br><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>1.10. Waktu Pengembangan Inovasi</b><br>
+                {{ $inovasi->waktu_pengembangan ?? '-' }} <br><br>
+                <br><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>1.11 Kategori</b><br>
                 @foreach ($inovasi->kategori()->get() as $item)
                     {{ $item->nama }}@if (!$loop->last)
                         ,&nbsp;
@@ -168,30 +191,30 @@ Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
         </tr>
     </table>
     <div class="page-break">
-        <b>1.9. Rancang Bangun dan Pokok Perubahan Yang Dilakukan</b><br>
+        <b>1.12. Rancang Bangun dan Pokok Perubahan Yang Dilakukan</b><br>
         {!! $inovasi->rancang_bangun !!}
     </div>
     <table>
         <tr>
             <td>
-                <b>1.10. Tujuan Inovasi Daerah</b><br>
+                <b>1.13. Tujuan Inovasi Daerah</b><br>
                 {!! $inovasi->tujuan !!} <br><br>
             </td>
         </tr>
         <tr>
             <td>
-                <b>1.11. Manfaat yang Diperoleh</b><br>
+                <b>1.14. Manfaat yang Diperoleh</b><br>
                 {!! $inovasi->manfaat !!} <br><br>
             </td>
         </tr>
         <tr>
             <td>
-                <b>1.12. Hasil Inovasi</b><br>
+                <b>1.15. Hasil Inovasi</b><br>
                 {!! $inovasi->hasil !!} <br><br>
             </td>
         </tr>
         @php
-            $counter = 3;
+            $counter = 6;
         @endphp
         @foreach ($kolom as $item)
             <tr>
@@ -232,10 +255,33 @@ Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
                 @endif <br><br>
             </td>
         </tr>
+
         <tr>
             @php $counter++; @endphp
             <td>
-                <b>1.1{{ $counter }}. Kematangan</b><br>
+                <b>1.1{{ $counter }}. Dokumen HAKI</b><br>
+                @if ($inovasi->file_anggaran != null && file_exists(public_path('/file_anggaran/' . $inovasi->file_anggaran)))
+                    {{ asset('file_anggaran/' . $inovasi->file_anggaran) }}
+                @else
+                    -
+                @endif <br><br>
+            </td>
+        </tr>
+        <tr>
+            @php $counter++; @endphp
+            <td>
+                <b>1.1{{ $counter }}. Dokumen Penghargaan</b><br>
+                @if ($inovasi->file_penghargaan != null && file_exists(public_path('/file_penghargaan/' . $inovasi->file_penghargaan)))
+                    {{ asset('file_penghargaan/' . $inovasi->file_penghargaan) }}
+                @else
+                    -
+                @endif <br><br>
+            </td>
+        </tr>
+        <tr>
+            @php $counter++; @endphp
+            <td>
+                <b>1.20. Kematangan</b><br>
                 {{ $inovasi->indikator->sum('pivot.bobot_akhir') != null ? $inovasi->indikator->sum('pivot.bobot_akhir') : 0 }}
                 <br><br>
             </td>
