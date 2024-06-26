@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
         if(env('APP_HTTPS',0) == 1) {
             \URL::forceScheme('https');
         }
+
+        ini_set('memory_limit', '600M');
+        ini_set('max_execution_time', 1300);
         Config::set([
             'save_success' => 'Data berhasil disimpan',
             'delete_success' => 'Data berhasil dihapus',
