@@ -22,8 +22,8 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
+    {{ env('APP_NAME') }}
     @if (env('APP_NAME') == 'BANGKALAN BRAVO')
-        asd
         <link href="{{ asset('admin_asset/main_bravo.css') }}" rel="stylesheet">
     @elseif(env('APP_NAME') == 'JEMBER SIABANG')
         <link href="{{ asset('admin_asset/main_siabang.css') }}" rel="stylesheet">
