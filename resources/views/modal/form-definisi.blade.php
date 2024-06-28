@@ -52,7 +52,7 @@
         var kategori_id = $(form_id).find('select[name="kategori_id"] option:selected').val();
         var act = '{{ route('master.definisi.show_indikator') }}';
 
-        $(form_id).find('#div_indikator').html('<option value="">Waiting Data ...</option>');
+        $(target).html('<option value="">Waiting Data ...</option>');
         $.post(act, {
                 _token: token,
                 kategori_id: kategori_id
@@ -63,4 +63,15 @@
                 $(form_id).find('#indikator_id').trigger('change');
             });
     }
+
+    $(document).ready(function() {
+        var kategoriSelect = $('#kategori_id');
+        if (kategoriSelect.val() !== "") {
+            indikatorKategori('{{ csrf_token() }}', '#div_indikator', '#frm-definisi-operasional');
+        }
+
+        kategoriSelect.change(function() {
+            indikatorKategori('{{ csrf_token() }}', '#div_indikator', '#frm-definisi-operasional');
+        });
+    });
 </script>

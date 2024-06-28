@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DefinisiOperasional;
 use Config;
 use App\Models\Parameter;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class ParameterController extends Controller
                 ->distinct('definisi_operasional')
                 ->orderBy('definisi_operasional')
                 ->get();
-        $definisi_operasional = null;
+        $definisi_operasional = DefinisiOperasional::where('indikator_id', '=', $request->indikator_id)->get();
         $append_data = $request->appendCount;
         return response()->json(array(
             'msg' => view('components.field-parameter', compact('param','param2','append_data','definisi_operasional'))->render()

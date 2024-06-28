@@ -155,14 +155,15 @@
     <script>
         var appendCount = 0; // Initialize the count variable outside the function
 
-        function tambahParameter() {
+        function tambahParameter(indikator_id) {
             appendCount++;
             $.ajax({
                 type: 'POST',
                 url: '{{ route('master.parameter.add') }}',
                 data: {
                     '_token': '<?php echo csrf_token(); ?>',
-                    appendCount: appendCount
+                    appendCount: appendCount,
+                    indikator_id: indikator_id
                 },
                 success: function(data) {
                     $('#parameter_container').append(data.msg);

@@ -12,7 +12,8 @@
                 <b>Nama Indikator : </b>{{ $indi->nama }}
             </div>
             <div class="col-auto">
-                <button class="btn btn-success" type="button" onclick="tambahParameter()">Tambah Parameter
+                <button class="btn btn-success" type="button" onclick="tambahParameter('{{ $indi->id }}')">Tambah
+                    Parameter
                     Baru</button>
             </div>
         </div>
