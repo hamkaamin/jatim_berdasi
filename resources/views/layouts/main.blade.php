@@ -22,7 +22,6 @@
     =========================================================
     * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     -->
-    {{ env('APP_NAME') }}
     @if (env('APP_NAME') == 'BANGKALAN BRAVO')
         <link href="{{ asset('admin_asset/main_bravo.css') }}" rel="stylesheet">
     @elseif(env('APP_NAME') == 'JEMBER SIABANG')
@@ -52,6 +51,8 @@
                     </div>
                 </div>
             </div>
+            {{ env('APP_NAME') }}
+
             <div class="app-header__mobile-menu">
                 <div>
                     <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
