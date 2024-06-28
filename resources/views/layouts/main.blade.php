@@ -51,7 +51,6 @@
                     </div>
                 </div>
             </div>
-            {{ env('APP_NAME') }}
 
             <div class="app-header__mobile-menu">
                 <div>
