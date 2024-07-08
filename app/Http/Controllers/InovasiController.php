@@ -149,7 +149,7 @@ class InovasiController extends Controller
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
         if($request->status != ''){
-            $inovasi = $inovasi->where('status',$request->status)->get();
+            $inovasi = $inovasi->where('status',$request->status);
         }
         $inovasi = $inovasi->get();
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
