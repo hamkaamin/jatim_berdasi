@@ -19,6 +19,7 @@ class TabContentInovasi extends Component
         $this->kolom = $kolom;
         $this->inovasi = $inovasi;
         $this->label = $label;
+
     }
 
     /**

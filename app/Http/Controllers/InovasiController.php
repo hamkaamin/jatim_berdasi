@@ -80,7 +80,7 @@ class InovasiController extends Controller
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
         $inovasi = $inovasi->get();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area'));
     }
 
     public function show_tahapan(Request $request)
@@ -95,9 +95,69 @@ class InovasiController extends Controller
         // return view('inovasi.show_tahapan',compact($data));
     }
 
-    public function bank_data(Request $reques,$area)
+    public function show_inovasi(Request $request){
+        $area = $request->area;
+        $tahapan = Tahapan::all();
+        $inovasi = Inovasi::where('deleted_at', 0);
+        $label = "";
+        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        if ($area == 'daerah') {
+            $inovasi = Inovasi::where('status', 2);
+            $label = "Daerah";
+        } elseif ($area == 'masyarakat') {
+            $inovasi = Inovasi::where('label', 1);
+            $label = "Awards";
+            if (Auth::user()->role == 2) {
+                $inovasi = $inovasi->where('status', '<>', 0);
+            } 
+        } elseif ($area == 'pemda') {
+            $inovasi = Inovasi::where('label', 1);
+            $label = "Pemda";
+            if (Auth::user()->role == 2) {
+                $inovasi = $inovasi->where('status', '<>', 0);
+            }
+        } elseif($area == 'kota'){
+            $label = "Kota / Kab";
+            $tahapan = Tahapan::where('id','<>',6)->get();
+            $inovasi = Inovasi::where('label', 0);
+            if (Auth::user()->role == 2) {
+                $inovasi = $inovasi->where('status', '<>', 0);
+            }
+        }
+        elseif($area == 'provinsi'){
+            $inovasi = Inovasi::where('label', 0)->where('kategori_id',1);
+            $tahapan = Tahapan::where('id','<>',6)->get();
+            $label = "Provinsi";
+            if (Auth::user()->role == 2) {
+                $inovasi = $inovasi->where('status', '<>', 0);
+            }
+        }
+        if (Auth::user()->role == 4 || Auth::user()->role == 5) {
+            $inovasi = $inovasi->where('user_id', Auth::user()->id);
+        }
+        if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+            $inovasi = $inovasi->where('provinsi_id', Auth::user()->province_id);
+        } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+            // $inovasi = $inovasi->where('provinsi_id', Auth::user()->opd->provinsi_id);
+        } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+            $inovasi = $inovasi->where('kota_id', Auth::user()->regency_id);
+        } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+            // $inovasi = $inovasi->where('kota_id', Auth::user()->opd->kabkota_id);
+        } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+            $inovasi = $inovasi->where('kecamatan_id', Auth::user()->opd->kecamatan_id);
+        } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+            $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
+        }
+        if($request->status != ''){
+            $inovasi = $inovasi->where('status',$request->status)->get();
+        }
+        $inovasi = $inovasi->get();
+        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+    }
+
+    public function bank_data(Request $request,$area)
     {
-        $inovasi = Inovasi::where('status',2)->get();
+        $inovasi = Inovasi::with('kategori')->where('status',2)->get();
         return view('inovasi.bank_data', compact('inovasi','area'));
     }
 

@@ -1,5 +1,6 @@
 <div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $tahapan == null ? 0 : $tahapan->id }}"
     role="tabpanel" aria-labelledby="{{ $tahapan == null ? 0 : $tahapan->id }}-tab">
+
     <div class="row">
         <div class="col-md-12">
             <div style="width: 100%">
