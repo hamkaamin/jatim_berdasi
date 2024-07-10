@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
     public function all_opd()
     {
         try{
