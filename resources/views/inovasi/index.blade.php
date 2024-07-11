@@ -44,7 +44,8 @@
             </div>
             @if (env('APP_OPD_JATIM') == 1)
                 <div class="col-2">
-                    <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim Berdasi</b></button>
+                    <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim
+                            Berdasi</b></button>
                     <br><br>
                 </div>
             @endif
@@ -157,7 +158,7 @@
                     }
                 });
 
-                submitButton.disabled = !atLeastOneChecked;
+                submitButton.disabled = atLeastOneChecked;
             }
 
             checkboxes.forEach(function(checkbox) {

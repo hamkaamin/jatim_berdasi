@@ -452,6 +452,9 @@ class InovasiController extends Controller
         // Process the request, perform actions based on the data received
         // Example:
         $is_sent = $request->is_sent;
+        if($is_sent == null){
+            return redirect()->back()->with('error', 'Harap Pilih salah 1 Data yang disetujui');
+        }
         foreach($is_sent as $id){
             $hit_data = 0;
             $data = Inovasi::find($id);

@@ -53,7 +53,8 @@ class ApiSyncController extends Controller
             if($respon['status'] == true){
                 $inovasis = Inovasi::where('hit_data',1)->update(
                     [
-                        'hit_data' =>2
+                        'hit_data' =>2,
+                        'status' =>1
                     ]);
             }
             
