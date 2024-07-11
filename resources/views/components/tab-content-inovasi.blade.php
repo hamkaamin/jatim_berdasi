@@ -148,3 +148,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.table-flush').DataTable();
+    });
+</script>
