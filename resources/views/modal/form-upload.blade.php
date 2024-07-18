@@ -24,8 +24,7 @@
                             value="{{ $data != null ? $data->{$item[1]} : '' }}">
                     @elseif($item[2] == 'file')
                         <input type="{{ $item[2] }}" name="{{ $item[1] }}" class="form-control"
-                            @if ($item[3] == 1) required @endif
-                            value="{{ $data != null ? $data->{$item[1]} : '' }}">
+                            @if ($item[3] == 1) required @endif onchange="validateFileSize(this)">
                         <span class="text-danger">Maximal : 2MB</span>
                     @else
                         <textarea name="{{ $item[1] }}" class="form-control" @if ($item[3] == 1) required @endif
@@ -40,3 +39,18 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
+
+
+<script>
+    $(document).ready(function() {
+        var maxSize = 2 * 1024 * 1024; // 2MB in bytes
+
+        window.validateFileSize = function(input) {
+            var file = input.files[0];
+            if (file && file.size > maxSize) {
+                alert('File Size Maximal 2MB');
+                input.value = ''; // Clear the input value if file size exceeds limit
+            }
+        };
+    });
+</script>

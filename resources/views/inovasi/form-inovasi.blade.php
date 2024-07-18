@@ -513,6 +513,50 @@
         if (tematikId) {
             get_detail_tematik(tematikId, inovasiId);
         }
+
+        var maxSize = 2 * 1024 * 1024;
+
+        var file_anggaran = $('#form-edit-inovasi').find('input[name="file_anggaran"]');
+        file_anggaran.on('change', function() {
+            var file = this.files[0];
+
+            if (file.size > maxSize) {
+                alert('File Size Maximal 2MB');
+                $(this).val('');
+            }
+        });
+
+        var profil_bisnis = $('#form-edit-inovasi').find('input[name="profil_bisnis"]');
+        profil_bisnis.on('change', function() {
+            var file = this.files[0];
+
+            if (file.size > maxSize) {
+                alert('File Size Maximal 2MB');
+                $(this).val('');
+            }
+        });
+
+        var file_dokumen_haki = $('#form-edit-inovasi').find('input[name="file_dokumen_haki"]');
+        file_dokumen_haki.on('change', function() {
+            var file = this.files[0];
+
+            if (file.size > maxSize) {
+                alert('File Size Maximal 2MB');
+                $(this).val('');
+            }
+        });
+
+        var file_penghargaan = $('#form-edit-inovasi').find('input[name="file_penghargaan"]');
+        file_penghargaan.on('change', function() {
+            var file = this.files[0];
+
+            if (file.size > maxSize) {
+                alert('File Size Maximal 2MB');
+                $(this).val('');
+            }
+        });
+
+
     });
 
     function countWords() {
