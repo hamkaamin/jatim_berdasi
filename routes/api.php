@@ -33,3 +33,6 @@ Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
 
 // provinsi menerima hit data
 Route::post('insert_inovasi2', [ApiController::class,'insert_inovasi2']);
+
+// kab ngehit provinsi untuk lihat status terkininya
+Route::get('kab_read_data', [ApiSyncController::class,'kab_read_data']);
