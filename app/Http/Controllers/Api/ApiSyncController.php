@@ -71,6 +71,40 @@ class ApiSyncController extends Controller
             echo 'Error: ' . $e->getMessage();
         }
     } 
+    public function kab_read_data(Request $request)
+    {
+        date_default_timezone_set('Asia/Makassar');
+
+        $client = new Client();
+        try {
+            $response = $client->request('POST', env('APP_PROV_URL', '') . '/api/kab_status_data', [
+                'headers' => [
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [  
+                    'key'=>encrypt(date('Y-m-d')),
+                    'url'=>encrypt(env('APP_URL')), 
+                ], // Use 'body' instead of 'form_params'
+                'verify' => false, // Disable SSL verification
+            ]);
+            $respon = json_decode($response->getBody()->getContents(), true);  
+            foreach($respon as $d)
+            {
+                $inovasi_id = $d['kab_inovasis_id'];
+                $inovasi = Inovasi::find($inovasi_id);
+                dd($inovasi);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => "Data provinsi",
+                'data' => $respon
+            ], 200);
+        } catch (RequestException $e) {
+            throw $e;
+            echo 'Error: ' . $e->getMessage();
+        }
+    } 
 
     public function kab_status_data(Request $request)
     {
@@ -92,4 +126,5 @@ class ApiSyncController extends Controller
             throw $th;
         }
     }
+    
 }
