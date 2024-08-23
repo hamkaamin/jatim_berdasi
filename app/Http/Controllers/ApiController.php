@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Indikator;
 use App\Models\Inovasi;
+use App\Models\Integration;
 use App\Models\Opd;
 use App\Models\Tahapan;
 use App\Models\Upload;
@@ -172,7 +173,17 @@ class ApiController extends Controller
 
     public function insert_inovasi2(Request $request)
     {
-        DB::beginTransaction();
+        DB::beginTransaction(); 
+        $ipAddress = $request->ip();
+        $arr_data = $request->arr_data;
+        $kabkota_kode = $request->kabkota_kode;
+        $url = $request->url;
+        $n = new Integration(); 
+        $n->ip = $ipAddress;
+        $n->url = $url;
+        $n->kabkota_kode = $kabkota_kode;
+        $n->arr_data = $arr_data;
+        $n->save();
 
         try {
             $arr_data = $request->arr_data;
@@ -183,13 +194,52 @@ class ApiController extends Controller
                 $data_indikator_inovasi = $item['indikator_inovasi'];
                 $data_upload_inovasi = $item['upload_inovasi'];
     
-                $inovasi = new Inovasi();
-                // Fill Inovasi attributes
-                $inovasi->fill($data_inovasi);
-                $inovasi->user_id = $request->kabkota_kode;
+                $inovasi = new Inovasi(); 
+                $inovasi->kab_integration_id = $n->id;
+                $inovasi->kab_inovasis_id = $data_inovasi['id'];
+                $inovasi->kode = $data_inovasi['kode'];
+                $inovasi->nama = $data_inovasi['nama'];
+                $inovasi->covid = $data_inovasi['covid'];
+                $inovasi->rancang_bangun = $data_inovasi['rancang_bangun'];
+                $inovasi->tujuan = $data_inovasi['tujuan'];
+                $inovasi->manfaat = $data_inovasi['manfaat'];
+                $inovasi->hasil = $data_inovasi['hasil'];
+                $inovasi->anggaran = $data_inovasi['anggaran'];
+                $inovasi->profil_bisnis = $data_inovasi['profil_bisnis'];
+                $inovasi->status = $data_inovasi['status'];
+                $inovasi->keterangan = $data_inovasi['keterangan'];
+                // $inovasi->created_at = $data_inovasi['created_at'];
+                // $inovasi->updated_at = $data_inovasi['updated_at'];
+                // $inovasi->deleted_at = $data_inovasi['deleted_at'];
+                $inovasi->user_id = $data_inovasi['user_id'];
+                $inovasi->tahapan_id = $data_inovasi['tahapan_id'];
+                $inovasi->inisiator_id = $data_inovasi['inisiator_id'];
+                $inovasi->jenis_id = $data_inovasi['jenis_id'];
+                $inovasi->bentuk_id = $data_inovasi['bentuk_id'];
+                $inovasi->label = $data_inovasi['label'];
+                $inovasi->kota_id = $data_inovasi['kota_id'];
+                $inovasi->kecamatan_id = $data_inovasi['kecamatan_id'];
+                $inovasi->kelurahan_id = $data_inovasi['kelurahan_id'];
+                $inovasi->provinsi_id = $data_inovasi['provinsi_id'];
+                $inovasi->kategori_id = $data_inovasi['kategori_id'];
+                $inovasi->file_rancang_bangun = $data_inovasi['file_rancang_bangun'];
+                $inovasi->url = $data_inovasi['url'];
+                $inovasi->hit_data = $data_inovasi['hit_data'];
+                $inovasi->waktu_uji_coba = $data_inovasi['waktu_uji_coba'];
+                $inovasi->waktu_penerapan = $data_inovasi['waktu_penerapan'];
+                $inovasi->tematik_id = $data_inovasi['tematik_id'];
+                $inovasi->nama_inisiator = $data_inovasi['nama_inisiator'];
+                $inovasi->file_anggaran = $data_inovasi['file_anggaran'];
+                $inovasi->file_dokumen_haki = $data_inovasi['file_dokumen_haki'];
+                $inovasi->file_penghargaan = $data_inovasi['file_penghargaan'];
+                $inovasi->detail_tematik_id = $data_inovasi['detail_tematik_id'];
+                $inovasi->waktu_pengembangan = $data_inovasi['waktu_pengembangan'];
+                $inovasi->is_pengembangan = $data_inovasi['is_pengembangan'];
+                
+                $inovasi->user_id = $request->kabkota_kode; 
                 $inovasi->save();
     
-                // Sync 'urusan' relationship
+                // Sync 'urusan' relationship = urusan_id dapet dari mana ?
                 $inovasi->urusan()->sync($inovasi->urusan_id);
     
                 // Sync 'tahapan' relationship
@@ -203,8 +253,11 @@ class ApiController extends Controller
                 // Insert 'indikator_inovasi' records
                 foreach ($data_indikator_inovasi as $dataindikator) {
                     DB::table('indikator_inovasi')->insert([
+                        'kab_indikator_id' => $dataindikator['pivot']['indikator_id'],
+                        'kab_inovasi_id' => $dataindikator['pivot']['inovasi_id'],
+
+                        'inovasi_id' => $inovasi->id, // dari aplikasi terkait
                         'indikator_id' => $dataindikator['pivot']['indikator_id'],
-                        'inovasi_id' => $inovasi->id,
                         'param_awal' => $dataindikator['pivot']['param_awal'],
                         'param_akhir' => $dataindikator['pivot']['param_akhir'],
                         'bobot_awal' => $dataindikator['pivot']['bobot_awal'],
@@ -216,8 +269,10 @@ class ApiController extends Controller
                 // Insert 'uploads' records
                 foreach ($data_upload_inovasi as $upload) {
                     DB::table('uploads')->insert([
+                        'kab_uploads_id' => $upload['id'],
+
+                        'inovasi_id' => $inovasi->id, // dari aplikasi terkait
                         'judul' => $upload['judul'],
-                        'inovasi_id' => $inovasi->id,
                         'no_dokumen' => $upload['no_dokumen'],
                         'tgl_dokumen' => $upload['tgl_dokumen'],
                         'tentang' => $upload['tentang'],
@@ -237,7 +292,7 @@ class ApiController extends Controller
     
             return response()->json([
                 'status' => true,
-                'message' => "All Data Inovasi!",
+                'message' => "Integration Success!",
                 'data' => $arr_data
             ], 200);
         } catch (\Exception $e) {
