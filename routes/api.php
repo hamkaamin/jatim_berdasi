@@ -27,6 +27,9 @@ Route::post('refresh', [AuthController::class,'refresh']);
 Route::post('logout', [AuthController::class,'logout']);
 
 Route::get('all_opd',[ApiController::class,'all_opd']);
+
+// dari kab ngehit ke provinsi
 Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
-// Route::post('insert_inovasi', [ApiController::class,'insert_inovasi']);
+
+// provinsi menerima hit data
 Route::post('insert_inovasi2', [ApiController::class,'insert_inovasi2']);
