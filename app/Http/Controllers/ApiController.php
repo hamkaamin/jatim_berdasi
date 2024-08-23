@@ -278,9 +278,7 @@ class ApiController extends Controller
                         'tentang' => $upload['tentang'],
                         'url' => $upload['url'],
                         'cover' => $upload['cover'],
-                        'file' => $upload['file'],
-                        'created_at' => $upload['created_at'],
-                        'updated_at' => $upload['updated_at'],
+                        'file' => $upload['file'], 
                         'indikator_id' => $upload['indikator_id'],
                         'provinsi_id' => $upload['provinsi_id'],
                     ]);
