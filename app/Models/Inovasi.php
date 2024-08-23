@@ -18,6 +18,11 @@ class Inovasi extends Model
         static::addGlobalScope(new OrderByIdScope);
     }
 
+    public function integration()
+    {
+        return $this->belongsTo('App\Models\Integration', 'kab_integration_id');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id')->withTrashed();

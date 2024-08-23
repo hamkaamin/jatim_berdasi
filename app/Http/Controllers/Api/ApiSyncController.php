@@ -71,4 +71,25 @@ class ApiSyncController extends Controller
             echo 'Error: ' . $e->getMessage();
         }
     } 
+
+    public function kab_status_data(Request $request)
+    {
+        date_default_timezone_set('Asia/Makassar');
+
+        try { 
+            $key = decrypt($request->key);
+            $url = decrypt($request->url);
+            if($key == date('Y-m-d')){
+                $inovasi = Inovasi::whereHas('integration', function ($query) use ($url) {
+                    $query->where('url', $url);
+                })->get();
+                return response()->json($inovasi);
+            } else {
+                return response()->json(false, 401);
+            }
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 401);
+            throw $th;
+        }
+    }
 }

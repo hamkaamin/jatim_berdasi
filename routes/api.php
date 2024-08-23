@@ -28,8 +28,12 @@ Route::post('logout', [AuthController::class,'logout']);
 
 Route::get('all_opd',[ApiController::class,'all_opd']);
 
-// dari kab ngehit ke provinsi
-Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
+// mengirim data pertama kali
+    // dari kab ngehit ke provinsi
+    Route::get('kab_hit_data', [ApiSyncController::class,'kab_hit_data']);
+    // provinsi menerima hit data
+    Route::post('insert_inovasi2', [ApiController::class,'insert_inovasi2']);
 
-// provinsi menerima hit data
-Route::post('insert_inovasi2', [ApiController::class,'insert_inovasi2']);
+// sync status
+    // dari provinsi respon data-data yang sudah pernah dikirim
+    Route::post('kab_status_data', [ApiSyncController::class,'kab_status_data']);
