@@ -177,12 +177,6 @@ class InovasiController extends Controller
                 $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
             }
             $label = 0;
-            if (isset($request->label)) {
-                $label = $request->label;
-            }
-            if($label == 0){
-                $kategori = $kategori->where('kategori_id',1);
-            }
             
             $kategori = $kategori->get();
             if ($request->id != 0) {
@@ -192,6 +186,13 @@ class InovasiController extends Controller
                     return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
                 }
                 $label = $data->label;
+            }
+
+            if (isset($request->label)) {
+                $label = $request->label;
+            }
+            if($label == 0){
+                $kategori = $kategori->where('kategori_id',1);
             }
             return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
         } else { 
