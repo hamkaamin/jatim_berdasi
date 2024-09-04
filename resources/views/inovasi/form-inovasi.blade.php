@@ -89,7 +89,8 @@
                                             onchange="div_tahapan('{{ csrf_token() }}','#div_tahapan','#form-edit-inovasi')">
                                             <option value="">-- Pilih Kategori --</option>
                                             @foreach ($kategori as $item)
-                                                <option value="{{ $item->kategori->id }}">
+                                                <option value="{{ $item->kategori->id }}"
+                                                    @if (old('kategori_id') == $item->kategori->id || ($data && $data->kategori_id == $item->kategori->id)) selected @endif>
                                                     {{ $item->kategori->nama }}
                                                 </option>
                                             @endforeach
@@ -485,7 +486,12 @@
     @endif
 @endsection
 <script>
+    // Panggil fungsi saat halaman dimuat, jika dalam mode edit
     document.addEventListener('DOMContentLoaded', (event) => {
+
+        if ('{{ $data ? true : false }}') {
+            div_tahapan('{{ csrf_token() }}', '#div_tahapan', '#form-edit-inovasi');
+        }
         const pengembangan1 = document.getElementById('pengembangan_1');
         const pengembangan0 = document.getElementById('pengembangan_0');
         const waktuPenerapanRow = document.getElementById('waktu_penerapan_row');
@@ -580,6 +586,7 @@
 
     function div_tahapan(token, target, form_id) {
         var kategori_id = $(form_id).find('select[name="kategori_id"] option:selected').val();
+        var tahapan_id = '{{ $data ? $data->tahapan_id : '' }}';
         var act = '{{ route('inovasi.show_tahapan') }}';
 
         $(form_id).find('#div_tahapan').html('<option value="">Waiting Data ...</option>');
@@ -590,7 +597,11 @@
             function(data) {
                 $('#tahapan_id').prop("disabled", false);
                 $(form_id).find('#tahapan_id').html(data);
-                $(form_id).find('#tahapan_id').trigger('change');
+
+                // Jika sedang mengedit, pilih tahapan yang sesuai
+                if (tahapan_id) {
+                    $(form_id).find('#tahapan_id').val(tahapan_id).trigger('change');
+                }
             });
     }
 

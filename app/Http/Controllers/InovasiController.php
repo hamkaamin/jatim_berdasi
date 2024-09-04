@@ -360,13 +360,7 @@ class InovasiController extends Controller
         
         if ($request->hasFile('file_penghargaan')) {
             $nama_file = Helper::save_file($request->file('file_penghargaan'), uniqid(), 'file_penghargaan', $data->file_penghargaan);
-            $data->file_dokumen_haki = $nama_file;
-		    $data->save();
-        }
-
-        if ($request->hasFile('profil_bisnis')) {
-            $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
-            $data->profil_bisnis = $nama_file;
+            $data->file_penghargaan = $nama_file;
 		    $data->save();
         }
         $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);

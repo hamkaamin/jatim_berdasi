@@ -22,6 +22,7 @@
     style="background-image: url({{ asset(env('APP_BACKGROUND_LOGIN') ?? 'login-page-inovasi-daerah.jpg') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row">
+
             <div class="col-lg-12">
                 <div class="card box-shadow" style="border-radius: 1em;background-color: rgba(255,255,255,0.4)">
                     <div class="card-body">
