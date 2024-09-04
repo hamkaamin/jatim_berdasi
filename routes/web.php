@@ -168,6 +168,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{area}', [App\Http\Controllers\InovasiController::class, 'index'])->name('index');
         Route::get('/filter/area', [App\Http\Controllers\InovasiController::class, 'index'])->name('filter-area');
         Route::get('/form/edit', [App\Http\Controllers\InovasiController::class, 'edit'])->name('edit');
+        Route::get('/form/detail', [App\Http\Controllers\InovasiController::class, 'detail'])->name('detail');
         Route::get('/export/{type}', [App\Http\Controllers\InovasiController::class, 'export'])->name('export');
         Route::post('/', [App\Http\Controllers\InovasiController::class, 'save'])->name('save');
         Route::post('/show_tahapan', [App\Http\Controllers\InovasiController::class, 'show_tahapan'])->name('show_tahapan');
