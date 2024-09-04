@@ -76,6 +76,22 @@
                                             <button type="submit" class="btn btn-primary btn-block btnSubmitForm">
                                                 {{ __('Login') }}
                                             </button>
+                                            @if (env('APP_NAME') == 'BRAVO BANGKALAN')
+                                                <br><br>
+                                                <a href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
+                                                    target="_blank" type="button" class="btn btn-success btn-block">
+                                                    Pedoman Teknis IGA
+                                                </a>
+                                                <a href="https://bit.ly/PedomanTeknisBravoInotekAward2024"
+                                                    target="_blank" type="button" class="btn btn-warning btn-block">
+                                                    Pedoman Teknis BRAVO
+                                                </a>
+
+                                                <a href="https://forms.gle/4R9H1H2gi5WdKGRB9" target="_blank"
+                                                    type="button" class="btn btn-danger btn-block">
+                                                    Pendaftaran Teknis Masyarakat
+                                                </a>
+                                            @endif
                                             {{-- @if (Route::has('password.request'))
                                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                                     {{ __('Forgot Your Password?') }}
