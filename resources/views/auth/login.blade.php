@@ -76,7 +76,7 @@
                                             <button type="submit" class="btn btn-primary btn-block btnSubmitForm">
                                                 {{ __('Login') }}
                                             </button>
-                                            @if (env('APP_NAME') == 'BRAVO BANGKALAN')
+                                            @if (env('APP_NAME') == 'BANGKALAN BRAVO')
                                                 <br><br>
                                                 <a style="background-color: #CBE2B5"
                                                     href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
