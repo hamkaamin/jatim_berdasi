@@ -72,21 +72,21 @@
                 <div class="row my-2">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->kategori ? $data->kategori->nama : 'N/A' }}
+                        {{ $data != null && $data->kategori ? $data->kategori->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Tahapan Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->belongsToTahapan ? $data->belongsToTahapan->nama : 'N/A' }}
+                        {{ $data != null && $data->belongsToTahapan ? $data->belongsToTahapan->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Inisiator Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->inisiator ? $data->inisiator->nama : 'N/A' }}
+                        {{ $data != null && $data->inisiator ? $data->inisiator->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
@@ -99,13 +99,13 @@
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Jenis Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->jenis ? $data->jenis->nama : 'N/A' }}
+                        {{ $data != null && $data->jenis ? $data->jenis->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
                 <div class="row my-2">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Bentuk Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->bentuk ? $data->bentuk->nama : 'N/A' }}
+                        {{ $data != null && $data->bentuk ? $data->bentuk->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
@@ -114,7 +114,7 @@
                         <label><b>Tematik</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->tematik ? $data->tematik->nama : 'N/A' }}
+                        {{ $data != null && $data->tematik ? $data->tematik->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
@@ -128,7 +128,7 @@
                                 @endforeach
                             </ul>
                         @else
-                            N/A
+                            Tidak Ada Data
                         @endif
                     </div>
                 </div>
@@ -152,7 +152,7 @@
                         <label><b>Waktu Pengembangan Inovasi</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null ? ($data->is_pengembangan ? 'Ya' : 'Tidak') : 'N/A' }}
+                        {{ $data != null ? ($data->is_pengembangan ? 'Ya' : 'Tidak') : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
@@ -161,9 +161,65 @@
                         <label><b>Covid 19</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null ? ($data->covid ? 'Covid-19' : 'Non Covid-19') : 'N/A' }}
+                        {{ $data != null ? ($data->covid ? 'Covid-19' : 'Non Covid-19') : 'Tidak Ada Data' }}
                     </div>
                 </div>
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Anggaran (Jika diperlukan)</b></label></div>
+                    <div class="col-sm-8">
+                        @if ($data != null && $data->file_anggaran)
+                            <a href="{{ $data->file_anggaran }}" target="_blank">Download File Anggaran</a>
+                        @else
+                            Tidak Ada Data
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row my-2" style="display: none">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>File Rancang Bangun</b></label></div>
+                    <div class="col-sm-8">
+                        @if ($data != null && $data->file_rancang_bangun)
+                            <a href="{{ $data->file_rancang_bangun }}" target="_blank">Download File Rancang Bangun</a>
+                        @else
+                            Tidak Ada Data
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika ada)</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        @if ($data != null && $data->profil_bisnis)
+                            <a href="{{ $data->profil_bisnis }}" target="_blank">Download File Profil Bisnis</a>
+                        @else
+                            Tidak Ada Data
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen HAKI</b></label></div>
+                    <div class="col-sm-8">
+                        @if ($data != null && $data->file_dokumen_haki)
+                            <a href="{{ $data->file_dokumen_haki }}" target="_blank">Download File Dokumen HAKI</a>
+                        @else
+                            Tidak Ada Data
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
+                    <div class="col-sm-8">
+                        @if ($data != null && $data->file_penghargaan)
+                            <a href="{{ $data->file_penghargaan }}" target="_blank">Download File Penghargaan</a>
+                        @else
+                            Tidak Ada Data
+                        @endif
+                    </div>
+                </div>
+
             </div>
         </div>
     @endif
