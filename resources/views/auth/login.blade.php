@@ -77,7 +77,6 @@
                                                 {{ __('Login') }}
                                             </button>
                                             @if (env('APP_NAME') == 'BANGKALAN BRAVO')
-                                                <br><br>
                                                 <a style="background-color: #CBE2B5"
                                                     href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
                                                     target="_blank" type="button" class="btn btn-block">
