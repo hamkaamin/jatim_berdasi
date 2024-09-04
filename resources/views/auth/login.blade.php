@@ -78,20 +78,20 @@
                                             </button>
                                             @if (env('APP_NAME') == 'BANGKALAN BRAVO')
                                                 <a style="background-color: #86AB89"
-                                                    href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
+                                                    href="https://indeks.inovasi.bskdn.kemendagri.go.id/v2/"
                                                     target="_blank" type="button" class="btn btn-block">
-                                                    Pedoman Teknis IGA
+                                                    Pendaftaran Lomba Inovasi Perangkat Daerah 2024
                                                 </a>
                                                 <a style="background-color: #86AB89"
-                                                    href="https://bit.ly/PedomanTeknisBravoInotekAward2024"
-                                                    target="_blank" type="button" class="btn  btn-block">
-                                                    Pedoman Teknis BRAVO
+                                                    href="https://forms.gle/4R9H1H2gi5WdKGRB9" target="_blank"
+                                                    type="button" class="btn  btn-block">
+                                                    Pendaftaran Lomba Inovasi Masyarakat 2024
                                                 </a>
 
                                                 <a style="background-color: #86AB89"
-                                                    href="https://forms.gle/4R9H1H2gi5WdKGRB9" target="_blank"
-                                                    type="button" class="btn btn-block">
-                                                    Pendaftaran Teknis Masyarakat
+                                                    href="https://drive.google.com/drive/u/0/folders/1K6CKYsqQJkbHHNtMBPk1uH0MWHXYK4KN"
+                                                    target="_blank" type="button" class="btn btn-block">
+                                                    Pedoman Teknis Lomba Inovasi 2024
                                                 </a>
                                             @endif
                                             {{-- @if (Route::has('password.request'))
