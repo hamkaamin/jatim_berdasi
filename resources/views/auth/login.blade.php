@@ -78,17 +78,20 @@
                                             </button>
                                             @if (env('APP_NAME') == 'BRAVO BANGKALAN')
                                                 <br><br>
-                                                <a href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
-                                                    target="_blank" type="button" class="btn btn-success btn-block">
+                                                <a style="background-color: #CBE2B5"
+                                                    href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
+                                                    target="_blank" type="button" class="btn btn-block">
                                                     Pedoman Teknis IGA
                                                 </a>
-                                                <a href="https://bit.ly/PedomanTeknisBravoInotekAward2024"
-                                                    target="_blank" type="button" class="btn btn-warning btn-block">
+                                                <a style="background-color: #CBE2B5"
+                                                    href="https://bit.ly/PedomanTeknisBravoInotekAward2024"
+                                                    target="_blank" type="button" class="btn  btn-block">
                                                     Pedoman Teknis BRAVO
                                                 </a>
 
-                                                <a href="https://forms.gle/4R9H1H2gi5WdKGRB9" target="_blank"
-                                                    type="button" class="btn btn-danger btn-block">
+                                                <a style="background-color: #CBE2B5"
+                                                    href="https://forms.gle/4R9H1H2gi5WdKGRB9" target="_blank"
+                                                    type="button" class="btn btn-block">
                                                     Pendaftaran Teknis Masyarakat
                                                 </a>
                                             @endif
