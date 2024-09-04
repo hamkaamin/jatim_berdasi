@@ -77,18 +77,18 @@
                                                 {{ __('Login') }}
                                             </button>
                                             @if (env('APP_NAME') == 'BANGKALAN BRAVO')
-                                                <a style="background-color: #CBE2B5"
+                                                <a style="background-color: #86AB89"
                                                     href="https://indeks.inovasi.litbang.kemendagri.go.id/dokumen"
                                                     target="_blank" type="button" class="btn btn-block">
                                                     Pedoman Teknis IGA
                                                 </a>
-                                                <a style="background-color: #CBE2B5"
+                                                <a style="background-color: #86AB89"
                                                     href="https://bit.ly/PedomanTeknisBravoInotekAward2024"
                                                     target="_blank" type="button" class="btn  btn-block">
                                                     Pedoman Teknis BRAVO
                                                 </a>
 
-                                                <a style="background-color: #CBE2B5"
+                                                <a style="background-color: #86AB89"
                                                     href="https://forms.gle/4R9H1H2gi5WdKGRB9" target="_blank"
                                                     type="button" class="btn btn-block">
                                                     Pendaftaran Teknis Masyarakat
