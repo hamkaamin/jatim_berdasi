@@ -168,7 +168,7 @@
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Anggaran (Jika diperlukan)</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_anggaran)
-                            <a href="{{ $data->file_anggaran }}" target="_blank">Download File Anggaran</a>
+                            <a href="{{ $data->file_anggaran }}" target="_blank">{{ $data->file_anggaran }}</a>
                         @else
                             Tidak Ada Data
                         @endif
@@ -179,7 +179,8 @@
                     <div class="col-sm-3 d-flex align-items-center"><label><b>File Rancang Bangun</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_rancang_bangun)
-                            <a href="{{ $data->file_rancang_bangun }}" target="_blank">Download File Rancang Bangun</a>
+                            <a href="{{ $data->file_rancang_bangun }}"
+                                target="_blank">{{ $data->file_rancang_bangun }}</a>
                         @else
                             Tidak Ada Data
                         @endif
@@ -191,7 +192,7 @@
                     </div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->profil_bisnis)
-                            <a href="{{ $data->profil_bisnis }}" target="_blank">Download File Profil Bisnis</a>
+                            <a href="{{ $data->profil_bisnis }}" target="_blank">{{ $data->profil_bisnis }}</a>
                         @else
                             Tidak Ada Data
                         @endif
@@ -202,7 +203,7 @@
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen HAKI</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_dokumen_haki)
-                            <a href="{{ $data->file_dokumen_haki }}" target="_blank">Download File Dokumen HAKI</a>
+                            <a href="{{ $data->file_dokumen_haki }}" target="_blank">{{ $data->file_dokumen_haki }}</a>
                         @else
                             Tidak Ada Data
                         @endif
@@ -213,7 +214,7 @@
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_penghargaan)
-                            <a href="{{ $data->file_penghargaan }}" target="_blank">Download File Penghargaan</a>
+                            <a href="{{ $data->file_penghargaan }}" target="_blank">{{ $data->file_penghargaan }}</a>
                         @else
                             Tidak Ada Data
                         @endif
