@@ -383,7 +383,6 @@ class InovasiController extends Controller
         if ($request->hasFile('profil_bisnis')) {
             $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
             $data->profil_bisnis = $nama_file;
-            dd($data,$request->file('profil_bisnis'));
 		    $data->save();
         }
 
