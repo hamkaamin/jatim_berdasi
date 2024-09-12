@@ -42,11 +42,25 @@ class UploadController extends Controller
         }
         foreach ($kolom as $col) {
             if ($col[2] == "file") {
-               
+                $validator = Validator::make($request->all(), [ 
+                    'file' => 'max:2048', 
+                ]);
+                if ($validator->fails()) {
+                    $msg = "";
+                    foreach ($validator->messages()->all() as $message) {
+                        $msg .= $message . ". ";
+                    }
+                    return redirect()->back()->with('error','Maximal 2MB');
+                } else {
                     if($request->file($col[1])){
                         $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
+                        if($nama_file == 'file_error')
+                        {
+                            return redirect()->back()->with('error', 'Coba file lainnya');
+                        }
                         $data->{$col[1]} = $nama_file;
                     }
+                }
 
 
                 
