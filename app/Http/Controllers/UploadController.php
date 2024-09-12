@@ -43,7 +43,7 @@ class UploadController extends Controller
         foreach ($kolom as $col) {
             if ($col[2] == "file") {
                 $validator = Validator::make($request->all(), [ 
-                    'file' => 'max:2048', 
+                    'file' => 'max:4096', 
                 ]);
                 if ($validator->fails()) {
                     $msg = "";
