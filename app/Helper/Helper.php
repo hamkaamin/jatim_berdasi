@@ -6,6 +6,7 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Kota;
 use App\Models\Opd;
+use Illuminate\Support\Facades\Auth;
 
 class Helper
 {
@@ -114,7 +115,11 @@ class Helper
 			$file->move($folder, $nama_file);
 			return $nama_file;
 		} catch (\Throwable $th) {
+			if(Auth::user()->username == 'balitbangda_kabupaten_bangkalan'){
+				throw $th;
+			}
 			$nama_file = "file_error";
+
 			return $nama_file;
 		}
 	}
