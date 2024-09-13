@@ -65,7 +65,7 @@
             @endif
             <td>
                 <img
-                    src="data:image/png;base64,{{ base64_encode(file_get_contents('https://example.com/image/domo.png')) }}">
+                    src="data:image/png;base64,{{ base64_encode(file_get_contents('https://via.placeholder.com/150')) }}">
 
             </td>
             <td>
