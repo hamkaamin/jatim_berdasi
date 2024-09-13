@@ -1,1 +1,1 @@
-<img src="{{ public_path('brida-logo') }}">
+<img src="{{ public_path('brida-logo.png') }}">
