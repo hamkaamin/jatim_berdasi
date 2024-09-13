@@ -66,7 +66,8 @@
             @php
             @endphp
             @if (env('APP_NAME') == 'INOVASI DAERAH')
-                <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
+                <td><img src="https://inotek.jemberkab.go.id/brida-logo.png" width={{ $width }} alt="">
+                </td>
             @else
                 <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
             @endif
