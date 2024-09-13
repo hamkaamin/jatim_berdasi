@@ -63,7 +63,7 @@
                     $width = '100';
                 @endphp
             @endif
-            <td><img src="http://bravo.egovsuperapp.id/brida-logo.png" width={{ $width }} alt=""></td>
+            <td><img src="https://via.placeholder.com/150" width={{ $width }} alt=""></td>
             <td>
                 @php $nama_app = 'Badan Riset dan Inovasi Daerah (BRIDA)'; @endphp
                 @if (env('APP_NAME') == 'BRAVO BANGKALAN')
