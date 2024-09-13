@@ -49,7 +49,7 @@
     <table>
         <tr>
             @php
-                $logo = 'brida-logo.png';
+                $logo = 'login.png';
                 $width = '50';
             @endphp
             @if (env('APP_NAME') == 'BRAVO BANGKALAN')
@@ -63,6 +63,9 @@
                     $width = '100';
                 @endphp
             @endif
+            @php
+                dd(public_path($logo));
+            @endphp
             <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
             <td>
                 @php $nama_app = 'Badan Riset dan Inovasi Daerah (BRIDA)'; @endphp
