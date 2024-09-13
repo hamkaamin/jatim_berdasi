@@ -49,7 +49,7 @@
     <table>
         <tr>
             @php
-                $logo = 'brida-logo.png';
+                $logo = 'jawatimurlogo.png';
                 $width = '50';
             @endphp
             @if (env('APP_NAME') == 'BRAVO BANGKALAN')
