@@ -63,20 +63,7 @@
                     $width = '100';
                 @endphp
             @endif
-            @php
-            @endphp
-            @if (env('APP_NAME') == 'INOVASI DAERAH')
-                <?php
-                $path = public_path('brida-logo.png');
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                ?>
-
-                <td><img src="{{ $base64 }}" width="{{ $width }}" alt=""></td>
-            @else
-                <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
-            @endif
+            <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
             <td>
                 @php $nama_app = 'Badan Riset dan Inovasi Daerah (BRIDA)'; @endphp
                 @if (env('APP_NAME') == 'BRAVO BANGKALAN')
