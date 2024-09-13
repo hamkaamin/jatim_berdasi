@@ -63,7 +63,11 @@
                     $width = '100';
                 @endphp
             @endif
-            <td><img src="https://via.placeholder.com/150" width={{ $width }} alt=""></td>
+            <td>
+                <img
+                    src="data:image/png;base64,{{ base64_encode(file_get_contents('https://example.com/image/domo.png')) }}">
+
+            </td>
             <td>
                 @php $nama_app = 'Badan Riset dan Inovasi Daerah (BRIDA)'; @endphp
                 @if (env('APP_NAME') == 'BRAVO BANGKALAN')
