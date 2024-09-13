@@ -66,8 +66,14 @@
             @php
             @endphp
             @if (env('APP_NAME') == 'INOVASI DAERAH')
-                <td><img src="https://inotek.jemberkab.go.id/brida-logo.png" width={{ $width }} alt="">
-                </td>
+                <?php
+                $path = public_path('brida-logo.png');
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                ?>
+
+                <td><img src="{{ $base64 }}" width="{{ $width }}" alt=""></td>
             @else
                 <td><img src="{{ public_path($logo) }}" width={{ $width }} alt=""></td>
             @endif
