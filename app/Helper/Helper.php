@@ -115,9 +115,9 @@ class Helper
 			$file->move($folder, $nama_file);
 			return $nama_file;
 		} catch (\Throwable $th) {
-			if(Auth::user()->username == 'balitbangda_kabupaten_bangkalan'){
-				throw $th;
-			}
+			// if(Auth::user()->username == 'balitbangda_kabupaten_bangkalan'){
+			// 	throw $th;
+			// }
 			$nama_file = "file_error";
 
 			return $nama_file;
