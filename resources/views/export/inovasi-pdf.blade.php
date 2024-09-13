@@ -51,6 +51,10 @@
             @php
                 $logo = 'jawatimurlogo.png';
                 $width = '50';
+                if (Auth::user()->username == 'verifikator') {
+                    $logo = 'admin_asset/logo-bangkalan.png';
+                    $width = '100';
+                }
             @endphp
             @if (env('APP_NAME') == 'BRAVO BANGKALAN')
                 @php
