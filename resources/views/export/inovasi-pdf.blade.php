@@ -54,9 +54,11 @@
                 if (Auth::user()->username == 'verifikator') {
                     $logo = 'admin_asset/logo-bangkalan.png';
                     $width = '100';
-                    // echo '<img src="{{ public_path($logo) }}" width={{ $width }} alt="">';
                 }
             @endphp
+            @if (Auth::user()->username == 'verifikator')
+                <img src="{{ public_path($logo) }}" width={{ $width }} alt="">
+            @endif
             @if (env('APP_NAME') == 'BRAVO BANGKALAN')
                 @php
                     $logo = 'admin_asset/logo-bangkalan.png';
