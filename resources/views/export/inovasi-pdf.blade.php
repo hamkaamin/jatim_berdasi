@@ -46,6 +46,17 @@
 </head>
 
 <body>
+    @php
+        $logo = 'jawatimurlogo.png';
+        $width = '50';
+        if (Auth::user()->username == 'verifikator') {
+            $logo = 'admin_asset/logo-bangkalan.png';
+            $width = '100';
+        }
+    @endphp
+    @if (Auth::user()->username == 'verifikator')
+        <img src="{{ public_path($logo) }}" width={{ $width }} alt="">
+    @endif
     <table>
         <tr>
             @php
