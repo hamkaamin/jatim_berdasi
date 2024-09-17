@@ -15,7 +15,6 @@ class ApiSyncController extends Controller
     
     public function kab_hit_data(Request $request)
     {
-        dd('a');
         $client = new Client(); 
         try{
             $arr_data = array();
