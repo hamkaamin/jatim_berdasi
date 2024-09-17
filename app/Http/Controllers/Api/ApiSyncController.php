@@ -39,6 +39,7 @@ class ApiSyncController extends Controller
             }
             // Convert the array to JSON
             $arr_data = json_encode($arr_data);
+            dd($arr_data);
             $response = $client->request('POST', 'https://jatimberdasi.brida.jatimprov.go.id/api/insert_inovasi2', [
                 'headers' => [
                     'Accept' => 'application/json',
