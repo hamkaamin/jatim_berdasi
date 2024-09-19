@@ -183,6 +183,7 @@ class PenggunaController extends Controller
     {
         $data = User::findOrFail($request->id);
         $data->password = Hash::make($data->username);
+        $data->updated_by = Auth::user()->username;
         $data->save();
         return redirect()->back()->with('success', 'Password dengan username = '.$data->username.' berhasil di-reset !');
     }
