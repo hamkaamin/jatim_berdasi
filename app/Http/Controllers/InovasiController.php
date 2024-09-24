@@ -80,7 +80,8 @@ class InovasiController extends Controller
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
         $inovasi = $inovasi->get();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area'));
+        $kategori = KategoriInovasi::get();
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori'));
     }
 
     public function show_tahapan(Request $request)
@@ -150,6 +151,9 @@ class InovasiController extends Controller
         }
         if($request->status != ''){
             $inovasi = $inovasi->where('status',$request->status);
+        }
+        if($request->kategori != ''){
+            $inovasi = $inovasi->where('kategori_id',$request->kategori);
         }
         $inovasi = $inovasi->get();
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));

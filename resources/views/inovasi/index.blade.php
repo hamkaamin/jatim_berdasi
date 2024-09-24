@@ -41,6 +41,18 @@
                         <option value="5">Kirim</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="statusFilter">Kategori</label>
+                    <select
+                        onchange="show_status('{{ csrf_token() }}',$('#statusFilter').val(),'{{ $area }}','#show_inovasi')"
+                        class="form-control" id="kategori_inovasi" name="kategori_inovasi">
+                        <option value="">Semua</option>
+                        @foreach ($kategori as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             @if (env('APP_OPD_JATIM') == 1)
                 <div class="col-2">
@@ -66,6 +78,7 @@
         </div>`;
 
         function show_status(token, status, area, target) {
+            var kategori = $('#kategori_inovasi').val();
             $(target).html(loading);
             $.ajax({
                 url: '{{ route('inovasi.show_inovasi') }}',
@@ -73,6 +86,7 @@
                 data: {
                     _token: token,
                     status: status,
+                    kategori: kategori,
                     area: area
                 },
                 success: function(data) {
