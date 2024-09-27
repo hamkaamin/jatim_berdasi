@@ -83,7 +83,7 @@
                                                     Pendaftaran Lomba Inovasi Perangkat Daerah 2024
                                                 </a>
                                                 <a style="background-color: #86AB89"
-                                                    href="https://docs.google.com/forms/d/e/1FAIpQLScVxbQPpAhohqabU8RglXKDhsOcOzzrtG8xejPjPvdpdA3lIQ/viewform?usp=sf_link"
+                                                    href="https://bit.ly/formpendaftaranBravo2024kategorimasyarakat"
                                                     target="_blank" type="button" class="btn  btn-block">
                                                     Pendaftaran Lomba Inovasi Masyarakat 2024
                                                 </a>
