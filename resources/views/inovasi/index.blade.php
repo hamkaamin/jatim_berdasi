@@ -8,9 +8,18 @@
     Daftar Pengajuan Inovasi dari {{ $label }}
 @endsection
 
+@php
+    $display = 'display:block';
+@endphp
+
+@if ($setting->is_aktif == 0)
+    @php $display = 'display:none'; @endphp
+@endif
+
 @if (Auth::user()->role != 2)
     @section('buttons')
-        <a href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
+        <a style="{!! $display !!}"
+            href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
             class="btn btn-primary">Tambah Data</a>
     @endsection
 @endif

@@ -20,6 +20,7 @@ use App\Models\DetailTematik;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
+use App\Models\Setting;
 use App\Models\Tematik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -81,7 +82,8 @@ class InovasiController extends Controller
         }
         $inovasi = $inovasi->get();
         $kategori = KategoriInovasi::get();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori'));
+        $setting = Setting::where('kode','tambah_inovasi')->first();
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting'));
     }
 
     public function show_tahapan(Request $request)

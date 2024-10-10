@@ -112,6 +112,12 @@
                 <i class="metismenu-icon pe-7s-ribbon"></i> Kategori OPD
             </a>
         </li>
+
+        <li>
+            <a href="{{ route('setting.index') }}" class="{{ Request::routeIs('setting.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-note2"></i> Setting
+            </a>
+        </li>
         @for ($i = 1; $i < 5; $i++)
             <li>
                 <a href="{{ route('master.kategori_opd.index', $i) }}"

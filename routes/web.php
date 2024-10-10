@@ -141,6 +141,11 @@ Route::middleware(['auth'])->group(function () {
             });
 
         });
+
+        Route::prefix('setting')->name('setting.')->group(function () {
+            Route::get('/', [App\Http\Controllers\SettingController::class, 'index'])->name('index');
+            Route::put('/{id}', [App\Http\Controllers\SettingController::class, 'update'])->name('update');
+         });
     });
 
     Route::get('/faq', [App\Http\Controllers\FaqController::class, 'index_user'])->name('faq.index');

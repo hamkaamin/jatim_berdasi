@@ -1,3 +1,13 @@
+@php
+    $display = 'display: block;';
+    $setting = App\Models\Setting::where('kode', 'bobot_akhir')->first();
+@endphp
+
+@if ($setting->is_aktif == 0 && Auth::user()->role != 2)
+    @php
+        $display = 'display: none';
+    @endphp
+@endif
 <div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $tahapan == null ? 0 : $tahapan->id }}"
     role="tabpanel" aria-labelledby="{{ $tahapan == null ? 0 : $tahapan->id }}-tab">
 
@@ -18,7 +28,7 @@
                             @foreach ($kolom as $thp)
                                 <th style="min-width: 100px">Waktu {{ $thp->nama }} Inovasi</th>
                             @endforeach
-                            <th>Kematangan</th>
+                            <th style="{!! $display !!}">Kematangan</th>
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
                     </thead>
@@ -95,7 +105,8 @@
                                     <td>{{ $temp != null && $temp->pivot->waktu != null ? date('Y-m-d', strtotime($temp->pivot->waktu)) : '-' }}
                                     </td>
                                 @endforeach
-                                <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
+                                <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                </td>
                                 <td>
                                     @if ($item->status != 0)
                                         <a target="_blank"
