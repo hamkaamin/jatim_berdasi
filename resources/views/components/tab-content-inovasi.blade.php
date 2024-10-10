@@ -1,5 +1,5 @@
 @php
-    $display = 'display: block;';
+    $display = '';
     $setting = App\Models\Setting::where('kode', 'bobot_akhir')->first();
 @endphp
 
