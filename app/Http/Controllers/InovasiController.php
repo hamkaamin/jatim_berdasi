@@ -405,6 +405,8 @@ class InovasiController extends Controller
             } catch (\Exception $e) {
                 echo 'Error: ' . $e->getMessage();
             }
+        }else{
+            dd('a');
         }
         return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');
     }
