@@ -386,12 +386,16 @@ class InovasiController extends Controller
         $inovasi->save();
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
             try {
-                $response = $client->post($inovasi->integration->url.'/api/kab_status_data_update', [
-                    'json' => [
+                $response = $client->request('POST', $inovasi->integration->url.'/api/kab_status_data_update', [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                    ],
+                    'form_params' => [  
                         'id' => $request->id,
                         'status' => $request->status,
-                        'keterangan' => $request->keterangan
-                    ]
+                        'keterangan' => $request->keterangan,
+                    ], // Use 'body' instead of 'form_params'
+                    'verify' => false, // Disable SSL verification
                 ]);
 
                 $responseData = json_decode($response->getBody()->getContents(), true);
