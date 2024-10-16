@@ -316,6 +316,7 @@ class ApiController extends Controller
 
             $inovasi->status = $request->status;
             $inovasi->keterangan = $request->keterangan ?? $inovasi->keterangan;
+            dd($inovasi);
             $inovasi->save();
 
             DB::commit();
