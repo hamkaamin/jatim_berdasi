@@ -385,7 +385,7 @@ class InovasiController extends Controller
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
-            try {
+            // try {
                 $indikatorData = [];
 
                 // Loop through each indikator and collect the necessary data
@@ -419,9 +419,9 @@ class InovasiController extends Controller
                     // Handle failure
                     echo 'Failed: ' . $responseData['message'];
                 }
-            } catch (\Exception $e) {
-                echo 'Error: ' . $e->getMessage();
-            }
+            // } catch (\Exception $e) {
+            //     echo 'Error: ' . $e->getMessage();
+            // }
         }
         return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');
     }
