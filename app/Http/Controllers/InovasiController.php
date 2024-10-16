@@ -410,6 +410,7 @@ class InovasiController extends Controller
                     ], 
                     'verify' => false,
                 ]);
+                dd($indikatorData);
 
                 $responseData = json_decode($response->getBody()->getContents(), true);
                 dd($responseData);
