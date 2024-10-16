@@ -325,8 +325,8 @@ class ApiController extends Controller
                     ->where('kab_inovasi_id', $request->id)
                     ->where('kab_indikator_id', $data['indikator_id'])  
                     ->update([
-                        'bobot_akhir' => $data['bobot_akhir'],  
-                        'param_akhir' => $data['param_akhir'],  
+                        'bobot_akhir' => $data['bobot_akhir'] ?? NULL,  
+                        'param_akhir' => $data['param_akhir'] ?? NULL,  
                     ]);
             }
 
