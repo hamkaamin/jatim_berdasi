@@ -23,6 +23,7 @@ use App\Models\KategoriTahapan;
 use App\Models\Tematik;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class InovasiController extends Controller
@@ -389,14 +390,15 @@ class InovasiController extends Controller
                 $indikatorData = [];
 
                 // Loop through each indikator and collect the necessary data
-                foreach ($inovasi->indikator as $data) {
+                $indikator_inovasi = DB::table('indikator_inovasi')->where('inovasi_id', $inovasi->kab_integration_id)->get();
+                foreach ($indikator_inovasi as $data) {
                     $indikatorData[] = [
                         'indikator_id' => $data->id,
                         'bobot_akhir' => $data->bobot_akhir,  
                         'param_akhir' => $data->param_akhir,  
                     ];
                 }
-                dd($indikatorData);
+                dd($indikator_inovasi,$indikatorData);
                 $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
                     'headers' => [
                         'Accept' => 'application/json',
