@@ -391,15 +391,13 @@ class InovasiController extends Controller
 
                 // Loop through each indikator and collect the necessary data
                 $indikator_inovasi = DB::table('indikator_inovasi')->where('inovasi_id', $inovasi->id)->get();
-                dd($indikator_inovasi);
                 foreach ($indikator_inovasi as $data) {
                     $indikatorData[] = [
-                        'indikator_id' => $data->id,
+                        'indikator_id' => $data->inovasi_id,
                         'bobot_akhir' => $data->bobot_akhir,  
                         'param_akhir' => $data->param_akhir,  
                     ];
                 }
-                dd($indikator_inovasi,$indikatorData);
                 $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
                     'headers' => [
                         'Accept' => 'application/json',
