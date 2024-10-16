@@ -391,6 +391,7 @@ class InovasiController extends Controller
 
                 // Loop through each indikator and collect the necessary data
                 $indikator_inovasi = DB::table('indikator_inovasi')->where('inovasi_id', $inovasi->id)->get();
+                dd($indikator_inovasi);
                 foreach ($indikator_inovasi as $data) {
                     $indikatorData[] = [
                         'indikator_id' => $data->id,
