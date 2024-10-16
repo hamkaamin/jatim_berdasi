@@ -385,7 +385,7 @@ class InovasiController extends Controller
         if($inovasi->kab_integration != null || !empty($inovasi->kab_integration)){
 
             try {
-                $response = $client->post(env('APP_URL'), [
+                $response = $client->post($inovasi->integration->url, [
                     'json' => [
                         'id' => 1,
                         'status' => 'approved',
