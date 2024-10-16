@@ -320,7 +320,7 @@ class ApiController extends Controller
 
             // update indikator inovasi bobot awal and bobot akhir
             foreach ($request->indikator_data as $data) {
-                dd($data);
+                return($data);
                 DB::table('indikator_inovasi')
                     ->where('kab_inovasi_id', $request->id)
                     ->where('kab_indikator_id', $data['indikator_id'])  
