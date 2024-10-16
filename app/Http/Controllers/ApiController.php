@@ -211,7 +211,6 @@ class ApiController extends Controller
                 // $inovasi->created_at = $data_inovasi['created_at'];
                 // $inovasi->updated_at = $data_inovasi['updated_at'];
                 // $inovasi->deleted_at = $data_inovasi['deleted_at'];
-                $inovasi->user_id = $data_inovasi['user_id'];
                 $inovasi->tahapan_id = $data_inovasi['tahapan_id'];
                 $inovasi->inisiator_id = $data_inovasi['inisiator_id'];
                 $inovasi->jenis_id = $data_inovasi['jenis_id'];
@@ -259,9 +258,9 @@ class ApiController extends Controller
                         'inovasi_id' => $inovasi->id, // dari aplikasi terkait
                         'indikator_id' => $dataindikator['pivot']['indikator_id'],
                         'param_awal' => $dataindikator['pivot']['param_awal'],
-                        'param_akhir' => $dataindikator['pivot']['param_akhir'],
-                        'bobot_awal' => $dataindikator['pivot']['bobot_awal'],
-                        'bobot_akhir' => $dataindikator['pivot']['bobot_akhir'],
+                        // 'param_akhir' => $dataindikator['pivot']['param_akhir'],
+                        // 'bobot_awal' => $dataindikator['pivot']['bobot_awal'],
+                        // 'bobot_akhir' => $dataindikator['pivot']['bobot_akhir'], 
                         'catatan' => $dataindikator['pivot']['catatan'],
                     ]);
                 }
@@ -306,5 +305,36 @@ class ApiController extends Controller
         // $arr_data_decode = json_encode($arr_data,true);
         // return $request->all();
     }
+
+
+    public function kab_status_data_update(Request $request)
+    {
+        try {
+            DB::beginTransaction();
+
+            $inovasi = Inovasi::findOrFail($request->id);
+
+            $inovasi->status = $request->status;
+            $inovasi->keterangan = $request->keterangan ?? $inovasi->keterangan;
+            $inovasi->save();
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Status and keterangan updated successfully!',
+            ], 200);
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to update status and keterangan.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
 
 }

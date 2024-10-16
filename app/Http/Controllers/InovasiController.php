@@ -21,6 +21,7 @@ use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
 use App\Models\Tematik;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -231,154 +232,180 @@ class InovasiController extends Controller
             return redirect()->back()->with('error', $msg)->withInput($request->input());
 
         } else {
-        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-        $tempArr = [];
-        if ($request->id == 0) {
-            $data = new Inovasi;
-            $data->user_id = Auth::user()->id;
-            $data->kode = uniqid();
-            if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
-                $data->provinsi_id = Auth::user()->province_id;
-            } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->provinsi_id;
-            } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
-                $data->provinsi_id = Auth::user()->kota->provinsi->id;
-                $data->kota_id = Auth::user()->regency_id;
-            } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
-                $data->kota_id = Auth::user()->opd->kabkota_id;
-            } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
-                $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
-                $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
-            } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
-                $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
-                $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
-                $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
-            }
-        } else {
-            $data = Inovasi::findOrFail($request->id);
-            $temp = [];
-            if ($request->status == 1) {
-                if ($data->nama == null) {
-                    $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
+            $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+            $tempArr = [];
+            if ($request->id == 0) {
+                $data = new Inovasi;
+                $data->user_id = Auth::user()->id;
+                $data->kode = uniqid();
+                if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+                    $data->provinsi_id = Auth::user()->province_id;
+                } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+                    $data->provinsi_id = Auth::user()->opd->provinsi_id;
+                } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+                    $data->provinsi_id = Auth::user()->kota->provinsi->id;
+                    $data->kota_id = Auth::user()->regency_id;
+                } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+                    $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
+                    $data->kota_id = Auth::user()->opd->kabkota_id;
+                } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+                    $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
+                    $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
+                    $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
+                } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+                    $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
+                    $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
+                    $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
+                    $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
                 }
-                if ($data->bentuk_id == null) {
-                    $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
-                }
-                if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
-                    $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
-                } else {
-                    foreach ($data->indikator()->where('wajib', 1)->get() as $indikator) {
-                        $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $data->id)->count();
-                        if ($upload <= 0) {
-                            $temp[] = "Upload file pendukung untuk Indikator ".$indikator->nama." terlebih dahulu !";
+            } else {
+                $data = Inovasi::findOrFail($request->id);
+                $temp = [];
+                if ($request->status == 1) {
+                    if ($data->nama == null) {
+                        $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
+                    }
+                    if ($data->bentuk_id == null) {
+                        $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
+                    }
+                    if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
+                        $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
+                    } else {
+                        foreach ($data->indikator()->where('wajib', 1)->get() as $indikator) {
+                            $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $data->id)->count();
+                            if ($upload <= 0) {
+                                $temp[] = "Upload file pendukung untuk Indikator ".$indikator->nama." terlebih dahulu !";
+                            }
                         }
                     }
-                }
-                if (count($temp) > 0) {
-                    $msg = "<ul>";
-                    foreach ($temp as $item) {
-                        $msg .= "<li>".$item."</li>";
+                    if (count($temp) > 0) {
+                        $msg = "<ul>";
+                        foreach ($temp as $item) {
+                            $msg .= "<li>".$item."</li>";
+                        }
+                        $msg .= "</ul>";
+                        return redirect()->back()->with('error', $msg);
+                    } else {
+                        $data->status = $request->status;
+                        $data->save();
+                        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
+                        return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
                     }
-                    $msg .= "</ul>";
-                    return redirect()->back()->with('error', $msg);
-                } else {
-                    $data->status = $request->status;
-                    $data->save();
-                    $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
-                    return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
                 }
             }
-        }
-        $max_kata = 10;
-        $rancang_bangun = $request->rancang_bangun;  
-        $string = strip_tags($rancang_bangun);
-        $words = explode(' ', strip_tags($rancang_bangun));
-        $return = trim(implode(' ', array_slice($words, 0, 10)));
-        $kata = count($words);
-        if($kata < $max_kata){
-            return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
-        }
+            $max_kata = 10;
+            $rancang_bangun = $request->rancang_bangun;  
+            $string = strip_tags($rancang_bangun);
+            $words = explode(' ', strip_tags($rancang_bangun));
+            $return = trim(implode(' ', array_slice($words, 0, 10)));
+            $kata = count($words);
+            if($kata < $max_kata){
+                return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
+            }
 
-        $data->nama = $request->nama;
-        $data->tahapan_id = $request->tahapan_id;
-        $data->kategori_id = $request->kategori_id;
-        $data->inisiator_id = $request->inisiator_id;
-        $data->jenis_id = $request->jenis_id;
-        $data->bentuk_id = $request->bentuk_id;
-        $data->tematik_id = $request->tematik_id;
-        $data->detail_tematik_id = $request->detail_tematik_id;
-        $data->nama_inisiator = $request->nama_inisiator;
-        $data->covid = $request->covid;
-        $data->rancang_bangun = $request->rancang_bangun;
-        $data->tujuan = $request->tujuan;
-        $data->manfaat = $request->manfaat;
-        $data->hasil = $request->hasil;
-        $data->status = $request->status;
-        $data->label = $request->label;
-        $data->waktu_uji_coba = $request->waktu_uji_coba;
-        $data->waktu_penerapan = $request->waktu_penerapan;
-        $data->waktu_pengembangan = $request->waktu_pengembangan;
-        $data->is_pengembangan = $request->is_pengembangan;
-        $data->url = env('APP_URL');
-		$data->save();
-        $data->urusan()->sync($request->urusan_id);
-        foreach ($tahapanKolom as $item) {
-            $tempArr[$item->id] = ['waktu' => $request->{'waktu_tahapan_'.$item->id}];
-        }
-        $data->tahapan()->sync($tempArr);
-        if ($request->hasFile('anggaran')) {
-            $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran);
-            $data->anggaran = $nama_file;
-		    $data->save();
-        }
-        if ($request->hasFile('file_rancang_bangun')) {
-            $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
-            $data->file_rancang_bangun = $nama_file;
-		    $data->save();
-        }
-        if ($request->hasFile('profil_bisnis')) {
-            $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
-            $data->profil_bisnis = $nama_file;
-		    $data->save();
-        }
+            $data->nama = $request->nama;
+            $data->tahapan_id = $request->tahapan_id;
+            $data->kategori_id = $request->kategori_id;
+            $data->inisiator_id = $request->inisiator_id;
+            $data->jenis_id = $request->jenis_id;
+            $data->bentuk_id = $request->bentuk_id;
+            $data->tematik_id = $request->tematik_id;
+            $data->detail_tematik_id = $request->detail_tematik_id;
+            $data->nama_inisiator = $request->nama_inisiator;
+            $data->covid = $request->covid;
+            $data->rancang_bangun = $request->rancang_bangun;
+            $data->tujuan = $request->tujuan;
+            $data->manfaat = $request->manfaat;
+            $data->hasil = $request->hasil;
+            $data->status = $request->status;
+            $data->label = $request->label;
+            $data->waktu_uji_coba = $request->waktu_uji_coba;
+            $data->waktu_penerapan = $request->waktu_penerapan;
+            $data->waktu_pengembangan = $request->waktu_pengembangan;
+            $data->is_pengembangan = $request->is_pengembangan;
+            $data->url = env('APP_URL');
+            $data->save();
+            $data->urusan()->sync($request->urusan_id);
+            foreach ($tahapanKolom as $item) {
+                $tempArr[$item->id] = ['waktu' => $request->{'waktu_tahapan_'.$item->id}];
+            }
+            $data->tahapan()->sync($tempArr);
+            if ($request->hasFile('anggaran')) {
+                $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran);
+                $data->anggaran = $nama_file;
+                $data->save();
+            }
+            if ($request->hasFile('file_rancang_bangun')) {
+                $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
+                $data->file_rancang_bangun = $nama_file;
+                $data->save();
+            }
+            if ($request->hasFile('profil_bisnis')) {
+                $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
+                $data->profil_bisnis = $nama_file;
+                $data->save();
+            }
 
-        if ($request->hasFile('file_anggaran')) {
-            $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
-            $data->file_anggaran = $nama_file;
-		    $data->save();
-        }
-        
-        if ($request->hasFile('file_dokumen_haki')) {
-            $nama_file = Helper::save_file($request->file('file_dokumen_haki'), uniqid(), 'file_dokumen_haki', $data->file_dokumen_haki);
-            $data->file_dokumen_haki = $nama_file;
-		    $data->save();
-        }
-        
-        if ($request->hasFile('file_penghargaan')) {
-            $nama_file = Helper::save_file($request->file('file_penghargaan'), uniqid(), 'file_penghargaan', $data->file_penghargaan);
-            $data->file_dokumen_haki = $nama_file;
-		    $data->save();
-        }
+            if ($request->hasFile('file_anggaran')) {
+                $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
+                $data->file_anggaran = $nama_file;
+                $data->save();
+            }
+            
+            if ($request->hasFile('file_dokumen_haki')) {
+                $nama_file = Helper::save_file($request->file('file_dokumen_haki'), uniqid(), 'file_dokumen_haki', $data->file_dokumen_haki);
+                $data->file_dokumen_haki = $nama_file;
+                $data->save();
+            }
+            
+            if ($request->hasFile('file_penghargaan')) {
+                $nama_file = Helper::save_file($request->file('file_penghargaan'), uniqid(), 'file_penghargaan', $data->file_penghargaan);
+                $data->file_dokumen_haki = $nama_file;
+                $data->save();
+            }
 
-        if ($request->hasFile('profil_bisnis')) {
-            $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
-            $data->profil_bisnis = $nama_file;
-		    $data->save();
+            if ($request->hasFile('profil_bisnis')) {
+                $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
+                $data->profil_bisnis = $nama_file;
+                $data->save();
+            }
+            $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
+            return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
         }
-        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
-        return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
-    }
     }
 
     public function update(Request $request)
     {
+        $client = new Client();
         $inovasi = Inovasi::findOrFail($request->id);
         $inovasi->status = $request->status;
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
+
+        if($inovasi->kab_integration != null || !empty($inovasi->kab_integration)){
+
+            try {
+                $response = $client->post(env('APP_URL'), [
+                    'json' => [
+                        'id' => 1,
+                        'status' => 'approved',
+                        'keterangan' => 'Updated successfully'
+                    ]
+                ]);
+
+                $responseData = json_decode($response->getBody()->getContents(), true);
+
+                if ($responseData['status']) {
+                    // Handle success
+                    echo $responseData['message'];
+                } else {
+                    // Handle failure
+                    echo 'Failed: ' . $responseData['message'];
+                }
+            } catch (\Exception $e) {
+                echo 'Error: ' . $e->getMessage();
+            }
+        }
         return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');
     }
 
