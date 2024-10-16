@@ -384,7 +384,7 @@ class InovasiController extends Controller
         $inovasi->status = $request->status;
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
-
+        dd($inovasi->integration->url);
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
             try {
                 $response = $client->post($inovasi->integration->url, [
