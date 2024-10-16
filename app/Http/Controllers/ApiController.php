@@ -309,7 +309,7 @@ class ApiController extends Controller
 
     public function kab_status_data_update(Request $request)
     {
-        // try {
+        try {
             DB::beginTransaction();
 
             $inovasi = Inovasi::findOrFail($request->id);
@@ -337,16 +337,16 @@ class ApiController extends Controller
                 'status' => true,
                 'message' => 'Status and keterangan updated successfully!',
             ], 200);
-        // } catch (\Exception $e) {
-        //     // Rollback transaction on error
-        //     DB::rollBack();
+        } catch (\Exception $e) {
+            // Rollback transaction on error
+            DB::rollBack();
 
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => 'Failed to update status and keterangan.',
-        //         'error' => $e->getMessage(),
-        //     ], 500);
-        // }
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to update status and keterangan.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
     
 
