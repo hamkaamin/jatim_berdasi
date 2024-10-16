@@ -259,7 +259,7 @@ class ApiController extends Controller
                         'indikator_id' => $dataindikator['pivot']['indikator_id'],
                         'param_awal' => $dataindikator['pivot']['param_awal'],
                         // 'param_akhir' => $dataindikator['pivot']['param_akhir'],
-                        // 'bobot_awal' => $dataindikator['pivot']['bobot_awal'],
+                        'bobot_awal' => $dataindikator['pivot']['bobot_awal'],
                         // 'bobot_akhir' => $dataindikator['pivot']['bobot_akhir'], 
                         'catatan' => $dataindikator['pivot']['catatan'],
                     ]);
@@ -317,6 +317,17 @@ class ApiController extends Controller
             $inovasi->status = $request->status;
             $inovasi->keterangan = $request->keterangan ?? $inovasi->keterangan;
             $inovasi->save();
+
+            // update indikator inovasi bobot awal and bobot akhir
+            foreach ($request->indikator_data as $data) {
+                DB::table('indikator_inovasi')
+                    ->where('kab_inovasi_id', $request->id)
+                    ->where('kab_indikator_id', $request->indikator_id)
+                    ->update([
+                        'bobot_akhir' => $request->bobot_akhir,
+                        'param_akhir' => $request->param_akhir,
+                    ]);
+            }
 
             DB::commit();
 

@@ -386,6 +386,16 @@ class InovasiController extends Controller
         $inovasi->save();
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
             try {
+                $indikatorData = [];
+
+                // Loop through each indikator and collect the necessary data
+                foreach ($inovasi->indikator as $data) {
+                    $indikatorData[] = [
+                        'indikator_id' => $data->id,
+                        'bobot_akhir' => $data->bobot_akhir,  
+                        'param_akhir' => $data->param_akhir,  
+                    ];
+                }
                 $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
                     'headers' => [
                         'Accept' => 'application/json',
@@ -394,6 +404,7 @@ class InovasiController extends Controller
                         'id' => $inovasi->kab_inovasis_id,
                         'status' => $request->status,
                         'keterangan' => $request->keterangan,
+                        'indikator_data' => $indikatorData,
                     ], 
                     'verify' => false,
                 ]);
