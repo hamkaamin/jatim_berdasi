@@ -382,7 +382,7 @@ class InovasiController extends Controller
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
 
-        if($inovasi->kab_integration != null || !empty($inovasi->kab_integration)){
+        if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
 
             try {
                 $response = $client->post($inovasi->integration->url, [
@@ -405,8 +405,6 @@ class InovasiController extends Controller
             } catch (\Exception $e) {
                 echo 'Error: ' . $e->getMessage();
             }
-        }else{
-            dd('a');
         }
         return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');
     }
