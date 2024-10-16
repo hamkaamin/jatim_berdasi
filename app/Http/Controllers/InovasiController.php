@@ -393,7 +393,7 @@ class InovasiController extends Controller
                 $indikator_inovasi = DB::table('indikator_inovasi')->where('inovasi_id', $inovasi->id)->get();
                 foreach ($indikator_inovasi as $data) {
                     $indikatorData[] = [
-                        'indikator_id' => $data->inovasi_id,
+                        'indikator_id' => $data->indikator_id,
                         'bobot_akhir' => $data->bobot_akhir,  
                         'param_akhir' => $data->param_akhir,  
                     ];
