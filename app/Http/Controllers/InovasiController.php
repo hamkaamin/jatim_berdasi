@@ -376,14 +376,16 @@ class InovasiController extends Controller
 
     public function update(Request $request)
     {
-        $client = new Client();
+        
+        $client = new Client([
+            'verify' => false, // Disable SSL verification
+        ]);
         $inovasi = Inovasi::findOrFail($request->id);
         $inovasi->status = $request->status;
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
 
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
-
             try {
                 $response = $client->post($inovasi->integration->url, [
                     'json' => [
@@ -394,6 +396,7 @@ class InovasiController extends Controller
                 ]);
 
                 $responseData = json_decode($response->getBody()->getContents(), true);
+                dd($responseData);
 
                 if ($responseData['status']) {
                     // Handle success
@@ -403,7 +406,7 @@ class InovasiController extends Controller
                     echo 'Failed: ' . $responseData['message'];
                 }
             } catch (\Exception $e) {
-                echo 'Error: ' . $e->getMessage();
+                dd($e->getMessage());
             }
         }
         return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');

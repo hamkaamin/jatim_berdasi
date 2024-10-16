@@ -34,8 +34,12 @@ Route::get('all_opd',[ApiController::class,'all_opd']);
     // provinsi menerima hit data
     Route::post('insert_inovasi2', [ApiController::class,'insert_inovasi2']);
 
+
+
 // sync status
     // kab ngehit provinsi untuk lihat status terkininya
     Route::get('kab_read_data', [ApiSyncController::class,'kab_read_data']);
     // dari provinsi respon data-data yang sudah pernah dikirim
     Route::post('kab_status_data', [ApiSyncController::class,'kab_status_data']);  
+
+    Route::post('kab_status_data_update', [ApiController::class,'kab_status_data_update']);  
