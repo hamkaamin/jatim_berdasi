@@ -385,7 +385,7 @@ class InovasiController extends Controller
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
-            try {
+            // try {
                 $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
                     'headers' => [
                         'Accept' => 'application/json',
@@ -408,9 +408,7 @@ class InovasiController extends Controller
                     // Handle failure
                     echo 'Failed: ' . $responseData['message'];
                 }
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-            }
+            
         }
         return redirect()->back()->with('success', Config::get('save_success').'. Status Inovasi berhasil diperbarui !');
     }
