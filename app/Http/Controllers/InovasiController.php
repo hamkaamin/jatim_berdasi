@@ -394,8 +394,8 @@ class InovasiController extends Controller
                 foreach ($indikator_inovasi as $data) {
                     $indikatorData[] = [
                         'indikator_id' => $data->indikator_id,
-                        'bobot_akhir' => $data->bobot_akhir ?? '',  
-                        'param_akhir' => $data->param_akhir ?? '',  
+                        'bobot_akhir' => $data->bobot_akhir ?? NULL,  
+                        'param_akhir' => $data->param_akhir ?? NULL,  
                     ];
                 }
                 $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
