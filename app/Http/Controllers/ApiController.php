@@ -322,10 +322,10 @@ class ApiController extends Controller
             foreach ($request->indikator_data as $data) {
                 DB::table('indikator_inovasi')
                     ->where('kab_inovasi_id', $request->id)
-                    ->where('kab_indikator_id', $request->indikator_id)
+                    ->where('kab_indikator_id', $data['indikator_id'])  
                     ->update([
-                        'bobot_akhir' => $request->bobot_akhir,
-                        'param_akhir' => $request->param_akhir,
+                        'bobot_akhir' => $data['bobot_akhir'],  
+                        'param_akhir' => $data['param_akhir'],  
                     ]);
             }
 
