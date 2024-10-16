@@ -391,7 +391,7 @@ class InovasiController extends Controller
                         'Accept' => 'application/json',
                     ],
                     'form_params' => [  
-                        'id' => $request->id,
+                        'id' => $inovasi->kab_inovasis_id,
                         'status' => $request->status,
                         'keterangan' => $request->keterangan,
                     ], // Use 'body' instead of 'form_params'
