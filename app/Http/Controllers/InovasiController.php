@@ -387,9 +387,9 @@ class InovasiController extends Controller
             try {
                 $response = $client->post($inovasi->integration->url, [
                     'json' => [
-                        'id' => 1,
-                        'status' => 'approved',
-                        'keterangan' => 'Updated successfully'
+                        'id' => $request->id,
+                        'status' => $request->status,
+                        'keterangan' => $request->keterangan
                     ]
                 ]);
 
