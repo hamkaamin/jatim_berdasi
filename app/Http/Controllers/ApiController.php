@@ -309,7 +309,7 @@ class ApiController extends Controller
 
     public function kab_status_data_update(Request $request)
     {
-        try {
+        // try {
             DB::beginTransaction();
 
             $inovasi = Inovasi::findOrFail($request->id);
@@ -320,6 +320,7 @@ class ApiController extends Controller
 
             // update indikator inovasi bobot awal and bobot akhir
             foreach ($request->indikator_data as $data) {
+                dd($data);
                 DB::table('indikator_inovasi')
                     ->where('kab_inovasi_id', $request->id)
                     ->where('kab_indikator_id', $data['indikator_id'])  
@@ -335,16 +336,16 @@ class ApiController extends Controller
                 'status' => true,
                 'message' => 'Status and keterangan updated successfully!',
             ], 200);
-        } catch (\Exception $e) {
-            // Rollback transaction on error
-            DB::rollBack();
+        // } catch (\Exception $e) {
+        //     // Rollback transaction on error
+        //     DB::rollBack();
 
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to update status and keterangan.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Failed to update status and keterangan.',
+        //         'error' => $e->getMessage(),
+        //     ], 500);
+        // }
     }
     
 
