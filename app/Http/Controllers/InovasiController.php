@@ -398,6 +398,7 @@ class InovasiController extends Controller
                         'param_akhir' => $data->param_akhir ?? NULL,  
                     ];
                 }
+                dd($inovasi->integration->url);
                 $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
                     'headers' => [
                         'Accept' => 'application/json',
