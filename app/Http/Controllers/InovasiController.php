@@ -386,6 +386,7 @@ class InovasiController extends Controller
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
         if($inovasi->kab_integration_id != null || !empty($inovasi->kab_integration_id)){
+            dd('a');
             // try {
                 $indikatorData = [];
 
