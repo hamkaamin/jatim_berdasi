@@ -10,12 +10,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Inovasi extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $guarded = ['id'];
 
 
     protected static function booted()
     {
         static::addGlobalScope(new OrderByIdScope);
+    }
+
+    public function integration()
+    {
+        return $this->belongsTo('App\Models\Integration', 'kab_integration_id');
     }
 
     public function user()
