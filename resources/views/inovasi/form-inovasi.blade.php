@@ -16,9 +16,14 @@
         <form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
             @csrf
             <input type="hidden" name="label" value="{{ $data->label }}">
-            <button type="submit" class="btn btn-primary" name="status" value="1"
-                onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                Inovasi</button>
+            @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+                <button type="submit" class="btn btn-primary" name="status" value="1"
+                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                    Inovasi</button>
+            @else
+                <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#" class="btn btn-danger">Submit
+                    inovasi</a>
+            @endif
         </form>
     @endif
 
@@ -166,11 +171,11 @@
                             <div class="row">
                                 @foreach ($jenis as $item)
                                     <div class="col-6 d-flex align-items-center">
-                                        <input type="radio" id="jenis_{{ $item->id }}" value="{{ $item->id }}"
-                                            name="jenis_id" @if (old('jenis_id') == $item->id ||
+                                        <input type="radio" id="jenis_{{ $item->id }}"
+                                            value="{{ $item->id }}" name="jenis_id"
+                                            @if (old('jenis_id') == $item->id ||
                                                     ($data == null && $loop->iteration == 1) ||
-                                                    ($data != null && $data->jenis_id == $item->id)) checked @endif><label
-                                            class="pb-0 mb-0 ml-2"
+                                                    ($data != null && $data->jenis_id == $item->id)) checked @endif><label class="pb-0 mb-0 ml-2"
                                             for="jenis_{{ $item->id }}">{{ $item->nama }}</label>
                                     </div>
                                 @endforeach
@@ -460,18 +465,30 @@
                         <div class="col text-right">
                             <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
                                 class="btn btn-light btn-lg">Batal</a>
-                            <button class="btn btn-success btn-lg" type="submit" name="status"
-                                value="0">Simpan</button>
+
+                            @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+                                <button class="btn btn-success btn-lg" type="submit" name="status"
+                                    value="0">Simpan</button>
+                            @else
+                                <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
+                                    class="btn btn-danger">Simpan</a>
+                            @endif
                             @if ($data != null && $data->status == 0)
-                                @if (env('APP_NAME') == 'INOVASI DAERAH')
-                                    <button style="display: none" type="submit" class="btn btn-primary" name="status"
-                                        value="1"
-                                        onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                                        Inovasi</button>
+                                @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+                                    @if (env('APP_NAME') == 'INOVASI DAERAH')
+                                        <button style="display: none" type="submit" class="btn btn-primary"
+                                            name="status" value="1"
+                                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                                            Inovasi</button>
+                                    @else
+                                        <button type="submit" class="btn btn-primary" name="status" value="1"
+                                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                                            Inovasi</button>
+                                    @endif
                                 @else
-                                    <button type="submit" class="btn btn-primary" name="status" value="1"
-                                        onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                                        Inovasi</button>
+                                    <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
+                                        class="btn btn-danger">Submit
+                                        inovasi</a>
                                 @endif
                             @endif
                         </div>

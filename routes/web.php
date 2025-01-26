@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FaseController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
@@ -30,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
     Route::post('/change-area', [App\Http\Controllers\HomeController::class, 'change_area'])->name('change-area');
+    Route::post('/setting', [App\Http\Controllers\HomeController::class, 'setting_save'])->name('setting.save');
 
     Route::prefix('profil')->name('profil.')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilController::class, 'index'])->name('index');
@@ -138,6 +140,12 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [App\Http\Controllers\DetailTematikController::class, 'index'])->name('index');
                 Route::post('/', [App\Http\Controllers\DetailTematikController::class,'save'])->name('save');
                 Route::post('/delete', [App\Http\Controllers\DetailTematikController::class, 'delete'])->name('delete');
+            });
+
+            Route::prefix('fase')->name('fase.')->group(function () {
+                Route::get('/', [FaseController::class, 'index'])->name('index');
+                Route::post('/', [FaseController::class, 'store'])->name('save');
+                Route::post('/delete', [FaseController::class, 'delete'])->name('delete');
             });
 
         });

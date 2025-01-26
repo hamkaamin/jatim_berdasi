@@ -286,4 +286,11 @@
             <i class="metismenu-icon pe-7s-notebook"></i> Panduan
         </a>
     </li>
+
+    <li>
+        <a href="{{ route('master.fase.index') }}"
+            class="{{ Request::routeIs('master.fase.*') ? 'mm-active' : '' }}">
+            <i class="metismenu-icon pe-7s-timer"></i> Fase
+        </a>
+    </li>
 </ul>

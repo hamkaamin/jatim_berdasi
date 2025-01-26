@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Excel;
 use Helper;
 use App\Models\Bentuk;
@@ -27,6 +26,7 @@ use App\Models\User;
 use App\Exports\CompileInovasiExport;
 use App\Models\DefinisiOperasional;
 use App\Models\DetailTematik;
+use App\Models\Fase;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
@@ -34,6 +34,8 @@ use App\Models\Tematik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -340,6 +342,18 @@ class HomeController extends Controller
                     'msg' => view('modal.form-detail-tematik', compact('data', 'tematik'))->render()
                 ), 200);
                 break;
+
+            case "setting":
+                return response()->json(array(
+                    'msg' => view('modal.form-setting')->render()
+                ), 200);
+                break;
+            case "fase":
+                $data = ($request->id == 0) ? null : Fase::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-fase',compact('data'))->render()
+                ), 200);
+                break;
         }
     }
 
@@ -619,5 +633,14 @@ class HomeController extends Controller
                 $users->save();
             }
         }
+    }
+
+    public function setting_save(Request $request)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $user->tahun = $request->tahun;
+        $user->save();
+        // session()->put('status', 'Setting berhasil disimpan!');
+        return redirect()->back()->with('success', Config::get('save_success'));
     }
 }

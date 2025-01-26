@@ -17,6 +17,7 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
 use App\Models\DetailTematik;
+use App\Models\Fase;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
@@ -82,10 +83,12 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
+        $inovasi->where('tahun',Auth::user()->tahun)->get();
         $inovasi = $inovasi->get();
         $kategori = KategoriInovasi::get();
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting'));
+        $fase = Fase::where('active', 1)->first();
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
 
     public function show_tahapan(Request $request)
@@ -159,6 +162,7 @@ class InovasiController extends Controller
         if($request->kategori != ''){
             $inovasi = $inovasi->where('kategori_id',$request->kategori);
         }
+        $inovasi->where('tahun',Auth::user()->tahun)->get();
         $inovasi = $inovasi->get();
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
     }
@@ -207,7 +211,9 @@ class InovasiController extends Controller
             if($label == 0){
                 $kategori = $kategori->where('kategori_id',1);
             }
-            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
+            $fase = Fase::where('active', 1)->first();
+
+            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
         } else { 
             return redirect()->back();
         }
@@ -503,7 +509,9 @@ class InovasiController extends Controller
                 }
             }
             $data = $inovasi->indikator()->get();
-            return view('inovasi.indikator', compact('data', 'inovasi','area_label'));
+            $fase = Fase::where('active', 1)->first();
+
+            return view('inovasi.indikator', compact('data', 'inovasi','area_label','fase'));
         // } else {
         //     return redirect()->back();
         // }

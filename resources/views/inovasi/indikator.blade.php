@@ -26,9 +26,15 @@
             <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
                 @csrf
                 <input type="hidden" name="label" value="{{ $inovasi->label }}">
-                <button type="submit" class="btn btn-primary" name="status" value="1"
-                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                    Inovasi</button>
+                @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+                    <button type="submit" class="btn btn-primary" name="status" value="1"
+                        onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
+                        Inovasi</button>
+                @else
+                    <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
+                        class="btn btn-danger">Submit
+                        inovasi</a>
+                @endif
             </form>
         @endif
     @endif
