@@ -191,6 +191,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sent', [App\Http\Controllers\InovasiController::class, 'sent'])->name('sent');
         #get detail tematik using post
         Route::post('/inovasi/ajax_detail_tematik', [InovasiController::class, 'detail_tematik'])->name('ajax_detail_tematik');
+        Route::post('/inovasi/ajax_kategori_inovasi', [InovasiController::class, 'kategori_inovasi'])->name('ajax_kategori_inovasi');
 
 
         Route::prefix('indikator')->name('indikator.')->group(function () {
