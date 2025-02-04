@@ -3,13 +3,13 @@
 
      <!-- LOGO -->
      <div class="navbar-brand-box">
-         <a href="index.html" class="logo logo-dark">
+         <a href="{{ route('home') }}" class="logo logo-dark">
              <div class="app-header__logo pl-0 pr-5">
                  <div class="logo-src"></div>
              </div>
          </a>
 
-         <a href="index.html" class="logo logo-light">
+         <a href="{{ route('home') }}" class="logo logo-light">
              <div class="app-header__logo pl-0 pr-5">
                  <div class="logo-src"></div>
              </div>

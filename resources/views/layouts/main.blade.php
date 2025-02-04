@@ -141,7 +141,7 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-<body>
+<body data-sidebar-size="sm">
     <!-- Begin page -->
     <div id="layout-wrapper">
         @include('layouts.partials.navbar')
@@ -1074,6 +1074,36 @@
 
     <script src="./theme-adjustable.js"></script>
     {{-- End Adjustable Minible Script --}}
+
+    {{-- GSAP Script --}}
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Flip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+    <script>
+        // use a script tag or an external JS file
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(Flip, ScrollTrigger)
+            // gsap code here!
+        });
+        // const burgerButtons = document.querySelectorAll('.vertical-menu-btn i');
+        // burgerButtons.forEach(button => {
+        //     button.addEventListener('click', () => {
+        //         const body = document.querySelector('body');
+
+        //         const state = Flip.getState(
+        //             'body, .vertical-menu, .vertical-menu-btn, .vertical-menu li, .vertical-menu a, .sidebar-menu-scroll'
+        //         );
+
+        //         Flip.from(state, {
+        //             absolute: true,
+        //             duration: 0.25,
+        //         });
+        //     });
+        // });
+    </script>
+    {{-- End GSAP Script --}}
+
     @yield('script')
     @stack('scripts')
 </body>
