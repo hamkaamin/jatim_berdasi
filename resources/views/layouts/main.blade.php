@@ -230,7 +230,9 @@
                     </div>
                     <!-- end page title -->
 
-                    @yield('content')
+                    <div class="card card-body">
+                        @yield('content')
+                    </div>
                     {{-- <div class="row">
                         <div class="col-md-6 col-xl-3">
                             <div class="card">

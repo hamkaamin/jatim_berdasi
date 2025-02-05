@@ -260,7 +260,7 @@
                 </a>
             </div>
 
-            <div class="widget-content-left mx-4 header-user-info d-flex justify-content-center g-4 flex-column">
+            <div class="widget-content-left ml-4 mr-0 header-user-info d-flex justify-content-center g-4 flex-column">
                 <div class="widget-heading">
                     {{ ucwords(Auth::user()->name) }}
                 </div>
