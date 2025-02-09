@@ -6,10 +6,10 @@ $status_label = 0; @endphp
 <div class="row">
     @if (Auth::user()->role != 2)
         <div class="col-12">
-            <div class="row">
+            <div class="row g-4 mb-4">
                 @foreach ($kategori as $item)
                     <div class="col-3">
-                        <div class="card mb-3 widget-content bg-midnight-bloom">
+                        <div class="card widget-content bg-midnight-bloom h-100">
                             <div class="widget-content-wrapper text-white">
                                 <div class="widget-content-left">
                                     <div class="widget-heading">{{ $item->nama }}</div>
