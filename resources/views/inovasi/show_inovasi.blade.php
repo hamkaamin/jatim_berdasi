@@ -69,9 +69,9 @@ $status_label = 0; @endphp
     @endif
     <div class="col-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <x-tab-inovasi :kategori="null" :active="1" />
-            @foreach ($kategori as $item)
-                <x-tab-inovasi :kategori="$item" :active="0" />
+            <x-tab-inovasi :kategori="null" :key="0" :active="1" />
+            @foreach ($kategori as $key => $item)
+                <x-tab-inovasi :kategori="$item" :key="$key + 1" :active="0" />
             @endforeach
         </ul>
 
