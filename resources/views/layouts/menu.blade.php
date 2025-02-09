@@ -15,85 +15,85 @@
     <li class="{{ Request::routeIs('master.indikator.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.indikator.index') }}"
             class="{{ Request::routeIs('master.indikator.*') ? 'active' : '' }}">
-            <i class="uil-home-alt"></i> <span>Indikator & Parameter</span>
+            <i class="uil-book-reader"></i> <span>Indikator & Parameter</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.tahapan.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.tahapan.index') }}"
             class="{{ Request::routeIs('master.tahapan.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Tahapan Inovasi</span>
+            <i class="uil-file-question-alt"></i> <span>Tahapan Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.kategoritahapan.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.kategoritahapan.index') }}"
             class="{{ Request::routeIs('master.kategoritahapan.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Kategori Per Tahapan Inovasi</span>
+            <i class="uil-file-question-alt"></i> <span>Kategori Per Tahapan Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.inisiator.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.inisiator.index') }}"
             class="{{ Request::routeIs('master.inisiator.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Inisiator Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Inisiator Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.jenis.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.jenis.index') }}" class="{{ Request::routeIs('master.jenis.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Jenis Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Jenis Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.urusan.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.urusan.index') }}"
             class="{{ Request::routeIs('master.urusan.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Urusan Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Urusan Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.bentuk.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.bentuk.index') }}"
             class="{{ Request::routeIs('master.bentuk.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Bentuk Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Bentuk Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.jabatan.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.jabatan.index') }}"
             class="{{ Request::routeIs('master.jabatan.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Jabatan Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Jabatan Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.definisi.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.definisi.index') }}"
             class="{{ Request::routeIs('master.definisi.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Definisi Operasional</span>
+            <i class="uil-file-check-alt"></i> <span>Definisi Operasional</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.golongan.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.golongan.index') }}"
             class="{{ Request::routeIs('master.golongan.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Golongan Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Golongan Inovasi</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.kategori.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.kategori.index') }}"
             class="{{ Request::routeIs('master.kategori.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Kategori Inovasi</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Kategori Inovasi</span>
         </a>
     </li>
 
     <li class="{{ Request::routeIs('master.tematik.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.tematik.index') }}"
             class="{{ Request::routeIs('master.tematik.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Tematik</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Tematik</span>
         </a>
     </li>
     <li class="{{ Request::routeIs('master.detail_tematik.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.detail_tematik.index') }}"
             class="{{ Request::routeIs('master.detail_tematik.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Detail Tematik</span>
+            <i class="uil-file-bookmark-alt"></i> <span>Detail Tematik</span>
         </a>
     </li>
     @if (env('APP_HIDE_FAQ') == 0)
         <li class="{{ Request::routeIs('master.faq.*') ? 'mm-active' : '' }}">
             <a href="{{ route('master.faq.index') }}" class="{{ Request::routeIs('master.faq.*') ? 'active' : '' }}">
-                <i class="metismenu-icon pe-7s-ribbon"></i> <span>FAQ</span>
+                <i class="uil-question-circle"></i> <span>FAQ</span>
             </a>
         </li>
     @endif
@@ -113,7 +113,7 @@
 
     <li class="{{ Request::routeIs('setting.*') ? 'mm-active' : '' }}">
         <a href="{{ route('setting.index') }}" class="{{ Request::routeIs('setting.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-note2"></i> <span>Setting</span>
+            <i class="uil-cog"></i> <span>Setting</span>
         </a>
     </li>
     @for ($i = 1; $i < 5; $i++)
@@ -326,13 +326,7 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
 
 
 {{-- <li>
-<a href="javascript: void(0);" class="has-arrow waves-effect">
-    <i class="uil-share-alt"></i>
-    <span>Multi Level</span>
-</a>
-<ul class="sub-menu" aria-expanded="true">
-    <li><a href="javascript: void(0);">Level 1.1</a></li>
-    <li><a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
+
         <ul class="sub-menu" aria-expanded="true">
             <li><a href="javascript: void(0);">Level 2.1</a></li>
             <li><a href="javascript: void(0);">Level 2.2</a></li>
