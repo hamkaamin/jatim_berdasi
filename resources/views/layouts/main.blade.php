@@ -208,6 +208,19 @@
                         </div>
                     @endif
 
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <div class="d-flex">
+                            <i class="afu-gsap-scale uil uil-exclamation-triangle me-2"></i>
+                            Judul informasi/ pengumuman
+                            {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+
+                            </button> --}}
+                        </div>
+                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure voluptatum
+                            facere fuga quisquam fugiat reiciendis.</p>
+                        <a href="#">File link</a>
+                    </div>
+
                     <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
@@ -1074,7 +1087,7 @@
     <script src="{{ asset('theme_assets/js/app.js') }}"></script>
 
 
-    <script src="./theme-adjustable.js"></script>
+    <script src="{{ asset('theme_assets/theme-adjustable.js') }}"></script>
     {{-- End Adjustable Minible Script --}}
 
     {{-- GSAP Script --}}
@@ -1087,22 +1100,14 @@
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(Flip, ScrollTrigger)
             // gsap code here!
+
+            gsap.to('.afu-gsap-scale', {
+                scale: 1.1,
+                duration: 0.5,
+                repeat: -1,
+                yoyo: true,
+            })
         });
-        // const burgerButtons = document.querySelectorAll('.vertical-menu-btn i');
-        // burgerButtons.forEach(button => {
-        //     button.addEventListener('click', () => {
-        //         const body = document.querySelector('body');
-
-        //         const state = Flip.getState(
-        //             'body, .vertical-menu, .vertical-menu-btn, .vertical-menu li, .vertical-menu a, .sidebar-menu-scroll'
-        //         );
-
-        //         Flip.from(state, {
-        //             absolute: true,
-        //             duration: 0.25,
-        //         });
-        //     });
-        // });
     </script>
     {{-- End GSAP Script --}}
 
