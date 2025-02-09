@@ -9,17 +9,17 @@
 [data-bs-theme="light"] {
   /* Light Theme Palettes */
   --afu-light-theme-primary-first: #42b1e0;
-  --afu-light-theme-primary-second: #f5f5dc;
+  --afu-light-theme-primary-second: #67ff56;
   --afu-light-theme-primary-third: #da1b1b;
   --afu-light-theme-primary-fourth: #0569c7;
 
   --afu-light-theme-rgb-part-primary-first: 66, 177, 224;
-  --afu-light-theme-rgb-part-primary-second: 245, 245, 219;
+  --afu-light-theme-rgb-part-primary-second: 103, 255, 86;
   --afu-light-theme-rgb-part-primary-third: 218, 27, 27;
   --afu-light-theme-rgb-part-primary-fourth: 5, 105, 199;
 
   --afu-light-theme-darken-primary-first: hsl(198, 72%, 37%);
-  --afu-light-theme-darken-primary-second: hsl(60, 56%, 71%);
+  --afu-light-theme-darken-primary-second: hsl(114, 100%, 47%);
   --afu-light-theme-darken-primary-third: hsl(0, 78%, 28%);
   --afu-light-theme-darken-primary-fourth: hsl(209, 95%, 20%);
 
