@@ -280,7 +280,7 @@
                 @csrf
                 <button type="submit" class="btn header-item noti-icon waves-effect"
                     onclick="if(!confirm('Apakah Anda yakin akan logout?')){return false;}">
-                    <i class="uil-sign-out-alt"></i>
+                    <i class="uil-sign-out-alt btn btn-danger text-white"></i>
                 </button>
             </form>
 
