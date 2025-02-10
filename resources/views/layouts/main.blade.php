@@ -135,6 +135,27 @@
 
             }
         }
+
+        .tab-animate-afu {
+            border-radius: 8px;
+        }
+
+        .tab-animate-afu a .animate {
+            inset: 0;
+        }
+
+        .tab-animate-afu a .animate .kotak {
+            height: 0;
+            width: 0;
+            transition: ease-in-out 0.2s;
+        }
+
+        .tab-animate-afu:hover a .animate .kotak {
+            height: 100%;
+            width: 100%;
+            inset: 0;
+
+        }
     </style>
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
