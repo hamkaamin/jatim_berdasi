@@ -156,6 +156,12 @@
             inset: 0;
 
         }
+
+        .tab-animate-afu a.active .animate .kotak {
+            height: 100%;
+            width: 100%;
+            inset: 0;
+        }
     </style>
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
