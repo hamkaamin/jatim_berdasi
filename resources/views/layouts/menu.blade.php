@@ -127,11 +127,25 @@
             </li>
         @endfor
 
-
-
         <li>
             <a href="{{ route('pengguna.index') }}" class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
                 <i class="metismenu-icon pe-7s-users"></i> Pengguna
+            </a>
+        </li>
+
+        <li class="app-sidebar__heading">Penilaian Juri</li>
+
+        <li>
+            <a href="{{ route('master.penilaian.index') }}"
+                class="{{ Request::routeIs('master.penilaian.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Penilaian
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('master.juri.index') }}"
+                class="{{ Request::routeIs('master.juri.*') ? 'mm-active' : '' }}">
+                <i class="metismenu-icon pe-7s-ribbon"></i> Juri
             </a>
         </li>
     @else
@@ -260,6 +274,31 @@
                 <i class="metismenu-icon pe-7s-light"></i> Bank Data
             </a>
         </li>
+
+        @if (Auth::user()->role == 7)
+            <li class="app-sidebar__heading">Penilaian Juri</li>
+
+            <li class="{{ Request::is('penilaian*') ? 'mm-active' : '' }}">
+                <a href="#" aria-expanded="false">
+                    <i class="metismenu-icon pe-7s-light"></i> Penilaian
+                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                </a>
+                <ul class="mm-collapse {{ Request::is('penilaian*') ? 'mm-show' : '' }}">
+                    <li>
+                        <a href="{{ route('penilaian.index', ['jenis' => 'iga']) }}"
+                            class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon"></i>IGA
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('penilaian.index', ['jenis' => 'inotek']) }}"
+                            class="{{ Request::is('penilaian/inotek') ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon"></i>Inotek Awards
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endif
         @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
             <li class="app-sidebar__heading">Konfigurasi</li>
             <li>

@@ -1,5 +1,6 @@
 @php
     $display = '';
+    $display_nilai = '';
     $setting = App\Models\Setting::where('kode', 'bobot_akhir')->first();
 @endphp
 
@@ -74,7 +75,11 @@
                         @endphp
                         @foreach ($data as $item)
                             @php
-                            $disabled = ''; @endphp
+                                $disabled = '';
+                                if ($item->status != 2) {
+                                    $display_nilai = 'display: none';
+                                }
+                            @endphp
                             <tr>
                                 @if (env('APP_OPD_JATIM') == 1)
                                     @if ($item->status != 2)
@@ -106,7 +111,8 @@
                                     </td>
                                 @endforeach --}}
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_akhir') }}
-                                </td>
+                                    {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
+                                </td> --}}
                                 <td>
                                     @if ($item->status != 0)
                                         <a target="_blank"
@@ -152,6 +158,12 @@
                                                 @endif
                                             </form>
                                         @endif
+                                    @endif
+                                    @if ($item->status == 2)
+                                        <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
+                                            class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
+                                            data-placement="top" title="Penilaian Inovasi"><i
+                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
                                     @endif
                                     @if (
                                         ($item->status != 2 && $item->user_id == Auth::user()->id) ||

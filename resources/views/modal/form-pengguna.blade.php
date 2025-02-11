@@ -69,6 +69,7 @@
                             <option value="6">Umum</option>
                         @endif
                         <option value="5">OPD</option>
+                        <option value="7">Juri</option>
                     </select>
                     <small>Role hanya dapat ditentukan pada saat pembuatan data Pengguna baru. <b>Pastikan data yang
                             dimasukkan pada form ini sudah benar !</b></small>

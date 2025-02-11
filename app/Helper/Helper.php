@@ -25,6 +25,8 @@ class Helper
 			$role = "OPD";
 		} elseif ($role_id == 6) {
 			$role = "Umum";
+		}elseif ($role_id == 7) {
+			$role = "Juri";
 		}
 		return $role;
 	}
