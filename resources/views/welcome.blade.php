@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+
     @if (Auth::user()->role == 3)
         <div class="row">
             <div class="col">
@@ -244,6 +245,14 @@
             </div>
         </div>
     @else
+        <div class="">
+            <div id="line_chart_inovasi" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
+                class="apex-charts" dir="ltr">
+            </div>
+            <div id="line_chart_inotek" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
+                class="apex-charts" dir="ltr">
+            </div>
+        </div>
         <div class="row">
             @for ($j = 0; $j <= 1; $j++)
                 @for ($i = 1; $i <= 4; $i++)
@@ -264,6 +273,23 @@
             @endfor
         </div>
     @endif
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card card-body m-2 d-flex flex-column justify-content-between align-items-center">
+                <i class="uil-phone-alt font-size-24"></i>
+                <h3>Contact Us</h3>
+                <div class="d-flex flex-column align-items-center">
+                    <p class="mb-0">Nama Badan : Badan</p>
+                    <p class="mb-0">Alamat : Lorem ipsum dolor sit amet.</p>
+                    <p class="mb-0">No telp : +6287712345678</p>
+                    <p class="mb-0">Email : exampleemail@email.com</p>
+                    <p class="mb-0">Fax : +6231712345678</p>
+                    <p class="mb-0">IG : @ig</p>
+                    <p class="mb-0">FB : @fb</p>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @if (Auth::user()->role == 3)
@@ -289,3 +315,194 @@
         </script>
     @endsection
 @endif
+
+@push('scripts')
+    @if (Auth::user()->role == 3)
+    @elseif (Auth::user()->role == 1)
+    @else
+        <script>
+            var LinechartDatalabelColors = getChartColorsArray("line_chart_inovasi");
+            LinechartDatalabelColors &&
+                ((options = {
+                        chart: {
+                            height: 380,
+                            type: "line",
+                            zoom: {
+                                enabled: !1
+                            },
+                            toolbar: {
+                                show: !1
+                            },
+                        },
+                        colors: LinechartDatalabelColors,
+                        dataLabels: {
+                            enabled: !1
+                        },
+                        stroke: {
+                            width: [3, 3],
+                            curve: "straight"
+                        },
+                        series: [{
+                                name: "Disetujui",
+                                data: [35, 15, 26, 36, 31, 24, 37]
+                            },
+                            {
+                                name: "Revisi",
+                                data: [14, 11, 16, 12, 17, 13, 12]
+                            },
+                            {
+                                name: "Diproses",
+                                data: [26, 24, 32, 36, 33, 31, 33]
+                            },
+                            {
+                                name: "Ditolak",
+                                data: [14, 11, 16, 12, 17, 13, 12]
+                            },
+                        ],
+                        title: {
+                            text: "Jumlah Inovasi Daerah",
+                            align: "left"
+                        },
+                        grid: {
+                            row: {
+                                colors: ["transparent", "transparent"],
+                                opacity: 0.2
+                            },
+                            borderColor: "#f1f1f1",
+                        },
+                        markers: {
+                            style: "inverted",
+                            size: 6
+                        },
+                        xaxis: {
+                            categories: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+                            title: {
+                                text: "Month"
+                            },
+                        },
+                        yaxis: {
+                            title: {
+                                text: "Jumlah"
+                            },
+                            min: 5,
+                            max: 40
+                        },
+                        legend: {
+                            position: "top",
+                            horizontalAlign: "right",
+                            floating: !0,
+                            offsetY: -25,
+                            offsetX: -5,
+                        },
+                        responsive: [{
+                            breakpoint: 600,
+                            options: {
+                                chart: {
+                                    toolbar: {
+                                        show: !1
+                                    }
+                                },
+                                legend: {
+                                    show: !1
+                                },
+                            },
+                        }, ],
+                    }),
+                    (chart = new ApexCharts(
+                        document.querySelector("#line_chart_inovasi"),
+                        options
+                    )).render());
+            var LinechartDatalabelColors = getChartColorsArray("line_chart_inotek");
+            LinechartDatalabelColors &&
+                ((options = {
+                        chart: {
+                            height: 380,
+                            type: "line",
+                            zoom: {
+                                enabled: !1
+                            },
+                            toolbar: {
+                                show: !1
+                            },
+                        },
+                        colors: LinechartDatalabelColors,
+                        dataLabels: {
+                            enabled: !1
+                        },
+                        stroke: {
+                            width: [3, 3],
+                            curve: "straight"
+                        },
+                        series: [{
+                                name: "Disetujui",
+                                data: [35, 15, 26, 36, 31, 24, 37]
+                            },
+                            {
+                                name: "Revisi",
+                                data: [14, 11, 16, 12, 17, 13, 12]
+                            },
+                            {
+                                name: "Diproses",
+                                data: [26, 24, 32, 36, 33, 31, 33]
+                            },
+                            {
+                                name: "Ditolak",
+                                data: [14, 11, 16, 12, 17, 13, 12]
+                            },
+                        ],
+                        title: {
+                            text: "Jumlah Inotek Awards",
+                            align: "left"
+                        },
+                        grid: {
+                            row: {
+                                colors: ["transparent", "transparent"],
+                                opacity: 0.2
+                            },
+                            borderColor: "#f1f1f1",
+                        },
+                        markers: {
+                            style: "inverted",
+                            size: 6
+                        },
+                        xaxis: {
+                            categories: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+                            title: {
+                                text: "Month"
+                            },
+                        },
+                        yaxis: {
+                            title: {
+                                text: "Jumlah"
+                            },
+                            min: 5,
+                            max: 40
+                        },
+                        legend: {
+                            position: "top",
+                            horizontalAlign: "right",
+                            floating: !0,
+                            offsetY: -25,
+                            offsetX: -5,
+                        },
+                        responsive: [{
+                            breakpoint: 600,
+                            options: {
+                                chart: {
+                                    toolbar: {
+                                        show: !1
+                                    }
+                                },
+                                legend: {
+                                    show: !1
+                                },
+                            },
+                        }, ],
+                    }),
+                    (chart = new ApexCharts(
+                        document.querySelector("#line_chart_inotek"),
+                        options
+                    )).render());
+        </script>
+    @endif
+@endpush
