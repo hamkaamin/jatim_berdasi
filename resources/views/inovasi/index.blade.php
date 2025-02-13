@@ -12,10 +12,6 @@
     $display = 'display:block';
 @endphp
 
-@if ($setting->is_aktif == 0)
-    @php $display = 'display:none'; @endphp
-@endif
-
 @if (Auth::user()->role != 2)
 
     @section('buttons')

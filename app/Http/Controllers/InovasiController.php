@@ -86,6 +86,8 @@ class InovasiController extends Controller
         }
         $inovasi->where('tahun',Auth::user()->tahun)->get();
         $inovasi = $inovasi->get();
+        // dd($inovasi);
+        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriInovasi::get();
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();

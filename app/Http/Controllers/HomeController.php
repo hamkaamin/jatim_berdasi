@@ -27,9 +27,11 @@ use App\Exports\CompileInovasiExport;
 use App\Models\DefinisiOperasional;
 use App\Models\DetailTematik;
 use App\Models\Fase;
+use App\Models\Juri;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
+use App\Models\Penilaian;
 use App\Models\Tematik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -346,6 +348,21 @@ class HomeController extends Controller
             case "setting":
                 return response()->json(array(
                     'msg' => view('modal.form-setting')->render()
+                ), 200);
+                break;
+            case "penilaian":
+                $data = ($request->id == 0) ? null : Penilaian::findOrFail($request->id);
+                $kategori = KategoriInovasi::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-penilaian', compact('data', 'kategori'))->render()
+                ), 200);
+                break;
+            case "juri":
+                $data = ($request->id == 0) ? null : Juri::findOrFail($request->id);
+                $users = User::where('role',7)->get();
+                $kategori = KategoriInovasi::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-juri', compact('data', 'kategori','users'))->render()
                 ), 200);
                 break;
             case "fase":
