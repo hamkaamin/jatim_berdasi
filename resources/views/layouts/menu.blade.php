@@ -132,10 +132,25 @@
             <i class="metismenu-icon pe-7s-users"></i> <span>Pengguna</span>
         </a>
     </li>
+
+    <li class="menu-title">Penilaian Juri</li>
+
+    <li class="{{ Request::routeIs('master.penilaian.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.penilaian.index') }}"
+            class="{{ Request::routeIs('master.penilaian.*') ? 'active' : '' }}">
+            <i class="metismenu-icon pe-7s-ribbon"></i> Penilaian
+        </a>
+    </li>
+
+    <li class="{{ Request::routeIs('master.juri.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.juri.index') }}" class="{{ Request::routeIs('master.juri.*') ? 'active' : '' }}">
+            <i class="metismenu-icon pe-7s-ribbon"></i> Juri
+        </a>
+    </li>
 @else
     <li class="menu-title">Home</li>
     <li class="{{ Request::routeIs('home') ? 'mm-active' : '' }}">
-        <a href="{{ route('home') }}" class="class="{{ Request::routeIs('home') ? 'active' : '' }}"">
+        <a href="{{ route('home') }}" class="{{ Request::routeIs('home') ? 'active' : '' }}">
             <i class="uil-home-alt"></i>
             <span>Dashboard</span>
         </a>
@@ -261,6 +276,27 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
             <i class="metismenu-icon pe-7s-light"></i> <span>Bank Data</span>
         </a>
     </li>
+
+    @if (Auth::user()->role == 7)
+        <li class="app-sidebar__heading">Penilaian Juri</li>
+
+        <li class="{{ Request::is('penilaian*') ? 'mm-active' : '' }}">
+            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="uil-file-check"></i>
+                <span>Penilaian</span>
+            </a>
+            <ul class="sub-menu" aria-expanded="true">
+                <li class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'mm-active' : '' }}">
+                    <a href="{{ route('penilaian.index', ['jenis' => 'iga']) }}"
+                        class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'active' : '' }}">IGA</a>
+                </li>
+                <li class="{{ Request::is('penilaian/inotek') ? 'mm-active' : '' }}">
+                    <a href="{{ route('penilaian.index', ['jenis' => 'inotek']) }}"
+                        class="{{ Request::is('penilaian/inotek') ? 'active' : '' }}">Inotek Awards</a>
+                </li>
+            </ul>
+        </li>
+    @endif
     @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
         <li class="menu-title">Konfigurasi</li>
         <li class="{{ Request::routeIs('pengguna.*') ? 'mm-active' : '' }}">
