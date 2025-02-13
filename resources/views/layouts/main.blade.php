@@ -166,6 +166,34 @@
         .form-check-input {
             border: 1px solid var(--bs-primary);
         }
+
+        .col-3 .rainbow-card-afu {
+            background-color: #FF884E;
+        }
+
+        .col-3:nth-child(2n) .rainbow-card-afu {
+            background-color: #FFC44C;
+        }
+
+        .col-3:nth-child(3n+1) .rainbow-card-afu {
+            background-color: #8CCA4D;
+        }
+
+        .col-3:nth-child(4n+1) .rainbow-card-afu {
+            background-color: #4FDAC5;
+        }
+
+        .col-3:nth-child(5n+1) .rainbow-card-afu {
+            background-color: #4DC3FF;
+        }
+
+        .col-3:nth-child(6n+1) .rainbow-card-afu {
+            background-color: #5E94FF;
+        }
+
+        .col-3:nth-child(7n+1) .rainbow-card-afu {
+            background-color: #A06FFF;
+        }
     </style>
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
