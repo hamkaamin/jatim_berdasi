@@ -171,7 +171,7 @@
             background-color: #FF884E;
         }
 
-        .col-3:nth-child(2n) .rainbow-card-afu {
+        .col-3:nth-child(2n+1) .rainbow-card-afu {
             background-color: #FFC44C;
         }
 
