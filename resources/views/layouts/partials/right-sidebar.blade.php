@@ -63,7 +63,7 @@
                 <label class="form-check-label" for="layout-horizontal">Horizontal</label>
             </div> --}}
 
-            <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
+            {{-- <h6 class="mt-4 mb-3 pt-2">Layout Mode</h6>
 
             <div class="form-check form-check-inline">
                 <input class="form-check-input" type="radio" name="layout-mode" id="layout-mode-light" value="light">
@@ -85,7 +85,7 @@
                 <input class="form-check-input" type="radio" name="layout-width" id="layout-width-boxed"
                     value="boxed" onchange="document.body.setAttribute('data-layout-size', 'boxed')">
                 <label class="form-check-label" for="layout-width-boxed">Boxed</label>
-            </div>
+            </div> --}}
 
             {{-- <h6 class="mt-4 mb-3 pt-2">Topbar Color</h6>
 
