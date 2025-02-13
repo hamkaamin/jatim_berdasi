@@ -162,6 +162,10 @@
             width: 100%;
             inset: 0;
         }
+
+        .form-check-input {
+            border: 1px solid var(--bs-primary);
+        }
     </style>
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
