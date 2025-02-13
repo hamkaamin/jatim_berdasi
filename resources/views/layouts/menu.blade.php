@@ -278,7 +278,7 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
     </li>
 
     @if (Auth::user()->role == 7)
-        <li class="app-sidebar__heading">Penilaian Juri</li>
+        <li class="menu-title">Penilaian Juri</li>
 
         <li class="{{ Request::is('penilaian*') ? 'mm-active' : '' }}">
             <a href="javascript: void(0);" class="has-arrow waves-effect">
