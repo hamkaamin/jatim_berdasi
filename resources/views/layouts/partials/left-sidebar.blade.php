@@ -1,7 +1,7 @@
  <!-- ========== Left Sidebar Start ========== -->
  <div class="vertical-menu">
 
-     <!-- LOGO -->
+     {{-- <!-- LOGO -->
      <div class="navbar-brand-box">
          <a href="{{ route('home') }}" class="logo logo-dark">
              <div class="app-header__logo pl-0 pr-5">
@@ -14,7 +14,7 @@
                  <div class="logo-src"></div>
              </div>
          </a>
-     </div>
+     </div> --}}
 
      <button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn">
          <i class="fa fa-fw fa-bars"></i>
