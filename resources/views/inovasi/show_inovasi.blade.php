@@ -7,13 +7,13 @@ $status_label = 0; @endphp
     @if (Auth::user()->role != 2)
         <div class="col-12">
             <div class="row">
-                @foreach ($tahapan as $item)
+                @foreach ($kategori as $item)
                     <div class="col-3">
                         <div class="card mb-3 widget-content bg-midnight-bloom">
                             <div class="widget-content-wrapper text-white">
                                 <div class="widget-content-left">
                                     <div class="widget-heading">{{ $item->nama }}</div>
-                                    <div class="widget-subheading">Inovasi Tahap <b>{{ $item->nama }}</b></div>
+                                    <div class="widget-subheading">Inovasi Kategori <b>{{ $item->nama }}</b></div>
                                 </div>
                                 <div class="widget-content-right">
                                     <div class="widget-numbers text-white">
@@ -69,17 +69,18 @@ $status_label = 0; @endphp
     @endif
     <div class="col-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <x-tab-inovasi :tahapan="null" :active="1" />
-            @foreach ($tahapan as $item)
-                <x-tab-inovasi :tahapan="$item" :active="0" />
+            <x-tab-inovasi :kategori="null" :active="1" />
+            @foreach ($kategori as $item)
+                <x-tab-inovasi :kategori="$item" :active="0" />
             @endforeach
         </ul>
+
         <div class="tab-content" id="myTabContent">
-            <x-tab-content-inovasi :tahapan="null" :active="1" :kolom="$tahapanKolom" :inovasi="$inovasi"
-                :label="$label" />
-            @foreach ($tahapan as $item)
-                <x-tab-content-inovasi :tahapan="$item" :active="0" :kolom="$tahapanKolom" :inovasi="[]"
-                    :label="$label" />
+            <x-tab-content-inovasi :kategori="null" :active="1" :inovasi="$inovasi" :label="$label"
+                :fase="$fase" />
+            @foreach ($kategori as $item)
+                <x-tab-content-inovasi :kategori="$item" :active="0" :inovasi="[]" :label="$label"
+                    :fase="$fase" />
             @endforeach
         </div>
     </div>

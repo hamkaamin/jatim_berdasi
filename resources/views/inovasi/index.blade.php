@@ -12,15 +12,16 @@
     $display = 'display:block';
 @endphp
 
-@if ($setting->is_aktif == 0)
-    @php $display = 'display:none'; @endphp
-@endif
-
 @if (Auth::user()->role != 2)
+
     @section('buttons')
-        <a style="{!! $display !!}"
-            href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
-            class="btn btn-primary">Tambah Data</a>
+        @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+            <a style="{!! $display !!}"
+                href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
+                class="btn btn-primary">Tambah Data</a>
+        @else
+            <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#" class="btn btn-danger">Tambah Data</a>
+        @endif
     @endsection
 @endif
 

@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\FaseController;
 use App\Http\Controllers\InovasiController;
+use App\Http\Controllers\JuriController;
 use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
 use App\Http\Controllers\KategoriTahapanController;
+use App\Http\Controllers\PenilaianController;
+use App\Http\Controllers\PenilaianInovasiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/export/{type}', [App\Http\Controllers\HomeController::class, 'export'])->name('export-inovasi');
     Route::post('/modal', [App\Http\Controllers\HomeController::class, 'modal'])->name('modal');
     Route::post('/change-area', [App\Http\Controllers\HomeController::class, 'change_area'])->name('change-area');
+    Route::post('/setting', [App\Http\Controllers\HomeController::class, 'setting_save'])->name('setting.save');
 
     Route::prefix('profil')->name('profil.')->group(function () {
         Route::get('/', [App\Http\Controllers\ProfilController::class, 'index'])->name('index');
@@ -140,6 +145,23 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/delete', [App\Http\Controllers\DetailTematikController::class, 'delete'])->name('delete');
             });
 
+            Route::prefix('fase')->name('fase.')->group(function () {
+                Route::get('/', [FaseController::class, 'index'])->name('index');
+                Route::post('/', [FaseController::class, 'store'])->name('save');
+                Route::post('/delete', [FaseController::class, 'delete'])->name('delete');
+            });
+            
+            Route::prefix('penilaian')->name('penilaian.')->group(function () {
+                Route::get('/', [PenilaianController::class, 'index'])->name('index');
+                Route::post('/', [PenilaianController::class, 'save'])->name('save');
+                Route::post('/delete', [PenilaianController::class, 'delete'])->name('delete');
+            });
+            Route::prefix('juri')->name('juri.')->group(function () {
+                Route::get('/', [JuriController::class, 'index'])->name('index');
+                Route::post('/', [JuriController::class, 'save'])->name('save');
+                Route::post('/delete', [JuriController::class, 'delete'])->name('delete');
+            });
+
         });
 
         Route::prefix('setting')->name('setting.')->group(function () {
@@ -183,6 +205,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sent', [App\Http\Controllers\InovasiController::class, 'sent'])->name('sent');
         #get detail tematik using post
         Route::post('/inovasi/ajax_detail_tematik', [InovasiController::class, 'detail_tematik'])->name('ajax_detail_tematik');
+        Route::post('/inovasi/ajax_kategori_inovasi', [InovasiController::class, 'kategori_inovasi'])->name('ajax_kategori_inovasi');
 
 
         Route::prefix('indikator')->name('indikator.')->group(function () {
@@ -215,6 +238,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/change-scope', [App\Http\Controllers\OpdController::class, 'change_scope'])->name('change-scope');
         Route::post('/', [App\Http\Controllers\OpdController::class, 'save'])->name('save');
         Route::post('/delete', [App\Http\Controllers\OpdController::class, 'delete'])->name('delete');
+    });
+    Route::prefix('penilaian')->name('penilaian.')->group(function () {
+        Route::get('/index/{jenis}', [PenilaianInovasiController::class, 'index'])->name('index');
+        Route::get('/form/edit', [PenilaianInovasiController::class, 'edit'])->name('edit');
+        Route::post('/form/save', [PenilaianInovasiController::class, 'save'])->name('save');
+        Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
     });
 
     Route::prefix('rekap')->name('rekap.')->group(function () {

@@ -22,4 +22,18 @@ class KategoriInovasi extends Model
     {
         return $this->hasMany(KategoriOpd::class, 'kategori_id', 'id');
     }
+    public function hasManyInovasi()
+    {
+        return $this->hasMany('App\Models\Inovasi', 'kategori_id', 'id');
+    }
+
+    public function penilaians()
+    {
+        return $this->hasMany(Penilaian::class, 'kategori_id', 'id');
+    }
+
+    public function juris()
+    {
+        return $this->hasMany(Juri::class, 'kategori_id', 'id');
+    }
 }

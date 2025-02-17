@@ -9,23 +9,6 @@
 @endsection
 
 @section('buttons')
-    <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
-        class="btn btn-light">
-        Kembali</a>
-    @if ($data != null && $data->status == 0)
-        <form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
-            @csrf
-            <input type="hidden" name="label" value="{{ $data->label }}">
-            <button type="submit" class="btn btn-primary" name="status" value="1"
-                onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                Inovasi</button>
-        </form>
-    @endif
-
-    {{-- @if (Auth::user()->role == 2)
-        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
-            onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
-    @endif --}}
 @endsection
 
 @section('content')
@@ -222,6 +205,23 @@
 
             </div>
         </div>
+        <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
+            class="btn btn-light">
+            Kembali</a>
+        @if ($data != null && $data->status == 0)
+            <form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
+                @csrf
+                <input type="hidden" name="label" value="{{ $data->label }}">
+                <button type="submit" class="btn btn-primary" name="status" value="1"
+                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
+                    Inovasi</button>
+            </form>
+        @endif
+
+        {{-- @if (Auth::user()->role == 2)
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
+                onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
+        @endif --}}
     @endif
 
 @endsection

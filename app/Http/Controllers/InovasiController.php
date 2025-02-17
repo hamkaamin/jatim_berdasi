@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Config;
 use Excel;
 use Helper;
@@ -17,6 +16,7 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
 use App\Models\DetailTematik;
+use App\Models\Fase;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
@@ -24,8 +24,10 @@ use App\Models\Setting;
 use App\Models\Tematik;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Svg\Tag\Rect;
 
 class InovasiController extends Controller
 {
@@ -82,10 +84,14 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
+        $inovasi->where('tahun',Auth::user()->tahun)->get();
         $inovasi = $inovasi->get();
+        // dd($inovasi);
+        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriInovasi::get();
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting'));
+        $fase = Fase::where('active', 1)->first();
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
 
     public function show_tahapan(Request $request)
@@ -103,6 +109,7 @@ class InovasiController extends Controller
     public function show_inovasi(Request $request){
         $area = $request->area;
         $tahapan = Tahapan::all();
+        $kategori = KategoriInovasi::orderBy('id','asc')->get();
         $inovasi = Inovasi::where('deleted_at', 0);
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
@@ -159,8 +166,10 @@ class InovasiController extends Controller
         if($request->kategori != ''){
             $inovasi = $inovasi->where('kategori_id',$request->kategori);
         }
+        $inovasi->where('tahun',Auth::user()->tahun)->get();
         $inovasi = $inovasi->get();
-        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+        $fase = Fase::where('active', 1)->first();
+        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase'));
     }
 
     public function bank_data(Request $request,$area)
@@ -207,7 +216,9 @@ class InovasiController extends Controller
             if($label == 0){
                 $kategori = $kategori->where('kategori_id',1);
             }
-            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
+            $fase = Fase::where('active', 1)->first();
+
+            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
         } else { 
             return redirect()->back();
         }
@@ -352,7 +363,7 @@ class InovasiController extends Controller
             }
 
             $data->nama = $request->nama;
-            $data->tahapan_id = $request->tahapan_id;
+            $data->tahapan_id = $request->kategori_id == 5 ? 6 : $request->tahapan_id;
             $data->kategori_id = $request->kategori_id;
             $data->inisiator_id = $request->inisiator_id;
             $data->jenis_id = $request->jenis_id;
@@ -370,7 +381,9 @@ class InovasiController extends Controller
             $data->waktu_uji_coba = $request->waktu_uji_coba;
             $data->waktu_penerapan = $request->waktu_penerapan;
             $data->waktu_pengembangan = $request->waktu_pengembangan;
-            $data->is_pengembangan = $request->is_pengembangan;
+            $data->visi = @$request->visi;
+            $data->misi = @$request->misi;
+            $data->tahun = Auth::user()->tahun;
             $data->url = env('APP_URL');
             $data->save();
             $data->urusan()->sync($request->urusan_id);
@@ -407,9 +420,27 @@ class InovasiController extends Controller
                 $data->save();
             }
 
-            if ($request->hasFile('profil_bisnis')) {
+            if ($request->hasFile('file_profil_bisnis')) {
                 $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
                 $data->profil_bisnis = $nama_file;
+                $data->save();
+            }
+
+            if ($request->hasFile('file_hasil_inovasi')) {
+                $nama_file = Helper::save_file($request->file('file_hasil_inovasi'), uniqid(), 'file_hasil_inovasi', $data->file_hasil_inovasi);
+                $data->file_hasil_inovasi = $nama_file;
+                $data->save();
+            }
+
+            if ($request->hasFile('file_kajian')) {
+                $nama_file = Helper::save_file($request->file('file_kajian'), uniqid(), 'file_kajian', $data->file_kajian);
+                $data->file_kajian = $nama_file;
+                $data->save();
+            }
+
+            if ($request->hasFile('file_struktur_oragnisasi')) {
+                $nama_file = Helper::save_file($request->file('file_struktur_oragnisasi'), uniqid(), 'file_struktur_oragnisasi', $data->file_struktur_oragnisasi);
+                $data->file_struktur_oragnisasi = $nama_file;
                 $data->save();
             }
             $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
@@ -503,7 +534,9 @@ class InovasiController extends Controller
                 }
             }
             $data = $inovasi->indikator()->get();
-            return view('inovasi.indikator', compact('data', 'inovasi','area_label'));
+            $fase = Fase::where('active', 1)->first();
+
+            return view('inovasi.indikator', compact('data', 'inovasi','area_label','fase'));
         // } else {
         //     return redirect()->back();
         // }
@@ -567,5 +600,54 @@ class InovasiController extends Controller
         }
         # move data to the <select>
         return view('inovasi.detail_tematik', compact('detail_tematik','data'));
+    }
+
+    public function kategori_inovasi(Request $request)
+    {
+        $inovasi_id = $request->inovasi_id;
+        $kategori_id = $request->kategori_id;
+            $data = null;
+            $tahapan = Tahapan::all();
+            $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+            $inisiator = Inisiator::all();
+            $jenis = Jenis::all();
+            $bentuk = $kategori_id == 1 ? Bentuk::all() : Bentuk::where('id',2)->get();
+            $urusan = Urusan::all();
+            $tematik = Tematik::all();
+            $kategori = KategoriInovasi::all();
+            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
+                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
+            }else{
+                if ($inovasi_id != 0) {
+                    $inovasi = Inovasi::find(decrypt($inovasi_id));
+                    $kategori = KategoriOpd::where('opd_id',$inovasi->user->opd_id)->where('is_aktif',1);
+                }
+            }
+            $label = 0;
+            
+            $kategori = $kategori->get();
+            if ($inovasi_id != 0) {
+                $id = $inovasi_id;
+                $data = Inovasi::findOrFail($id);
+                if($data->user_id != Auth::user()->id){
+                    return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
+                }
+                $label = $data->label;
+            }
+
+            if (isset($request->label)) {
+                $label = $request->label;
+            }
+            if($label == 0){
+                $kategori = $kategori->where('kategori_id',1);
+            }
+            $fase = Fase::where('active', 1)->first();
+            $view = 'inovasi.ajax_inovasi';
+            if($kategori_id == 5){
+                $view= 'inovasi.form.kategori_5';
+            }
+
+            return view($view, compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
+        
     }
 }
