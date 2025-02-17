@@ -1129,7 +1129,7 @@
 
     {{-- Adjustable Minible Script --}}
     <!-- JAVASCRIPT -->
-    <script src="{{ asset('theme_assets/libs/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="{{ asset('theme_assets/libs/jquery/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('theme_assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('theme_assets/libs/metismenu/metisMenu.min.js') }}"></script>
     <script src="{{ asset('theme_assets/libs/simplebar/simplebar.min.js') }}"></script>
