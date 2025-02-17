@@ -6,10 +6,10 @@ $status_label = 0; @endphp
 <div class="row">
     @if (Auth::user()->role != 2)
         <div class="col-12">
-            <div class="row">
+            <div class="row g-4 mb-4">
                 @foreach ($kategori as $item)
                     <div class="col-3">
-                        <div class="card mb-3 widget-content bg-midnight-bloom">
+                        <div class="card rainbow-card-afu widget-content h-100">
                             <div class="widget-content-wrapper text-white">
                                 <div class="widget-content-left">
                                     <div class="widget-heading">{{ $item->nama }}</div>
@@ -69,9 +69,9 @@ $status_label = 0; @endphp
     @endif
     <div class="col-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <x-tab-inovasi :kategori="null" :active="1" />
-            @foreach ($kategori as $item)
-                <x-tab-inovasi :kategori="$item" :active="0" />
+            <x-tab-inovasi :kategori="null" :key="0" :active="1" />
+            @foreach ($kategori as $key => $item)
+                <x-tab-inovasi :kategori="$item" :key="$key + 1" :active="0" />
             @endforeach
         </ul>
 

@@ -1,0 +1,14 @@
+.logo-title 
+{
+    color: white;
+    font-size: 13pt;
+}
+.required 
+{
+    color: red;
+    font-weight: bold;
+}
+.text-right
+{ 
+    text-align: right;
+}
