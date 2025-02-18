@@ -26,6 +26,20 @@
                 <i class="fa fa-fw fa-bars"></i>
             </button>
 
+            <div class="">
+                <a href="{{ route('home') }}" class="logo logo-dark">
+                    <div class="app-header__logo pl-0 pr-5">
+                        <div class="logo-src"></div>
+                    </div>
+                </a>
+
+                <a href="{{ route('home') }}" class="logo logo-light">
+                    <div class="app-header__logo pl-0 pr-5">
+                        <div class="logo-src"></div>
+                    </div>
+                </a>
+            </div>
+
             {{-- <!-- App Search-->
             <form class="app-search d-none d-lg-block">
                 <div class="position-relative">
