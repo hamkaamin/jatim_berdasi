@@ -28,6 +28,7 @@
                             <th style="width: 100px; min-width: 100px">Status</th>
                             <th>Keterangan</th>
                             <th style="{!! $display !!}">Kematangan</th>
+                            <th>Penilaian</th>
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
                     </thead>
@@ -111,7 +112,10 @@
                                     </td>
                                 @endforeach --}}
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_akhir') }}
-                                    {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
+                                <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
+                                </td>
+
+                                {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
                                 </td> --}}
                                 <td>
                                     @if ($item->status != 0)

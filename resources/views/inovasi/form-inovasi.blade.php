@@ -208,10 +208,12 @@
         // Check if we're in edit mode and if tematik_id is set
         var tematikId = "{{ $data ? $data->tematik_id : '' }}";
         var inovasiId = "{{ $data ? $data->id : '' }}";
+        var token = "{{ csrf_token() }}";
 
         if (tematikId) {
             get_detail_tematik(tematikId, inovasiId);
         }
+        div_kategori_inovasi(token, '#div_kategori_inovasi', '#form-edit-inovasi', inovasiId)
 
         var maxSize = 2 * 1024 * 1024;
 

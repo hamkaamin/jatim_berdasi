@@ -215,8 +215,10 @@
 
             <div class="page-content">
                 <div class="container-fluid">
+
                     @php
                         $fase_aktif = App\Models\Fase::where('timer', 1)->first();
+                        $pengumuman = App\Models\Pengumuman::where('is_aktif', 1)->get();
                     @endphp
                     @if ($fase_aktif)
                         <div class="timer">
@@ -267,22 +269,31 @@
                         </div>
                     @endif
 
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <div class="d-flex">
-                            <i class="afu-gsap-scale uil uil-exclamation-triangle me-2"></i>
-                            Judul informasi/ pengumuman
-                            {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    @foreach ($pengumuman as $item)
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            <div class="d-flex">
+                                <i class="afu-gsap-scale uil uil-exclamation-triangle me-2"></i>
+                                {{ $item->judul }}
+                                {{-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
 
                             </button> --}}
+                            </div>
+                            <p class="mb-0">{!! $item->deskripsi !!}</p>
+                            @if ($item->file != null && file_exists(public_path('/file_pengumuman/' . $item->file)))
+                                <a target="_blank" href="{{ asset('file_pengumuman/' . $item->file) }}">View</a>
+                            @else
+                                -
+                            @endif
                         </div>
-                        <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure voluptatum
-                            facere fuga quisquam fugiat reiciendis.</p>
-                        <a href="#">File link</a>
-                    </div>
+                    @endforeach
 
                     <!-- start page title -->
                     <div class="row">
                         <div class="col-12">
+
+                            <div class="row">
+                                @include('layouts.alert')
+                            </div>
                             <div
                                 class="card card-body page-title-box d-flex flex-column align-items-start justify-content-between gap-2">
                                 <h4 class="mb-0"> @yield('title')</h4>

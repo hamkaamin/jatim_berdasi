@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaseController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\JuriController;
@@ -160,6 +161,13 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [JuriController::class, 'index'])->name('index');
                 Route::post('/', [JuriController::class, 'save'])->name('save');
                 Route::post('/delete', [JuriController::class, 'delete'])->name('delete');
+            });
+
+              
+            Route::prefix('contact')->name('contact.')->group(function () {
+                Route::get('/', [ContactController::class, 'index'])->name('index');
+                Route::post('/', [ContactController::class, 'save'])->name('save');
+                Route::post('/delete', [ContactController::class, 'delete'])->name('delete');
             });
 
         });

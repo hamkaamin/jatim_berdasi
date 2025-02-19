@@ -28,10 +28,14 @@
                         <div class="col-md-3"><strong>Nilai</strong></div>
                     </div>
 
-                    @php $no = 0; @endphp
+                    @php
+                        $no = 0;
+                        $totalNilai = 0;
+                    @endphp
                     @foreach ($data as $index => $item)
                         @php
                             $no++;
+                            $totalNilai += optional($item->pivot)->nilai;
                         @endphp
                         <div class="card mb-3 border-0 shadow-sm p-3">
                             <div class="row">
@@ -61,8 +65,13 @@
                                         value="{{ optional($item->pivot)->nilai }}">
                                 </div>
                             </div>
+                            <hr class="my-0">
                         </div>
                     @endforeach
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <strong>Total Nilai:</strong>
+                        <span class="h4 font-weight-bold">{{ $totalNilai }}</span>
+                    </div>
 
                     <div class="text-end">
                         <button type="submit" class="btn btn-primary">Simpan</button>

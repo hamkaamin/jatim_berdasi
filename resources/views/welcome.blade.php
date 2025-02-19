@@ -282,13 +282,13 @@
                 <i class="uil-phone-alt font-size-24"></i>
                 <h3>Contact Us</h3>
                 <div class="d-flex flex-column align-items-center">
-                    <p class="mb-0">Nama Badan : Badan</p>
-                    <p class="mb-0">Alamat : Lorem ipsum dolor sit amet.</p>
-                    <p class="mb-0">No telp : +6287712345678</p>
-                    <p class="mb-0">Email : exampleemail@email.com</p>
-                    <p class="mb-0">Fax : +6231712345678</p>
-                    <p class="mb-0">IG : @ig</p>
-                    <p class="mb-0">FB : @fb</p>
+                    <p class="mb-0">Nama Badan : {{ $contact->nama }}</p>
+                    <p class="mb-0">Alamat : {{ $contact->alamat }}</p>
+                    <p class="mb-0">No telp : {{ $contact->no_telp }}</p>
+                    <p class="mb-0">Email : {{ $contact->email }}</p>
+                    <p class="mb-0">IG : <a target="_blank"
+                            href="{{ 'https://www.instagram.com/' . $contact->instagram }}">
+                            {{ $contact->instagram }}</a></p>
                 </div>
             </div>
         </div>

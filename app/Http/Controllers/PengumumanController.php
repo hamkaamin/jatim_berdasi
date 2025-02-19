@@ -6,6 +6,7 @@ use Config;
 use Helper;
 use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PengumumanController extends Controller
 {
@@ -44,6 +45,7 @@ class PengumumanController extends Controller
             }
             $data->judul = $request->judul;
             $data->deskripsi = $request->deskripsi;
+            $data->is_aktif = $request->is_aktif;
             $data->save();
             if ($request->hasFile('file')) {
                 $nama_file = Helper::save_file($request->file('file'), uniqid(), 'file_pengumuman', $data->file);

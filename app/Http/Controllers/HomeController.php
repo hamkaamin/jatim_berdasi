@@ -24,6 +24,7 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
+use App\Models\Contact;
 use App\Models\DefinisiOperasional;
 use App\Models\DetailTematik;
 use App\Models\Fase;
@@ -166,7 +167,8 @@ class HomeController extends Controller
                     $arrayCount[$i][$j] = $count;
                 }
             }
-            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount'));
+            $contact = Contact::first();
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount','contact'));
         }
     }
 
@@ -369,6 +371,12 @@ class HomeController extends Controller
                 $data = ($request->id == 0) ? null : Fase::findOrFail($request->id);
                 return response()->json(array(
                     'msg' => view('modal.form-fase',compact('data'))->render()
+                ), 200);
+                break;
+            case "contact":
+                $data = ($request->id == 0) ? null : Contact::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-contact',compact('data'))->render()
                 ), 200);
                 break;
         }

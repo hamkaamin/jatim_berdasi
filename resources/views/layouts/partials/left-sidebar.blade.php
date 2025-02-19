@@ -26,7 +26,13 @@
          <div id="sidebar-menu">
              <!-- Left Menu Start -->
              <ul class="metismenu list-unstyled" id="side-menu">
-                 @include('layouts.menu')
+                 @if (Auth::user()->role == 5)
+                     @include('layouts.menu_provinsi')
+                 @elseif(Auth::user()->role == 7)
+                     @include('layouts.menu_juri')
+                 @else
+                     @include('layouts.menu')
+                 @endif
              </ul>
          </div>
          <!-- Sidebar -->

@@ -26,7 +26,7 @@
                                     <th>Keterangan</th>
                                     <th>Kematangan</th>
                                     <th>Nilai</th>
-                                    <th style="width: 100px; min-width: 100px"></th>
+                                    <th style="width: 100px; min-width: 100px">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,7 +50,8 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                        <td>{{ $item->penilaian->avg('pivot.nilai') }}</td>
+                                        <td>{{ $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
+                                        </td>
                                         <td>
                                             @if ($item->status != 0)
                                                 <a target="_blank"

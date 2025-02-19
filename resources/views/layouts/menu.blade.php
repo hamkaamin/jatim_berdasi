@@ -133,18 +133,26 @@
         </a>
     </li>
 
+
+    <li class="{{ Request::routeIs('master.contact.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.contact.index') }}"
+            class="{{ Request::routeIs('master.contact.*') ? 'active' : '' }}">
+            <i class="uil-cog"></i> <span>Contact</span>
+        </a>
+    </li>
+
     <li class="menu-title">Penilaian Juri</li>
 
     <li class="{{ Request::routeIs('master.penilaian.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.penilaian.index') }}"
             class="{{ Request::routeIs('master.penilaian.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> Penilaian
+            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Penilaian</span>
         </a>
     </li>
 
     <li class="{{ Request::routeIs('master.juri.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.juri.index') }}" class="{{ Request::routeIs('master.juri.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-ribbon"></i> Juri
+            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Juri</span>
         </a>
     </li>
 @else
@@ -185,7 +193,7 @@
             <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
                     class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Daerah (Provinsi)</span>
+                    <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
                 </a>
             </li>
         @else
@@ -207,7 +215,7 @@
         <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
             <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
                 class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
-                <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Daerah</span>
+                <i class="metismenu-icon pe-7s-light"></i> <span>INOTEK AWARDS</span>
             </a>
         </li>
     @endif
@@ -220,11 +228,11 @@
         @endif
         @if (Auth::user()->role != 6)
             {{-- <li>
-<a href="{{ route('inovasi.index', ['area' => 'pemda']) }}"
-class="{{ request()->is('inovasi/pemda') ? 'active' : '' }}">
-<i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Pemda</span>
-</a>
-</li> --}}
+                    <a href="{{ route('inovasi.index', ['area' => 'pemda']) }}"
+                    class="{{ request()->is('inovasi/pemda') ? 'active' : '' }}">
+                    <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Pemda</span>
+                    </a>
+                    </li> --}}
         @endif
         @if (env('APP_OPD_JATIM') == 1)
             <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
@@ -238,7 +246,7 @@ class="{{ request()->is('inovasi/pemda') ? 'active' : '' }}">
             <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
                     class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>Inotek Awards</span>
+                    <i class="metismenu-icon pe-7s-light"></i> <span>Inotek</span>
                 </a>
             </li>
         @endif
