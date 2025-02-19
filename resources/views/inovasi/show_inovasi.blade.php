@@ -32,12 +32,14 @@ $status_label = 0; @endphp
                                                     $inov = $inov
                                                         ->where('user_id', Auth::user()->id)
                                                         ->where('label', $status_label)
+                                                        ->where('tahun', Auth::user()->tahun)
                                                         ->get();
                                                 } elseif (Auth::user()->role == 5) {
                                                     $inov = $inov
                                                         ->where('kota_id', Auth::user()->opd->kabkota_id)
                                                         ->where('user_id', Auth::user()->id)
-                                                        ->where('label', $status_label);
+                                                        ->where('label', $status_label)
+                                                        ->where('tahun', Auth::user()->tahun);
                                                 } elseif (
                                                     Helper::checkOpd('kecamatan', Auth::user()) ||
                                                     Helper::checkUserUmum('opd-kecamatan', Auth::user())
