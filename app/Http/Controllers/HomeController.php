@@ -152,7 +152,8 @@ class HomeController extends Controller
         } elseif (Auth::user()->role == 1) {
             $count_opd = Opd::count();
             $count_user = User::count();
-            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user'));
+            $contact = Contact::first();
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user','contact'));
         } else {
             $arrayCount = [];
             for ($i = 0; $i <= 1; $i++) {
