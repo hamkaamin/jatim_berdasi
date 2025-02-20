@@ -168,7 +168,7 @@
   --bs-highlight-bg: #fcf0db;
   --bs-border-width: 1px;
   --bs-border-style: solid;
-  --bs-border-color: #f6f6f6;
+  --bs-border-color: #00000033;
   --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
   --bs-border-radius: 0.25rem;
   --bs-border-radius-sm: 0.2rem;
@@ -2774,10 +2774,10 @@ progress {
   cursor: pointer;
 }
 
-.form-control:focus {
+.form-control:focus,.form-control:hover {
   color: var(--bs-body-color);
   background-color: var(--bs-input-bg);
-  border-color: #adb9f4;
+  border-color: var(--bs-primary);
   outline: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
