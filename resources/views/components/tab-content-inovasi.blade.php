@@ -4,11 +4,6 @@
     $setting = App\Models\Setting::where('kode', 'bobot_akhir')->first();
 @endphp
 
-@if ($setting->is_aktif == 0 && Auth::user()->role != 2)
-    @php
-        $display = 'display: none';
-    @endphp
-@endif
 <div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $kategori == null ? 0 : $kategori->id }}"
     role="tabpanel" aria-labelledby="{{ $kategori == null ? 0 : $kategori->id }}-tab">
 

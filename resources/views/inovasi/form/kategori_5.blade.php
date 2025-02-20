@@ -45,6 +45,24 @@
     </div>
 </div>
 
+<div class="row my-3">
+    <div class="col-sm-3 d-flex align-items-center"><label><b>Jenis Inovasi</b> <span
+                class="text-danger">*</span></label></div>
+    <div class="col-sm-8">
+        <div class="row">
+            @foreach ($jenis as $item)
+                <div class="col-6 d-flex align-items-center">
+                    <input type="radio" id="jenis_{{ $item->id }}" value="{{ $item->id }}" name="jenis_id"
+                        @if (old('jenis_id') == $item->id ||
+                                ($data == null && $loop->iteration == 1) ||
+                                ($data != null && $data->jenis_id == $item->id)) checked @endif><label class="pb-0 mb-0 ml-2"
+                        for="jenis_{{ $item->id }}">{{ $item->nama }}</label>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
+
 <div class="row my-2">
     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inisiator</b> <span
                 class="text-danger">*</span></label></div>

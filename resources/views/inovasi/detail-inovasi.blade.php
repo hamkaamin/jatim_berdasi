@@ -191,18 +191,18 @@
                         @endif
                     </div>
                 </div>
-
-                <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
-                    <div class="col-sm-8">
-                        @if ($data != null && $data->file_penghargaan)
-                            <a href="{{ $data->file_penghargaan }}" target="_blank">Download File Penghargaan</a>
-                        @else
-                            Tidak Ada Data
-                        @endif
+                @if ($data->kategori_id == 5)
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
+                        <div class="col-sm-8">
+                            @if ($data != null && $data->file_penghargaan)
+                                <a href="{{ $data->file_penghargaan }}" target="_blank">Download File Penghargaan</a>
+                            @else
+                                Tidak Ada Data
+                            @endif
+                        </div>
                     </div>
-                </div>
-
+                @endif
             </div>
         </div>
         <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
