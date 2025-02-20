@@ -111,14 +111,11 @@ class FaseController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    
+    public function delete(Request $request)
     {
-        //
+        $data = Fase::findOrFail($request->id);
+        $data->delete();
+        return redirect()->back()->with('success', Config::get('delete_success'));
     }
 }

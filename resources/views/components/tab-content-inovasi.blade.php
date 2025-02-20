@@ -22,7 +22,7 @@
                             <th>Kategori</th>
                             <th style="width: 100px; min-width: 100px">Status</th>
                             <th>Keterangan</th>
-                            <th style="{!! $display !!}">Kematangan</th>
+                            <th style="{!! $display !!}">Bobot Awal</th>
                             <th>Penilaian</th>
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
@@ -106,7 +106,7 @@
                                     <td>{{ $temp != null && $temp->pivot->waktu != null ? date('Y-m-d', strtotime($temp->pivot->waktu)) : '-' }}
                                     </td>
                                 @endforeach --}}
-                                <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
                                 <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
                                 </td>
 
@@ -140,7 +140,7 @@
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Inovasi"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
-                                        @if ($item->kategori_id == 5)
+                                        {{-- @if ($item->kategori_id == 5)
                                             <form style="all: unset" action="{{ route('inovasi.update') }}"
                                                 method="post">
                                                 @csrf
@@ -156,7 +156,7 @@
                                                         Inovasi</button>
                                                 @endif
                                             </form>
-                                        @endif
+                                        @endif --}}
                                     @endif
                                     @if ($item->status == 2)
                                         <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"

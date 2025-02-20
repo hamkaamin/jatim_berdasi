@@ -106,10 +106,13 @@
                     </div>
 
 
+                    <br><br><br>
                     <div class="row mt-4">
-                        <div class="col text-right">
+                        <div class="col text-left">
                             <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
                                 class="btn btn-light btn-lg">Batal</a>
+                        </div>
+                        <div class="col text-right">
 
                             @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
                                 <button class="btn btn-success btn-lg" type="submit" name="status"
@@ -148,7 +151,7 @@
         </h3>
     @endif
     <br><br><br><br><br>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-9"></div>
         <div class="col-md-3">
             @if ($data != null && $data->status == 0)
@@ -172,7 +175,7 @@
                     onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
             @endif
         </div>
-    </div>
+    </div> --}}
 @endsection
 
 <script>
