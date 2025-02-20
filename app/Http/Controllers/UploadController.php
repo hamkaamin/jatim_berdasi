@@ -54,7 +54,6 @@ class UploadController extends Controller
                 } else {
                     if($request->file($col[1])){
                         $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
-                        dd($nama_file);
                         if($nama_file == 'file_error')
                         {
                             return redirect()->back()->with('error', 'Coba file lainnya');
