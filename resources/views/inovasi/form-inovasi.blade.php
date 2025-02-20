@@ -151,9 +151,6 @@
     <div class="row">
         <div class="col-md-9"></div>
         <div class="col-md-3">
-            <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
-                class="btn btn-light">
-                Kembali</a>
             @if ($data != null && $data->status == 0)
                 <form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
                     @csrf

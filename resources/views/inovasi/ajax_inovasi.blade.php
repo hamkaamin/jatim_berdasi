@@ -247,7 +247,7 @@
      <div class="col-sm-3 d-flex align-items-center"><label><b>Hasil Inovasi</b><span
                  class="text-danger">*</span></label></div>
      <div class="col-sm-8">
-         <textarea name="hasil" class="ck-editor" required id="editor4">
+         <textarea name="hasil" class="ck-editor" required id="editor1">
 @if ($data != null)
 {!! $data->hasil !!}
 @else

@@ -25,9 +25,9 @@
                     value="{{ $data != null ? $data->email : '' }}"></div>
         </div>
         <div class="row my-2">
-            <div class="col-sm-4 d-flex align-items-center"><label>Telepon <span class="text-danger">*</span></label>
+            <div class="col-sm-4 d-flex align-items-center"><label>Telepon </label>
             </div>
-            <div class="col-sm-8"><input type="number" name="phone" class="form-control" required
+            <div class="col-sm-8"><input type="number" name="phone" class="form-control"
                     value="{{ $data != null ? $data->phone : '' }}"></div>
         </div>
         <div class="row my-2" style="display: none;">

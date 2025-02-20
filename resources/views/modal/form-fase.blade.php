@@ -30,8 +30,15 @@
         <div class="mb-3 row">
             <label class="control-label col-sm-3">Nama</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" name="nama" required=""
-                    value="{{ $data != null ? $data->nama : '' }}">
+                <select class="form-control" name="nama" id="nama">
+                    <option {{ $data != null && $data->nama == 'iga' ? 'selected' : '' }} value="iga">IGA</option>
+                    <option {{ $data != null && $data->nama == 'inotek' ? 'selected' : '' }} value="inotek">Inotek
+                    </option>
+                    <option {{ $data != null && $data->nama == 'kovablik' ? 'selected' : '' }} value="kovablik">Kovablik
+                    </option>
+                </select>
+                {{-- <input type="text" class="form-control" name="nama" required=""
+                    value="{{ $data != null ? $data->nama : '' }}"> --}}
             </div>
         </div>
         <div class="mb-3 row">

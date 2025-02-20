@@ -43,11 +43,6 @@ class FaseController extends Controller
         $lastid = (@$fase->id ?? 0) + 2;
         $active = $request->active;
 
-        if ($request->id == 0) {
-            $data = new Fase();
-        } else {
-            $data = Fase::findOrFail($request->id);
-        }
         // $data = [
         //     'nama' => $nama,
         //     'keterangan' => $keterangan,
@@ -62,6 +57,11 @@ class FaseController extends Controller
             Fase::where('active', 1)->update(['active' => 0,'timer'=>0]);
         }
 
+        if ($request->id == 0) {
+            $data = new Fase();
+        } else {
+            $data = Fase::findOrFail($request->id);
+        }
         $data->nama = $request->nama;
         $data->keterangan = $request->keterangan;
         $data->tahun = $request->tahun;

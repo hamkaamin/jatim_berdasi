@@ -137,7 +137,13 @@
     <li class="{{ Request::routeIs('master.contact.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.contact.index') }}"
             class="{{ Request::routeIs('master.contact.*') ? 'active' : '' }}">
-            <i class="uil-cog"></i> <span>Contact</span>
+            <i class="fa fa-address-book"></i> <span>Contact</span>
+        </a>
+    </li>
+
+    <li class="{{ Request::routeIs('master.fase.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.fase.index') }}" class="{{ Request::routeIs('master.fase.*') ? 'active' : '' }}">
+            <i class="metismenu-icon pe-7s-timer"></i> <span>Fase</span>
         </a>
     </li>
 
@@ -331,11 +337,6 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
     </a>
 </li>
 
-<li class="{{ Request::routeIs('master.fase.*') ? 'mm-active' : '' }}">
-    <a href="{{ route('master.fase.index') }}" class="{{ Request::routeIs('master.fase.*') ? 'active' : '' }}">
-        <i class="metismenu-icon pe-7s-timer"></i> <span>Fase</span>
-    </a>
-</li>
 
 
 {{-- <li>
