@@ -6,10 +6,10 @@
             <span>Dashboard</span>
         </a>
     </li>
-    {{-- <li>
-<a href="{{ route('pengumuman.index') }}" class="{{ Request::routeIs('pengumuman') ? 'mm-active' : '' }}">
-<i class="metismenu-icon pe-7s-home"></i> Pengumuman
-</a> --}}
+    <li>
+        <a href="{{ route('pengumuman.index') }}" class="{{ Request::routeIs('pengumuman') ? 'mm-active' : '' }}">
+            <i class="metismenu-icon pe-7s-home"></i> <span>Pengumuman</span>
+        </a>
     </li>
     <li class="menu-title">Master Data</li>
     <li class="{{ Request::routeIs('master.indikator.*') ? 'mm-active' : '' }}">
