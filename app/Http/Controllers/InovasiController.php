@@ -233,6 +233,7 @@ class InovasiController extends Controller
             $urusan = Urusan::all();
             $tematik = Tematik::all();
             $kategori = KategoriInovasi::all();
+            $view = 'inovasi.detail-inovasi';
             if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
                 $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
             }else{
@@ -248,6 +249,9 @@ class InovasiController extends Controller
                 $id = decrypt($request->id);
                 $data = Inovasi::findOrFail($id);
                 $label = $data->label;
+                if($data->kategori_id == 5){
+                    $view = 'inovasi.detail-inovasi-kategori-5';
+                }
             }
 
             if (isset($request->label)) {
@@ -256,7 +260,7 @@ class InovasiController extends Controller
             if($label == 0){
                 $kategori = $kategori->where('kategori_id',1);
             }
-            return view('inovasi.detail-inovasi', compact('data','kategori', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
+            return view($view, compact('data','kategori', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
     }
 
     public function limit_words($string, $word_limit) {

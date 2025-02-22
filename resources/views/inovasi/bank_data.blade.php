@@ -50,18 +50,11 @@
                                         </td>
                                         <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
                                         <td>
-                                            @if ($item->status != 0)
-                                                <a target="_blank"
-                                                    href="{{ route('inovasi.export', ['type' => 'pdf', 'id' => $item->id]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
-                                                    data-placement="top" title="Download Pdf"><i
-                                                        class="fa fa-file-pdf"></i>&nbsp;&nbsp;PDF</a>
-                                                <a target="_blank"
-                                                    href="{{ route('inovasi.export', ['type' => 'excel', 'id' => $item->id]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-success" data-toggle="tooltip"
-                                                    data-placement="top" title="Download Excel"><i
-                                                        class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
-                                            @endif
+
+                                            <a href="{{ route('inovasi.detail', ['id' => encrypt($item->id)]) }}"
+                                                class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
+                                                data-placement="top" title="Detail Inovasi"><i
+                                                    class="fa fa-eye"></i>&nbsp;&nbsp;Detail</a>
                                             <a href="{{ route('inovasi.indikator.index', ['id' => $item->id, 'area' => 'bank_data']) }}"
                                                 class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
                                                 data-placement="top" title="Upload Indikator"><i
