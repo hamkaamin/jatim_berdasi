@@ -175,6 +175,7 @@ class PenggunaController extends Controller
         $data->phone = $request->phone;
         $data->jabatan_id = $request->jabatan_id;
         $data->golongan_id = $request->golongan_id;
+        $data->tahun = Auth::user()->tahun;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
