@@ -194,6 +194,10 @@
         .col-3:nth-child(7n+1) .rainbow-card-afu {
             background-color: #A06FFF;
         }
+
+        .dataTables_wrapper table.table {
+            width: 100% !important;
+        }
     </style>
 </head>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
