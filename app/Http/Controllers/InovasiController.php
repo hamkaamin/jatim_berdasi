@@ -38,8 +38,8 @@ class InovasiController extends Controller
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
-            $inovasi = Inovasi::where('status', 2);
-            $label = "Daerah";
+            $inovasi = Inovasi::where('label', 0)->where('status', 0);
+            $label = "IGA";
         } elseif ($area == 'masyarakat') {
             $inovasi = Inovasi::where('label', 1);
             $label = "Awards";
@@ -84,8 +84,8 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
-        $inovasi->where('tahun',Auth::user()->tahun)->get();
-        $inovasi = $inovasi->get();
+        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get();
+        // dd($inovasi);
         // dd($inovasi);
         // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriInovasi::get();
@@ -109,13 +109,12 @@ class InovasiController extends Controller
     public function show_inovasi(Request $request){
         $area = $request->area;
         $tahapan = Tahapan::all();
-        $kategori = KategoriInovasi::orderBy('id','asc')->get();
         $inovasi = Inovasi::where('deleted_at', 0);
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
-            $inovasi = Inovasi::where('status', 2);
-            $label = "Daerah";
+            $inovasi = Inovasi::where('label', 0)->where('status','<>' ,0);
+            $label = "IGA";
         } elseif ($area == 'masyarakat') {
             $inovasi = Inovasi::where('label', 1);
             $label = "Awards";
@@ -129,9 +128,9 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         } elseif($area == 'kota'){
-            $label = "Kota / Kab";
+            $label = "Inotek";
             $tahapan = Tahapan::where('id','<>',6)->get();
-            $inovasi = Inovasi::where('label', 0);
+            $inovasi = Inovasi::where('label', 1);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
@@ -160,14 +159,12 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
-        if($request->status != ''){
-            $inovasi = $inovasi->where('status',$request->status);
-        }
-        if($request->kategori != ''){
-            $inovasi = $inovasi->where('kategori_id',$request->kategori);
-        }
-        $inovasi->where('tahun',Auth::user()->tahun)->get();
-        $inovasi = $inovasi->get();
+        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get();
+        // dd($inovasi);
+        // dd($inovasi);
+        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
+        $kategori = KategoriInovasi::get();
+        $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase'));
     }

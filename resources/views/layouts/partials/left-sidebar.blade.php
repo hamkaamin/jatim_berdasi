@@ -28,6 +28,8 @@
              <ul class="metismenu list-unstyled" id="side-menu">
                  @if (Auth::user()->role == 5)
                      @include('layouts.menu_provinsi')
+                 @elseif(Auth::user()->role == 2)
+                     @include('layouts.menu_verifikator')
                  @elseif(Auth::user()->role == 7)
                      @include('layouts.menu_juri')
                  @else
