@@ -64,11 +64,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mb-0">
-
+                                    <div class="row mb-0"> 
                                         <div class="col text-center">
-                                            <div class="g-recaptcha mt-4"
-                                                data-sitekey="{{ config('services.recaptcha.key') }}"></div>
+                                            <div class="g-recaptcha mt-4" data-sitekey="{{ config('services.recaptcha.key') }}"></div>
                                             <div id="txt_google_captcha_usulan"></div>
                                             {{-- <button class="g-recaptcha"
                                                 data-sitekey="6LdNA7wpAAAAAEP3b_5cVPE7Y5KN-JEn4j4Y9CG0"
