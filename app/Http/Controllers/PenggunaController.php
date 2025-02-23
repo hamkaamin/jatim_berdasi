@@ -18,7 +18,7 @@ class PenggunaController extends Controller
     public function index(Request $request)
     {
         set_time_limit(0);  
-        $roles = Role::orderBy('id','desc')->get(); 
+        $roles = Role::orderByRaw('id != 5, id != 4')->get(); 
         return view('daftar-pengguna', compact('roles','request'));
     }
 
@@ -69,6 +69,10 @@ class PenggunaController extends Controller
 
     public function save(Request $request)
     {
+        $menu_inotek = @$request->menu_inotek ?? 0;
+        $menu_iga = @$request->menu_iga ?? 0;
+        $menu_kovablik = @$request->menu_kovablik ?? 0;
+        
         $username = strtolower($request->username);
         if ($request->id == 0) {
             $validated = $request->validate([
@@ -116,6 +120,9 @@ class PenggunaController extends Controller
         $data->jabatan_id = $request->jabatan_id;
         $data->golongan_id = $request->golongan_id;
         $data->tahun = Auth::user()->tahun;
+        $data->menu_inotek = !empty($menu_inotek) ? 1 : 0;
+        $data->menu_iga = !empty($menu_iga) ? 1 : 0;
+        $data->menu_kovablik = !empty($menu_kovablik) ? 1 : 0;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }

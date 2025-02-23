@@ -30,6 +30,16 @@
             <div class="col-sm-8"><input type="number" name="phone" class="form-control"
                     value="{{ $data != null ? $data->phone : '' }}"></div>
         </div>
+        <div class="row my-2">
+            <div class="col-sm-4 d-flex align-items-center"><label>Akses Menu </label>
+            </div>
+            <div class="col-sm-8">
+                <ul>
+                    <li><input {{ $data != null && $data->menu_inotek == 1 ? 'checked' : '' }} type="checkbox" name="menu_inotek" id="tmb_menu_inotek" > <label for="tmb_menu_inotek">Inotek</label></li>
+                    <li><input {{ $data != null && $data->menu_iga == 1 ? 'checked' : '' }} type="checkbox" name="menu_iga" id="tmb_menu_iga" > <label for="tmb_menu_iga">IGA</label></li>
+                    <li><input {{ $data != null && $data->menu_kovablik == 1 ? 'checked' : '' }} type="checkbox" name="menu_kovablik" id="tmb_menu_kovablik" > <label for="tmb_menu_kovablik">Kovablik</label></li>
+            </div>
+        </div>
         <div class="row my-2" style="display: none;">
             <div class="col-sm-4 d-flex align-items-center"><label>Jabatan</label></div>
             <div class="col-sm-8">

@@ -38,27 +38,40 @@
     <ul class="sub-menu" aria-expanded="true">
 
         @php
-            $fase = App\Models\Fase::where('active', 1)->where('timer', 1)->first();
-            $d_iga = 'none';
-            $d_inotek = 'none';
-        @endphp
-        @if ($fase->nama == 'iga')
-            @php $d_iga = 'block'; @endphp
-        @elseif($fase->nama == 'inotek')
-            @php $d_inotek = 'block'; @endphp
+            $fase = App\Models\Fase::where('active', 1)->where('timer', 1)->first(); 
+        @endphp 
+        @if(Auth::user()->menu_iga == 1)
+            @if($fase->nama == 'iga')
+                <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+                    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                        class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
+                    </a>
+                </li>
+            @else 
+                <li>
+                    <a href="javascript:;" onclick="alertKu('warning', 'Fase peninputan IGA sedang ditutup')">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
+                    </a>
+                </li>
+            @endif
         @endif
-        <li style="{{ 'display:' . $d_iga }}" class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
-            <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
-                class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
-                <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
-            </a>
-        </li>
-        <li style="{{ 'display:' . $d_inotek }}" class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
-                class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
-                <i class="metismenu-icon pe-7s-light"></i> <span>Inotek</span>
-            </a>
-        </li>
+        @if(Auth::user()->menu_inotek == 1)
+            @if($fase->nama == 'inotek')
+                <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+                    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                        class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>Inotek</span>
+                    </a>
+                </li>
+            @else 
+                <li>
+                    <a href="javascript:;" onclick="alertKu('warning', 'Fase peninputan Inotek sedang ditutup')">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>Inotek</span>
+                    </a>
+                </li>
+            @endif
+        @endif
     </ul>
 </li>
 

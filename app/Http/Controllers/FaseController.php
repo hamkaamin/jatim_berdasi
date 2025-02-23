@@ -15,7 +15,7 @@ class FaseController extends Controller
      */
     public function index()
     {
-        $data = Fase::get();
+        $data = Fase::orderBy('id','desc')->get();
         return view('master.fase', compact('data'));
     }
 
@@ -41,18 +41,8 @@ class FaseController extends Controller
         $keterangan = $request->keterangan;
         $fase = Fase::orderBy('id', 'desc')->first();
         $lastid = (@$fase->id ?? 0) + 2;
-        $active = $request->active;
-
-        // $data = [
-        //     'nama' => $nama,
-        //     'keterangan' => $keterangan,
-        //     'tahun' => $request->tahun,
-        //     'tgl_berakhir' => $request->tgl_berakhir,
-        //     'kode' => $lastid . date('His'),
-        //     'active' => $active,
-        // ];
-
-        // Jika active bernilai 1, ubah semua record lain menjadi active = 0
+        $active = $request->active; 
+        
         if ($active == 1) {
             Fase::where('active', 1)->update(['active' => 0,'timer'=>0]);
         }
@@ -69,7 +59,6 @@ class FaseController extends Controller
         $data->kode = $request->kode;
         $data->active = $active;
         $data->timer = $active;
-        // dd($data);
         $data->save();
 
         $stat = 'status';

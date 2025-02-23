@@ -12,14 +12,18 @@
         <span>Penilaian</span>
     </a>
     <ul class="sub-menu" aria-expanded="true">
+        @if(Auth::user()->menu_iga == 1)
         <li class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'mm-active' : '' }}">
             <a href="{{ route('penilaian.index', ['jenis' => 'iga']) }}"
                 class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'active' : '' }}">IGA</a>
         </li>
+        @endif 
+        @if(Auth::user()->menu_inotek == 1)
         <li class="{{ Request::is('penilaian/inotek') ? 'mm-active' : '' }}">
             <a href="{{ route('penilaian.index', ['jenis' => 'inotek']) }}"
                 class="{{ Request::is('penilaian/inotek') ? 'active' : '' }}">Inotek Awards</a>
         </li>
+        @endif 
     </ul>
 </li>
 

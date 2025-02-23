@@ -7,19 +7,23 @@
 </li>
 <li class="menu-title">Lomba Inovasi Daerah</li>
 @if (env('APP_OPD_JATIM') == 0)
+    @if(Auth::user()->menu_iga == 1)
     <li class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
         <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
             class="{{ request()->is('inovasi/daerah') ? 'active' : '' }}">
             <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
         </a>
     </li>
+    @endif 
 
+    @if(Auth::user()->menu_inotek == 1)
     <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
         <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
             class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
             <i class="metismenu-icon pe-7s-light"></i> <span>INOTEK AWARDS</span>
         </a>
     </li>
+    @endif 
 @else
     <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
         <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"

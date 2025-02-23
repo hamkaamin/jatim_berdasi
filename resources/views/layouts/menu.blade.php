@@ -193,37 +193,42 @@
         @endif
     </div>
     <li class="menu-title">Data Inovasi Daerah</li>
-    @if (env('APP_OPD_JATIM') == 0)
-
+    @if (env('APP_OPD_JATIM') == 0) 
         @if (Auth::user()->role == 5)
-            <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
-                <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
-                    class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
-                </a>
-            </li>
+            @if(Auth::user()->menu_iga == 1)
+                <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+                    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                        class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
+                    </a>
+                </li>
+            @endif
         @else
-            <li class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
-                <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
-                    class="{{ request()->is('inovasi/daerah') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Daerah</span>
-                </a>
-            </li>
+            @if(Auth::user()->menu_inotek == 1)
+                <li class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
+                    <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
+                        class="{{ request()->is('inovasi/daerah') ? 'active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Daerah</span>
+                    </a>
+                </li>
+                <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
+                    <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
+                        class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
+                        <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Daerah (Kota /
+                            Kab)</span>
+                    </a>
+                </li>
+            @endif
+        @endif
+    @else
+        @if(Auth::user()->menu_inotek == 1)
             <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
                     class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>Inovasi Daerah (Kota /
-                        Kab)</span>
+                    <i class="metismenu-icon pe-7s-light"></i> <span>INOTEK AWARDS</span>
                 </a>
             </li>
         @endif
-    @else
-        <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-            <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
-                <i class="metismenu-icon pe-7s-light"></i> <span>INOTEK AWARDS</span>
-            </a>
-        </li>
     @endif
 
     @if (env('APP_PROVINSI_JATIM') == 0)
@@ -240,6 +245,7 @@
                     </a>
                     </li> --}}
         @endif
+        @if(Auth::user()->menu_inotek == 1)
         @if (env('APP_OPD_JATIM') == 1)
             <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
@@ -255,6 +261,7 @@
                     <i class="metismenu-icon pe-7s-light"></i> <span>Inotek</span>
                 </a>
             </li>
+        @endif
         @endif
         {{-- <li class="menu-title">Laporan</li>
 <li>
@@ -300,14 +307,18 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
                 <span>Penilaian</span>
             </a>
             <ul class="sub-menu" aria-expanded="true">
+                @if(Auth::user()->menu_iga == 1)
                 <li class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'mm-active' : '' }}">
                     <a href="{{ route('penilaian.index', ['jenis' => 'iga']) }}"
                         class="{{ Request::is('penilaian/iga') && request('jenis') == 'iga' ? 'active' : '' }}">IGA</a>
                 </li>
+                @endif 
+                @if(Auth::user()->menu_inotek == 1)
                 <li class="{{ Request::is('penilaian/inotek') ? 'mm-active' : '' }}">
                     <a href="{{ route('penilaian.index', ['jenis' => 'inotek']) }}"
                         class="{{ Request::is('penilaian/inotek') ? 'active' : '' }}">Inotek Awards</a>
                 </li>
+                @endif 
             </ul>
         </li>
     @endif
