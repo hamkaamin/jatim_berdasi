@@ -14,8 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('indikator_provinsi')->where('provinsi_id', 35)->update([
-            'bobot_akhir' => 10
-        ]);
+        $this->call(RoleSeeder::class);
+        // DB::table('indikator_provinsi')->where('provinsi_id', 35)->update([
+        //     'bobot_akhir' => 10
+        // ]);
     }
 }

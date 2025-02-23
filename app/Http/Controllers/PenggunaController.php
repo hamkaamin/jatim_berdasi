@@ -1,16 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Auth;
+ 
 use Config;
 use Hash;
 use Helper;
 use App\Models\Kota;
 use App\Models\Opd;
 use App\Models\Provinsi;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PenggunaController extends Controller
 {
@@ -77,8 +78,10 @@ class PenggunaController extends Controller
 
             }
         }
-        $data = $data->get();
-        // dd($data);
+        $role_distinct = $data->pluck('role')->unique();
+        $roles = Role::whereIn('id', $role_distinct)->get();
+        dd($roles, $role_distinct);
+        $data = $data->get(); 
         return view('daftar-pengguna', compact('data'));
     }
 
