@@ -279,7 +279,7 @@
                     {{ ucwords(Auth::user()->name) }}
                 </div>
                 <div class="widget-subheading text-muted">
-                    {{ Helper::getRole(Auth::user()->role) }}
+                    {{ Auth::user()->roles->nama }}
                 </div>
             </div>
 
