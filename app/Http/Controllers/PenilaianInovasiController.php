@@ -6,8 +6,11 @@ use App\Models\Inovasi;
 use App\Models\Juri;
 use App\Models\KategoriInovasi;
 use App\Models\Penilaian;
+use App\Models\PenilaianMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class PenilaianInovasiController extends Controller
 {
@@ -62,6 +65,7 @@ class PenilaianInovasiController extends Controller
         $jenis = $request->jenis;
         $id = decrypt($request->id);
         $inovasi = Inovasi::findOrFail($id);
+        $juri = Juri::where('user_id',Auth::user()->id)->first();
             $data = [];
             if ($inovasi->penilaian()->wherePivot('user_id', Auth::id())->count() == 0) {
                 $penilaians = Penilaian::where('kategori_id', $inovasi->kategori_id)->get();
@@ -71,8 +75,9 @@ class PenilaianInovasiController extends Controller
                     ]);
                 }
             }
-            $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->get();
-        return view('penilaian.edit', compact('data','inovasi','jenis'));
+        $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->get();
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->first();
+        return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map'));
     }
 
     public function show(Request $request)
@@ -90,28 +95,68 @@ class PenilaianInovasiController extends Controller
 
     public function save(Request $request)
     {
-        $request->validate([
-            'inovasi_id' => 'required|integer|exists:inovasis,id',
-        ]);
-        
-        $inovasi = Inovasi::findOrFail($request->inovasi_id);
-        
-        foreach ($request->except('_token', 'inovasi_id') as $key => $value) {
-            if (strpos($key, 'keterangan_') === 0) {
-                $penilaianId = str_replace('keterangan_', '', $key);
-                $catatanSaran = $value;
-                $nilai = $request->input("nilai_$penilaianId");
-        
-                $pivot = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('penilaian_id', $penilaianId);
-        
-                if ($pivot->exists()) {
-                    $pivot->updateExistingPivot($penilaianId, [
-                        'catatan_saran' => $catatanSaran,
-                        'nilai' => $nilai,
-                    ]);
+        DB::beginTransaction();
+        try {
+                $inovasi = Inovasi::findOrFail($request->inovasi_id);
+                $total_nilai = 0;
+
+                foreach ($request->except('_token', 'inovasi_id') as $key => $value) {
+                    if (strpos($key, 'keterangan_') === 0) {
+                        $penilaianId = str_replace('keterangan_', '', $key);
+                        $catatanSaran = $value;
+                        $nilai = $request->input("nilai_$penilaianId");
+
+                        if (is_numeric($nilai)) {
+                            $pivot = $inovasi->penilaian()
+                                ->wherePivot('user_id', Auth::id())
+                                ->wherePivot('penilaian_id', $penilaianId)
+                                ->first();
+
+                            if ($pivot) {
+                                $inovasi->penilaian()->updateExistingPivot($penilaianId, [
+                                    'catatan_saran' => $catatanSaran,
+                                    'nilai' => $nilai,
+                                ]);
+                                $total_nilai += $nilai;
+                            }
+                        }
+                    }
                 }
+
+            // Proses tanda tangan
+            if ($request->has('signature_data')) {
+                $signatureData = $request->input('signature_data');
+                $signatureName = 'signature_' . time() . '.png';
+                $signaturePath = public_path('uploads/signatures/');
+
+                // Buat folder jika belum ada
+                if (!File::exists($signaturePath)) {
+                    File::makeDirectory($signaturePath, 0755, true);
+                }
+
+                $signatureData = str_replace('data:image/png;base64,', '', $signatureData);
+                $signatureData = str_replace(' ', '+', $signatureData);
+                $signatureImage = base64_decode($signatureData);
+                file_put_contents($signaturePath . $signatureName, $signatureImage);
+                if($request->penilaian_map != null || !empty($request->penilaian_map)) {
+                    $penilaian_map = PenilaianMap::find($request->penilaian_map);
+                }else{
+                    $penilaian_map = new PenilaianMap();
+                }
+                $penilaian_map->inovasi_id = $inovasi->id;
+                $penilaian_map->juri_id = $request->juri_id;
+                $penilaian_map->total_nilai = $total_nilai;
+                $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;
+                $penilaian_map->save();
             }
+
+        DB::commit();
+        return redirect()->back()->with('success', 'Data penilaian berhasil diperbarui!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
+
         return redirect()->back()->with('success', 'Data penilaian berhasil diperbarui!');
         
     }
