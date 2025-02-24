@@ -91,12 +91,12 @@
                                             @endif
 
                                             @if (Auth::user()->role == 7)
-                                                <a href="{{ route('penilaian.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id]) }}"
+                                                <a href="{{ route('penilaian.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id, 'jenis' => $jenis]) }}"
                                                     class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                                     data-placement="top" title="Penilaian Inovasi"><i
                                                         class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
                                             @else
-                                                <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
+                                                <a href="{{ route('penilaian.show', ['id' => encrypt($item->id), 'jenis' => $jenis]) }}"
                                                     class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                                     data-placement="top" title="Penilaian Inovasi"><i
                                                         class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>

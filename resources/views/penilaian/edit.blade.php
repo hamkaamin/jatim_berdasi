@@ -72,8 +72,9 @@
                         <strong>Total Nilai:</strong>
                         <span class="h4 font-weight-bold">{{ $totalNilai }}</span>
                     </div>
-
-                    <div class="text-end">
+                    <br>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ route('penilaian.index', $jenis) }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

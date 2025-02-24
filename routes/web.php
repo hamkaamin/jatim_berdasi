@@ -241,6 +241,8 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/form/edit', [PenilaianInovasiController::class, 'edit'])->name('edit');
             Route::post('/form/save', [PenilaianInovasiController::class, 'save'])->name('save');
             Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
+
+            Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');
         });
 
         Route::prefix('rekap')->name('rekap.')->group(function () {

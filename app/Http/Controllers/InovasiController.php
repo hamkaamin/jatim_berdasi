@@ -163,7 +163,7 @@ class InovasiController extends Controller
         // dd($inovasi);
         // dd($inovasi);
         // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
-        $kategori = KategoriInovasi::get();
+        $kategori = KategoriInovasi::orderBy('id','asc')->get();
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase'));

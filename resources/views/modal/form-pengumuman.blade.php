@@ -26,7 +26,7 @@
         </div>
         <div class="row my-2">
             <div class="col-sm-4 d-flex align-items-center"><label>File</label></div>
-            <div class="col-sm-8"><input type="file" accept="" name="file">
+            <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="file">
                 @if ($data != null && $data->file != null)
                     <br><a target="_blank" href="{{ $data->file }}">Download File
                         Pengumuman</a>

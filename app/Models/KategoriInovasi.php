@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class KategoriInovasi extends Model
 {
@@ -35,5 +36,30 @@ class KategoriInovasi extends Model
     public function juris()
     {
         return $this->hasMany(Juri::class, 'kategori_id', 'id');
+    }
+
+    public function get_penilaian_inovasi($jenis,$kategori_id)
+    {
+        if($jenis == 'iga'){
+                $inovasi = Inovasi::where('label',0)->where('status',2)->where('kategori_id',$kategori_id)->where('tahun',Auth::user()->tahun)->get()
+                ->sortByDesc(function ($item) {
+                    $jurisCount = sizeof($item->kategori->juris);
+                    $totalNilai = $item->penilaian->sum('pivot.nilai');
+                    return $jurisCount > 0 ? $totalNilai / $jurisCount : 0;
+                });
+        }else if($jenis == 'inotek'){
+            $inovasi = Inovasi::with(['kategori.juris', 'penilaian']) // Load relasi
+            ->where('label', 1)
+            ->where('status', 2)
+            ->where('kategori_id',$kategori_id)
+            ->where('tahun',Auth::user()->tahun)
+            ->get() // Ambil data dulu
+            ->sortByDesc(function ($item) {
+                $jurisCount = sizeof($item->kategori->juris);
+                $totalNilai = $item->penilaian->sum('pivot.nilai');
+                return $jurisCount > 0 ? $totalNilai / $jurisCount : 0;
+            });
+        }
+        return $inovasi;
     }
 }
