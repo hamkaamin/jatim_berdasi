@@ -199,7 +199,7 @@
                 <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
                     <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
                         class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
-                        <i class="metismenu-icon pe-7s-light"></i> <span>IGA</span>
+                        <i class="uil-trophy"></i> <span>IGA</span>
                     </a>
                 </li>
             @endif
@@ -225,7 +225,7 @@
             <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
                     class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>INOTEK AWARDS</span>
+                    <i class="uil-medal"></i> <span>INOTEK AWARDS</span>
                 </a>
             </li>
         @endif
@@ -250,7 +250,7 @@
             <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
                     class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>Inotek Awards
+                    <i class="uil-medal"></i> <span>INOTEK Awards
                         {{ env('APP_NAMA_APLIKASI') }}</span>
                 </a>
             </li>
@@ -258,7 +258,7 @@
             <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
                 <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
                     class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
-                    <i class="metismenu-icon pe-7s-light"></i> <span>Inotek</span>
+                    <i class="uil-medal"></i> <span>INOTEK</span>
                 </a>
             </li>
         @endif
@@ -294,7 +294,7 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
     <li class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
         <a href="{{ route('bank_data.index', ['area' => 'bank_data']) }}"
             class="{{ Request::routeIs('bank_data.*') ? 'active' : '' }}">
-            <i class="metismenu-icon pe-7s-light"></i> <span>Bank Data</span>
+            <i class="uil-books pe-7s-light"></i> <span>Bank Data</span>
         </a>
     </li>
 
@@ -344,7 +344,7 @@ class="{{ request()->is('rekap/inisiator') ? 'mm-active' : '' }}">
 <li class="menu-title">Panduan Aplikasi</li>
 <li class="{{ Request::routeIs('panduan.*') ? 'mm-active' : '' }}">
     <a href="{{ route('panduan') }}" class="{{ Request::routeIs('panduan.*') ? 'active' : '' }}">
-        <i class="metismenu-icon pe-7s-notebook"></i> <span>Panduan</span>
+        <i class="uil-video pe-7s-notebook"></i> <span>Panduan</span>
     </a>
 </li>
 

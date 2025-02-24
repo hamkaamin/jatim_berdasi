@@ -54,7 +54,7 @@
 <li class="menu-title">Panduan Aplikasi</li>
 <li class="{{ Request::routeIs('panduan.*') ? 'mm-active' : '' }}">
     <a href="{{ route('panduan') }}" class="{{ Request::routeIs('panduan.*') ? 'active' : '' }}">
-        <i class="metismenu-icon pe-7s-notebook"></i> <span>Panduan</span>
+        <i class="uil-video pe-7s-notebook"></i> <span>Panduan</span>
     </a>
 </li>
 
