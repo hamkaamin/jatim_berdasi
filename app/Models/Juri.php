@@ -14,4 +14,9 @@ class Juri extends Model
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id')->withTrashed();        ;
     }
+
+    public function penilaianMap()
+    {
+        return $this->hasMany('App\Models\PenilaianMap', 'juri_id', 'id');
+    }
 }

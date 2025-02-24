@@ -19,7 +19,27 @@
                 @foreach ($kategori_juri as $user_id)
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5>{{ App\Models\User::find($user_id)->name }}</h5>
+                            @php
+                                $penilaian_map = App\Models\PenilaianMap::whereIn('juri_id', function ($query) use (
+                                    $user_id,
+                                ) {
+                                    $query->select('id')->from('juris')->where('user_id', $user_id);
+                                })->first();
+
+                            @endphp
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h5>{{ App\Models\User::find($user_id)->name }} </h5>
+                                </div>
+
+                                <div class="d-flex col-md-2">
+                                    <i
+                                        class="fas {{ @$penilaian_map->signature_path ? 'fa-check-circle text-success' : 'fa-exclamation-triangle text-warning' }} fa-2x"></i>
+                                    <div class="fw-semibold">
+                                        {{ @$penilaian_map->signature_path ? 'Sudah Ditandatangani' : 'Belum Ditandatangani' }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered table-hover">

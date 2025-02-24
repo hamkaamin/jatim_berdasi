@@ -86,11 +86,11 @@ class PenilaianInovasiController extends Controller
         $id =decrypt($request->id);
         $inovasi = Inovasi::findOrFail($id);
         $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
-
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->get();
         $data = $inovasi->penilaian()
                 ->whereIn('user_id', $kategori_juri) // Filter berdasarkan kategori juri
                 ->get();
-        return view('penilaian.show', compact('kategori_juri','inovasi','data','jenis'));
+        return view('penilaian.show', compact('kategori_juri','inovasi','data','jenis','penilaian_map'));
     }
 
     public function save(Request $request)
