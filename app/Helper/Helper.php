@@ -107,22 +107,52 @@ class Helper
 		return false;
 	}
 
+	// public static function save_file($file, $name, $folder, $existing)
+	// {
+	// 	try {
+	// 		if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
+	// 			unlink(public_path('/'.$folder.'/'.$existing));
+	// 		}
+	// 		$nama_file = env('APP_URL').'/'.$folder.'/'.$name.'.'.$file->getClientOriginalExtension();
+	// 		$file->move($folder, $nama_file);
+	// 		return $nama_file;
+	// 	} catch (\Throwable $th) {
+	// 		// if(Auth::user()->username == 'balitbangda_kabupaten_bangkalan'){
+	// 		// 	throw $th;
+	// 		// }
+	// 		$nama_file = "file_error";
+
+	// 		return $nama_file;
+	// 	}
+	// }
+
 	public static function save_file($file, $name, $folder, $existing)
 	{
 		try {
-			if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
-				unlink(public_path('/'.$folder.'/'.$existing));
+			// Hapus file lama jika ada
+			if ($existing && file_exists(public_path("$folder/$existing"))) {
+				unlink(public_path("$folder/$existing"));
 			}
-			$nama_file = env('APP_URL').'/'.$folder.'/'.$name.'.'.$file->getClientOriginalExtension();
-			$file->move($folder, $nama_file);
-			return $nama_file;
-		} catch (\Throwable $th) {
-			// if(Auth::user()->username == 'balitbangda_kabupaten_bangkalan'){
-			// 	throw $th;
-			// }
-			$nama_file = "file_error";
 
-			return $nama_file;
+			// Validasi ekstensi
+			$allowedExtensions = ['jpeg', 'png', 'jpg', 'xls', 'xlsx', 'csv', 'pdf'];
+			$extension = strtolower($file->getClientOriginalExtension());
+
+			if (!in_array($extension, $allowedExtensions)) {
+				return 'file_error';
+			}
+
+			// Simpan file dengan nama baru
+			$fileName = $name . '.' . $extension;
+			$file->move(public_path($folder), $fileName);
+
+			// Kembalikan path relatif file
+			return "$folder/$fileName";
+
+		} catch (\Throwable $th) {
+			// Log error jika diperlukan
+			// Log::error("File upload error: " . $th->getMessage());
+			return 'file_error';
 		}
 	}
 

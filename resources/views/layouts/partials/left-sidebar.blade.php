@@ -26,7 +26,7 @@
          <div id="sidebar-menu">
              <!-- Left Menu Start -->
              <ul class="metismenu list-unstyled" id="side-menu">
-                 @if (Auth::user()->role == 5)
+                 @if (Auth::user()->role == 5 || Auth::user()->role == 4)
                      @include('layouts.menu_provinsi')
                  @elseif(Auth::user()->role == 2)
                      @include('layouts.menu_verifikator')

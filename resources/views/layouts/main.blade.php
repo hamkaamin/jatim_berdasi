@@ -283,8 +283,8 @@
                             </button> --}}
                             </div>
                             <p class="mb-0">{!! $item->deskripsi !!}</p>
-                            @if ($item->file != null && file_exists(public_path('/file_pengumuman/' . $item->file)))
-                                <a target="_blank" href="{{ asset('file_pengumuman/' . $item->file) }}">View</a>
+                            @if ($item->file)
+                                <a target="_blank" href="{{ $item->file }}">View</a>
                             @else
                                 -
                             @endif

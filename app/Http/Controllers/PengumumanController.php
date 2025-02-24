@@ -49,6 +49,9 @@ class PengumumanController extends Controller
             $data->save();
             if ($request->hasFile('file')) {
                 $nama_file = Helper::save_file($request->file('file'), uniqid(), 'file_pengumuman', $data->file);
+                if ($nama_file == 'file_error') {
+                    return redirect()->back()->with('error', 'Coba file lainnya');
+                }
                 $data->file = $nama_file;
                 $data->save();
             }
