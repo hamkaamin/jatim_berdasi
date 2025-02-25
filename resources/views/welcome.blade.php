@@ -245,7 +245,7 @@
             </div>
         </div>
     @else
-        <div class="">
+        {{-- <div class="">
             <div id="line_chart_inovasi" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
                 class="apex-charts" dir="ltr">
             </div>
@@ -255,7 +255,7 @@
             <div id="column_chart_penilaian" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
                 class="apex-charts" dir="ltr">
             </div>
-        </div>
+        </div> --}}
         <div class="row">
             @for ($j = 0; $j <= 1; $j++)
                 @for ($i = 1; $i <= 4; $i++)
