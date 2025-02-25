@@ -9,9 +9,6 @@
 @endsection
 
 @section('content')
-    @php
-        dd('a');
-    @endphp
 
     @if (Auth::user()->role == 3)
         <div class="row">
@@ -248,6 +245,9 @@
             </div>
         </div>
     @else
+        @php
+            dd('a');
+        @endphp
         {{-- <div class="">
             <div id="line_chart_inovasi" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
                 class="apex-charts" dir="ltr">
