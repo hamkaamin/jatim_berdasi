@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginManualController extends Controller
 {
+    public function resetallpass()
+    {
+        $users = User::whereNotIn('role', [3,4,5,7]);
+        foreach($users as $u)
+        {
+            $u->password = Hash::make($u->username);
+            $u->save();
+        }
+        echo 'done';
+    }
     public function login_manual(Request $request)
     {
         $rules = ['captcha' => 'required|captcha'];

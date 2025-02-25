@@ -20,6 +20,7 @@ Route::group(['middleware' => ['XSS']], function () {
     Route::get('/coba_insert_inovasi', [App\Http\Controllers\HomeController::class, 'coba_insert_inovasi'])->name('coba_insert_inovasi');
     Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_all_opd'])->name('get_all_opd');
     Route::middleware(['auth'])->group(function () {
+        Route::get('resetallpass', [LoginManualController::class, 'resetallpass'])->name('resetallpass');
         Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
         Route::get('/insert_user_opd/{kota}', [App\Http\Controllers\HomeController::class, 'insert_user_opd'])->name('insert_user_opd');
         Route::get('/insert_all_user_opd_prov_jatim', [App\Http\Controllers\HomeController::class, 'insert_all_user_opd_prov_jatim'])->name('insert_all_user_opd_prov_jatim');
