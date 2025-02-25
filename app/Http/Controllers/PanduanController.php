@@ -11,7 +11,7 @@ class PanduanController extends Controller
     public function index()
     {
         $role = Auth::user()->role;
-        $data = MasterPanduan::where('role',$role)->get();
+        $data = MasterPanduan::get();
         return view('panduan.index',compact('data'));
     }
 }

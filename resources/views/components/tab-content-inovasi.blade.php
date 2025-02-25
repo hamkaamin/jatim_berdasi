@@ -29,9 +29,9 @@
                     </thead>
                     <tbody>
                         @php
-                            $status_label = 1;
+                            $status_label = 0;
                             if ($label == 'Awards') {
-                                $status_label = 0;
+                                $status_label = 1;
                             }
                             $data = [];
                             if ($kategori != null) {
