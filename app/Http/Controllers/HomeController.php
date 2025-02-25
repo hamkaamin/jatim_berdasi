@@ -156,18 +156,18 @@ class HomeController extends Controller
             return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user','contact'));
         } else {
             $arrayCount = [];
-            for ($i = 0; $i <= 1; $i++) {
-                for ($j = 1; $j <= 4; $j++) {
-                    $query = Inovasi::where('status', $j)->where('label', $i);
+            // for ($i = 0; $i <= 1; $i++) {
+            //     for ($j = 1; $j <= 4; $j++) {
+            //         $query = Inovasi::where('status', $j)->where('label', $i)->where('tahun',Auth::user()->tahun);
 
-                    if (Auth::user()->role == 4 || Auth::user()->role == 5) {
-                        $query->where('user_id', Auth::user()->id);
-                    }
+            //         if (Auth::user()->role == 4 || Auth::user()->role == 5) {
+            //             $query->where('user_id', Auth::user()->id);
+            //         }
 
-                    $count = $query->count();
-                    $arrayCount[$i][$j] = $count;
-                }
-            }
+            //         $count = $query->count();
+            //         $arrayCount[$i][$j] = $count;
+            //     }
+            // }
             $contact = Contact::first();
             return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount','contact'));
         }
