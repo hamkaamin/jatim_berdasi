@@ -8,6 +8,7 @@ use App\Models\KategoriInovasi;
 use App\Models\Penilaian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class PenilaianInovasiController extends Controller
 {
@@ -88,6 +89,22 @@ class PenilaianInovasiController extends Controller
         return view('penilaian.show', compact('kategori_juri','inovasi','data','jenis'));
     }
 
+    public function print($id)
+    { 
+        $id =decrypt($id);
+        $inovasi = Inovasi::findOrFail($id);  
+        $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
+
+        $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->get();  // Filter berdasarkan kategori juri 
+        $pdf = PDF::loadview('penilaian.print', compact('kategori_juri','inovasi','data')); 
+
+        $customPaper = array(0, 0, 595.35, 935.55);
+        $pdf->setPaper($customPaper);
+        $pdf->output(); 
+
+        return $pdf->stream('penilaian-'.$inovasi->nama.'-'.$inovasi->kode.'.pdf'); 
+    }
+
     public function save(Request $request)
     {
         $request->validate([
@@ -125,20 +142,11 @@ class PenilaianInovasiController extends Controller
                       ->from('juris')
                       ->where('user_id', Auth::user()->id);
             })->get();
-        }
-        // $inovasi = Inovasi::with(['kategori.juris', 'penilaian'])
-        // ->where('label', 1)
-        // ->where('status', 2)
-        // ->where('tahun',Auth::user()->tahun)
-        // ->get()
-        // ->sortByDesc(function ($item) {
-        //     $jurisCount = sizeof($item->kategori->juris);
-        //     $totalNilai = $item->penilaian->sum('pivot.nilai');
-        //     return $jurisCount > 0 ? $totalNilai / $jurisCount : 0;
-        // });
+        } 
+        
         if($jenis == 'iga'){
             $data_kategori = KategoriInovasi::where('id',1)->get();
-                return view('penilaian.index_ranking', compact('jenis','data_kategori'));
+            return view('penilaian.index_ranking', compact('jenis','data_kategori'));
         }else if($jenis == 'inotek'){
             return view('penilaian.index_ranking', compact('jenis','data_kategori'));
         }

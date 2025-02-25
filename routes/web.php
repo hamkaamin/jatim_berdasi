@@ -243,6 +243,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
 
             Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');
+            Route::get('/print/{id}', [PenilaianInovasiController::class, 'print'])->name('print');
         });
 
         Route::prefix('rekap')->name('rekap.')->group(function () {

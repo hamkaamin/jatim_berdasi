@@ -14,16 +14,9 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <ul class="nav nav-tabs">
-                        @foreach ($data_kategori as $item)
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tab-{{ $item->id }}"
-                                    class="{{ $loop->iteration == 1 ? 'active' : '' }} nav-link">
-                                    Kategori {{ $item->kode }} <span
-                                        class="badge badge-primary txt_jml_inovasi_{{ $item->id }}">
-                                    </span>
-                                </a>
-                            </li>
+                    <ul class="nav nav-tabs"> 
+                        @foreach ($data_kategori as $key => $item) 
+                            <x-tab-inovasi :kategori="$item" :key="$key + 1" :active="$loop->iteration == 1 ? 1 : 0" />
                         @endforeach
                     </ul>
                     <div style="width: 100%">
@@ -40,7 +33,7 @@
                                             <tr>
                                                 <th>No.</th>
                                                 <th style="min-width: 100px">Dibuat Oleh</th>
-                                                <th style="min-width: 200px">Label</th>
+                                                {{-- <th style="min-width: 200px">Label</th> --}}
                                                 <th style="min-width: 200px">Nama</th>
                                                 <th>Tahapan</th>
                                                 <th>Kategori</th>
@@ -58,7 +51,7 @@
                                             @foreach ($get_penilaian_inovasi as $item)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item->label }}</td>
+                                                    {{-- <td>{{ $item->label }}</td> --}}
                                                     <td>{{ $item->user->name }}</td>
                                                     <td>{{ $item->nama }}</td>
                                                     <td>{{ $item->belongsToTahapan->nama }}</td>

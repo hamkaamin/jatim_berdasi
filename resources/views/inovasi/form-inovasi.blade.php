@@ -147,7 +147,7 @@
         </div>
     @else
         <h3>
-            Inotek Sudah Ditutup Per 5 Mei 2023, 22.00
+            Inotek Sudah Ditutup 
         </h3>
     @endif
     <br><br><br><br><br>

@@ -15,7 +15,7 @@
     @if (env('APP_CLOSE_APP') == 0)
         <div class="container">
             <div class="card shadow-sm p-4">
-                <h5 class="mb-3">Form Penilaian Inovasi</h5>
+                <h5 class="mb-3">Form Penilaian Inovasi {{ $inovasi->nama }}</h5>
 
                 <form action="{{ route('penilaian.save', ['inovasi_id' => $inovasi->id]) }}" method="post"
                     enctype="multipart/form-data" id="form-penilaian">
@@ -63,6 +63,7 @@
                                         max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                         id="nilai_{{ $item->pivot->penilaian_id }}"
                                         value="{{ optional($item->pivot)->nilai }}">
+                                    <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                 </div>
                             </div>
                             <hr class="my-0">
@@ -82,7 +83,7 @@
         </div>
     @else
         <h3>
-            Inotek Sudah Ditutup Per 5 Mei 2023, 22.00
+            Inotek Sudah Ditutup 
         </h3>
     @endif
 @endsection

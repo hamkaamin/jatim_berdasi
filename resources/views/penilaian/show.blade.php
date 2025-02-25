@@ -15,7 +15,12 @@
     @if (env('APP_CLOSE_APP') == 0)
         <div class="container">
             <div class="card shadow-sm p-4">
-                <h5 class="mb-4">Form Penilaian Inovasi {{ $inovasi->nama }}</h5>
+                <h5 class="mb-4">
+                    Form Penilaian Inovasi {{ $inovasi->nama }}
+                    <a href="{{ route('penilaian.print', encrypt($inovasi->id)) }}" target="_blank" class="btn btn-info">
+                        <i class="uil-print"></i> Cetak Penilaian
+                    </a>
+                </h5>   
                 @foreach ($kategori_juri as $user_id)
                     <div class="card mb-4">
                         <div class="card-header">
@@ -73,7 +78,7 @@
         </div>
     @else
         <h3>
-            Inotek Sudah Ditutup Per 5 Mei 2023, 22.00
+            Inotek Sudah Ditutup 
         </h3>
     @endif
 @endsection

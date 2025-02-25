@@ -10,6 +10,16 @@ use Illuminate\Support\Facades\Auth;
 
 class Helper
 {
+	public static function nvl($val1, $val2)
+	{
+		$res = $val1;
+		if(empty($val1))
+		{
+			$res = $val2;
+		}
+		return $res;
+	}
+
 	public static function getRole($role_id)
 	{
 		$role = "-";
