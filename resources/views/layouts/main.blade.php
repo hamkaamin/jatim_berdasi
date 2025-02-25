@@ -226,7 +226,7 @@
                     @endphp
                     @if ($fase_aktif)
                         <div class="timer">
-                            <span class="timer-title">Fase {{ $fase_aktif->nama ?? 'saleh' }} Berakhir
+                            <span class="timer-title">Fase {{ $fase_aktif->keterangan ?? '' }} Berakhir
                                 Dalam</span>
                             <br>
                             <div class="timer-inner">
