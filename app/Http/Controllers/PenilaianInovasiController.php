@@ -98,6 +98,7 @@ class PenilaianInovasiController extends Controller
     { 
         $id =decrypt($id);
         $inovasi = Inovasi::findOrFail($id);  
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->get(); 
         $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
 
         $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->get();  // Filter berdasarkan kategori juri 
