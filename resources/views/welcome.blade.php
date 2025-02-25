@@ -245,9 +245,6 @@
             </div>
         </div>
     @else
-        @php
-            dd('a');
-        @endphp
         {{-- <div class="">
             <div id="line_chart_inovasi" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
                 class="apex-charts" dir="ltr">
@@ -281,6 +278,10 @@
             </div>
         @endif
     @endif
+
+    @php
+        dd('a');
+    @endphp
     <div class="row">
         <div class="col-sm-4">
             <div class="card card-body m-2 d-flex flex-column justify-content-between align-items-center">
