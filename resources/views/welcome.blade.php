@@ -9,6 +9,9 @@
 @endsection
 
 @section('content')
+    @php
+        dd('a');
+    @endphp
 
     @if (Auth::user()->role == 3)
         <div class="row">
