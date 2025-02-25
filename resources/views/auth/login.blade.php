@@ -53,7 +53,7 @@
                                 <p style="text-align: center; font-size: 14pt"><b>Log In</b></p>
                                 <hr>
                                 <form onsubmit="return loginUser('{{ csrf_token() }}');" method="POST"
-                                    action="{{ route('login') }}">
+                                    action="{{ route('login_manual') }}">
                                     @csrf
                                     <div class="row mb-3">
                                         <div class="col">
