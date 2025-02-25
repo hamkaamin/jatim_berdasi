@@ -30,7 +30,7 @@
                     <tbody>
                         @php
                             $status_label = 0;
-                            if ($label == 'Awards') {
+                            if ($label == 'Awards' || $label == 'Inotek') {
                                 $status_label = 1;
                             }
                             $data = [];
@@ -67,7 +67,6 @@
                             } else {
                                 $data = $inovasi;
                             }
-
                         @endphp
                         @foreach ($data as $item)
                             @php

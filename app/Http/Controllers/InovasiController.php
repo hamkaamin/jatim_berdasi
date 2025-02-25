@@ -55,7 +55,7 @@ class InovasiController extends Controller
         } elseif($area == 'kota'){
             $label = "Kota / Kab";
             $tahapan = Tahapan::where('id','<>',6)->get();
-            $inovasi = Inovasi::where('label', 0);
+            $inovasi = Inovasi::where('label', 1);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
@@ -128,7 +128,7 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         } elseif($area == 'kota'){
-            $label = "Inotek";
+            $label = "Awards";
             $tahapan = Tahapan::where('id','<>',6)->get();
             $inovasi = Inovasi::where('label', 1);
             if (Auth::user()->role == 2) {
