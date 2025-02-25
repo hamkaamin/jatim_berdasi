@@ -20,13 +20,7 @@ class LoginManualController extends Controller
         echo 'done';
     }
     public function login_manual(Request $request)
-    {
-        $rules = ['captcha' => 'required|captcha'];
-        $validator = validator()->make(request()->all(), $rules);
-        if ($validator->fails()) { 
-            session()->put('statusT', 'Incorrect Captcha!');
-            return redirect()->back();
-        } 
+    { 
         try { 
             $user = User::where('username', '=', $request->username)->first();
             if ($user) {
