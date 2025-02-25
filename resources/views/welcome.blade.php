@@ -256,25 +256,27 @@
                 class="apex-charts" dir="ltr">
             </div>
         </div> --}}
-        <div class="row">
-            @for ($j = 0; $j <= 1; $j++)
-                @for ($i = 1; $i <= 4; $i++)
-                    <div class="col-sm-4">
-                        <div class="card m-2">
-                            <div class="card-header">
-                                Jumlah {{ Helper::get_label_inovasi($j) }} &nbsp; {!! Helper::getStatusInovasi($i) !!}
-                            </div>
-                            <div class="card-body text-center p-1">
-                                <h1>{{ $arrayCount[$j][$i] }}</h1>
-                            </div>
-                            {{-- <div class="card-footer">
+        @if (!empty($arrayCount))
+            <div class="row">
+                @for ($j = 0; $j <= 1; $j++)
+                    @for ($i = 1; $i <= 4; $i++)
+                        <div class="col-sm-4">
+                            <div class="card m-2">
+                                <div class="card-header">
+                                    Jumlah {{ Helper::get_label_inovasi($j) }} &nbsp; {!! Helper::getStatusInovasi($i) !!}
+                                </div>
+                                <div class="card-body text-center p-1">
+                                    <h1>{{ $arrayCount[$j][$i] }}</h1>
+                                </div>
+                                {{-- <div class="card-footer">
                                 <a href="">View Details</a>
                             </div> --}}
+                            </div>
                         </div>
-                    </div>
+                    @endfor
                 @endfor
-            @endfor
-        </div>
+            </div>
+        @endif
     @endif
     <div class="row">
         <div class="col-sm-4">
