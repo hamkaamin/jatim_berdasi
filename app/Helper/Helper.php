@@ -153,11 +153,11 @@ class Helper
 			}
 
 			// Simpan file dengan nama baru
-			$fileName = $name . '.' . $extension;
+			$fileName = env('APP_URL').'/'.$folder.'/'.$name . '.' . $extension;
 			$file->move(public_path($folder), $fileName);
 
 			// Kembalikan path relatif file
-			return "$folder/$fileName";
+			return "$fileName";
 
 		} catch (\Throwable $th) {
 			// Log error jika diperlukan
