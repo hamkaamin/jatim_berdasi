@@ -28,6 +28,28 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
+                                @if($errors->any())
+                                <div class="alert alert-warning alert-styled-left">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <span><i class="icon-cross position-center"></i></span>
+                                        {{-- <span class="sr-only">Close</span> --}}
+                                    </button>
+                                    <span class="text-semibold">Gagal!</span>
+                                        @foreach ($errors->all() as $error)
+                                           {{ $error }}
+                                        @endforeach 
+                                </div>
+                                @endif  
+                                @if (session()->has('statusT'))
+                                <div class="alert alert-warning alert-styled-left">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <span><i class="icon-cross position-center"></i></span>
+                                        {{-- <span class="sr-only">Close</span> --}}
+                                    </button>
+                                    <span class="text-semibold">Gagal!</span> {{ session()->get('statusT') }}
+                                    {{session()->forget('statusT')}}
+                                </div>
+                                @endif  
                                 <p style="text-align: center; font-size: 14pt"><b>Log In</b></p>
                                 <hr>
                                 <form onsubmit="return loginUser('{{ csrf_token() }}');" method="POST"

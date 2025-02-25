@@ -7,10 +7,13 @@ use App\Http\Controllers\JuriController;
 use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
 use App\Http\Controllers\KategoriTahapanController;
+use App\Http\Controllers\LoginManualController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PenilaianInovasiController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+Route::post('login_manual', [LoginManualController::class, 'login_manual'])->name('login_manual');
 
 Route::group(['middleware' => ['XSS']], function () {
     Route::get('/insert_data_opd_sekolah', [App\Http\Controllers\HomeController::class, 'insert_data_opd_sekolah'])->name('insert_data_opd_sekolah');

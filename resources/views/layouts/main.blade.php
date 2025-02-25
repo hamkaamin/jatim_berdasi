@@ -30,7 +30,7 @@
         <link href="{{ asset('admin_asset/main.css') }}" rel="stylesheet">
     @endif
     <link href="{{ asset('admin_asset/assets/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    {{-- <script src="https://www.google.com/recaptcha/api.js"></script> --}}
 
     {{-- Adjustable Minible CSS --}}
     <!-- Bootstrap Css -->
@@ -1165,8 +1165,7 @@
     {{-- End Adjustable Minible Script --}}
 
     {{-- GSAP Script --}}
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Flip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script>
