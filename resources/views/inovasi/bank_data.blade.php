@@ -20,11 +20,6 @@
                                     <th>No.</th>
                                     <th style="min-width: 100px">Dibuat Oleh</th>
                                     <th style="min-width: 200px">Nama</th>
-                                    <th>Tahapan</th>
-                                    <th>Kategori</th>
-                                    <th style="width: 100px; min-width: 100px">Status</th>
-                                    <th>Keterangan</th>
-                                    <th>Kematangan</th>
                                     <th style="width: 100px; min-width: 100px"></th>
                                 </tr>
                             </thead>
@@ -38,17 +33,6 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->belongsToTahapan->nama }}</td>
-                                        <td>{{ $item->kategori->nama ?? ' ' }}</td>
-                                        <td>{!! Helper::getStatusInovasi($item->status) !!}</td>
-                                        <td>
-                                            @if ($item->keterangan != null)
-                                                {{ $item->keterangan }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
                                         <td>
 
                                             <a href="{{ route('inovasi.detail', ['id' => encrypt($item->id)]) }}"
