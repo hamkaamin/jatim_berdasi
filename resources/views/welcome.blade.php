@@ -324,7 +324,7 @@
 @push('scripts')
     @if (Auth::user()->role == 3)
     @elseif (Auth::user()->role == 1)
-    @else
+        {{-- @else
         <script>
             var LinechartDatalabelColors = getChartColorsArray("line_chart_inovasi");
             LinechartDatalabelColors &&
@@ -594,5 +594,6 @@
                         options
                     )).render());
         </script>
+    @endif --}}
     @endif
 @endpush

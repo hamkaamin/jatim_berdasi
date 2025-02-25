@@ -155,7 +155,6 @@ class HomeController extends Controller
             $contact = Contact::first();
             return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user','contact'));
         } else {
-            dd('a');
             $arrayCount = [];
             // for ($i = 0; $i <= 1; $i++) {
             //     for ($j = 1; $j <= 4; $j++) {
