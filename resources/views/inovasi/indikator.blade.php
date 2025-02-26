@@ -8,6 +8,7 @@
     <b>
         Nama Inovasi : </b> {{ $inovasi->nama }} <br>
     <b>Status Inovasi : </b> {!! Helper::getStatusInovasi($inovasi->status) !!} <br>
+    <b>Kategori Inovasi : </b> {!! $inovasi->kategori->nama !!} <br>
 @endsection
 
 @section('buttons')
