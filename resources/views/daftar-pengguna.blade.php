@@ -82,6 +82,7 @@
                                         <th>Username</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>Last Login</th>
                                         <th style="width: 100px"></th>
                                     </tr>
                                 </thead>
@@ -106,6 +107,7 @@
                                                     @endif
                                                 @endif
                                             </td>
+                                            <td>{{ @$item->last_login }}</td>
                                             <td>
                                                 @if (in_array(Auth::user()->role, [1, 3, 4]) || (Auth::user()->role == 5 && $item->opd_id == Auth::user()->opd_id))
                                                     <button data-target="#modalPopup" data-toggle="modal"
