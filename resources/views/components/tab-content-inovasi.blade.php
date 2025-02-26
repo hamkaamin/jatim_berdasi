@@ -163,10 +163,7 @@
                                             data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
                                     @endif
-                                    @if (
-                                        ($item->status != 2 && $item->user_id == Auth::user()->id) ||
-                                            Auth::user()->username == 'superadmin' ||
-                                            Auth::user()->username == 'pemdkotkabatest')
+                                    @if ($item->status == 0 || $item->status == 4)
                                         <form id="deleteConfirm" style="all: unset"
                                             action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf

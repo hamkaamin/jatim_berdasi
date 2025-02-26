@@ -171,7 +171,7 @@ class InovasiController extends Controller
 
     public function bank_data(Request $request,$area)
     {
-        $inovasi = Inovasi::with('kategori')->where('status',2)->get();
+        $inovasi = Inovasi::with('kategori')->where('status',2)->where('tahun',Auth::user()->tahun)->get();
         return view('inovasi.bank_data', compact('inovasi','area'));
     }
 
