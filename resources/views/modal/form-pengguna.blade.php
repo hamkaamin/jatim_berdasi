@@ -76,9 +76,9 @@
                     <select name="role" class="form-control" onchange="ubahRole(this.value)" required>
                         <option disabled selected>-- Pilih Salah Satu --</option>
                         <option value="2">Verifikator</option>
-                        <option value="3">Provinsi</option>
-                        <option value="4">Admin - OPD Provinsi</option>
-                        <option value="5">Kab/Kota</option>
+                        {{-- <option value="3">Provinsi</option> --}}
+                        <option value="4">Admin OPD Provinsi</option>
+                        <option value="5">Admin Kab/Kota</option>
                         <option value="7">Juri</option>
                     </select>
                     <small>Role hanya dapat ditentukan pada saat pembuatan data Pengguna baru. <b>Pastikan data yang
