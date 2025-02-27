@@ -188,7 +188,7 @@ class InovasiController extends Controller
             $tematik = Tematik::all();
             $kategori = KategoriInovasi::all();
             if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
-                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
+                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1)->orderBy('kategori_id','asc');
             }else{
                 if ($request->id != 0) {
                     $inovasi = Inovasi::find(decrypt($request->id));
@@ -211,7 +211,7 @@ class InovasiController extends Controller
                 $label = $request->label;
             }
             if($label == 0){
-                $kategori = $kategori->where('kategori_id',1);
+                $kategori = $kategori->where('kategori_id',1)->orderBy('kategori_id','asc');
             }
             $fase = Fase::where('active', 1)->first();
 

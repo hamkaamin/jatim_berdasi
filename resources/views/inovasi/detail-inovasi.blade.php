@@ -139,7 +139,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-2" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Covid 19</b></label>
                     </div>
@@ -147,7 +147,7 @@
                         {{ $data != null ? ($data->covid ? 'Covid-19' : 'Non Covid-19') : 'Tidak Ada Data' }}
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-2" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Anggaran (Jika diperlukan)</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_anggaran)
@@ -169,7 +169,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-2" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika ada)</b></label>
                     </div>
                     <div class="col-sm-8">
