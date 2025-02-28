@@ -177,6 +177,18 @@ class InovasiController extends Controller
 
     public function edit(Request $request)
     { 
+        $fase = Fase::where('active',1)->first();
+        $nama_fase = $fase->nama;
+        if($nama_fase == 'inotek'){
+            $cek_label = 1;
+            $nama_fase = 'INOTEK';
+        }else if($nama_fase == 'iga'){
+            $cek_label = 0;
+            $nama_fase = 'IGA';
+        }
+        if($cek_label != $request->label){
+            return redirect()->route('inovasi.index')->with('error','Fase '.$nama_fase.' Sedang Ditutup');
+        }
         if (count($request->input()) <= 3 && isset($request->id)) {
             $data = null;
             $tahapan = Tahapan::all();
