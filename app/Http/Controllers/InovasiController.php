@@ -186,18 +186,19 @@ class InovasiController extends Controller
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $tematik = Tematik::all();
-            $kategori = KategoriInovasi::all();
+            $kategori = KategoriInovasi::orderBy('id','asc')->get();
             if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
-                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1)->orderBy('kategori_id','asc');
+                $kategori = KategoriInovasi::orderBy('id','asc')->get();
             }else{
                 if ($request->id != 0) {
                     $inovasi = Inovasi::find(decrypt($request->id));
-                    $kategori = KategoriOpd::where('opd_id',$inovasi->user->opd_id)->where('is_aktif',1);
+                    $kategori = KategoriInovasi::orderBy('id','asc')->get();
+
                 }
             }
             $label = 0;
             
-            $kategori = $kategori->get();
+            // $kategori = $kategori->get();
             if ($request->id != 0) {
                 $id = decrypt($request->id);
                 $data = Inovasi::findOrFail($id);
@@ -211,7 +212,7 @@ class InovasiController extends Controller
                 $label = $request->label;
             }
             if($label == 0){
-                $kategori = $kategori->where('kategori_id',1)->orderBy('kategori_id','asc');
+                $kategori =KategoriInovasi::where('id',1)->orderBy('id','asc')->get();
             }
             $fase = Fase::where('active', 1)->first();
 

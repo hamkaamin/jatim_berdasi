@@ -77,9 +77,9 @@
                                             onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
                                             <option value="">-- Pilih Kategori --</option>
                                             @foreach ($kategori as $item)
-                                                <option value="{{ $item->kategori->id }}"
-                                                    @if (old('kategori_id') == $item->kategori->id || ($data && $data->kategori_id == $item->kategori->id)) selected @endif>
-                                                    {{ $item->kategori->nama }}
+                                                <option value="{{ $item->id }}"
+                                                    @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
+                                                    {{ $item->nama }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -147,7 +147,7 @@
         </div>
     @else
         <h3>
-            Inotek Sudah Ditutup 
+            Inotek Sudah Ditutup
         </h3>
     @endif
     <br><br><br><br><br>
