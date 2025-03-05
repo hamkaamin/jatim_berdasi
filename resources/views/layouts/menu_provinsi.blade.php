@@ -72,6 +72,22 @@
                 </li>
             @endif
         @endif
+        @if(Auth::user()->menu_kovablik == 1)
+            @if($fase->nama == 'kovablik')
+                <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+                    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                        class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
+                        <i class="uil-award"></i> <span>KOVABLIK</span>
+                    </a>
+                </li>
+            @else 
+                <li>
+                    <a href="javascript:;" onclick="alertKu('warning', 'Fase peninputan Kovablik sedang ditutup')">
+                        <i class="uil-award"></i> <span>KOVABLIK</span>
+                    </a>
+                </li>
+            @endif
+        @endif
     </ul>
 </li>
 
