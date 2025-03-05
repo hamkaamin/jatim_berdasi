@@ -90,6 +90,22 @@
             <i class="uil-file-bookmark-alt"></i> <span>Detail Tematik</span>
         </a>
     </li>
+
+
+    <li class="{{ Request::routeIs('master.kategori_kovablik.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.kategori_kovablik.index') }}"
+            class="{{ Request::routeIs('master.kategori_kovablik.*') ? 'active' : '' }}">
+            <i class="uil-file-bookmark-alt"></i> <span>Kategori Kovablik</span>
+        </a>
+    </li>
+    <li class="{{ Request::routeIs('master.kelompok_kovablik.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.kelompok_kovablik.index') }}"
+            class="{{ Request::routeIs('master.kelompok_kovablik.*') ? 'active' : '' }}">
+            <i class="uil-file-bookmark-alt"></i> <span>Kelompok Kovablik</span>
+        </a>
+    </li>
+
+
     @if (env('APP_HIDE_FAQ') == 0)
         <li class="{{ Request::routeIs('master.faq.*') ? 'mm-active' : '' }}">
             <a href="{{ route('master.faq.index') }}" class="{{ Request::routeIs('master.faq.*') ? 'active' : '' }}">

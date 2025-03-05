@@ -30,6 +30,7 @@ use App\Models\DetailTematik;
 use App\Models\Fase;
 use App\Models\Juri;
 use App\Models\KategoriInovasi;
+use App\Models\KategoriKovablik;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
 use App\Models\Penilaian;
@@ -153,7 +154,7 @@ class HomeController extends Controller
             $count_opd = Opd::count();
             $count_user = User::count();
             $contact = Contact::first();
-            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user','contact'));
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user', 'contact'));
         } else {
             $arrayCount = [];
             for ($i = 0; $i <= 1; $i++) {
@@ -169,7 +170,7 @@ class HomeController extends Controller
                 }
             }
             $contact = Contact::first();
-            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount','contact'));
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount', 'contact'));
         }
     }
 
@@ -362,22 +363,29 @@ class HomeController extends Controller
                 break;
             case "juri":
                 $data = ($request->id == 0) ? null : Juri::findOrFail($request->id);
-                $users = User::where('role',7)->get();
+                $users = User::where('role', 7)->get();
                 $kategori = KategoriInovasi::all();
                 return response()->json(array(
-                    'msg' => view('modal.form-juri', compact('data', 'kategori','users'))->render()
+                    'msg' => view('modal.form-juri', compact('data', 'kategori', 'users'))->render()
                 ), 200);
                 break;
             case "fase":
                 $data = ($request->id == 0) ? null : Fase::findOrFail($request->id);
                 return response()->json(array(
-                    'msg' => view('modal.form-fase',compact('data'))->render()
+                    'msg' => view('modal.form-fase', compact('data'))->render()
                 ), 200);
                 break;
             case "contact":
                 $data = ($request->id == 0) ? null : Contact::findOrFail($request->id);
                 return response()->json(array(
-                    'msg' => view('modal.form-contact',compact('data'))->render()
+                    'msg' => view('modal.form-contact', compact('data'))->render()
+                ), 200);
+                break;
+
+            case "kategori_kovablik":
+                $data = ($request->id == 0) ? null : KategoriKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-kategori_kovablik', compact('data'))->render()
                 ), 200);
                 break;
         }

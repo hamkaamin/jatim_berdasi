@@ -163,6 +163,18 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/', [ContactController::class, 'save'])->name('save');
                     Route::post('/delete', [ContactController::class, 'delete'])->name('delete');
                 });
+
+
+                Route::prefix('kategori_kovablik')->name('kategori_kovablik.')->group(function () {
+                    Route::get('/', [App\Http\Controllers\KategoriKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [App\Http\Controllers\KategoriKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [App\Http\Controllers\KategoriKovablikController::class, 'delete'])->name('delete');
+                });
+                Route::prefix('kelompok_kovablik')->name('kelompok_kovablik.')->group(function () {
+                    Route::get('/', [App\Http\Controllers\KelompokKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [App\Http\Controllers\KelompokKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [App\Http\Controllers\KelompokKovablikController::class, 'delete'])->name('delete');
+                });
             });
 
             Route::prefix('setting')->name('setting.')->group(function () {
@@ -207,6 +219,38 @@ Route::group(['middleware' => ['XSS']], function () {
             #get detail tematik using post
             Route::post('/inovasi/ajax_detail_tematik', [InovasiController::class, 'detail_tematik'])->name('ajax_detail_tematik');
             Route::post('/inovasi/ajax_kategori_inovasi', [InovasiController::class, 'kategori_inovasi'])->name('ajax_kategori_inovasi');
+
+
+            Route::prefix('indikator')->name('indikator.')->group(function () {
+                Route::get('/list', [App\Http\Controllers\InovasiController::class, 'index_indikator'])->name('index');
+                Route::post('/chooseParam', [App\Http\Controllers\IndikatorController::class, 'chooseParam'])->name('chooseParam');
+                Route::post('/saveParam', [App\Http\Controllers\IndikatorController::class, 'saveParam'])->name('saveParam');
+                Route::post('/show_definisi_parameter', [App\Http\Controllers\ParameterController::class, 'show'])->name('show');
+
+                Route::prefix('upload')->name('upload.')->group(function () {
+                    Route::get('/', [App\Http\Controllers\InovasiController::class, 'index_upload'])->name('index');
+                    Route::post('/add', [App\Http\Controllers\UploadController::class, 'add'])->name('add');
+                    Route::post('/', [App\Http\Controllers\UploadController::class, 'save'])->name('save');
+                    Route::post('/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('delete');
+                });
+            });
+        });
+
+        Route::prefix('proposal-kovablik')->name('proposal-kovablik.')->group(function () {
+            Route::get('/{area}', [App\Http\Controllers\ProposalKovablikController::class, 'index'])->name('index');
+            Route::get('/filter/area', [App\Http\Controllers\ProposalKovablikController::class, 'index'])->name('filter-area');
+            Route::get('/form/edit', [App\Http\Controllers\ProposalKovablikController::class, 'edit'])->name('edit');
+            Route::get('/form/detail', [App\Http\Controllers\ProposalKovablikController::class, 'detail'])->name('detail');
+            Route::get('/export/{type}', [App\Http\Controllers\ProposalKovablikController::class, 'export'])->name('export');
+            Route::post('/', [App\Http\Controllers\ProposalKovablikController::class, 'save'])->name('save');
+            Route::post('/show_tahapan', [App\Http\Controllers\ProposalKovablikController::class, 'show_tahapan'])->name('show_tahapan');
+            Route::post('/show_inovasi', [App\Http\Controllers\ProposalKovablikController::class, 'show_inovasi'])->name('show_inovasi');
+            Route::post('/delete', [App\Http\Controllers\ProposalKovablikController::class, 'delete'])->name('delete');
+            Route::post('/update', [App\Http\Controllers\ProposalKovablikController::class, 'update'])->name('update');
+            Route::post('/sent', [App\Http\Controllers\ProposalKovablikController::class, 'sent'])->name('sent');
+            #get detail tematik using post
+            Route::post('/inovasi/ajax_detail_tematik', [App\Http\Controllers\ProposalKovablikController::class, 'detail_tematik'])->name('ajax_detail_tematik');
+            Route::post('/inovasi/ajax_kategori_inovasi', [App\Http\Controllers\ProposalKovablikController::class, 'kategori_inovasi'])->name('ajax_kategori_inovasi');
 
 
             Route::prefix('indikator')->name('indikator.')->group(function () {
