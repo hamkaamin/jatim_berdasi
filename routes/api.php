@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ApiSyncController;
+use App\Http\Controllers\Api\InovasiController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ Route::post('refresh', [AuthController::class,'refresh']);
 Route::post('logout', [AuthController::class,'logout']);
 
 Route::get('all_opd',[ApiController::class,'all_opd']);
+Route::get('indikator_parameter', [InovasiController::class,'indikator_parameter']);
 
 // mengirim data pertama kali
     // dari kab ngehit ke provinsi

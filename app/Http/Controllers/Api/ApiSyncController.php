@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Indikator;
 use App\Models\Inovasi;
+use App\Models\KategoriInovasi;
+use App\Models\Parameter;
 use App\Models\User;
 use Exception;
 use GuzzleHttp\Client;
@@ -126,5 +129,6 @@ class ApiSyncController extends Controller
             throw $th;
         }
     }
+
 
 }
