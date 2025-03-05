@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Fase;
 use App\Models\Indikator;
 use App\Models\KategoriInovasi;
 use App\Models\Parameter;
@@ -33,8 +34,21 @@ class InovasiController extends Controller
                'message' => $e->getMessage()
             ], 500);
         }
+    }
 
-
-
+    public function fase()
+    {
+        //try catch all exceptions
+        try {   
+            $fase = Fase::where('active',1)->first();
+            
+            return response()->json([
+                'fase' => $fase
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+               'message' => $e->getMessage()
+            ], 500);
+        }
     }
 }

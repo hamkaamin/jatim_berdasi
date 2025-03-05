@@ -338,9 +338,9 @@ class InovasiController extends Controller
                     if ($data->nama == null) {
                         $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
                     }
-                    if ($data->bentuk_id == null) {
-                        $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
-                    }
+                    // if ($data->bentuk_id == null) {
+                    //     $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
+                    // }
                     if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
                         $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
                     } else {
