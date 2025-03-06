@@ -124,12 +124,12 @@
                                             data-placement="top" title="Download Excel"><i
                                                 class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                     @endif
-                                    {{-- @if ($item->kategori_id != 5) --}}
-                                    <a href="{{ route('inovasi.indikator.index', ['id' => $item->id], ['area' => 'bank_data']) }}"
-                                        class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
-                                        data-placement="top" title="Upload Indikator"><i
-                                            class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
-                                    {{-- @endif --}}
+                                    @if (Auth::user()->tahun == date('Y'))
+                                        <a href="{{ route('inovasi.indikator.index', ['id' => $item->id], ['area' => 'bank_data']) }}"
+                                            class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
+                                            data-placement="top" title="Upload Indikator"><i
+                                                class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
+                                    @endif
                                     <a href="{{ route('inovasi.detail', ['id' => encrypt($item->id)]) }}"
                                         class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
                                         data-placement="top" title="Detail Inovasi"><i
@@ -157,11 +157,11 @@
                                             </form>
                                         @endif --}}
                                     @endif
-                                    @if ($item->status == 2)
+                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5))
                                         <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
-                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
+                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a>
                                     @endif
                                     @if ($item->status == 0 || $item->status == 4)
                                         <form id="deleteConfirm" style="all: unset"
