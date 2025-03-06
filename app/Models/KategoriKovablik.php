@@ -9,4 +9,9 @@ class KategoriKovablik extends Model
 {
     use HasFactory;
     protected $table = 'kategori_kovabliks';
+
+    public function hasManyKovablik()
+    {
+        return $this->hasMany('App\Models\ProposalKovablik', 'kategori_id', 'id');
+    }
 }

@@ -35,6 +35,8 @@ class CreateProposalKovabliksTable extends Migration
             $table->text('sumber_daya')->nullable();
             $table->text('strategi_keberlanjutan')->nullable();
             
+            $table->smallInteger('label')->nullable()->default(0);
+            $table->integer('tahun')->nullable();
             $table->smallInteger('status')->nullable()->default(0);
             $table->text('keterangan')->nullable();
             $table->timestamps();
@@ -43,6 +45,10 @@ class CreateProposalKovabliksTable extends Migration
             $table->foreignId('kategori_id')->nullable()->constrained('kategori_kovabliks');
             $table->foreignId('kelompok_id')->nullable()->constrained('kelompok_kovabliks');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('kota_id')->nullable()->constrained('regencies');
+            $table->foreignId('kecamatan_id')->nullable()->constrained('districts');
+            $table->foreignId('kelurahan_id')->nullable()->constrained('villages');
+            $table->foreignId('provinsi_id')->nullable()->constrained('provinces');
         });
     }
 

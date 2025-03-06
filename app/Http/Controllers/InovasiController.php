@@ -91,6 +91,7 @@ class InovasiController extends Controller
         $kategori = KategoriInovasi::get();
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
+        // dd($tahapan, $tahapanKolom);
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
 

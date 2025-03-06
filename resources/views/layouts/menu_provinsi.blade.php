@@ -74,9 +74,9 @@
         @endif
         @if(Auth::user()->menu_kovablik == 1)
             @if($fase->nama == 'kovablik')
-                <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-                    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
-                        class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
+                <li class="{{ request()->is('kovablik/masyarakat') ? 'mm-active' : '' }}">
+                    <a href="{{ route('kovablik.index', ['area' => 'masyarakat']) }}"
+                        class="{{ request()->is('kovablik/masyarakat') ? 'active' : '' }}">
                         <i class="uil-award"></i> <span>KOVABLIK</span>
                     </a>
                 </li>

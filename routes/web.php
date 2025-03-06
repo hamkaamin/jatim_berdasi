@@ -236,15 +236,14 @@ Route::group(['middleware' => ['XSS']], function () {
             });
         });
 
-        Route::prefix('proposal-kovablik')->name('proposal-kovablik.')->group(function () {
+        Route::prefix('kovablik')->name('kovablik.')->group(function () {
             Route::get('/{area}', [App\Http\Controllers\ProposalKovablikController::class, 'index'])->name('index');
             Route::get('/filter/area', [App\Http\Controllers\ProposalKovablikController::class, 'index'])->name('filter-area');
             Route::get('/form/edit', [App\Http\Controllers\ProposalKovablikController::class, 'edit'])->name('edit');
             Route::get('/form/detail', [App\Http\Controllers\ProposalKovablikController::class, 'detail'])->name('detail');
             Route::get('/export/{type}', [App\Http\Controllers\ProposalKovablikController::class, 'export'])->name('export');
             Route::post('/', [App\Http\Controllers\ProposalKovablikController::class, 'save'])->name('save');
-            Route::post('/show_tahapan', [App\Http\Controllers\ProposalKovablikController::class, 'show_tahapan'])->name('show_tahapan');
-            Route::post('/show_inovasi', [App\Http\Controllers\ProposalKovablikController::class, 'show_inovasi'])->name('show_inovasi');
+            Route::post('/show_kovablik', [App\Http\Controllers\ProposalKovablikController::class, 'show_kovablik'])->name('show_kovablik');
             Route::post('/delete', [App\Http\Controllers\ProposalKovablikController::class, 'delete'])->name('delete');
             Route::post('/update', [App\Http\Controllers\ProposalKovablikController::class, 'update'])->name('update');
             Route::post('/sent', [App\Http\Controllers\ProposalKovablikController::class, 'sent'])->name('sent');
