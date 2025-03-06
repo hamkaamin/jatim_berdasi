@@ -7,6 +7,7 @@ use App\Models\Fase;
 use App\Models\Indikator;
 use App\Models\KategoriInovasi;
 use App\Models\Parameter;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 
 class InovasiController extends Controller
@@ -44,6 +45,22 @@ class InovasiController extends Controller
             
             return response()->json([
                 'fase' => $fase
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+               'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function pengumuman()
+    {
+        //try catch all exceptions
+        try {   
+            $pengumuman = Pengumuman::get();
+            
+            return response()->json([
+                'pengumuman' => $pengumuman
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
