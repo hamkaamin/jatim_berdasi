@@ -22,7 +22,8 @@ class ApiSyncController extends Controller
         try {
             $arr_data = array();
             $inovasis = Inovasi::where('hit_data', 1)->get();
-            $users = User::where('name', 'ilike', '%' . env('APP_KABKOTA_NAME') . '%')->first();
+            $users = User::where('username', 'ilike', '%' . env('APP_KABKOTA_NAME') . '%')->first();
+            $username = env('APP_KABKOTA_USERNAME');
 
             foreach ($inovasis as $inovasi) { 
                 $indikator_inovasi = $inovasi->indikator()->get();
@@ -50,6 +51,7 @@ class ApiSyncController extends Controller
                 'form_params' => [
                     'arr_data' => $arr_data,
                     'kabkota_kode' => $users->id,
+                    'username'=>$username,
                     'url'=>env('APP_URL')
                 ], // Use 'body' instead of 'form_params'
                 'verify' => false, // Disable SSL verification
