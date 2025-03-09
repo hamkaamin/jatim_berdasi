@@ -17,6 +17,7 @@ Route::post('login_manual', [LoginManualController::class, 'login_manual'])->nam
 
 Route::group(['middleware' => ['XSS']], function () {
     Route::get('/insert_data_opd_sekolah', [App\Http\Controllers\HomeController::class, 'insert_data_opd_sekolah'])->name('insert_data_opd_sekolah');
+    Route::get('/synckabkota', [App\Http\Controllers\HomeController::class, 'synckabkota'])->name('insert_data_opd_sekolah');
     Route::get('/coba_insert_inovasi', [App\Http\Controllers\HomeController::class, 'coba_insert_inovasi'])->name('coba_insert_inovasi');
     Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_all_opd'])->name('get_all_opd');
     Route::middleware(['auth'])->group(function () {

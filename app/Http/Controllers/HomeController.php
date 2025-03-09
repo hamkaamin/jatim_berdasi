@@ -669,4 +669,24 @@ class HomeController extends Controller
         // session()->put('status', 'Setting berhasil disimpan!');
         return redirect()->back()->with('success', Config::get('save_success'));
     }
+
+    public function synckabkota()
+    {
+        try {
+            $client = new Client();
+            $response = $client->request('GET', 'https://inotek.jemberkab.go.id/api/kab_hit_data', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+                ],
+                'verify' => false
+            ]);
+            
+
+            $data = json_decode($response->getBody(), true);
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }
