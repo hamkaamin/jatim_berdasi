@@ -188,7 +188,7 @@ class ApiController extends Controller
         $n->save();
 
         try {
-            $username = User::where('username','balitbangda_kabupaten_bangkalan')->first();
+            $username = User::where('username',$username)->first();
             $arr_data = $request->arr_data;
             $arr_data = json_decode($arr_data, true);
     
