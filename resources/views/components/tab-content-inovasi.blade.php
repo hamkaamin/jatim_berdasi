@@ -139,7 +139,7 @@
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Inovasi"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
-                                        {{-- @if ($item->kategori_id == 5)
+                                        @if ($item->kategori_id == 5)
                                             <form style="all: unset" action="{{ route('inovasi.update') }}"
                                                 method="post">
                                                 @csrf
@@ -155,7 +155,7 @@
                                                         Inovasi</button>
                                                 @endif
                                             </form>
-                                        @endif --}}
+                                        @endif
                                     @endif
                                     @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5))
                                         <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
