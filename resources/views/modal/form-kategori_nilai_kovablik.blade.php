@@ -39,3 +39,5 @@
         <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
+
+@include('script.ck-editor')
