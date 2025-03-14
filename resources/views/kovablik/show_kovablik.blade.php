@@ -7,15 +7,15 @@ $status_label = 0; @endphp
     @if (Auth::user()->role != 2)
         <div class="col-12">
             <div class="row g-4 mb-4">
-                @foreach ($kategori as $item)
+                @foreach ($kelompok as $item)
                     <div class="col-3">
                         <div class="card rainbow-card-afu widget-content h-100">
                             <div class="widget-content-wrapper text-white">
                                 <div class="widget-content-left">
                                     <div class="widget-heading">{{ $item->nama }}</div>
-                                    <div class="widget-subheading">Kategori Kovablik<b>{{ $item->nama }}</b></div>
+                                    <div class="widget-subheading">Kelompok Kovablik<b> {{ $item->nama }}</b></div>
                                 </div>
-                                <div class="widget-content-right">
+                                <div class="widget-content-right ms-3">
                                     <div class="widget-numbers text-white">
                                         <span>
                                             @php

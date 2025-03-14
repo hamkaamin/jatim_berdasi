@@ -10,21 +10,19 @@
     <div class="row">
         <div class="col-md-12">
             <div style="width: 100%">
-                <table class="table align-items-center table-flush"
+                <table class="table align-items-center table-flush text-center"
                     id="myTable{{ $kategori == null ? 0 : $kategori->id }}">
                     <thead class="thead-light">
                         <tr>
                             <th></th>
                             <th>No.</th>
-                            <th style="min-width: 100px">Dibuat Oleh</th>
-                            <th style="min-width: 200px">Nama</th>
-                            {{-- <th>Tahapan</th> --}}
+                            <th>Instansi</th>
+                            <th>Judul</th>
                             <th>Kategori</th>
-                            <th style="width: 100px; min-width: 100px">Status</th>
-                            <th>Keterangan</th>
-                            <th style="{!! $display !!}">Bobot Awal</th>
+                            <th>Kelompok</th>
+                            <th>Status</th>
                             <th>Penilaian</th>
-                            <th style="width: 100px; min-width: 100px">Act</th>
+                            <th>Act</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,35 +74,14 @@
                                 }
                             @endphp
                             <tr>
-                                @if (env('APP_OPD_JATIM') == 1)
-                                    @if ($item->status != 2)
-                                        @php $disabled = 'disabled'; @endphp
-                                    @endif
-                                @endif
-
-                                <td><input {!! $disabled !!} type="checkbox" style="transform: scale(2)"
-                                        name="is_sent[]" id="is_sent[]" value="{{ $item->id }}">
-                                </td>
+                                <td><input type="checkbox" style="transform: scale(2)" name="is_sent[]" id="is_sent[]" value="{{ $item->id }}"></td>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->user->name }}</td>
-                                <td>{{ $item->nama }}</td>
-                                {{-- <td>{{ $item->belongsToTahapan->nama }}</td> --}}
-                                <td>{{ $item->kategori->nama ?? ' ' }}</td>
+                                <td>{{ $item->instansi }}</td>
+                                <td>{{ $item->judul }}</td>
+                                <td>{{ $item->kategori->nama}}</td>
+                                <td>{{ $item->kelompok->nama}}</td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
-                                <td>
-                                    @if ($item->keterangan != null)
-                                        {{ $item->keterangan }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                                
-                                <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
-                                <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
-                                </td>
-
-                                {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
-                                </td> --}}
+                                <td>Nilai</td>
                                 <td>
                                     @if ($item->status != 0)
                                         <a target="_blank"
@@ -118,12 +95,6 @@
                                             data-placement="top" title="Download Excel"><i
                                                 class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                     @endif
-                                    {{-- @if ($item->kategori_id != 5) --}}
-                                    <a href="{{ route('kovablik.indikator.index', ['id' => $item->id], ['area' => 'bank_data']) }}"
-                                        class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
-                                        data-placement="top" title="Upload Indikator"><i
-                                            class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
-                                    {{-- @endif --}}
                                     <a href="{{ route('kovablik.detail', ['id' => encrypt($item->id)]) }}"
                                         class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
                                         data-placement="top" title="Detail Proposal"><i

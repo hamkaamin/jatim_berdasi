@@ -55,15 +55,15 @@
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Link Google Drive Standart Pelayanan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="text" required name="link_standart_pelayanan" class="form-control"
-                                value="{{ $data != null ? $data->link_standart_pelayanan : old('link_standart_pelayanan') }}"></div>
+                        <div class="col-sm-8"><input type="text" required name="link_standart" class="form-control"
+                                value="{{ $data != null ? $data->link_standart : old('link_standart') }}"></div>
                     </div>
 
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Link Google Drive Maklumat Pelayanan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="text" required name="link_maklumat_pelayanan" class="form-control"
-                                value="{{ $data != null ? $data->link_maklumat_pelayanan : old('link_maklumat_pelayanan') }}"></div>
+                        <div class="col-sm-8"><input type="text" required name="link_maklumat" class="form-control"
+                                value="{{ $data != null ? $data->link_maklumat : old('link_maklumat') }}"></div>
                     </div>
 
                     <div class="row my-2">
@@ -139,14 +139,14 @@
                                     <li>maksimal 200 kata</li>
                                 </ul>
                             </label>
-                            <textarea name="ringkasan" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                            <textarea name="ringkasan" oninput="countWords('inputRingkasan', 'wordCountRingkasan')" class="form-control" required id="inputRingkasan" rows="10">
                                 @if ($data != null)
                                 {!! $data->ringkasan !!}
                                 @else
                                 {!! old('ringkasan') !!}
                                 @endif
                             </textarea>
-                            <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/200</p>
+                            <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountRingkasan">0</span>/200</p>
                     </div>
 
                     <div class="row my-2">
@@ -163,14 +163,14 @@
                                 <li>Maksimal 300 kata</li>
                             </ul>
                         </label>
-                        <textarea name="latar_belakang" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="latar_belakang" oninput="countWords('inputLatBel', 'wordCountLatBel')" class="form-control" required id="inputLatBel" rows="10">
                             @if ($data != null)
                             {!! $data->latar_belakang !!}
                             @else
                             {!! old('latar_belakang') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/300</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountLatBel">0</span>/300</p>
                     </div>
 
                     <div class="row my-2">
@@ -181,14 +181,14 @@
                                 <li>Maksimal 600 kata</li>
                             </ul>
                         </label>
-                        <textarea name="nilai_tambah" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="nilai_tambah" oninput="countWords('inputKebaruan', 'wordCountKebaruan')" class="form-control" required id="inputKebaruan" rows="10">
                             @if ($data != null)
                             {!! $data->nilai_tambah !!}
                             @else
                             {!! old('nilai_tambah') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/600</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountKebaruan">0</span>/600</p>
                     </div>
 
                     <div class="row my-2">
@@ -199,14 +199,14 @@
                                 <li>Maksimal 200 kata</li>
                             </ul>
                         </label>
-                        <textarea name="implementasi" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="implementasi" oninput="countWords('inputImplementasi', 'wordCountImplementasi')" class="form-control" required id="inputImplementasi" rows="10">
                             @if ($data != null)
                             {!! $data->implementasi !!}
                             @else
                             {!! old('implementasi') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/200</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountImplementasi">0</span>/200</p>
                     </div>
 
                     <div class="row my-2">
@@ -218,14 +218,14 @@
                                 <li>Maksimal 600 kata</li>
                             </ul>
                         </label>
-                        <textarea name="signifikansi" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="signifikansi" oninput="countWords('inputSignifikansi', 'wordCountSignifikansi')" class="form-control" required id="inputSignifikansi" rows="10">
                             @if ($data != null)
                             {!! $data->signifikansi !!}
                             @else
                             {!! old('signifikansi') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/600</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountSignifikansi">0</span>/600</p>
                     </div>
 
                     <div class="row my-2">
@@ -238,14 +238,14 @@
                                 <li>Maksimal 300 kata</li>
                             </ul>
                         </label>
-                        <textarea name="adaptabilitas" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="adaptabilitas" oninput="countWords('inputAdaptabilitas', 'wordCountAdaptabilitas')" class="form-control" required id="inputAdaptabilitas" rows="10">
                             @if ($data != null)
                             {!! $data->adaptabilitas !!}
                             @else
                             {!! old('adaptabilitas') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/300</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountAdaptabilitas">0</span>/300</p>
                     </div>
 
                     <div class="row my-2">
@@ -263,14 +263,14 @@
                                 <li>Maksimal 200 kata</li>
                             </ul>
                         </label>
-                        <textarea name="sumber_daya" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="sumber_daya" oninput="countWords('inputSumberDaya', 'wordCountSumberDaya')" class="form-control" required id="inputSumberDaya" rows="10">
                             @if ($data != null)
                             {!! $data->sumber_daya !!}
                             @else
                             {!! old('sumber_daya') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/200</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountSumberDaya">0</span>/200</p>
                     </div>
 
                     <div class="row my-2">
@@ -287,14 +287,14 @@
                                 <li>Maksimal 500 kata</li>
                             </ul>
                         </label>
-                        <textarea name="strategi_keberlanjutan" oninput="countWords()" class="form-control" required id="inputText" rows="10">
+                        <textarea name="strategi_keberlanjutan" oninput="countWords('inputStrategi', 'wordCountStrategi')" class="form-control" required id="inputStrategi" rows="10">
                             @if ($data != null)
                             {!! $data->strategi_keberlanjutan !!}
                             @else
                             {!! old('strategi_keberlanjutan') !!}
                             @endif
                         </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount">0</span>/500</p>
+                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCountStrategi">0</span>/500</p>
                     </div>
 
                     <br><br><br>
@@ -445,14 +445,15 @@
 
     });
 
-    function countWords() {
-        var inputElement = document.getElementById("inputText");
-        var wordCountElement = document.getElementById("wordCount");
+    function countWords(inputID, wordCountID) {
+        var inputElement = document.getElementById(inputID);
+        var wordCountElement = document.getElementById(wordCountID);
 
         var text = inputElement.value.trim();
         var words = text.split(/\s+/);
 
         wordCountElement.textContent = words.length;
+        console.log(inputElement, wordCountElement);
     }
 </script>
 @section('script')
