@@ -104,23 +104,6 @@
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Proposal"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
-                                        {{-- @if ($item->kategori_id == 5)
-                                            <form style="all: unset" action="{{ route('kovablik.update') }}"
-                                                method="post">
-                                                @csrf
-                                                <input type="hidden" name="label" value="{{ $status_label }}">
-                                                <input type="hidden" name="id" value="{{ $item->id }}">
-                                                <input type="hidden" name="status" value="1">
-                                                @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                                                    <button type="submit"
-                                                        class="btn m-1 btn-block btn-sm btn btn-success" name="is_sent"
-                                                        value="1"
-                                                        onclick="if(!confirm('Apakah Anda yakin akan mengirim data Proposal ini? (Pastikan Data Sudah Diisi dengan Benar)')){return false;}"><i
-                                                            class="fa fa-paper-plane"></i>&nbsp;&nbsp;Kirim
-                                                        Proposal</button>
-                                                @endif
-                                            </form>
-                                        @endif --}}
                                     @endif
                                     @if ($item->status == 2)
                                         <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
@@ -132,12 +115,6 @@
                                         <form id="deleteConfirm" style="all: unset"
                                             action="{{ route('kovablik.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
-                                            {{-- <button type="button"
-                                                class="btn m-1 btn-block btn-sm btn-danger delete-btn"
-                                                data-toggle="modal" data-target="#confirmDeleteModal"
-                                                data-toggle="tooltip" data-placement="top" title="Hapus Proposal">
-                                                <i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus
-                                            </button> --}}
                                             <button onclick="hapus_data('{{ csrf_token() }}','{{ $item->id }}')"
                                                 type="button" class="btn m-1 btn-block btn-sm btn-danger delete-btn"
                                                 data-toggle="modal" data-target="#confirmDeleteModal"

@@ -82,8 +82,6 @@ class ProposalKovablikController extends Controller
     public function show_kovablik(Request $request)
     {
         $area = $request->area;
-        // $proposal = ProposalKovablik::where('deleted_at', 0)->get();
-        // dd($proposal);
         // no area
         $label = "";
         if ($area == 'daerah') {
@@ -156,74 +154,37 @@ class ProposalKovablikController extends Controller
         if (isset($request->label)) {
             $label = $request->label;
         }
-        if ($label == 0) {
-            $kategori = $kategori->where('kategori_id', 1);
-        }
+        // dd($data->kelompok->nama);
         return view($view, compact('data', 'kategori', 'label'));
     }
 
     public function save(Request $request)
     {
         $tempArr = [];
-        if ($request->id == 0) {
-            $data = new ProposalKovablik;
-            $data->user_id = Auth::user()->id;
-            $data->kode = uniqid();
-            if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
-                $data->provinsi_id = Auth::user()->province_id;
-            } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->provinsi_id;
-            } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
-                $data->provinsi_id = Auth::user()->kota->provinsi->id;
-                $data->kota_id = Auth::user()->regency_id;
-            } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
-                $data->kota_id = Auth::user()->opd->kabkota_id;
-            } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
-                $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
-                $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
-            } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
-                $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
-                $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
-                $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
-                $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
-            }
-        } else {
-            $data = ProposalKovablik::findOrFail($request->id);
-            $temp = [];
-            if ($request->status == 1) {
-                if ($data->judul == null) {
-                    $temp[] = "Lengkapi data Judul Proposal Kovablik terlebih dahulu !";
-                }
-                if ($data->kelompok_id == null) {
-                    $temp[] = "Lengkapi data Kelompok Inovasi terlebih dahulu !";
-                }
-                if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
-                    $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
-                } else {
-                    foreach ($data->indikator()->where('wajib', 1)->get() as $indikator) {
-                        $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $data->id)->count();
-                        if ($upload <= 0) {
-                            $temp[] = "Upload file pendukung untuk Indikator " . $indikator->nama . " terlebih dahulu !";
-                        }
-                    }
-                }
-                if (count($temp) > 0) {
-                    $msg = "<ul>";
-                    foreach ($temp as $item) {
-                        $msg .= "<li>" . $item . "</li>";
-                    }
-                    $msg .= "</ul>";
-                    return redirect()->back()->with('error', $msg);
-                } else {
-                    $data->status = $request->status;
-                    $data->save();
-                    $route = $request->label == 1 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']);
-                    return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
-                }
-            }
+        $data = new ProposalKovablik;
+        $data->user_id = Auth::user()->id;
+        $data->kode = uniqid();
+        if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+            $data->provinsi_id = Auth::user()->province_id;
+        } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+            $data->provinsi_id = Auth::user()->opd->provinsi_id;
+        } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+            $data->provinsi_id = Auth::user()->kota->provinsi->id;
+            $data->kota_id = Auth::user()->regency_id;
+        } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+            $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
+            $data->kota_id = Auth::user()->opd->kabkota_id;
+        } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+            $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
+            $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
+            $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
+        } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+            $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
+            $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
+            $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
+            $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
         }
+
         $max_kata = 10;
         $request->validate([
             'ringkasan' => 'required|string|max:200',
@@ -257,10 +218,11 @@ class ProposalKovablikController extends Controller
         $data->sumber_daya = $request->sumber_daya;
         $data->strategi_keberlanjutan = $request->strategi_keberlanjutan;
         $data->tahun = Auth::user()->tahun;
+        $data->status = 1;
         $data->save();
 
         $route = $request->label == 1 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']);
-        return redirect($route)->with('success', Config::get('save_success'));
+        return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
     }
 
 

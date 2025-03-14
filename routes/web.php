@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaseController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\JuriController;
+use App\Http\Controllers\KategoriNilaiKovablikController;
 use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
 use App\Http\Controllers\KategoriTahapanController;
@@ -151,6 +152,7 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/', [PenilaianController::class, 'save'])->name('save');
                     Route::post('/delete', [PenilaianController::class, 'delete'])->name('delete');
                 });
+
                 Route::prefix('juri')->name('juri.')->group(function () {
                     Route::get('/', [JuriController::class, 'index'])->name('index');
                     Route::post('/', [JuriController::class, 'save'])->name('save');
@@ -170,10 +172,17 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/', [App\Http\Controllers\KategoriKovablikController::class, 'save'])->name('save');
                     Route::post('/delete', [App\Http\Controllers\KategoriKovablikController::class, 'delete'])->name('delete');
                 });
+                
                 Route::prefix('kelompok_kovablik')->name('kelompok_kovablik.')->group(function () {
                     Route::get('/', [App\Http\Controllers\KelompokKovablikController::class, 'index'])->name('index');
                     Route::post('/', [App\Http\Controllers\KelompokKovablikController::class, 'save'])->name('save');
                     Route::post('/delete', [App\Http\Controllers\KelompokKovablikController::class, 'delete'])->name('delete');
+                });
+
+                Route::prefix('kategori_nilai_kovablik')->name('kategori_nilai_kovablik.')->group(function () {
+                    Route::get('/', [KategoriNilaiKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [KategoriNilaiKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [KategoriNilaiKovablikController::class, 'delete'])->name('delete');
                 });
             });
 
@@ -265,6 +274,16 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/delete', [App\Http\Controllers\UploadController::class, 'delete'])->name('delete');
                 });
             });
+        });
+
+        Route::prefix('penilaian-kovablik')->name('penilaian-kovablik.')->group(function () {
+            Route::get('/index/{jenis}', [PenilaianInovasiController::class, 'index'])->name('index');
+            Route::get('/form/edit', [PenilaianInovasiController::class, 'edit'])->name('edit');
+            Route::post('/form/save', [PenilaianInovasiController::class, 'save'])->name('save');
+            Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
+
+            Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');
+            Route::get('/print/{id}', [PenilaianInovasiController::class, 'print'])->name('print');
         });
 
         Route::prefix('pengguna')->name('pengguna.')->group(function () {

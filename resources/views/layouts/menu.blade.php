@@ -172,6 +172,13 @@
         </a>
     </li>
 
+    <li class="{{ Request::routeIs('master.kategori_nilai_kovablik.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.kategori_nilai_kovablik.index') }}"
+            class="{{ Request::routeIs('master.kategori_nilai_kovablik.*') ? 'active' : '' }}">
+            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Kategori Penilaian Kovablik</span>
+        </a>
+    </li>
+
     <li class="{{ Request::routeIs('master.juri.*') ? 'mm-active' : '' }}">
         <a href="{{ route('master.juri.index') }}" class="{{ Request::routeIs('master.juri.*') ? 'active' : '' }}">
             <i class="metismenu-icon pe-7s-ribbon"></i> <span>Juri</span>

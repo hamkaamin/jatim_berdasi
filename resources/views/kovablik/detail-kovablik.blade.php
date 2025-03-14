@@ -16,126 +16,180 @@
         <div class="row">
             <div class="col">
                 <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
-
-                    @php
-                        $user = $data != null ? $data->user : Auth::user();
-                    @endphp
-                    <div class="col-sm-8">
-                        @if ($user->province_id != null)
-                            PROVINSI {{ $user->provinsi->name }}
-                        @elseif ($user->regency_id != null)
-                            {{ $user->kota->name }}
-                        @elseif ($user->opd_id != null)
-                            @if ($user->opd->provinsi_id != null)
-                                PROVINSI {{ $user->opd->provinsi->name }}
-                            @elseif ($user->opd->kabkota_id != null)
-                                {{ $user->opd->kota->name }}
-                            @elseif ($user->opd->kecamatan_id != null)
-                                KECAMATAN {{ $user->opd->kecamatan->name }}
-                            @elseif ($user->opd->kelurahan_id != null)
-                                KELURAHAN {{ $user->opd->kelurahan->name }}
-                            @endif
-                        @endif
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Judul Inovasi</b></label>
                     </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
                     <div class="col-sm-8">
-                        {{ $user->name . ' - ' . $user->username }}
-                    </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inovasi</b></label></div>
-                    <div class="col-sm-8">
-                        {{ $data != null ? $data->nama : old('nama') }}
+                        {{ $data != null ? $data->judul : old('judul') }}
                     </div>
                 </div>
 
                 <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b></label></div>
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Kelompok Inovasi</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null && $data->kelompok ? $data->kelompok->nama : 'Tidak Ada Data' }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Link Google Drive Standart Pelayanan</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->link_standart : old('link_standart') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Link Google Drive Maklumat Pelayanan</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->link_maklumat : old('link_maklumat') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Link Google Drive SK Pengelolaan Pengaduan</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->link_sk_pengaduan : old('link_sk_pengaduan') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Instansi</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->instansi : old('instansi') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Tanggal Inovasi Dimulai</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->tanggal_mulai : old('tanggal_mulai') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Penanggung Jawab/Inovator</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->nama_inovator : old('nama_inovator') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>No Tlpn.</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->no_telpon_inovator : old('no_telpon_inovator') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Email</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->email_inovator : old('email_inovator') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Kategori</b></label>
+                    </div>
                     <div class="col-sm-8">
                         {{ $data != null && $data->kategori ? $data->kategori->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
-                <div class="row my-3">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Inisiator Inovasi</b></label></div>
-                    <div class="col-sm-8">
-                        {{ $data != null && $data->inisiator ? $data->inisiator->nama : 'Tidak Ada Data' }}
-                    </div>
-                </div>
-
                 <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inisiator</b></label></div>
-                    <div class="col-sm-8">
-                        {{ $data != null ? $data->nama_inisiator : old('nama_inisiator') }}
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Ringkasan</b></label>
                     </div>
-                </div>
-                <div class="row my-3">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Jenis Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->jenis ? $data->jenis->nama : 'Tidak Ada Data' }}
-                    </div>
-                </div>
-                <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Bentuk Inovasi</b></label></div>
-                    <div class="col-sm-8">
-                        {{ $data != null && $data->bentuk ? $data->bentuk->nama : 'Tidak Ada Data' }}
+                        {{ $data != null ? $data->ringkasan : old('ringkasan') }}
                     </div>
                 </div>
 
                 <div class="row my-2">
                     <div class="col-sm-3 d-flex align-items-center">
-                        <label><b>Tematik</b></label>
+                        <label><b>Latar Belakang dan Tujuan</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null && $data->tematik ? $data->tematik->nama : 'Tidak Ada Data' }}
-                    </div>
-                </div>
-
-
-                <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Ujicoba Inovasi</b></label></div>
-                    <div class="col-sm-8">
-                        {{ $data != null ? $data->waktu_uji_coba : old('waktu_uji_coba') }}
-                    </div>
-                </div>
-
-                <div class="row my-2">
-                    <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Penerapan Inovasi</b></label></div>
-                    <div class="col-sm-8">
-                        {{ $data != null ? $data->waktu_penerapan : old('waktu_penerapan') }}
+                        {{ $data != null ? $data->latar_belakang : old('latar_belakang') }}
                     </div>
                 </div>
 
                 <div class="row my-2">
                     <div class="col-sm-3 d-flex align-items-center">
-                        <label><b>Waktu Pengembangan Inovasi</b></label>
+                        <label><b>Kebaruan/Nilai Tambah</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null ? ($data->is_pengembangan ? 'Ya' : 'Tidak') : 'Tidak Ada Data' }}
+                        {{ $data != null ? $data->nilai_tambah : old('nilai_tambah') }}
                     </div>
                 </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Implementasi Inovasi</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->implementasi : old('implementasi') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Signifikansi</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->signifikansi : old('signifikansi') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Adaptabilitas</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->adaptabilitas : old('adaptabilitas') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Sumber Daya</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->sumber_daya : old('sumber_daya') }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Strategi Keberlanjutan</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->strategi_keberlanjutan : old('strategi_keberlanjutan') }}
+                    </div>
+                </div>    
             </div>
         </div>
-        <a @if ($label == 1) href="{{ route('kovablik.index', ['area' => 'masyarakat']) }}" @else href="{{ route('kovablik.index', ['area' => 'kota']) }}" @endif
-            class="btn btn-light">
-            Kembali</a>
-        {{-- @if ($data != null && $data->status == 0)
-            <form style="all: unset" action="{{ route('kovablik.save', ['id' => $data->id]) }}" method="post">
-                @csrf
-                <input type="hidden" name="label" value="{{ $data->label }}">
-                <button type="submit" class="btn btn-primary" name="status" value="1"
-                    onclick="if(!confirm('Apakah Anda yakin akan submit data Proposal ini? (Pastikan seluruh isian wajib telah terisi)')){return false;}">Kirim
-                    Inovasi</button>
-            </form>
-        @endif --}}
-
-        {{-- @if (Auth::user()->role == 2)
-            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
-                onclick="modal({{ request()->id }}, 'proposal_status')">Update Status Proposal</button>
-        @endif --}}
+        <a href="{{ $label == 2 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']) }}" class="btn btn-light">
+        Kembali
+        </a>
     @endif
 
 @endsection

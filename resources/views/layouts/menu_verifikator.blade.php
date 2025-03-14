@@ -24,6 +24,15 @@
             </a>
         </li>
     @endif
+
+    @if (Auth::user()->menu_kovablik == 1)
+        <li class="{{ request()->is('kovablik/masyarakat') ? 'mm-active' : '' }}">
+            <a href="{{ route('kovablik.index', ['area' => 'masyarakat']) }}"
+                class="{{ request()->is('kovablik/masyarakat') ? 'active' : '' }}">
+                <i class="uil-award"></i> <span>KOVABLIK</span>
+            </a>
+        </li>
+    @endif
 @else
     <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
         <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"

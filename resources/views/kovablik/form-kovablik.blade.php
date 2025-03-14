@@ -34,20 +34,18 @@
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
                             <div class="row">
-                                {{-- @foreach ($kelompok as $item) --}}
-                                    <div class="col-12 d-flex align-items-center">
-                                        <select name="kelompok_id" id="kelompok_id" class="form-control" required
-                                            onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
-                                            <option value="">-- Pilih Kelompok --</option>
-                                            @foreach ($kelompok as $item)
-                                                <option value="{{ $item->id }}"
-                                                    @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
-                                                    {{ $item->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                {{-- @endforeach --}}
+                                <div class="col-12 d-flex align-items-center">
+                                    <select name="kelompok_id" id="kelompok_id" class="form-control" required
+                                        onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
+                                        <option value="">-- Pilih Kelompok --</option>
+                                        @foreach ($kelompok as $item)
+                                            <option value="{{ $item->id }}"
+                                                @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -113,20 +111,18 @@
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8">
                             <div class="row">
-                                {{-- @foreach ($kategori as $item) --}}
-                                    <div class="col-12 d-flex align-items-center">
-                                        <select name="kategori_id" id="kategori_id" class="form-control" required
-                                            onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
-                                            <option value="">-- Pilih Kategori --</option>
-                                            @foreach ($kategori as $item)
-                                                <option value="{{ $item->id }}"
-                                                    @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
-                                                    {{ $item->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                {{-- @endforeach --}}
+                                <div class="col-12 d-flex align-items-center">
+                                    <select name="kategori_id" id="kategori_id" class="form-control" required
+                                        onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
+                                        <option value="">-- Pilih Kategori --</option>
+                                        @foreach ($kategori as $item)
+                                            <option value="{{ $item->id }}"
+                                                @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
+                                                {{ $item->nama }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -342,31 +338,6 @@
         </h3>
     @endif
     <br><br><br><br><br>
-    {{-- <div class="row">
-        <div class="col-md-9"></div>
-        <div class="col-md-3">
-            @if ($data != null && $data->status == 0)
-                <form style="all: unset" action="{{ route('kovablik.save', ['id' => $data->id]) }}" method="post">
-                    @csrf
-                    <input type="hidden" name="label" value="{{ $data->label }}">
-                    @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                        <button type="submit" class="btn btn-primary" name="status" value="1"
-                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
-                            Inovasi</button>
-                    @else
-                        <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
-                            class="btn btn-danger">Kirim
-                            inovasi</a>
-                    @endif
-                </form>
-            @endif
-
-            @if (Auth::user()->role == 2)
-                <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
-                    onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
-            @endif
-        </div>
-    </div> --}}
 @endsection
 
 <script>
@@ -457,6 +428,5 @@
     }
 </script>
 @section('script')
-    {{-- @include('script.select2-multiple') --}}
     @include('script.modal')
 @endsection
