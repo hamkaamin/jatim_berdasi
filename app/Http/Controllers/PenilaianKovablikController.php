@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KategoriKovablik;
+use App\Models\ProposalKovablik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -147,15 +148,8 @@ class PenilaianKovablikController extends Controller
 
     public function ranking()
     {
-        $data_kategori = KategoriKovablik::orderBy('id', 'asc')->get();
-        if (Auth::user()->role == 7) {
-            $data_kategori = KategoriKovablik::whereIn('id', function ($query) {
-                $query->select('kategori_id')
-                    ->from('juris')
-                    ->where('user_id', Auth::user()->id);
-            })->get();
-        }
-
-        return view('penilaian.index_ranking', compact('data_kategori'));
+        $proposal = ProposalKovablik::where('status', 2)->get();
+        
+        return view('penilaian-kovablik.index_ranking', compact('proposal'));
     }
 }
