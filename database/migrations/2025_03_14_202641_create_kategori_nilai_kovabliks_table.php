@@ -18,7 +18,8 @@ class CreateKategoriNilaiKovabliksTable extends Migration
             $table->text('bagian')->nullable();
             $table->text('indikator')->nullable();
             $table->integer('nilai_min')->default(0)->nullable();
-            $table->integer('nilai_max')->default(0)->nullable();
+            $table->integer('nilai_max')->default(100)->nullable();
+            $table->integer('bobot_nilai')->default(100)->nullable();
             $table->timestamps();
         });
     }

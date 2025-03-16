@@ -36,6 +36,7 @@ use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
 use App\Models\KelompokKovablik;
 use App\Models\Penilaian;
+use App\Models\ProposalKovablik;
 use App\Models\Tematik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -402,6 +403,13 @@ class HomeController extends Controller
                 $data = ($request->id == 0) ? null : KategoriNilaiKovablik::findOrFail($request->id);
                 return response()->json(array(
                     'msg' => view('modal.form-kategori_nilai_kovablik', compact('data'))->render()
+                ), 200);
+                break;
+
+            case "kovablik_status":
+                $data = ProposalKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-status-kovablik', compact('data'))->render()
                 ), 200);
                 break;
         }

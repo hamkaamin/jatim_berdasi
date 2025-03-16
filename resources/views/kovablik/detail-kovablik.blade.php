@@ -187,6 +187,10 @@
                 </div>    
             </div>
         </div>
+        @if (Auth::user()->role == 2)
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
+                onclick="modal({{ $data->id }}, 'kovablik_status')">Update Status Proposal</button>
+        @endif
         <a href="{{ $label == 2 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']) }}" class="btn btn-light">
         Kembali
         </a>

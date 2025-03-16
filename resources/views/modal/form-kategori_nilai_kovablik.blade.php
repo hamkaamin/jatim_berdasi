@@ -33,6 +33,12 @@
             <div class="col-sm-8"><input type="number" min="0" max="100" name="nilai_max"
                     class="form-control" value="{{ $data != null ? $data->nilai_max : '' }}"></div>
         </div>
+
+        <div class="row my-2">
+            <div class="col-sm-4 d-flex align-items-center"><label>Bobot Nilai (%) </label></div>
+            <div class="col-sm-8"><input type="number" min="0" max="100" name="bobot_nilai"
+                    class="form-control" value="{{ $data != null ? $data->bobot_nilai : '' }}"></div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

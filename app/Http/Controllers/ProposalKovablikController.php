@@ -9,6 +9,7 @@ use App\Models\KelompokKovablik;
 use App\Models\ProposalKovablik;
 use App\Models\Setting;
 use App\Models\Upload;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -218,11 +219,23 @@ class ProposalKovablikController extends Controller
         $data->sumber_daya = $request->sumber_daya;
         $data->strategi_keberlanjutan = $request->strategi_keberlanjutan;
         $data->tahun = Auth::user()->tahun;
-        $data->status = 1;
         $data->save();
 
         $route = $request->label == 1 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']);
         return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
+    }
+
+    public function update(Request $request)
+    {
+        $client = new Client([
+            'verify' => false, // Disable SSL verification
+        ]);
+        $proposal = ProposalKovablik::findOrFail($request->id);
+        $proposal->status = $request->status;
+        $proposal->keterangan = $request->keterangan;
+        $proposal->save();
+        
+        return redirect()->back()->with('success', Config::get('save_success') . '. Status Proposal berhasil diperbarui !');
     }
 
 
@@ -286,18 +299,6 @@ class ProposalKovablikController extends Controller
         } else {
             return redirect()->back();
         }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProposalKovablik  $proposalKovablik
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, ProposalKovablik $proposalKovablik)
-    {
-        //
     }
 
     /**

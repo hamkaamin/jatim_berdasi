@@ -11,6 +11,7 @@ use App\Http\Controllers\KategoriTahapanController;
 use App\Http\Controllers\LoginManualController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PenilaianInovasiController;
+use App\Http\Controllers\PenilaianKovablikController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -277,13 +278,13 @@ Route::group(['middleware' => ['XSS']], function () {
         });
 
         Route::prefix('penilaian-kovablik')->name('penilaian-kovablik.')->group(function () {
-            Route::get('/index/{jenis}', [PenilaianInovasiController::class, 'index'])->name('index');
-            Route::get('/form/edit', [PenilaianInovasiController::class, 'edit'])->name('edit');
-            Route::post('/form/save', [PenilaianInovasiController::class, 'save'])->name('save');
-            Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
+            Route::get('/index', [PenilaianKovablikController::class, 'index'])->name('index');
+            Route::get('/form/edit', [PenilaianKovablikController::class, 'edit'])->name('edit');
+            Route::post('/form/save', [PenilaianKovablikController::class, 'save'])->name('save');
+            Route::get('/show', [PenilaianKovablikController::class, 'show'])->name('show');
 
-            Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');
-            Route::get('/print/{id}', [PenilaianInovasiController::class, 'print'])->name('print');
+            Route::get('/ranking', [PenilaianKovablikController::class, 'ranking'])->name('ranking');
+            Route::get('/print/{id}', [PenilaianKovablikController::class, 'print'])->name('print');
         });
 
         Route::prefix('pengguna')->name('pengguna.')->group(function () {

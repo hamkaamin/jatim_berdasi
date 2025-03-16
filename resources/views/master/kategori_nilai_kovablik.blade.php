@@ -24,6 +24,7 @@
                             <th>Bagian</th>
                             <th>Indikator</th>
                             <th>Nilai Min - Max</th>
+                            <th>Bobot Nilai</th>
                             <th style="width: 100px"></th>
                         </tr>
                     </thead>
@@ -34,6 +35,7 @@
                                 <td>{{ $item->bagian }}</td>
                                 <td>{!! $item->indikator !!}</td>
                                 <td><b>{{ $item->nilai_min }}</b> - <b>{{ $item->nilai_max }}</b>
+                                <td>{{ $item->bobot_nilai }}%</td>
                                 <td>
                                     <button data-target="#modalPopup" data-toggle="modal"
                                         onclick="modal({{ $item->id }}, 'kategori_nilai_kovablik')"

@@ -21,7 +21,11 @@ class KategoriNilaiKovablikController extends Controller
         } else {
             $data = KategoriNilaiKovablik::findOrFail($request->id);
         }
-        $data->nama = $request->nama;
+        $data->bagian = $request->bagian;
+        $data->indikator = $request->indikator;
+        $data->nilai_min = $request->nilai_min;
+        $data->nilai_max = $request->nilai_max;
+        $data->bobot_nilai = $request->bobot_nilai;
         $data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }

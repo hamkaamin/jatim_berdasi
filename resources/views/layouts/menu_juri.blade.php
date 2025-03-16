@@ -48,6 +48,13 @@
                     Awards</a>
             </li>
         @endif
+        @if (Auth::user()->menu_kovablik == 1)
+            <li
+                class="{{ Request::is('penilaian-kovablik') ? 'mm-active' : '' }}">
+                <a href="{{ route('penilaian-kovablik.ranking') }}"
+                    class="{{ Request::is('penilaian-kovablik') ? 'active' : '' }}">Kovablik</a>
+            </li>
+        @endif
     </ul>
 </li>
 
