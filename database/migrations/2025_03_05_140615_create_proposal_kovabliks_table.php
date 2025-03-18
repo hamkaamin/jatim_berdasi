@@ -42,6 +42,7 @@ class CreateProposalKovabliksTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreignId('tahapan_id')->nullable()->default(1)->constrained('tahapan_kovabliks');
             $table->foreignId('kategori_id')->nullable()->constrained('kategori_kovabliks');
             $table->foreignId('kelompok_id')->nullable()->constrained('kelompok_kovabliks');
             $table->foreignId('user_id')->constrained('users');

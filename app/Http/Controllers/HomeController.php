@@ -37,6 +37,7 @@ use App\Models\KategoriTahapan;
 use App\Models\KelompokKovablik;
 use App\Models\Penilaian;
 use App\Models\ProposalKovablik;
+use App\Models\TahapanKovablik;
 use App\Models\Tematik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -399,10 +400,18 @@ class HomeController extends Controller
                 ), 200);
                 break;
 
+            case "tahapan_kovablik":
+                $data = ($request->id == 0) ? null : TahapanKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-tahapan_kovablik', compact('data'))->render()
+                ), 200);
+                break;
+
             case "kategori_nilai_kovablik":
                 $data = ($request->id == 0) ? null : KategoriNilaiKovablik::findOrFail($request->id);
+                $tahapan = TahapanKovablik::all();
                 return response()->json(array(
-                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data'))->render()
+                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'tahapan'))->render()
                 ), 200);
                 break;
 

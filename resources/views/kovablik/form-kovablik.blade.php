@@ -308,24 +308,6 @@
                                 <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
                                     class="btn btn-danger">Simpan</a>
                             @endif
-                            @if ($data != null && $data->status == 0)
-                                @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                                    @if (env('APP_NAME') == 'INOVASI DAERAH')
-                                        <button style="display: none" type="submit" class="btn btn-primary" name="status"
-                                            value="1"
-                                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
-                                            Inovasi</button>
-                                    @else
-                                        <button type="submit" class="btn btn-primary" name="status" value="1"
-                                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
-                                            Inovasi</button>
-                                    @endif
-                                @else
-                                    <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
-                                        class="btn btn-danger">Kirim
-                                        inovasi</a>
-                                @endif
-                            @endif
                         </div>
                     </div>
                 </form>

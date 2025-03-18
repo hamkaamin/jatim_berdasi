@@ -104,6 +104,12 @@
             <i class="uil-file-bookmark-alt"></i> <span>Kelompok Kovablik</span>
         </a>
     </li>
+    <li class="{{ Request::routeIs('master.tahapan_kovablik.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.tahapan_kovablik.index') }}"
+            class="{{ Request::routeIs('master.tahapan_kovablik.*') ? 'active' : '' }}">
+            <i class="uil-file-bookmark-alt"></i> <span>Tahapan Kovablik</span>
+        </a>
+    </li>
 
 
     @if (env('APP_HIDE_FAQ') == 0)

@@ -39,6 +39,19 @@
             <div class="col-sm-8"><input type="number" min="0" max="100" name="bobot_nilai"
                     class="form-control" value="{{ $data != null ? $data->bobot_nilai : '' }}"></div>
         </div>
+
+        <div class="row my-2">
+            <div class="col-sm-4 d-flex align-items-center"><label>Tahapan <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-sm-8">
+                <select class="form-control" name="tahapan_id" id="tahapan_id">
+                    @foreach ($tahapan as $item)
+                        <option value="{{ $item->id }}" @if (($data != null && $data->tahapan_id == $item->id) || old('tahapan_id') == $item->id) selected @endif>
+                            {{ $item->nama }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

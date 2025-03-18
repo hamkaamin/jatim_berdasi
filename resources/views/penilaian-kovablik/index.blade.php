@@ -1,135 +1,141 @@
 @extends('layouts.main')
 
 @section('title')
-    Penilaian Inovasi
+    Penilaian Proposal Kovablik
 @endsection
 
 @section('title-desc')
-    Daftar Pengajuan Inovasi yang Sudah Disetujui
+    Daftar Pengajuan Proposal Kovablik yang Sudah Disetujui
 @endsection
 
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="row">
-                <div class="col-md-12">
-                    <div style="width: 100%">
-                        <table class="table align-items-center table-flush" id="myTable">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>No.</th>
-                                    <th style="min-width: 100px">Dibuat Oleh</th>
-                                    <th style="min-width: 200px">Nama</th>
-                                    <th>Tahapan</th>
-                                    <th>Kategori</th>
-                                    <th style="width: 100px; min-width: 100px">Status</th>
-                                    <th>Keterangan</th>
-                                    <th>Kematangan</th>
-                                    <th>Nilai</th>
-                                    <th style="width: 100px; min-width: 100px">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $data = [];
-
-                                @endphp
-                                @foreach ($inovasi as $item)
+            <ul class="nav nav-tabs">
+                @foreach ($tahapan as $item)
+                    <li class="nav-item">
+                        <a data-toggle="tab" href="#tab-{{ $item->id }}"
+                            class="{{ $loop->iteration == 1 ? 'active' : '' }} nav-link">
+                            {{ $item->nama }} <span class="badge badge-primary">
+                                {{ sizeof($item->proposals) }}
+                            </span>
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+            <div class="tab-content">
+                @foreach ($tahapan as $data)
+                    <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="tab-{{ $data->id }}" role="tabpanel">
+                        <h4>Proposal Kovablik</h4>
+                        <div class="table-responsive p-3">
+                            <table class="table align-items-center table-flush" id="myTable">
+                                <thead class="thead-light">
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item->user->name }}</td>
-                                        <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->belongsToTahapan->nama }}</td>
-                                        <td>{{ $item->kategori->nama ?? ' ' }}</td>
-                                        <td>{!! Helper::getStatusInovasi($item->status) !!}</td>
-                                        <td>
-                                            @if ($item->keterangan != null)
-                                                {{ $item->keterangan }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                        <td>{{ $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
-                                        </td>
-                                        <td>
-                                            @if ($item->status != 0)
-                                                <a target="_blank"
-                                                    href="{{ route('inovasi.export', ['type' => 'pdf', 'id' => $item->id]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
-                                                    data-placement="top" title="Download Pdf"><i
-                                                        class="fa fa-file-pdf"></i>&nbsp;&nbsp;PDF</a>
-                                                <a target="_blank"
-                                                    href="{{ route('inovasi.export', ['type' => 'excel', 'id' => $item->id]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-success" data-toggle="tooltip"
-                                                    data-placement="top" title="Download Excel"><i
-                                                        class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
-                                            @endif
-                                            <a href="{{ route('inovasi.indikator.index', ['id' => $item->id, 'area' => 'bank_data']) }}"
-                                                class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
-                                                data-placement="top" title="Upload Indikator"><i
-                                                    class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
-                                            @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
-                                                <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id)]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
-                                                    data-placement="top" title="Edit Inovasi"><i
-                                                        class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
-                                            @endif
-                                            @if (
-                                                ($item->status != 2 && $item->user_id == Auth::user()->id) ||
-                                                    Auth::user()->username == 'salehsayanglatifah' ||
-                                                    Auth::user()->username == 'pemdkotkabatest')
-                                                <form style="all: unset"
-                                                    action="{{ route('inovasi.delete', ['id' => $item->id]) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    <button type="submit" class="btn m-1 btn-block btn-sm btn-danger"
-                                                        onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"
-                                                        data-toggle="tooltip" data-placement="top" title="Hapus Inovasi"><i
-                                                            class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
-                                                </form>
-                                            @endif
-
-                                            @if (Auth::user()->role == 7)
-                                                <a href="{{ route('penilaian.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id, 'jenis' => $jenis]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
-                                                    data-placement="top" title="Penilaian Inovasi"><i
-                                                        class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
-                                            @else
-                                                <a href="{{ route('penilaian.show', ['id' => encrypt($item->id), 'jenis' => $jenis]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
-                                                    data-placement="top" title="Penilaian Inovasi"><i
-                                                        class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
-                                            @endif
-                                        </td>
+                                        <th></th>
+                                        <th>No.</th>
+                                        <th>Instansi</th>
+                                        <th>Judul</th>
+                                        <th>Kategori</th>
+                                        <th>Kelompok</th>
+                                        <th>Juri</th>
+                                        <th>Nilai</th>
+                                        <th>Act</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($data->proposals as $item)
+                                        @php
+                                            $user = \App\Models\User::find($item->penilaian->pluck('pivot.user_id')->first());
+                                        @endphp
+                                        <tr>
+                                            <td><input type="checkbox" style="transform: scale(2)" name="is_sent[]" id="is_sent[]" value="{{ $item->id }}"></td>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->instansi }}</td>
+                                            <td>{{ $item->judul }}</td>
+                                            <td>{{ $item->kategori->nama}}</td>
+                                            <td>{{ $item->kelompok->nama}}</td>
+                                            <td>{{ $user->name ?? '-' }}</td>
+                                            <td>{{ $item->penilaian->sum('pivot.nilai') ?? '-' }}</td>
+                                            <td>
+                                                @if ($item->status != 0)
+                                                    <a target="_blank"
+                                                        href="{{ route('kovablik.export', ['type' => 'pdf', 'id' => $item->id]) }}"
+                                                        class="btn m-1 btn-block btn-sm btn-info"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Download Pdf"><i
+                                                            class="fa fa-file-pdf"></i>&nbsp;&nbsp;PDF</a>
+                                                    <a target="_blank"
+                                                        href="{{ route('kovablik.export', ['type' => 'excel', 'id' => $item->id]) }}"
+                                                        class="btn m-1 btn-block btn-sm btn-success"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Download Excel"><i
+                                                            class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
+                                                @endif
+                                                @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
+                                                    <a href="{{ route('kovablik.edit', ['id' => encrypt($item->id)]) }}"
+                                                        class="btn m-1 btn-block btn-sm btn-warning"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Edit Inovasi"><i
+                                                            class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
+                                                @endif
+                                                @if (
+                                                    ($item->status != 2 && $item->user_id == Auth::user()->id) ||
+                                                        Auth::user()->username == 'salehsayanglatifah' ||
+                                                        Auth::user()->username == 'pemdkotkabatest')
+                                                    <form style="all: unset"
+                                                        action="{{ route('kovablik.delete', ['id' => $item->id]) }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="btn m-1 btn-block btn-sm btn-danger"
+                                                            onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"
+                                                            data-toggle="tooltip" data-placement="top"
+                                                            title="Hapus Inovasi"><i
+                                                                class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
+                                                    </form>
+                                                @endif
+
+                                                @if (Auth::user()->role == 7)
+                                                    <a href="{{ route('penilaian-kovablik.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id]) }}"
+                                                        class="btn m-1 btn-block btn-sm btn-warning"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Penilaian Proposal"><i
+                                                            class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
+                                                @else
+                                                    <a href="{{ route('penilaian-kovablik.show', ['id' => encrypt($item->id)]) }}"
+                                                        class="btn m-1 btn-block btn-sm btn-warning"
+                                                        data-toggle="tooltip" data-placement="top"
+                                                        title="Penilaian Proposal"><i
+                                                            class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
+    @endsection
 
-    </div>
-@endsection
-
-@section('script')
-    @include('script.ubahWilayah')
-    @include('script.ubahScopeOpd')
-    <script>
-        $(document).ready(function() {
-            $('#myTable0').DataTable({});
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#myTable').DataTable();
-        });
-    </script>
-    <script>
-        $(function() {
-            $('[data-toggle="tooltip"]')
-        });
-    </script>
-@endsection
+    @section('script')
+        @include('script.ubahWilayah')
+        @include('script.ubahScopeOpd')
+        <script>
+            $(document).ready(function() {
+                $('#myTable0').DataTable({});
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable();
+            });
+        </script>
+        <script>
+            $(function() {
+                $('[data-toggle="tooltip"]')
+            });
+        </script>
+    @endsection

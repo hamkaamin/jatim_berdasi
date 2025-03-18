@@ -2,51 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Juri;
 use App\Models\KategoriKovablik;
+use App\Models\KategoriNilaiKovablik;
+use App\Models\PenilaianKovablikMap;
 use App\Models\ProposalKovablik;
+use App\Models\TahapanKovablik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class PenilaianKovablikController extends Controller
 {
     public function index()
     {
-        $data_kategori = KategoriInovasi::orderBy('id', 'asc')->get();
-        if (Auth::user()->role == 7) {
-            $data_kategori = KategoriInovasi::whereIn('id', function ($query) {
-                $query->select('kategori_id')
-                    ->from('juris')
-                    ->where('user_id', Auth::user()->id);
-            })->get();
-        }
-        if ($jenis == 'iga') {
-            $data_kategori = KategoriInovasi::where('id', 1)->get();
-            return view('penilaian.index_ranking', compact('jenis', 'data_kategori'));
-        } else if ($jenis == 'inotek') {
-            return view('penilaian.index_ranking', compact('jenis', 'data_kategori'));
-        }
+        $proposal = ProposalKovablik::where('status', 2)->get();
+        $tahapan = TahapanKovablik::all();
 
-        return view('penilaian.index', compact('inovasi', 'jenis', 'data_kategori'));
+        return view('penilaian-kovablik.index', compact('proposal', 'tahapan'));
     }
 
     public function edit(Request $request)
     {
-        $jenis = $request->jenis;
         $id = decrypt($request->id);
-        $inovasi = Inovasi::findOrFail($id);
+        $proposal = ProposalKovablik::findOrFail($id);
         $juri = Juri::where('user_id', Auth::user()->id)->first();
         $data = [];
-        if ($inovasi->penilaian()->wherePivot('user_id', Auth::id())->count() == 0) {
-            $penilaians = Penilaian::where('kategori_id', $inovasi->kategori_id)->get();
+        if ($proposal->penilaian()->wherePivot('user_id', Auth::id())->count() == 0) {
+            $penilaians = KategoriNilaiKovablik::all();
             foreach ($penilaians as $penilaian) {
-                $inovasi->penilaian()->attach($penilaian->id, [
+                $proposal->penilaian()->attach($penilaian->id, [
                     'user_id' => Auth::id()
                 ]);
             }
         }
-        $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->get();
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id', $juri->id)->first();
-        return view('penilaian.edit', compact('data', 'inovasi', 'jenis', 'juri', 'penilaian_map'));
+        $data = $proposal->penilaian()->wherePivot('user_id', Auth::id())->get();
+        $penilaian_map = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->first();
+        return view('penilaian-kovablik.edit', compact('data', 'proposal', 'juri', 'penilaian_map'));
     }
 
     public function show(Request $request)
@@ -83,23 +76,25 @@ class PenilaianKovablikController extends Controller
     {
         DB::beginTransaction();
         try {
-            $inovasi = Inovasi::findOrFail($request->inovasi_id);
+            $proposal = ProposalKovablik::findOrFail($request->proposal_id);
             $total_nilai = 0;
 
-            foreach ($request->except('_token', 'inovasi_id') as $key => $value) {
+            foreach ($request->except('_token', 'proposal_id') as $key => $value) {
                 if (strpos($key, 'keterangan_') === 0) {
                     $penilaianId = str_replace('keterangan_', '', $key);
                     $catatanSaran = $value;
                     $nilai = $request->input("nilai_$penilaianId");
+                    $bobot = $request->input("bobot_nilai_$penilaianId");
+                    $nilai = $nilai * $bobot / 100;
 
                     if (is_numeric($nilai)) {
-                        $pivot = $inovasi->penilaian()
+                        $pivot = $proposal->penilaian()
                             ->wherePivot('user_id', Auth::id())
                             ->wherePivot('penilaian_id', $penilaianId)
                             ->first();
 
                         if ($pivot) {
-                            $inovasi->penilaian()->updateExistingPivot($penilaianId, [
+                            $proposal->penilaian()->updateExistingPivot($penilaianId, [
                                 'catatan_saran' => $catatanSaran,
                                 'nilai' => $nilai,
                             ]);
@@ -125,11 +120,11 @@ class PenilaianKovablikController extends Controller
                 $signatureImage = base64_decode($signatureData);
                 file_put_contents($signaturePath . $signatureName, $signatureImage);
                 if ($request->penilaian_map != null || !empty($request->penilaian_map)) {
-                    $penilaian_map = PenilaianMap::find($request->penilaian_map);
+                    $penilaian_map = PenilaianKovablikMap::find($request->penilaian_map);
                 } else {
-                    $penilaian_map = new PenilaianMap();
+                    $penilaian_map = new PenilaianKovablikMap();
                 }
-                $penilaian_map->inovasi_id = $inovasi->id;
+                $penilaian_map->proposal_id = $proposal->id;
                 $penilaian_map->juri_id = $request->juri_id;
                 $penilaian_map->total_nilai = $total_nilai;
                 $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;
@@ -144,12 +139,5 @@ class PenilaianKovablikController extends Controller
         }
 
         return redirect()->back()->with('success', 'Data penilaian berhasil diperbarui!');
-    }
-
-    public function ranking()
-    {
-        $proposal = ProposalKovablik::where('status', 2)->get();
-        
-        return view('penilaian-kovablik.index_ranking', compact('proposal'));
     }
 }

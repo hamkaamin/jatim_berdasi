@@ -98,7 +98,7 @@
                                         data-placement="top" title="Detail Proposal"><i
                                             class="fa fa-eye"></i>&nbsp;&nbsp;Detail</a>
                                     @if (($item->status == 0 || $item->status == 4 || Auth::user()->role == 2) && $item->status != 2 && $item->status != 1)
-                                        <a href="{{ route('kovablik.edit', ['id' => encrypt($item->id)]) }}"
+                                        <a href="{{ route('kovablik.edit', ['id' => encrypt($item->id), 'label' => 2]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Proposal"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>

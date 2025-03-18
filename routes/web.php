@@ -180,6 +180,12 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/delete', [App\Http\Controllers\KelompokKovablikController::class, 'delete'])->name('delete');
                 });
 
+                Route::prefix('tahapan_kovablik')->name('tahapan_kovablik.')->group(function () {
+                    Route::get('/', [App\Http\Controllers\TahapanKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [App\Http\Controllers\TahapanKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [App\Http\Controllers\TahapanKovablikController::class, 'delete'])->name('delete');
+                });
+
                 Route::prefix('kategori_nilai_kovablik')->name('kategori_nilai_kovablik.')->group(function () {
                     Route::get('/', [KategoriNilaiKovablikController::class, 'index'])->name('index');
                     Route::post('/', [KategoriNilaiKovablikController::class, 'save'])->name('save');

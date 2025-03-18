@@ -56,4 +56,15 @@ class ProposalKovablik extends Model
     {
         return $this->belongsTo('App\Models\KelompokKovablik', 'kelompok_id', 'id');
     }
+
+    public function tahapan()
+    {
+        return $this->belongsTo(TahapanKovablik::class, 'tahapan_id');
+    }
+
+    public function penilaian()
+    {
+        return $this->belongsToMany('App\Models\KategoriNilaiKovablik', 'penilaian_kovabliks', 'proposal_id', 'penilaian_id')
+            ->withPivot('user_id', 'catatan_saran', 'nilai');
+    }
 }

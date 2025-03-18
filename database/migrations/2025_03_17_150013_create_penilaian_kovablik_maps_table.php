@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePenilaianKovabliksTable extends Migration
+class CreatePenilaianKovablikMapsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreatePenilaianKovabliksTable extends Migration
      */
     public function up()
     {
-        Schema::create('penilaian_kovabliks', function (Blueprint $table) {
-            $table->integer('penilaian_id');
+        Schema::create('penilaian_kovablik_maps', function (Blueprint $table) {
+            $table->id();
             $table->integer('proposal_id');
-            $table->string('catatan_saran')->nullable();
-            $table->double('nilai')->default(0)->nullable();
-            $table->integer('user_id');
+            $table->integer('juri_id');
+            $table->double('total_nilai');
+            $table->text('signature_path')->nullable();
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -30,6 +31,6 @@ class CreatePenilaianKovabliksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penilaian_kovabliks');
+        Schema::dropIfExists('penilaian_kovablik_maps');
     }
 }

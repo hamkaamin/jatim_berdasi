@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('title')
-    Penilaian Inovasi
+    Penilaian Proposal
 @endsection
 
 @section('title-desc')
-    Form untuk Menilai Data Inovasi dalam Sistem
+    Form untuk Menilai Proposal Kovablik dalam Sistem
 @endsection
 
 @section('buttons')
@@ -15,7 +15,7 @@
     @if (env('APP_CLOSE_APP') == 0)
         <div class="container">
             <div class="card shadow-sm p-4">
-                <h5 class="mb-3">Form Penilaian Inovasi {{ $inovasi->nama }}</h5>
+                <h5 class="mb-3">Form Penilaian Proposal</h5>
 
                 <div class="alert {{ @$penilaian_map->signature_path ? 'alert-success' : 'alert-warning' }} d-flex align-items-center"
                     role="alert">
@@ -26,58 +26,384 @@
                     </div>
                 </div>
                 <form
-                    action="{{ route('penilaian.save', ['inovasi_id' => $inovasi->id, 'penilaian_map' => @$penilaian_map->id]) }}"
+                    action="{{ route('penilaian-kovablik.save', ['proposal_id' => $proposal->id, 'penilaian_map' => @$penilaian_map->id]) }}"
                     method="post" enctype="multipart/form-data" id="form-penilaian">
                     @csrf
-                    <!-- Judul Kolom -->
-                    <div class="row fw-bold border-bottom pb-2 mb-3">
-                        <div class="col-md-3"><strong>Bagian</strong></div>
-                        <div class="col-md-3"><strong>Indikator</strong></div>
-                        <div class="col-md-3"><strong>Catatan / Saran</strong></div>
-                        <div class="col-md-3"><strong>Nilai</strong></div>
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Judul Inovasi</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->judul : old('judul') }}
+                        </div>
                     </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Kelompok Inovasi</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null && $proposal->kelompok ? $proposal->kelompok->nama : 'Tidak Ada Data' }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Link Google Drive Standart Pelayanan</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->link_standart : old('link_standart') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Link Google Drive Maklumat Pelayanan</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->link_maklumat : old('link_maklumat') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Link Google Drive SK Pengelolaan Pengaduan</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->link_sk_pengaduan : old('link_sk_pengaduan') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Instansi</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->instansi : old('instansi') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Tanggal Inovasi Dimulai</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->tanggal_mulai : old('tanggal_mulai') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Penanggung Jawab/Inovator</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->nama_inovator : old('nama_inovator') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>No Tlpn.</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->no_telpon_inovator : old('no_telpon_inovator') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Email</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null ? $proposal->email_inovator : old('email_inovator') }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-sm-3 d-flex align-items-center">
+                            <label><b>Kategori</b></label>
+                        </div>
+                        <div class="col-sm-8">
+                            {{ $proposal != null && $proposal->kategori ? $proposal->kategori->nama : 'Tidak Ada Data' }}
+                        </div>
+                    </div>
+
+                    <div class="row my-2">
+                        <div class="col-12 d-flex align-items-center">
+                            <label>
+                                <b>Ringkasan</b>
+                                <ul>
+                                    <li>Jelaskan secara ringkas mengenai inovasi yang diusulkan, setidaknya meliputi : implementasi, dampak, dan relevansi inovasi dengan kategori yang dipilih.</li>
+                                    <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
+                                    <li>maksimal 200 kata</li>
+                                </ul>
+                            </label>
+                        </div>
+                        <div class="col-12 form-control">
+                            {{ $proposal != null ? $proposal->ringkasan : old('ringkasan') }}
+                        </div>
+                    </div>
+                    <hr class="border-dark">
 
                     @php
                         $no = 0;
                         $totalNilai = 0;
                     @endphp
                     @foreach ($data as $index => $item)
+
                         @php
                             $no++;
                             $totalNilai += optional($item->pivot)->nilai;
                         @endphp
-                        <div class="card mb-3 border-0 shadow-sm p-3">
-                            <div class="row">
-                                <!-- Bagian -->
-                                <div class="col-md-3 d-flex align-items-center">
-                                    <label class="form-label"><strong>{{ $item->bagian }}</strong></label>
-                                </div>
 
-                                <!-- Indikator -->
-                                <div class="col-md-3">
-                                    <p class="mb-0">{!! $item->indikator !!}</p>
+                        @if($item->bagian == 'Latar Belakang dan Tujuan')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->latar_belakang : old('latar_belakang') }}
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <!-- Catatan Saran -->
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control"
-                                        name="keterangan_{{ $item->pivot->penilaian_id }}"
-                                        id="keterangan_{{ $item->pivot->penilaian_id }}"
-                                        value="{{ optional($item->pivot)->catatan_saran }}">
-                                </div>
-
-                                <!-- Nilai -->
-                                <div class="col-md-3">
-                                    <input type="number" class="form-control" min="{{ $item->nilai_min }}"
-                                        max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
-                                        id="nilai_{{ $item->pivot->penilaian_id }}"
-                                        value="{{ optional($item->pivot)->nilai }}">
-                                    <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
                                 </div>
                             </div>
-                            <hr class="my-0">
-                        </div>
+                            <hr class="border-dark">
+                        @elseif($item->bagian == 'Kebaruan/Nilai Tambah')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->nilai_tambah : old('nilai_tambah') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                        @elseif($item->bagian == 'Implementasi Inovasi')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->implementasi : old('implementasi') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                        @elseif($item->bagian == 'Signifikansi')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->signifikansi : old('signifikansi') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                        @elseif($item->bagian == 'Adaptabilitas')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->adaptabilitas : old('adaptabilitas') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                        @elseif($item->bagian == 'Penguatan Sumber Daya')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->sumber_daya : old('sumber_daya') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                        @elseif($item->bagian == 'Strategi Penguatan Keberlanjutan')
+                            <div class="row my-2">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <label>
+                                            <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
+                                            {!! $item->indikator !!}
+                                        </label>
+                                    </div>
+                                    <div class="row mx-1">
+                                        <div class="form-control">
+                                            {{ $proposal != null ? $proposal->strategi_keberlanjutan : old('strategi_keberlanjutan') }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="row my-2">
+                                        <label>Catatan/Saran</label>
+                                        <input type="text" class="form-control"
+                                            name="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            id="keterangan_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->catatan_saran }}">
+                                    </div>
+                                    <div class="row">
+                                        <label>Nilai</label>
+                                        <input type="number" class="form-control" min="{{ $item->nilai_min }}"
+                                            max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
+                                            id="nilai_{{ $item->pivot->penilaian_id }}"
+                                            value="{{ optional($item->pivot)->nilai }}">
+                                        <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
+                                        <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border-dark">
+                        @endif
                     @endforeach
+
                     <div class="card-footer d-flex flex-column align-items-center">
                         <strong>Signature:</strong>
                         <canvas id="signature-pad" class="border rounded mb-3" width="400" height="200"></canvas>
@@ -95,7 +421,7 @@
                     <img src="{{ asset(@$penilaian_map->signature_path) }}">
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('penilaian.index', $jenis) }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('penilaian-kovablik.index') }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

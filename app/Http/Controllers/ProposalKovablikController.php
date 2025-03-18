@@ -162,28 +162,32 @@ class ProposalKovablikController extends Controller
     public function save(Request $request)
     {
         $tempArr = [];
-        $data = new ProposalKovablik;
-        $data->user_id = Auth::user()->id;
-        $data->kode = uniqid();
-        if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
-            $data->provinsi_id = Auth::user()->province_id;
-        } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
-            $data->provinsi_id = Auth::user()->opd->provinsi_id;
-        } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
-            $data->provinsi_id = Auth::user()->kota->provinsi->id;
-            $data->kota_id = Auth::user()->regency_id;
-        } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
-            $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
-            $data->kota_id = Auth::user()->opd->kabkota_id;
-        } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
-            $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
-            $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
-            $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
-        } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
-            $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
-            $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
-            $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
-            $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
+        if ($request->id == 0) {
+            $data = new ProposalKovablik;
+            $data->user_id = Auth::user()->id;
+            $data->kode = uniqid();
+            if (Auth::user()->role == 3 || Helper::checkUserUmum('provinsi', Auth::user())) {
+                $data->provinsi_id = Auth::user()->province_id;
+            } elseif (Helper::checkOpd('provinsi', Auth::user()) || Helper::checkUserUmum('opd-provinsi', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->provinsi_id;
+            } elseif (Auth::user()->role == 4 || Helper::checkUserUmum('kota', Auth::user())) {
+                $data->provinsi_id = Auth::user()->kota->provinsi->id;
+                $data->kota_id = Auth::user()->regency_id;
+            } elseif (Helper::checkOpd('kota', Auth::user()) || Helper::checkUserUmum('opd-kota', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->kota->provinsi->id;
+                $data->kota_id = Auth::user()->opd->kabkota_id;
+            } elseif (Helper::checkOpd('kecamatan', Auth::user()) || Helper::checkUserUmum('opd-kecamatan', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->kecamatan->kota->provinsi->id;
+                $data->kota_id = Auth::user()->opd->kecamatan->kota->id;
+                $data->kecamatan_id = Auth::user()->opd->kecamatan_id;
+            } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
+                $data->provinsi_id = Auth::user()->opd->kelurahan->kecamatan->kota->provinsi->id;
+                $data->kota_id = Auth::user()->opd->kelurahan->kecamatan->kota->id;
+                $data->kecamatan_id = Auth::user()->opd->kelurahan->kecamatan->id;
+                $data->kelurahan_id = Auth::user()->opd->kelurahan_id;
+            }
+        } else {
+            $data = ProposalKovablik::findOrFail($request->id);
         }
 
         $max_kata = 10;
@@ -221,7 +225,7 @@ class ProposalKovablikController extends Controller
         $data->tahun = Auth::user()->tahun;
         $data->save();
 
-        $route = $request->label == 1 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']);
+        $route = $request->label == 2 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']);
         return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
     }
 
@@ -234,14 +238,20 @@ class ProposalKovablikController extends Controller
         $proposal->status = $request->status;
         $proposal->keterangan = $request->keterangan;
         $proposal->save();
-        
+
         return redirect()->back()->with('success', Config::get('save_success') . '. Status Proposal berhasil diperbarui !');
     }
 
 
-    public function show(ProposalKovablik $proposalKovablik)
+    public function export(Request $request, $type)
     {
-        //
+        $proposal = ProposalKovablik::findOrFail($request->id);
+        if ($type == 'excel') {
+            // return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
+        } elseif ($type == 'pdf') {
+            // $pdf = PDF::loadview('export.inovasi-pdf',['proposal' => $proposal]);
+    	    // return $pdf->stream('inovasi-'.$inovasi->kode.'.pdf');
+        }
     }
 
     public function edit(Request $request)
@@ -261,7 +271,7 @@ class ProposalKovablikController extends Controller
         }
 
         if ($cek_label != $request->label) {
-            return redirect()->route('kovablik.index')->with('error', 'Fase ' . $nama_fase . ' Sedang Ditutup');
+            return redirect()->route('kovablik.index', ['area' => 'masyarakat'])->with('error', 'Fase ' . $nama_fase . ' Sedang Ditutup');
         }
         if (count($request->input()) <= 3 && isset($request->id)) {
             $data = null;
@@ -301,14 +311,13 @@ class ProposalKovablikController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ProposalKovablik  $proposalKovablik
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ProposalKovablik $proposalKovablik)
+    public function delete(Request $request)
     {
-        //
+        $data = ProposalKovablik::findOrFail($request->id);
+        $data->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Data berhasil dihapus.'
+        ]);
     }
 }

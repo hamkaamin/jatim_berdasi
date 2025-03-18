@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKelompokKovabliksTable extends Migration
+class CreateTahapanKovabliksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateKelompokKovabliksTable extends Migration
      */
     public function up()
     {
-        Schema::create('kelompok_kovabliks', function (Blueprint $table) {
+        Schema::create('tahapan_kovabliks', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
+            $table->string('nama')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -28,6 +28,6 @@ class CreateKelompokKovabliksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kelompok_kovabliks');
+        Schema::dropIfExists('tahapan_kovabliks');
     }
 }
