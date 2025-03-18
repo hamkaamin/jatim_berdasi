@@ -38,7 +38,7 @@ class PenilaianKovablikController extends Controller
             }
         }
         $data = $proposal->penilaian()->wherePivot('user_id', Auth::id())->get();
-        $penilaian_map = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->first();
+        $penilaian_map = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->where('tahapan_id', $proposal->tahapan_id)->first();
         return view('penilaian-kovablik.edit', compact('data', 'proposal', 'juri', 'penilaian_map'));
     }
 
@@ -72,6 +72,17 @@ class PenilaianKovablikController extends Controller
         return $pdf->stream('penilaian-' . $inovasi->nama . '-' . $inovasi->kode . '.pdf');
     }
 
+    public function pass(Request $request)
+    {
+        $proposalId = $request->input('is_pass');
+        foreach ($proposalId as $id) {
+            $proposal = ProposalKovablik::find($id);
+            $proposal->tahapan_id = 2;
+            $proposal->save();
+        }
+        return back()->with('success', 'Proposal diloloskan ke tahap selanjutnya.');
+    }
+
     public function save(Request $request)
     {
         DB::beginTransaction();
@@ -80,6 +91,7 @@ class PenilaianKovablikController extends Controller
             $total_nilai = 0;
 
             foreach ($request->except('_token', 'proposal_id') as $key => $value) {
+                dd(strpos($key, 'keterangan_'));
                 if (strpos($key, 'keterangan_') === 0) {
                     $penilaianId = str_replace('keterangan_', '', $key);
                     $catatanSaran = $value;
@@ -125,6 +137,7 @@ class PenilaianKovablikController extends Controller
                     $penilaian_map = new PenilaianKovablikMap();
                 }
                 $penilaian_map->proposal_id = $proposal->id;
+                $penilaian_map->tahapan_id = $proposal->tahapan_id;
                 $penilaian_map->juri_id = $request->juri_id;
                 $penilaian_map->total_nilai = $total_nilai;
                 $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;

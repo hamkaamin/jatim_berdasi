@@ -17,6 +17,7 @@ class CreatePenilaianKovablikMapsTable extends Migration
             $table->id();
             $table->integer('proposal_id');
             $table->integer('juri_id');
+            $table->integer('tahapan_id');
             $table->double('total_nilai');
             $table->text('signature_path')->nullable();
             $table->timestamps();

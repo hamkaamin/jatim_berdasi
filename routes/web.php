@@ -288,6 +288,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/form/edit', [PenilaianKovablikController::class, 'edit'])->name('edit');
             Route::post('/form/save', [PenilaianKovablikController::class, 'save'])->name('save');
             Route::get('/show', [PenilaianKovablikController::class, 'show'])->name('show');
+            Route::post('/pass', [PenilaianKovablikController::class, 'pass'])->name('pass');
 
             Route::get('/ranking', [PenilaianKovablikController::class, 'ranking'])->name('ranking');
             Route::get('/print/{id}', [PenilaianKovablikController::class, 'print'])->name('print');

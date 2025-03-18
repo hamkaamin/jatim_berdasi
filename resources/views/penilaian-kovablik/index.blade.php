@@ -23,11 +23,12 @@
                     </li>
                 @endforeach
             </ul>
-            <div class="tab-content">
+            <div class="tab-content mt-2">
                 @foreach ($tahapan as $data)
                     <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="tab-{{ $data->id }}" role="tabpanel">
                         <h4>Proposal Kovablik</h4>
-                        <div class="table-responsive p-3">
+                        <form action="{{ route('penilaian-kovablik.pass') }}" method="POST" class="table-responsive p-3">
+                            @csrf
                             <table class="table align-items-center table-flush" id="myTable">
                                 <thead class="thead-light">
                                     <tr>
@@ -48,7 +49,7 @@
                                             $user = \App\Models\User::find($item->penilaian->pluck('pivot.user_id')->first());
                                         @endphp
                                         <tr>
-                                            <td><input type="checkbox" style="transform: scale(2)" name="is_sent[]" id="is_sent[]" value="{{ $item->id }}"></td>
+                                            <td><input type="checkbox" style="transform: scale(2)" name="is_pass[]" class="is_pass" value="{{ $item->id }}"></td>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->instansi }}</td>
                                             <td>{{ $item->judul }}</td>
@@ -113,7 +114,8 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                        </div>
+                            <button type="submit" id="btnPass" class="btn btn-primary d-none">Lolos ke Tahap Wawancara</button>
+                        </form>
                     </div>
                 @endforeach
             </div>
@@ -136,6 +138,16 @@
         <script>
             $(function() {
                 $('[data-toggle="tooltip"]')
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".is_pass").forEach(function (checkbox) {
+                    checkbox.addEventListener("change", function () {
+                        let anyChecked = document.querySelectorAll(".is_pass:checked").length > 0;
+                        document.getElementById("btnPass").classList.toggle("d-none", !anyChecked);
+                    });
+                });
             });
         </script>
     @endsection
