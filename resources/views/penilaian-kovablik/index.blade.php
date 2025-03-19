@@ -56,7 +56,7 @@
                                             <td>{{ $item->kategori->nama}}</td>
                                             <td>{{ $item->kelompok->nama}}</td>
                                             <td>{{ $user->name ?? '-' }}</td>
-                                            <td>{{ $item->penilaian->sum('pivot.nilai') ?? '-' }}</td>
+                                            <td>{{ $item->penilaian->where('tahapan_id', $item->tahapan_id)->sum('pivot.nilai') ?? '-' }}</td>
                                             <td>
                                                 @if ($item->status != 0)
                                                     <a target="_blank"

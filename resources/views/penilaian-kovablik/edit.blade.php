@@ -151,10 +151,12 @@
                         $totalNilai = 0;
                     @endphp
                     @foreach ($data as $index => $item)
-                        @php
-                            $no++;
-                            $totalNilai += optional($item->pivot)->nilai;
-                        @endphp
+                        @if ($item->tahapan_id == $proposal->tahapan_id) 
+                            @php
+                                $no++;
+                                $totalNilai += optional($item->pivot)->nilai;
+                            @endphp
+                        @endif
                         @if($proposal->tahapan_id == 1)
                             @if($item->bagian == 'Latar Belakang dan Tujuan')
                                 <div class="row my-2">

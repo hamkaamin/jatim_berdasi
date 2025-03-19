@@ -91,7 +91,6 @@ class PenilaianKovablikController extends Controller
             $total_nilai = 0;
 
             foreach ($request->except('_token', 'proposal_id') as $key => $value) {
-                dd(strpos($key, 'keterangan_'));
                 if (strpos($key, 'keterangan_') === 0) {
                     $penilaianId = str_replace('keterangan_', '', $key);
                     $catatanSaran = $value;
