@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProposalKovablikExport;
 use App\Helper\Helper;
 use App\Models\Fase;
 use App\Models\KategoriKovablik;
@@ -9,11 +10,13 @@ use App\Models\KelompokKovablik;
 use App\Models\ProposalKovablik;
 use App\Models\Setting;
 use App\Models\Upload;
+use Barryvdh\DomPDF\Facade\Pdf;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProposalKovablikController extends Controller
 {
@@ -247,10 +250,10 @@ class ProposalKovablikController extends Controller
     {
         $proposal = ProposalKovablik::findOrFail($request->id);
         if ($type == 'excel') {
-            // return Excel::download(new InovasiExport($inovasi, $kolom), 'inovasi-'.$inovasi->kode.'.xlsx');
+            return Excel::download(new ProposalKovablikExport($proposal), 'proposal-'.$proposal->kode.'.xlsx');
         } elseif ($type == 'pdf') {
-            // $pdf = PDF::loadview('export.inovasi-pdf',['proposal' => $proposal]);
-    	    // return $pdf->stream('inovasi-'.$inovasi->kode.'.pdf');
+            $pdf = Pdf::loadview('export.kovablik-pdf',['proposal' => $proposal]);
+    	    return $pdf->stream('proposal-'.$proposal->kode.'.pdf');
         }
     }
 

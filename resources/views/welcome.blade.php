@@ -252,12 +252,15 @@
             <div id="line_chart_inotek" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
                 class="apex-charts" dir="ltr">
             </div>
+            <div id="line_chart_kovablik" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
+                class="apex-charts" dir="ltr">
+            </div>
             <div id="column_chart_penilaian" data-colors='["--bs-success", "--bs-warning","--bs-primary","--bs-danger"]'
                 class="apex-charts" dir="ltr">
             </div>
         </div>
         <div class="row">
-            @for ($j = 0; $j <= 1; $j++)
+            @for ($j = 0; $j <= 2; $j++)
                 @for ($i = 1; $i <= 4; $i++)
                     <div class="col-sm-4">
                         <div class="card m-2">
@@ -504,6 +507,88 @@
                     }),
                     (chart = new ApexCharts(
                         document.querySelector("#line_chart_inotek"),
+                        options
+                    )).render());
+
+            var dataKovablik = @json($arrayCount[2]);
+            var LinechartDatalabelColors = getChartColorsArray("line_chart_kovablik");
+            LinechartDatalabelColors &&
+                ((options = {
+                        chart: {
+                            height: 380,
+                            type: "line",
+                            zoom: {
+                                enabled: !1
+                            },
+                            toolbar: {
+                                show: !1
+                            },
+                        },
+                        colors: LinechartDatalabelColors,
+                        dataLabels: {
+                            enabled: !1
+                        },
+                        stroke: {
+                            width: [3, 3],
+                            curve: "straight"
+                        },
+                        series: [
+                            { name: "Disetujui", data: [dataKovablik[2]] },
+                            { name: "Revisi", data: [dataKovablik[4]] },
+                            { name: "Diproses", data: [dataKovablik[1]] },
+                            { name: "Ditolak", data: [dataKovablik[3]] },
+                        ],
+                        title: {
+                            text: "Jumlah Proposal Kovablik",
+                            align: "left"
+                        },
+                        grid: {
+                            row: {
+                                colors: ["transparent", "transparent"],
+                                opacity: 0.2
+                            },
+                            borderColor: "#f1f1f1",
+                        },
+                        markers: {
+                            style: "inverted",
+                            size: 6
+                        },
+                        xaxis: {
+                            categories: ["2025"],
+                            title: {
+                                text: "Month"
+                            },
+                        },
+                        yaxis: {
+                            title: {
+                                text: "Jumlah"
+                            },
+                            min: 5,
+                            max: 40
+                        },
+                        legend: {
+                            position: "top",
+                            horizontalAlign: "right",
+                            floating: !0,
+                            offsetY: -25,
+                            offsetX: -5,
+                        },
+                        responsive: [{
+                            breakpoint: 600,
+                            options: {
+                                chart: {
+                                    toolbar: {
+                                        show: !1
+                                    }
+                                },
+                                legend: {
+                                    show: !1
+                                },
+                            },
+                        }, ],
+                    }),
+                    (chart = new ApexCharts(
+                        document.querySelector("#line_chart_kovablik"),
                         options
                     )).render());
 

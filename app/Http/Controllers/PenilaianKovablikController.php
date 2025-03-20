@@ -7,6 +7,7 @@ use App\Models\KategoriKovablik;
 use App\Models\KategoriNilaiKovablik;
 use App\Models\PenilaianKovablikMap;
 use App\Models\ProposalKovablik;
+use App\Models\Tahapan;
 use App\Models\TahapanKovablik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,11 @@ class PenilaianKovablikController extends Controller
     public function index()
     {
         $proposal = ProposalKovablik::where('status', 2)->get();
-        $tahapan = TahapanKovablik::all();
+        $tahapan = TahapanKovablik::with('proposals')
+            ->whereHas('proposals', function ($query) {
+                $query->where('status', 2);
+            })
+            ->get();
 
         return view('penilaian-kovablik.index', compact('proposal', 'tahapan'));
     }

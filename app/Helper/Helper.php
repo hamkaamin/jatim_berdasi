@@ -13,8 +13,7 @@ class Helper
 	public static function nvl($val1, $val2)
 	{
 		$res = $val1;
-		if(empty($val1))
-		{
+		if (empty($val1)) {
 			$res = $val2;
 		}
 		return $res;
@@ -35,7 +34,7 @@ class Helper
 			$role = "OPD";
 		} elseif ($role_id == 6) {
 			$role = "Umum";
-		}elseif ($role_id == 7) {
+		} elseif ($role_id == 7) {
 			$role = "Juri";
 		}
 		return $role;
@@ -153,12 +152,11 @@ class Helper
 			}
 
 			// Simpan file dengan nama baru
-			$fileName = env('APP_URL').'/'.$folder.'/'.$name . '.' . $extension;
+			$fileName = env('APP_URL') . '/' . $folder . '/' . $name . '.' . $extension;
 			$file->move(public_path($folder), $fileName);
 
 			// Kembalikan path relatif file
 			return "$fileName";
-
 		} catch (\Throwable $th) {
 			// Log error jika diperlukan
 			// Log::error("File upload error: " . $th->getMessage());
@@ -223,19 +221,22 @@ class Helper
 		return $kolom;
 	}
 
-    public static function get_label_inovasi($id)
-    {
-        switch ($id) {
-            case 0:
-                return "Inovasi Daerah";
-                break;
-            case 1:
-                return "Inotek Awards";
-                break;
-        }
-    }
+	public static function get_label_inovasi($id)
+	{
+		switch ($id) {
+			case 0:
+				return "Inovasi Daerah";
+				break;
+			case 1:
+				return "Inotek Awards";
+				break;
+			case 2:
+				return "Proposal Kovablik";
+				break;
+		}
+	}
 
-    public static function checkUserUmum($scope, $user)
+	public static function checkUserUmum($scope, $user)
 	{
 		if ($user->role == 6) {
 			if ($scope == 'provinsi' && $user->province_id != null) {
@@ -255,5 +256,3 @@ class Helper
 		return false;
 	}
 }
-
-?>
