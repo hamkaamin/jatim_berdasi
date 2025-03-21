@@ -4,14 +4,14 @@
     $setting = App\Models\Setting::where('kode', 'bobot_akhir')->first();
 @endphp
 
-<div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $kategori == null ? 0 : $kategori->id }}"
-    role="tabpanel" aria-labelledby="{{ $kategori == null ? 0 : $kategori->id }}-tab">
+<div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $kelompok == null ? 0 : $kelompok->id }}"
+    role="tabpanel" aria-labelledby="{{ $kelompok == null ? 0 : $kelompok->id }}-tab">
 
     <div class="row">
         <div class="col-md-12">
             <div style="width: 100%">
                 <table class="table align-items-center table-flush text-center"
-                    id="myTable{{ $kategori == null ? 0 : $kategori->id }}">
+                    id="myTable{{ $kelompok == null ? 0 : $kelompok->id }}">
                     <thead class="thead-light">
                         <tr>
                             <th></th>
@@ -27,35 +27,32 @@
                     </thead>
                     <tbody>
                         @php
-                            $status_label = 0;
-                            if ($label == 'Awards' || $label == 'Inotek') {
-                                $status_label = 1;
-                            }
+                            $status_label = 2;
                             $data = [];
-                            if ($kategori != null) {
+                            if ($kelompok != null) {
                                 if (Auth::user()->role == 4) {
-                                    $data = $kategori
+                                    $data = $kelompok
                                         ->hasManyKovablik()
                                         ->where('user_id', Auth::user()->id)
                                         ->where('tahun', Auth::user()->tahun)
                                         ->where('label', $status_label)
                                         ->get();
                                 } elseif (Auth::user()->role == 3) {
-                                    $data = $kategori
+                                    $data = $kelompok
                                         ->hasManyKovablik()
                                         ->where('label', $status_label)
                                         ->where('tahun', Auth::user()->tahun)
                                         ->where('user_id', Auth::user()->id)
                                         ->get();
                                 } elseif (Auth::user()->role == 5) {
-                                    $data = $kategori
+                                    $data = $kelompok
                                         ->hasManyKovablik()
                                         ->where('user_id', Auth::user()->id)
                                         ->where('tahun', Auth::user()->tahun)
                                         ->where('label', $status_label)
                                         ->get();
                                 } else {
-                                    $data = $kategori
+                                    $data = $kelompok
                                         ->hasManyKovablik()
                                         ->where('label', $status_label)
                                         ->where('tahun', Auth::user()->tahun)
@@ -69,9 +66,6 @@
                         @foreach ($data as $item)
                             @php
                                 $disabled = '';
-                                if ($item->status != 2) {
-                                    $display_nilai = 'display: none';
-                                }
                             @endphp
                             <tr>
                                 <td><input type="checkbox" style="transform: scale(2)" name="is_sent[]" id="is_sent[]" value="{{ $item->id }}"></td>

@@ -78,9 +78,10 @@ class ProposalKovablikController extends Controller
         // dd($proposal);
         // dd($proposal,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriKovablik::get();
+        $kelompok = KelompokKovablik::get();
         $setting = Setting::where('kode', 'tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
-        return view('kovablik.index', compact('proposal', 'label', 'area', 'kategori', 'setting', 'fase'));
+        return view('kovablik.index', compact('proposal', 'label', 'area', 'kategori', 'setting', 'fase', 'kelompok'));
     }
 
     public function show_kovablik(Request $request)

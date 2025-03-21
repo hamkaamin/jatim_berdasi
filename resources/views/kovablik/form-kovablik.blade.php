@@ -40,7 +40,7 @@
                                         <option value="">-- Pilih Kelompok --</option>
                                         @foreach ($kelompok as $item)
                                             <option value="{{ $item->id }}"
-                                                @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
+                                                @if (old('kelompok_id') == $item->id || ($data && $data->kelompok_id == $item->id)) selected @endif>
                                                 {{ $item->nama }}
                                             </option>
                                         @endforeach

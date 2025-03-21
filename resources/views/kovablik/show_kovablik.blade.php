@@ -1,8 +1,6 @@
 @php
-$status_label = 0; @endphp
-@if ($label == 'Awards')
-    @php $status_label = '1'; @endphp
-@endif
+$status_label = 2; 
+@endphp
 <div class="row">
     @if (Auth::user()->role != 2)
         <div class="col-12">
@@ -71,17 +69,17 @@ $status_label = 0; @endphp
     @endif
     <div class="col-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <x-tab-kovablik :kategori="null" :key="0" :active="1" />
-            @foreach ($kategori as $key => $item)
-                <x-tab-kovablik :kategori="$item" :key="$key + 1" :active="0" />
+            <x-tab-kovablik :kelompok="null" :key="0" :active="1" />
+            @foreach ($kelompok as $key => $item)
+                <x-tab-kovablik :kelompok="$item" :key="$key + 1" :active="0" />
             @endforeach
         </ul>
 
         <div class="tab-content" id="myTabContent">
-            <x-tab-content-kovablik :kategori="null" :active="1" :proposal="$proposal" :label="$label"
+            <x-tab-content-kovablik :kelompok="null" :active="1" :proposal="$proposal" :label="$label"
                 :fase="$fase" />
-            @foreach ($kategori as $item)
-                <x-tab-content-kovablik :kategori="$item" :active="0" :proposal="[]" :label="$label"
+            @foreach ($kelompok as $item)
+                <x-tab-content-kovablik :kelompok="$item" :active="0" :proposal="[]" :label="$label"
                     :fase="$fase" />
             @endforeach
         </div>
