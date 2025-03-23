@@ -12,6 +12,11 @@ class KelompokKovablik extends Model
     
     public function hasManyKovablik()
     {
-        return $this->hasMany('App\Models\ProposalKovablik', 'kelompok_id', 'id');
+        return $this->hasMany(ProposalKovablik::class, 'kelompok_id', 'id');
+    }
+
+    public function juris()
+    {
+        return $this->hasMany(JuriKovablik::class, 'kelompok_id', 'id');
     }
 }

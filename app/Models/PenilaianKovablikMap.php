@@ -16,6 +16,6 @@ class PenilaianKovablikMap extends Model
 
     public function juri()
     {
-        return $this->belongsTo(Juri::class, 'juri_id', 'id');
+        return $this->belongsTo(JuriKovablik::class, 'juri_id', 'id');
     }
 }

@@ -35,7 +35,7 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-12 d-flex align-items-center">
-                                    <select name="kelompok_id" id="kelompok_id" class="form-control" required
+                                    <select name="kelompok_id" id="kelompok_id" class="js-example-basic-multiple" required
                                         onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
                                         <option value="">-- Pilih Kelompok --</option>
                                         @foreach ($kelompok as $item)
@@ -51,24 +51,39 @@
                     </div>
 
                     <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Link Google Drive Standart Pelayanan</b> <span
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen Standart Pelayanan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="text" required name="link_standart" class="form-control"
-                                value="{{ $data != null ? $data->link_standart : old('link_standart') }}"></div>
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_standart_pelayanan">
+                            @if ($data != null)
+                                <br><a href="{{ $data->link_standart }}" target="_blank">Download
+                                    File
+                                    Dokumen Standart Pelayanan</a>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Link Google Drive Maklumat Pelayanan</b> <span
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen Maklumat Pelayanan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="text" required name="link_maklumat" class="form-control"
-                                value="{{ $data != null ? $data->link_maklumat : old('link_maklumat') }}"></div>
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_maklumat_pelayanan">
+                            @if ($data != null)
+                                <br><a href="{{ $data->link_maklumat }}" target="_blank">Download
+                                    File
+                                    Dokumen Maklumat Pelayanan</a>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Link Google Drive SK Pengelolaan Pengaduan</b> <span
+                        <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen SK Pengelolaan Pengaduan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="text" required name="link_sk_pengaduan" class="form-control"
-                                value="{{ $data != null ? $data->link_sk_pengaduan : old('link_sk_pengaduan') }}"></div>
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_sk_pengelolaan_pengaduan">
+                            @if ($data != null)
+                                <br><a href="{{ $data->link_sk_pengaduan }}" target="_blank">Download
+                                    File
+                                    Dokumen Maklumat Pelayanan</a>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="row my-2">
@@ -159,7 +174,7 @@
                                 <li>Maksimal 300 kata</li>
                             </ul>
                         </label>
-                        <textarea name="latar_belakang" class="ck-editor" required id="editor2" rows="10">
+                        <textarea name="latar_belakang_dan_tujuan" class="ck-editor" required id="editor2" rows="10">
                             @if ($data != null)
                             {!! $data->latar_belakang !!}
                             @else
@@ -177,7 +192,7 @@
                                 <li>Maksimal 600 kata</li>
                             </ul>
                         </label>
-                        <textarea name="nilai_tambah" class="ck-editor" required id="editor3" rows="10">
+                        <textarea name="kebaruan_atau_nilai_tambah" class="ck-editor" required id="editor3" rows="10">
                             @if ($data != null)
                             {!! $data->nilai_tambah !!}
                             @else
@@ -195,7 +210,7 @@
                                 <li>Maksimal 200 kata</li>
                             </ul>
                         </label>
-                        <textarea name="implementasi" class="ck-editor" required id="editor4" rows="10">
+                        <textarea name="implementasi_inovasi" class="ck-editor" required id="editor4" rows="10">
                             @if ($data != null)
                             {!! $data->implementasi !!}
                             @else
@@ -323,80 +338,9 @@
 @endsection
 
 <script>
-    // Panggil fungsi saat halaman dimuat, jika dalam mode edit
-    document.addEventListener('DOMContentLoaded', (event) => {
-
-        if ('{{ $data ? true : false }}') {
-            div_tahapan('{{ csrf_token() }}', '#div_tahapan', '#form-edit-inovasi');
-        }
-        const pengembangan1 = document.getElementById('pengembangan_1');
-        const pengembangan0 = document.getElementById('pengembangan_0');
-        const waktuPenerapanRow = document.getElementById('waktu_penerapan_row');
-
-        const toggleWaktuPenerapanRow = () => {
-            if (pengembangan1.checked) {
-                waktuPenerapanRow.style.display = 'flex';
-            } else {
-                waktuPenerapanRow.style.display = 'none';
-            }
-        };
-
-        // Initial check on page load
-        toggleWaktuPenerapanRow();
-
-        // Add event listeners
-        pengembangan1.addEventListener('change', toggleWaktuPenerapanRow);
-        pengembangan0.addEventListener('change', toggleWaktuPenerapanRow);
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        // Check if we're in edit mode and if tematik_id is set
-        var inovasiId = "{{ $data ? $data->id : '' }}";
-        var token = "{{ csrf_token() }}";
-
-        var maxSize = 2 * 1024 * 1024;
-
-        var file_anggaran = $('#form-edit-inovasi').find('input[name="file_anggaran"]');
-        file_anggaran.on('change', function() {
-            var file = this.files[0];
-
-            if (file.size > maxSize) {
-                alert('File Size Maximal 2MB');
-                $(this).val('');
-            }
-        });
-
-        var profil_bisnis = $('#form-edit-inovasi').find('input[name="profil_bisnis"]');
-        profil_bisnis.on('change', function() {
-            var file = this.files[0];
-
-            if (file.size > maxSize) {
-                alert('File Size Maximal 2MB');
-                $(this).val('');
-            }
-        });
-
-        var file_dokumen_haki = $('#form-edit-inovasi').find('input[name="file_dokumen_haki"]');
-        file_dokumen_haki.on('change', function() {
-            var file = this.files[0];
-
-            if (file.size > maxSize) {
-                alert('File Size Maximal 2MB');
-                $(this).val('');
-            }
-        });
-
-        var file_penghargaan = $('#form-edit-inovasi').find('input[name="file_penghargaan"]');
-        file_penghargaan.on('change', function() {
-            var file = this.files[0];
-
-            if (file.size > maxSize) {
-                alert('File Size Maximal 2MB');
-                $(this).val('');
-            }
-        });
-
-
-    });
+    $(document).ready(function() {
+         $('.js-example-basic-multiple').select2();
+     });
 </script>
 @section('script')
     @include('script.ck-editor-count')

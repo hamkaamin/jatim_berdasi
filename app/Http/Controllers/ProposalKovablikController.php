@@ -10,6 +10,7 @@ use App\Models\KelompokKovablik;
 use App\Models\ProposalKovablik;
 use App\Models\Setting;
 use App\Models\Upload;
+use App\Rules\MaxWords;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -134,8 +135,6 @@ class ProposalKovablikController extends Controller
             $proposal = $proposal->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
         $proposal = $proposal->where('tahun', Auth::user()->tahun)->get();
-        // dd($proposal);
-        // dd($proposal,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriKovablik::orderBy('id', 'asc')->get();
         $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
         $setting = Setting::where('kode', 'tambah_inovasi')->first();
@@ -159,13 +158,30 @@ class ProposalKovablikController extends Controller
         if (isset($request->label)) {
             $label = $request->label;
         }
-        // dd($data->kelompok->nama);
+
         return view($view, compact('data', 'kategori', 'label'));
     }
 
     public function save(Request $request)
     {
-        $tempArr = [];
+        $request->validate([
+            'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+            'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,doc,jpg,jpeg,png|max:2048',
+            'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,doc,jpg,jpeg,png|max:2048',
+            'ringkasan' => ['required', new MaxWords(200)],
+            'latar_belakang_dan_tujuan' => ['required', new MaxWords(300)],
+            'kebaruan_atau_nilai_tambah' => ['required', new MaxWords(600)],
+            'implementasi_inovasi' => ['required', new MaxWords(200)],
+            'signifikansi' => ['required', new MaxWords(600)],
+            'adaptabilitas' => ['required', new MaxWords(300)],
+            'sumber_daya' => ['required', new MaxWords(200)],
+            'strategi_keberlanjutan' => ['required', new MaxWords(500)],
+        ], [
+            '*.required' => ':attribute harus diisi',
+            '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
+            '*.max' => 'File maksimal berukuran 2MB',
+        ]);
+
         if ($request->id == 0) {
             $data = new ProposalKovablik;
             $data->user_id = Auth::user()->id;
@@ -194,24 +210,9 @@ class ProposalKovablikController extends Controller
             $data = ProposalKovablik::findOrFail($request->id);
         }
 
-        $max_kata = 10;
-        $request->validate([
-            'ringkasan' => 'required|string|max:200',
-            'latar_belakang' => 'required|string|max:300',
-            'nilai_tambah' => 'required|string|max:600',
-            'implementasi' => 'required|string|max:200',
-            'signifikansi' => 'required|string|max:600',
-            'adaptabilitas' => 'required|string|max:300',
-            'sumber_daya' => 'required|string|max:200',
-            'strategi_keberlanjutan' => 'required|string|max:500',
-        ]);
-
         $data->label = $request->label;
         $data->judul = $request->judul;
         $data->kelompok_id = $request->kelompok_id;
-        $data->link_standart = $request->link_standart;
-        $data->link_maklumat = $request->link_maklumat;
-        $data->link_sk_pengaduan = $request->link_sk_pengaduan;
         $data->instansi = $request->instansi;
         $data->tanggal_mulai = $request->tanggal_mulai;
         $data->nama_inovator = $request->nama_inovator;
@@ -219,15 +220,32 @@ class ProposalKovablikController extends Controller
         $data->email_inovator = $request->email_inovator;
         $data->kategori_id = $request->kategori_id;
         $data->ringkasan = $request->ringkasan;
-        $data->latar_belakang = $request->latar_belakang;
-        $data->nilai_tambah = $request->nilai_tambah;
-        $data->implementasi = $request->implementasi;
+        $data->latar_belakang = $request->latar_belakang_dan_tujuan;
+        $data->nilai_tambah = $request->kebaruan_atau_nilai_tambah;
+        $data->implementasi = $request->implementasi_inovasi;
         $data->signifikansi = $request->signifikansi;
         $data->adaptabilitas = $request->adaptabilitas;
         $data->sumber_daya = $request->sumber_daya;
         $data->strategi_keberlanjutan = $request->strategi_keberlanjutan;
         $data->tahun = Auth::user()->tahun;
         $data->save();
+
+        if ($request->hasFile('dokumen_standart_pelayanan')) {
+            $nama_file = Helper::save_file($request->file('dokumen_standart_pelayanan'), uniqid(), 'file_standart_pelayanan', $data->anggaran);
+            $data->link_standart = $nama_file;
+            $data->save();
+        }
+        if ($request->hasFile('dokumen_maklumat_pelayanan')) {
+            $nama_file = Helper::save_file($request->file('dokumen_maklumat_pelayanan'), uniqid(), 'file_maklumat_pelayanan', $data->file_rancang_bangun);
+            $data->link_maklumat = $nama_file;
+            $data->save();
+        } 
+
+        if ($request->hasFile('dokumen_sk_pengelolaan_pengaduan')) {
+            $nama_file = Helper::save_file($request->file('dokumen_sk_pengelolaan_pengaduan'), uniqid(), 'file_sk_pengelolaan_pengaduan', $data->file_anggaran);
+            $data->link_sk_pengaduan = $nama_file;
+            $data->save();
+        }
 
         $route = $request->label == 2 ? route('kovablik.index', ['area' => 'masyarakat']) : route('kovablik.index', ['area' => 'kota']);
         return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
@@ -251,10 +269,10 @@ class ProposalKovablikController extends Controller
     {
         $proposal = ProposalKovablik::findOrFail($request->id);
         if ($type == 'excel') {
-            return Excel::download(new ProposalKovablikExport($proposal), 'proposal-'.$proposal->kode.'.xlsx');
+            return Excel::download(new ProposalKovablikExport($proposal), 'proposal-' . $proposal->kode . '.xlsx');
         } elseif ($type == 'pdf') {
-            $pdf = Pdf::loadview('export.kovablik-pdf',['proposal' => $proposal]);
-    	    return $pdf->stream('proposal-'.$proposal->kode.'.pdf');
+            $pdf = Pdf::loadview('export.kovablik-pdf', ['proposal' => $proposal]);
+            return $pdf->stream('proposal-' . $proposal->kode . '.pdf');
         }
     }
 

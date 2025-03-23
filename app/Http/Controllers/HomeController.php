@@ -29,6 +29,7 @@ use App\Models\DefinisiOperasional;
 use App\Models\DetailTematik;
 use App\Models\Fase;
 use App\Models\Juri;
+use App\Models\JuriKovablik;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriKovablik;
 use App\Models\KategoriNilaiKovablik;
@@ -425,6 +426,15 @@ class HomeController extends Controller
                 $tahapan = TahapanKovablik::all();
                 return response()->json(array(
                     'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'tahapan'))->render()
+                ), 200);
+                break;
+
+            case "juri_kovablik":
+                $data = ($request->id == 0) ? null : JuriKovablik::findOrFail($request->id);
+                $users = User::where('role', 7)->get();
+                $kelompok = KelompokKovablik::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-juri_kovablik', compact('data', 'kelompok', 'users'))->render()
                 ), 200);
                 break;
 

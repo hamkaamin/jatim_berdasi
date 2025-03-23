@@ -12,6 +12,6 @@ class KategoriKovablik extends Model
 
     public function hasManyKovablik()
     {
-        return $this->hasMany('App\Models\ProposalKovablik', 'kategori_id', 'id');
+        return $this->hasMany(ProposalKovablik::class, 'kategori_id', 'id');
     }
 }

@@ -4,14 +4,18 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FaseController;
 use App\Http\Controllers\InovasiController;
 use App\Http\Controllers\JuriController;
+use App\Http\Controllers\JuriKovablikController;
+use App\Http\Controllers\KategoriKovablikController;
 use App\Http\Controllers\KategoriNilaiKovablikController;
 use App\Http\Controllers\KategoriOPDAjaxController;
 use App\Http\Controllers\KategoriOPDController;
 use App\Http\Controllers\KategoriTahapanController;
+use App\Http\Controllers\KelompokKovablikController;
 use App\Http\Controllers\LoginManualController;
 use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PenilaianInovasiController;
 use App\Http\Controllers\PenilaianKovablikController;
+use App\Http\Controllers\TahapanKovablikController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -169,27 +173,33 @@ Route::group(['middleware' => ['XSS']], function () {
 
 
                 Route::prefix('kategori_kovablik')->name('kategori_kovablik.')->group(function () {
-                    Route::get('/', [App\Http\Controllers\KategoriKovablikController::class, 'index'])->name('index');
-                    Route::post('/', [App\Http\Controllers\KategoriKovablikController::class, 'save'])->name('save');
-                    Route::post('/delete', [App\Http\Controllers\KategoriKovablikController::class, 'delete'])->name('delete');
+                    Route::get('/', [KategoriKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [KategoriKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [KategoriKovablikController::class, 'delete'])->name('delete');
                 });
                 
                 Route::prefix('kelompok_kovablik')->name('kelompok_kovablik.')->group(function () {
-                    Route::get('/', [App\Http\Controllers\KelompokKovablikController::class, 'index'])->name('index');
-                    Route::post('/', [App\Http\Controllers\KelompokKovablikController::class, 'save'])->name('save');
-                    Route::post('/delete', [App\Http\Controllers\KelompokKovablikController::class, 'delete'])->name('delete');
+                    Route::get('/', [KelompokKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [KelompokKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [KelompokKovablikController::class, 'delete'])->name('delete');
                 });
 
                 Route::prefix('tahapan_kovablik')->name('tahapan_kovablik.')->group(function () {
-                    Route::get('/', [App\Http\Controllers\TahapanKovablikController::class, 'index'])->name('index');
-                    Route::post('/', [App\Http\Controllers\TahapanKovablikController::class, 'save'])->name('save');
-                    Route::post('/delete', [App\Http\Controllers\TahapanKovablikController::class, 'delete'])->name('delete');
+                    Route::get('/', [TahapanKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [TahapanKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [TahapanKovablikController::class, 'delete'])->name('delete');
                 });
 
                 Route::prefix('kategori_nilai_kovablik')->name('kategori_nilai_kovablik.')->group(function () {
                     Route::get('/', [KategoriNilaiKovablikController::class, 'index'])->name('index');
                     Route::post('/', [KategoriNilaiKovablikController::class, 'save'])->name('save');
                     Route::post('/delete', [KategoriNilaiKovablikController::class, 'delete'])->name('delete');
+                });
+
+                Route::prefix('juri_kovablik')->name('juri_kovablik.')->group(function () {
+                    Route::get('/', [JuriKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [JuriKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [JuriKovablikController::class, 'delete'])->name('delete');
                 });
             });
 
