@@ -52,8 +52,8 @@
                             <label><b>Dokumen Standart Pelayanan</b></label>
                         </div>
                         <div class="col-sm-8">
-                            @if ($data != null && $data->link_standart)
-                                <a href="{{ $data->link_standart }}" target="_blank">Download File Dokumen Standart Pelayanan</a>
+                            @if ($proposal != null && $proposal->link_standart)
+                                <a href="{{ $proposal->link_standart }}" target="_blank">Download File Dokumen Standart Pelayanan</a>
                             @else
                                 Tidak Ada Data
                             @endif
@@ -65,8 +65,8 @@
                             <label><b>Dokumen Maklumat Pelayanan</b></label>
                         </div>
                         <div class="col-sm-8">
-                            @if ($data != null && $data->link_maklumat)
-                                <a href="{{ $data->link_maklumat }}" target="_blank">Download File Dokumen Maklumat Pelayanan</a>
+                            @if ($proposal != null && $proposal->link_maklumat)
+                                <a href="{{ $proposal->link_maklumat }}" target="_blank">Download File Dokumen Maklumat Pelayanan</a>
                             @else
                                 Tidak Ada Data
                             @endif
@@ -78,8 +78,8 @@
                             <label><b>Dokumen SK Pengelolaan Pengaduan</b></label>
                         </div>
                         <div class="col-sm-8">
-                            @if ($data != null && $data->link_sk_pengaduan)
-                                <a href="{{ $data->link_sk_pengaduan }}" target="_blank">Download File Dokumen SK Pengelolaan Pengaduan</a>
+                            @if ($proposal != null && $proposal->link_sk_pengaduan)
+                                <a href="{{ $proposal->link_sk_pengaduan }}" target="_blank">Download File Dokumen SK Pengelolaan Pengaduan</a>
                             @else
                                 Tidak Ada Data
                             @endif

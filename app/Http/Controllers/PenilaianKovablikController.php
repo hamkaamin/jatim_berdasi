@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Juri;
 use App\Models\KategoriKovablik;
 use App\Models\KategoriNilaiKovablik;
+use App\Models\KelompokKovablik;
 use App\Models\PenilaianKovablikMap;
 use App\Models\ProposalKovablik;
 use App\Models\Tahapan;
@@ -18,14 +19,28 @@ class PenilaianKovablikController extends Controller
 {
     public function index()
     {
-        $proposal = ProposalKovablik::where('status', 2)->get();
-        $tahapan = TahapanKovablik::with('proposals')
-            ->whereHas('proposals', function ($query) {
-                $query->where('status', 2);
-            })
+        $kelompok = KelompokKovablik::whereIn('id', function ($query) {
+            $query->select('kelompok_id')
+                ->from('juri_kovabliks')
+                ->where('user_id', Auth::user()->id);
+        })
+            ->with([
+                'hasManyKovablik' => function ($query) {
+                    $query->where('status', 2);
+                },
+                'tahapan' => function ($query) {
+                    $query->with(['proposals' => function ($query) {
+                        $query->where('status', 2)
+                            ->whereIn('kelompok_id', function ($subquery) {
+                                $subquery->select('kelompok_id')
+                                    ->from('juri_kovabliks')
+                                    ->where('user_id', Auth::user()->id);
+                            });
+                    }]);
+                }
+            ])
             ->get();
-
-        return view('penilaian-kovablik.index', compact('proposal', 'tahapan'));
+        return view('penilaian-kovablik.index', compact('kelompok'));
     }
 
     public function edit(Request $request)
@@ -45,36 +60,6 @@ class PenilaianKovablikController extends Controller
         $data = $proposal->penilaian()->wherePivot('user_id', Auth::id())->get();
         $penilaian_map = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->where('tahapan_id', $proposal->tahapan_id)->first();
         return view('penilaian-kovablik.edit', compact('data', 'proposal', 'juri', 'penilaian_map'));
-    }
-
-    public function show(Request $request)
-    {
-        $jenis = $request->jenis;
-        $id = decrypt($request->id);
-        $inovasi = Inovasi::findOrFail($id);
-        $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->get();
-        $data = $inovasi->penilaian()
-            ->whereIn('user_id', $kategori_juri) // Filter berdasarkan kategori juri
-            ->get();
-        return view('penilaian.show', compact('kategori_juri', 'inovasi', 'data', 'jenis', 'penilaian_map'));
-    }
-
-    public function print($id)
-    {
-        $id = decrypt($id);
-        $inovasi = Inovasi::findOrFail($id);
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->get();
-        $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
-
-        $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->get();  // Filter berdasarkan kategori juri 
-        $pdf = PDF::loadview('penilaian.print', compact('kategori_juri', 'inovasi', 'data'));
-
-        $customPaper = array(0, 0, 595.35, 935.55);
-        $pdf->setPaper($customPaper);
-        $pdf->output();
-
-        return $pdf->stream('penilaian-' . $inovasi->nama . '-' . $inovasi->kode . '.pdf');
     }
 
     public function pass(Request $request)
