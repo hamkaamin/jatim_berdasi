@@ -20,6 +20,7 @@ class CreatePenilaianKovablikMapsTable extends Migration
             $table->integer('tahapan_id');
             $table->double('total_nilai');
             $table->text('signature_path')->nullable();
+            $table->enum('is_lolos', [0, 1])->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

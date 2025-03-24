@@ -48,7 +48,7 @@
                                     <thead class="thead-light">
                                         <tr>
                                             @if ($tahap->id == 1)
-                                                <th ></th>
+                                                <th></th>
                                             @endif
                                             <th>No.</th>
                                             <th>Instansi</th>
@@ -57,6 +57,9 @@
                                             <th>Kelompok</th>
                                             <th>Juri</th>
                                             <th>Nilai</th>
+                                            @if ($tahap->id == 1)
+                                                <th>Status</th>
+                                            @endif
                                             <th>Act</th>
                                         </tr>
                                     </thead>
@@ -66,6 +69,19 @@
                                                 @php
                                                     $juri_id = \App\Models\JuriKovablik::where('kelompok_id', $item->kelompok_id)->pluck('user_id');
                                                     $user = \App\Models\User::whereIn('id', $juri_id)->pluck('name');
+
+                                                    $penilaian = $item->penilaian->where('tahapan_id', $item->tahapan_id);
+                                                    $groupedByJuri = $penilaian->groupBy('pivot.user_id');
+                                                    $totalNilai = $groupedByJuri->map(function ($nilai) {
+                                                        return $nilai->sum('pivot.nilai');
+                                                    });
+                                                    $averageNilai = $totalNilai->count() > 0 ? $totalNilai->avg() : 0;
+
+                                                    if($totalNilai->count() > 0){
+                                                        $thisJuri = \App\Models\JuriKovablik::where('user_id', Auth::id())->first();
+                                                        $isLolos = \App\Models\PenilaianKovablikMap::where('juri_id', $thisJuri->id)->where('proposal_id', $item->id)->first()->is_lolos;
+                                                    }
+
                                                     $counter = 1;
                                                 @endphp
                                                 <tr>
@@ -78,7 +94,16 @@
                                                     <td>{{ $item->kategori->nama}}</td>
                                                     <td>{{ $item->kelompok->nama}}</td>
                                                     <td>{{ implode(', ', $user->toArray()) }}</td>
-                                                    <td>{{ $item->penilaian->where('tahapan_id', $item->tahapan_id)->sum('pivot.nilai') ?? '-' }}</td>
+                                                    <td>{{ $averageNilai == 0 ? '-' : number_format($averageNilai, 2) }}</td>
+                                                    @if ($tahap->id == 1)
+                                                        <td>
+                                                            @if($isLolos == 1)
+                                                                Lolos
+                                                            @else
+                                                                Tidak Lolos
+                                                            @endif
+                                                        </td>
+                                                    @endif
                                                     <td>
                                                         @if ($item->status != 0)
                                                             <a target="_blank"

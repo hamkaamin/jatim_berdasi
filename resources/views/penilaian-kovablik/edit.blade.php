@@ -198,7 +198,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -233,7 +233,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -268,7 +268,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -303,7 +303,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -338,7 +338,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -373,7 +373,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -408,7 +408,7 @@
                                             <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                                 max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                                 id="nilai_{{ $item->pivot->penilaian_id }}"
-                                                value="{{ optional($item->pivot)->nilai }}">
+                                                value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                             <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                             <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                         </div>
@@ -434,7 +434,7 @@
                                         <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                             max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                             id="nilai_{{ $item->pivot->penilaian_id }}"
-                                            value="{{ optional($item->pivot)->nilai }}">
+                                            value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                         <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                         <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                     </div>
@@ -456,7 +456,7 @@
                                         <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                             max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                             id="nilai_{{ $item->pivot->penilaian_id }}"
-                                            value="{{ optional($item->pivot)->nilai }}">
+                                            value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                         <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                         <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                     </div>
@@ -478,7 +478,7 @@
                                         <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                             max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                             id="nilai_{{ $item->pivot->penilaian_id }}"
-                                            value="{{ optional($item->pivot)->nilai }}">
+                                            value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                         <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                         <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                     </div>
@@ -500,7 +500,7 @@
                                         <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                             max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                             id="nilai_{{ $item->pivot->penilaian_id }}"
-                                            value="{{ optional($item->pivot)->nilai }}">
+                                            value="{{ optional($item->pivot)->nilai / ($item->bobot_nilai/100) }}">
                                         <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}" value="{{ $item->bobot_nilai }}">
                                         <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
                                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Juri;
+use App\Models\JuriKovablik;
 use App\Models\KategoriKovablik;
 use App\Models\KategoriNilaiKovablik;
 use App\Models\KelompokKovablik;
@@ -47,7 +48,7 @@ class PenilaianKovablikController extends Controller
     {
         $id = decrypt($request->id);
         $proposal = ProposalKovablik::findOrFail($id);
-        $juri = Juri::where('user_id', Auth::user()->id)->first();
+        $juri = JuriKovablik::where('user_id', Auth::user()->id)->first();
         $data = [];
         if ($proposal->penilaian()->wherePivot('user_id', Auth::id())->count() == 0) {
             $penilaians = KategoriNilaiKovablik::all();
@@ -64,13 +65,25 @@ class PenilaianKovablikController extends Controller
 
     public function pass(Request $request)
     {
+        $juri = JuriKovablik::where('user_id', Auth::user()->id)->first();
         $proposalId = $request->input('is_pass');
         foreach ($proposalId as $id) {
-            $proposal = ProposalKovablik::find($id);
-            $proposal->tahapan_id = 2;
-            $proposal->save();
+            $proposalMap = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->first();
+            $proposalMap->is_lolos = 1;
+            $proposalMap->save();
+
+            $proposalMap = PenilaianKovablikMap::where('proposal_id', $id)->get();
+            $allLolos = $proposalMap->every(function ($item) {
+                return $item->is_lolos == 1;
+            });
+
+            if ($allLolos) {
+                $proposal = ProposalKovablik::find($id);
+                $proposal->tahapan_id = 2;
+                $proposal->save();
+            }
         }
-        return back()->with('success', 'Proposal diloloskan ke tahap selanjutnya.');
+        return back()->with('success', 'Status proposal berhasil diperbarui, harap menunggu juri lain untuk meloloskan proposal');
     }
 
     public function save(Request $request)
@@ -95,10 +108,14 @@ class PenilaianKovablikController extends Controller
                             ->first();
 
                         if ($pivot) {
-                            $proposal->penilaian()->updateExistingPivot($penilaianId, [
-                                'catatan_saran' => $catatanSaran,
-                                'nilai' => $nilai,
-                            ]);
+                            DB::table('penilaian_kovabliks')
+                                ->where('proposal_id', $proposal->id)
+                                ->where('penilaian_id', $penilaianId)
+                                ->where('user_id', Auth::id())
+                                ->update([
+                                    'catatan_saran' => $catatanSaran,
+                                    'nilai' => $nilai,
+                                ]);
                             $total_nilai += $nilai;
                         }
                     }
