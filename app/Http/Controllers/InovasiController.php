@@ -627,7 +627,7 @@ class InovasiController extends Controller
             $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
             $inisiator = Inisiator::all();
             $jenis = Jenis::all();
-            $bentuk = $kategori_id == 1 ? Bentuk::all() : Bentuk::where('id',2)->get();
+            $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $tematik = Tematik::all();
             $kategori = KategoriInovasi::all();
