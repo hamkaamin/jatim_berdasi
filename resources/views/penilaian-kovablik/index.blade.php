@@ -79,7 +79,11 @@
 
                                                     if($totalNilai->count() > 0){
                                                         $thisJuri = \App\Models\JuriKovablik::where('user_id', Auth::id())->first();
-                                                        $isLolos = \App\Models\PenilaianKovablikMap::where('juri_id', $thisJuri->id)->where('proposal_id', $item->id)->first()->is_lolos;
+                                                        $penilaianJuri = \App\Models\PenilaianKovablikMap::where('juri_id', $thisJuri->id)->where('proposal_id', $item->id)->first();
+                                                        $isLolos = 0;
+                                                        if($penilaianJuri != null){
+                                                            $isLolos = $penilaianJuri->is_lolos;
+                                                        }
                                                     }
 
                                                     $counter = 1;
