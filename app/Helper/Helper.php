@@ -145,7 +145,7 @@ class Helper
 			}
 
 			// Validasi ekstensi
-			$allowedExtensions = ['jpeg', 'png', 'jpg', 'xls', 'xlsx', 'csv', 'pdf'];
+			$allowedExtensions = array('jpeg', 'png', 'jpg', 'xls', 'xlsx', 'csv', 'pdf');
 			$extension = strtolower($file->getClientOriginalExtension());
 
 			if (!in_array($extension, $allowedExtensions)) {
