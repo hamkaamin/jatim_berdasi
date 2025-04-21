@@ -289,12 +289,10 @@ class InovasiController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'file_rancang_bangun' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048', 
-            'profil_bisnis' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
             'anggaran' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
         ], [  
             'file_rancang_bangun.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
             'file_rancang_bangun.max' => 'File maksimal berukuran 2MB', 
-            'profil_bisnis.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
             'profil_bisnis.max' => 'File maksimal berukuran 2MB', 
             'anggaran.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
             'anggaran.max' => 'File maksimal berukuran 2MB', 
@@ -408,57 +406,94 @@ class InovasiController extends Controller
             }
             $data->tahapan()->sync($tempArr);
             if ($request->hasFile('anggaran')) {
-                $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran);
-                $data->anggaran = $nama_file;
-                $data->save();
+                $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran,['pdf','jpg','jpeg','png','xlsx']);
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', 'File Anggaran tidak sesuai format !');
+                }else{
+                    $data->anggaran = $nama_file;
+                    $data->save();
+                }
             }
-            if ($request->hasFile('file_rancang_bangun')) {
-                $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
-                $data->file_rancang_bangun = $nama_file;
-                $data->save();
-            } 
+            // if ($request->hasFile('file_rancang_bangun')) {
+            //     $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
+            //     $data->file_rancang_bangun = $nama_file;
+            //     $data->save();
+            // } 
 
-            if ($request->hasFile('file_anggaran')) {
-                $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
-                $data->file_anggaran = $nama_file;
-                $data->save();
-            }
+            // if ($request->hasFile('file_anggaran')) {
+            //     $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
+            //     $data->file_anggaran = $nama_file;
+            //     $data->save();
+            // }
             
             if ($request->hasFile('file_dokumen_haki')) {
-                $nama_file = Helper::save_file($request->file('file_dokumen_haki'), uniqid(), 'file_dokumen_haki', $data->file_dokumen_haki);
-                $data->file_dokumen_haki = $nama_file;
-                $data->save();
+                $nama_file = Helper::save_file(
+                    $request->file('file_dokumen_haki'),
+                    uniqid(),
+                    'file_dokumen_haki',
+                    $data->file_dokumen_haki,
+                    ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+                );
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', $nama_file['message']);
+                }else{
+                    $data->file_dokumen_haki = $nama_file['file_name'];
+                    $data->save();
+                }
             }
             
             if ($request->hasFile('file_penghargaan')) {
-                $nama_file = Helper::save_file($request->file('file_penghargaan'), uniqid(), 'file_penghargaan', $data->file_penghargaan);
-                $data->file_penghargaan = $nama_file;
+                $nama_file = Helper::save_file(
+                    $request->file('file_penghargaan'),
+                    uniqid(),
+                    'file_penghargaan',
+                    $data->file_penghargaan,
+                    ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+                );
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', $nama_file['message']);
+                }else{
+                    $data->file_penghargaan = $nama_file['file_name'];
+                    $data->save();
+                }
                 $data->save();
             }
 
             if ($request->hasFile('profil_bisnis')) {
-                $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
-                $data->profil_bisnis = $nama_file;
+                
+                $nama_file = Helper::save_file(
+                    $request->file('profil_bisnis'),
+                    uniqid(),
+                    'profil_bisnis',
+                    $data->profil_bisnis,
+                    ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+                );
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', $nama_file['message']);
+                }else{
+                    $data->profil_bisnis = $nama_file['file_name'];
+                    $data->save();
+                }
                 $data->save();
             }
 
-            if ($request->hasFile('file_hasil_inovasi')) {
-                $nama_file = Helper::save_file($request->file('file_hasil_inovasi'), uniqid(), 'file_hasil_inovasi', $data->file_hasil_inovasi);
-                $data->file_hasil_inovasi = $nama_file;
-                $data->save();
-            }
+            // if ($request->hasFile('file_hasil_inovasi')) {
+            //     $nama_file = Helper::save_file($request->file('file_hasil_inovasi'), uniqid(), 'file_hasil_inovasi', $data->file_hasil_inovasi);
+            //     $data->file_hasil_inovasi = $nama_file;
+            //     $data->save();
+            // }
 
-            if ($request->hasFile('file_kajian')) {
-                $nama_file = Helper::save_file($request->file('file_kajian'), uniqid(), 'file_kajian', $data->file_kajian);
-                $data->file_kajian = $nama_file;
-                $data->save();
-            }
+            // if ($request->hasFile('file_kajian')) {
+            //     $nama_file = Helper::save_file($request->file('file_kajian'), uniqid(), 'file_kajian', $data->file_kajian);
+            //     $data->file_kajian = $nama_file;
+            //     $data->save();
+            // }
 
-            if ($request->hasFile('file_struktur_oragnisasi')) {
-                $nama_file = Helper::save_file($request->file('file_struktur_oragnisasi'), uniqid(), 'file_struktur_oragnisasi', $data->file_struktur_oragnisasi);
-                $data->file_struktur_oragnisasi = $nama_file;
-                $data->save();
-            }
+            // if ($request->hasFile('file_struktur_oragnisasi')) {
+            //     $nama_file = Helper::save_file($request->file('file_struktur_oragnisasi'), uniqid(), 'file_struktur_oragnisasi', $data->file_struktur_oragnisasi);
+            //     $data->file_struktur_oragnisasi = $nama_file;
+            //     $data->save();
+            // }
             $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
             return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
         }
