@@ -45,17 +45,14 @@
         <table class="table" style="width: 100%" border="0">
             <tr>
                 <td style="width: 150px">Kategori</td>
-                <td style="width: 2%">:</td>
                 <td colspan="2">{{ $inovasi->kategori->nama_singkat ?? ' ' }}</td>
             </tr>
             <tr>
                 <td>Judul Inovasi</td>
-                <td>:</td>
                 <td colspan="2">{{ $inovasi->nama }}</td>
             </tr>
             <tr>
                 <td>Penilai / Juri</td>
-                <td>:</td>
                 <td>{{ App\Models\User::find($user_id)->name }}</td>
                 <td style="vertical-align: top">
                     @if (!empty($penilaian_map->signature_path))
