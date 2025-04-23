@@ -30,7 +30,7 @@ class KategoriInovasi extends Model
 
     public function penilaians()
     {
-        return $this->hasMany(Penilaian::class, 'kategori_id', 'id');
+        return $this->hasMany(Penilaian::class, 'kategori_id', 'id')->orderBy('id', 'asc');
     }
 
     public function juris()

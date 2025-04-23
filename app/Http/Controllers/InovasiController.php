@@ -578,7 +578,8 @@ class InovasiController extends Controller
         // if (count($request->input()) == 2 && isset($request->id)) {
             $inovasi = Inovasi::findOrFail($request->id);
             $data = [];
-            if ($inovasi->indikator()->count() == 0) {
+            if($inovasi->kategori_id != $inovasi->indikator()->first()->kategori_id){
+                $inovasi->indikator()->detach();
                 $indikator = Indikator::where('label', 0)->where('kategori_id',$inovasi->kategori_id)->get();
                 foreach ($indikator as $item) {
                     $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
