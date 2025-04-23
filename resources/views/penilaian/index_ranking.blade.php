@@ -14,8 +14,8 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <ul class="nav nav-tabs"> 
-                        @foreach ($data_kategori as $key => $item) 
+                    <ul class="nav nav-tabs">
+                        @foreach ($data_kategori as $key => $item)
                             <x-tab-inovasi :kategori="$item" :key="$key + 1" :active="$loop->iteration == 1 ? 1 : 0" />
                         @endforeach
                     </ul>
@@ -65,7 +65,7 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                                    <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
+                                                    <td>{{ $item->penilaian->sum('pivot.nilai') }}
                                                     </td>
                                                     <td>
                                                         @if ($item->status != 0)

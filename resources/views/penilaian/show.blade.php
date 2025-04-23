@@ -20,7 +20,7 @@
                     <a href="{{ route('penilaian.print', encrypt($inovasi->id)) }}" target="_blank" class="btn btn-info">
                         <i class="uil-print"></i> Cetak Penilaian
                     </a>
-                </h5>   
+                </h5>
                 @foreach ($kategori_juri as $user_id)
                     <div class="card mb-4">
                         <div class="card-header">
@@ -62,6 +62,7 @@
                                         $totalNilai = 0;
                                         $no = 0;
                                     @endphp
+
                                     @foreach ($data as $item)
                                         @if ($item->pivot->user_id == $user_id)
                                             @php $no++; @endphp
@@ -98,7 +99,7 @@
         </div>
     @else
         <h3>
-            Inotek Sudah Ditutup 
+            Inotek Sudah Ditutup
         </h3>
     @endif
 @endsection

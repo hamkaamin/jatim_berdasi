@@ -30,11 +30,12 @@
         @php
             $penilaian_map = App\Models\PenilaianMap::whereIn('juri_id', function ($query) use ($user_id) {
                 $query->select('id')->from('juris')->where('user_id', $user_id);
-            })->first();
+            })
+                ->where('inovasi_id', $inovasi->id)
+                ->first();
             $ttd = null;
             if (!empty($penilaian_map->signature_path)) {
                 $path = public_path($penilaian_map->signature_path);
-
                 if (file_exists($path)) {
                     $type = pathinfo($path, PATHINFO_EXTENSION);
                     $filenya = file_get_contents($path);
@@ -45,7 +46,7 @@
         <table class="table" style="width: 100%" border="0">
             <tr>
                 <td style="width: 150px">Kategori</td>
-                <td colspan="2">{{ $inovasi->kategori->nama_singkat ?? ' ' }}</td>
+                <td colspan="2">{{ $inovasi->kategori->nama ?? ' ' }}</td>
             </tr>
             <tr>
                 <td>Judul Inovasi</td>
@@ -55,6 +56,7 @@
                 <td>Penilai / Juri</td>
                 <td>{{ App\Models\User::find($user_id)->name }}</td>
                 <td style="vertical-align: top">
+
                     @if (!empty($penilaian_map->signature_path))
                         <img src="{{ $ttd }}" style="max-width: 120px">
                     @endif
