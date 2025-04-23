@@ -72,7 +72,7 @@
                                         max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                         id="nilai_{{ $item->pivot->penilaian_id }}"
                                         value="{{ optional($item->pivot)->nilai }}">
-                                    <small>min : {{ $item->nilai_min }} ; max : {{ $item->nilai_max }}</small>
+                                    <small>Nilai :{{ $item->nilai_min }} s.d. {{ $item->nilai_max }}</small>
                                 </div>
                             </div>
                             <hr class="my-0">
