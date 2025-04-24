@@ -78,7 +78,7 @@ class Role extends Model
 
             }
         }
-        $data = $data->where('role', $role_id)->get(); 
+        $data = $data->where('role', $role_id)->limit(10)->get(); 
         
         return $data;
     }

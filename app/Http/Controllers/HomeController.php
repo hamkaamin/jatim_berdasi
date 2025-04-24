@@ -289,8 +289,9 @@ class HomeController extends Controller
                 $data = ($request->id == 0) ? null : User::findOrFail($request->id);
                 $jabatan = Jabatan::all();
                 $golongan = Golongan::all();
+                $kategori = KategoriInovasi::get();
                 return response()->json(array(
-                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan'))->render()
+                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan','kategori'))->render()
                 ), 200);
                 break;
             case "inovasi_status":

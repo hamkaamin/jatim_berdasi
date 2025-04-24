@@ -28,6 +28,19 @@
                                 <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="tab-{{ $datas->id }}"
                                     role="tabpanel">
                                     <h4>Inovasi</h4>
+                                    <div class="row">
+                                        <div class="col-md-11">
+                                            <a href=""></a>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <a target="_blank"
+                                                href="{{ route('penilaian.export', ['kategori_id' => $datas->id, 'jenis' => $jenis]) }}"
+                                                class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                                                title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
+                                        </div>
+                                    </div>
+                                    <br><br>
+
                                     <table class="table align-items-center table-flush" id="myTable">
                                         <thead class="thead-light">
                                             <tr>

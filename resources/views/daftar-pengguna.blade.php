@@ -64,11 +64,11 @@
                             {{ $item->nama }} <span class="badge badge-primary txt_jml_user_{{ $item->id }}"></span>
                         </a>
                     </li>
-                @endforeach 
+                @endforeach
             </ul>
             <div class="tab-content">
                 @foreach ($roles as $data)
-                    @php 
+                    @php
                         $users = $data->get_user($request, $data->id);
                     @endphp
                     <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="tab-{{ $data->id }}"
@@ -115,20 +115,23 @@
                                                         class="btn m-1 btn-block btn-sm btn-warning"><i
                                                             class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
                                                     <form style="all: unset"
-                                                        action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}" method="post">
+                                                        action="{{ route('pengguna.reset-pass', ['id' => $item->id]) }}"
+                                                        method="post">
                                                         @csrf
                                                         <button type="submit" class="btn m-1 btn-block btn-sm btn-success"
                                                             onclick="if(!confirm('Apakah Anda yakin akan me-Reset Passwords pengguna ini ?')){return false;}"><i
                                                                 class="fa fa-key"></i>&nbsp;&nbsp;Reset Pass</button>
                                                     </form>
-                                                    @if(Auth::user()->id != $item->id)
-                                                    <form style="all: unset"
-                                                        action="{{ route('pengguna.delete', ['id' => $item->id]) }}" method="post">
-                                                        @csrf
-                                                        <button type="submit" class="btn m-1 btn-block btn-sm btn-danger"
-                                                            onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i
-                                                                class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
-                                                    </form>
+                                                    @if (Auth::user()->id != $item->id)
+                                                        <form style="all: unset"
+                                                            action="{{ route('pengguna.delete', ['id' => $item->id]) }}"
+                                                            method="post">
+                                                            @csrf
+                                                            <button type="submit"
+                                                                class="btn m-1 btn-block btn-sm btn-danger"
+                                                                onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i
+                                                                    class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
+                                                        </form>
                                                     @endif
                                                 @endif
                                             </td>
@@ -139,9 +142,9 @@
                         </div>
                     </div>
                     @push('scripts')
-                    <script>
-                        $('.txt_jml_user_{{ $data->id }}').html('{{ sizeof($users) }}');
-                    </script>
+                        <script>
+                            $('.txt_jml_user_{{ $data->id }}').html('{{ sizeof($users) }}');
+                        </script>
                     @endpush
                 @endforeach
             </div>
@@ -209,22 +212,33 @@
     </div>
 @endsection
 
-@section('script') 
+@section('script')
     @include('script.modal')
     @include('script.ubahWilayah')
     @include('script.ubahScopeOpd')
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('.datatable').DataTable();
-        } );
-        function ubahRole(type) {
+        });
+
+        function ubahRole(type, datasJson) {
+            let datas = null;
+
+            try {
+                datas = JSON.parse(datasJson);
+            } catch (e) {
+                console.warn("datasJson is not JSON:", datasJson);
+            }
+
             $('#role_container').html("<div class=\"text-center my-1\"><h4><b>Loading...</b></h4></div>");
+
             $.ajax({
                 type: 'POST',
                 url: '{{ route('pengguna.change-role') }}',
                 data: {
-                    '_token': '<?php echo csrf_token(); ?>',
+                    '_token': '{{ csrf_token() }}',
                     'type': type,
+                    'datas': datas
                 },
                 success: function(data) {
                     $('#role_container').html(data.msg);

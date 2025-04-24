@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PenilaianExport;
+use App\Helper\Helper;
 use App\Models\Inovasi;
 use App\Models\Juri;
 use App\Models\KategoriInovasi;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PenilaianInovasiController extends Controller
 {
@@ -197,9 +200,27 @@ class PenilaianInovasiController extends Controller
         
         if($jenis == 'iga'){
             $data_kategori = KategoriInovasi::where('id',1)->get();
+    
+            if(Auth::user()->role == 2){
+                $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+                $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+            }
             return view('penilaian.index_ranking', compact('jenis','data_kategori'));
         }else if($jenis == 'inotek'){
+
+            if(Auth::user()->role == 2){
+                $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+                $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+            }
             return view('penilaian.index_ranking', compact('jenis','data_kategori'));
         }
+    }
+
+    public function export($kategori_id,$jenis)
+    {
+        $kategori = KategoriInovasi::find($kategori_id);
+        $nama_file = 'Export Penilaian Inovasi Kategori '.$kategori->nama_singkat.' '.Auth::user()->tahun.'_Tanggal_'.date('d-m-Y H-i-s').'.xlsx'; 
+        return Excel::download(new PenilaianExport($jenis, $kategori_id),$nama_file);  
+        session()->put('status', 'Data Opd berhasil diunduh!');
     }
 }

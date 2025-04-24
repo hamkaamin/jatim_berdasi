@@ -41,6 +41,29 @@ class Helper
 		return $role;
 	}
 
+	public static function getKategoriRole($role_id)
+	{
+		if($role_id == 2){
+			$id_kategori = [];
+            if(Auth::user()->is_kategori_1 == 1){
+                $id_kategori[] = 1;
+            }if(Auth::user()->is_kategori_2 == 1){
+                $id_kategori[] = 2;
+            }
+            if(Auth::user()->is_kategori_3 == 1){
+                $id_kategori[] = 3;
+            }
+            if(Auth::user()->is_kategori_4 == 1){
+                $id_kategori[] = 4;
+            }
+            if(Auth::user()->is_kategori_5 == 1){
+                $id_kategori[] = 5;
+            }
+			
+		}
+		return $id_kategori;
+	}
+
 	public static function getOpdProvinsi($idStart, $array)
 	{
 		$array = self::getOpd('provinsi', $idStart, $array);

@@ -245,6 +245,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/index/{jenis}', [PenilaianInovasiController::class, 'index'])->name('index');
             Route::get('/form/edit', [PenilaianInovasiController::class, 'edit'])->name('edit');
             Route::post('/form/save', [PenilaianInovasiController::class, 'save'])->name('save');
+            Route::get('/export/{kategori_id}/{jenis}', [PenilaianInovasiController::class, 'export'])->name('export');
             Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
 
             Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');

@@ -89,6 +89,11 @@ class InovasiController extends Controller
         // dd($inovasi);
         // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriInovasi::get();
+        if(Auth::user()->role == 2){
+            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+            $kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+        }
+        
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
@@ -159,11 +164,19 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
+        if(Auth::user()->role == 2){
+            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+            $inovasi = $inovasi->whereIn('kategori_id',$id_kategori);
+        }
         $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get();
         // dd($inovasi);
         // dd($inovasi);
         // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
         $kategori = KategoriInovasi::orderBy('id','asc')->get();
+        if(Auth::user()->role == 2){
+            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+            $kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+        }
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase'));
