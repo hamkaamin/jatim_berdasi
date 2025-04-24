@@ -62,7 +62,21 @@
                                                 $data = [];
                                             @endphp
                                             @foreach ($get_penilaian_inovasi as $item)
-                                                <tr>
+                                                @php
+                                                    $row_class = '';
+                                                    $background_color = ''; // default, jika belum diisi
+                                                @endphp
+
+                                                @foreach ($item->penilaian as $penilaian)
+                                                    @if (Auth::id() == $penilaian->pivot->user_id && $penilaian->pivot->nilai > 0)
+                                                        @php
+                                                            $row_class = 'table-success';
+                                                            break;
+                                                        @endphp
+                                                    @endif
+                                                @endforeach
+
+                                                <tr class="{{ $row_class }}">
                                                     <td>{{ $loop->iteration }}</td>
                                                     {{-- <td>{{ $item->label }}</td> --}}
                                                     <td>{{ $item->user->name }}</td>
