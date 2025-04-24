@@ -95,7 +95,7 @@
                                                     <td>{{ $item->penilaian->sum('pivot.nilai') }}
                                                     </td>
                                                     <td>
-                                                        @if ($item->status != 0)
+                                                        {{-- @if ($item->status != 0)
                                                             <a target="_blank"
                                                                 href="{{ route('inovasi.export', ['type' => 'pdf', 'id' => $item->id]) }}"
                                                                 class="btn m-1 btn-block btn-sm btn-info"
@@ -121,10 +121,7 @@
                                                                 title="Edit Inovasi"><i
                                                                     class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
                                                         @endif
-                                                        @if (
-                                                            ($item->status != 2 && $item->user_id == Auth::user()->id) ||
-                                                                Auth::user()->username == 'salehsayanglatifah' ||
-                                                                Auth::user()->username == 'pemdkotkabatest')
+                                                        @if (($item->status != 2 && $item->user_id == Auth::user()->id) || Auth::user()->username == 'salehsayanglatifah' || Auth::user()->username == 'pemdkotkabatest')
                                                             <form style="all: unset"
                                                                 action="{{ route('inovasi.delete', ['id' => $item->id]) }}"
                                                                 method="post">
@@ -136,7 +133,7 @@
                                                                     title="Hapus Inovasi"><i
                                                                         class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
                                                             </form>
-                                                        @endif
+                                                        @endif --}}
 
                                                         @if (Auth::user()->role == 7)
                                                             <a href="{{ route('penilaian.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id, 'jenis' => $jenis]) }}"

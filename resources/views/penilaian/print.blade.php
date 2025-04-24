@@ -45,8 +45,7 @@
         @endphp
         <table class="table" style="width: 100%" border="0">
             <tr>
-                <td style="width: 150px">Kategori</td>
-                <td colspan="2">{{ $inovasi->kategori->nama ?? ' ' }}</td>
+                <td colspan="3" style="text-align: center">{{ $inovasi->kategori->nama ?? ' ' }}</td>
             </tr>
             <tr>
                 <td>Judul Inovasi</td>
