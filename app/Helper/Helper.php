@@ -161,7 +161,7 @@ class Helper
 
 	public static function save_file($file, $name, $folder, $existing, $allowedExtensions = [])
 	{
-		// try {
+		try {
 			// Hapus file lama jika ada
 			if ($existing && file_exists(public_path("$folder/$existing"))) {
 				unlink(public_path("$folder/$existing"));
@@ -232,9 +232,9 @@ class Helper
 				'file_name' =>  env('APP_URL').'/'.$folder.'/'.$fileName
 			];
 
-		// } catch (\Throwable $th) {
-		// 	return 'file_error';
-		// }
+		} catch (\Throwable $th) {
+			return 'file_error';
+		}
 	}
 
 
