@@ -1,10 +1,10 @@
-<table class="table align-items-center table-flush" id="myTable">
-    <thead class="thead-light">
+<table>
+    <thead>
         <tr>
-            <th style="min-width: 200px;text-align:center;">No.</th>
-            <th style="min-width: 100px;text-align:center;">Nama Perangkat Daerah Kota / Kab</th>
-            <th style="min-width: 200px;text-align:center;">Judul</th>
-            <th style="min-width: 200px;text-align:center;">Nilai</th>
+            <th style="min-width: 200px;text-align:center;font-weight:bold">No.</th>
+            <th style="min-width: 100px;text-align:center;font-weight:bold">Nama Perangkat Daerah Kota / Kab</th>
+            <th style="min-width: 200px;text-align:center;font-weight:bold">Judul</th>
+            <th style="min-width: 200px;text-align:center;font-weight:bold">Nilai</th>
         </tr>
     </thead>
     <tbody>
