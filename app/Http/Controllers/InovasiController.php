@@ -481,6 +481,9 @@ class InovasiController extends Controller
                     $data->profil_bisnis,
                     ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
                 );
+                if(Auth::user()->username == 'kabbkl'){
+                    dd($nama_file);
+                }
                 if($nama_file['valid'] == false){
                     return redirect()->back()->with('error', $nama_file['message']);
                 }else{
