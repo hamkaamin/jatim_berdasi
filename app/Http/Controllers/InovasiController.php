@@ -477,7 +477,7 @@ class InovasiController extends Controller
                 $nama_file = Helper::save_file(
                     $request->file('profil_bisnis'),
                     uniqid(),
-                    'profil_bisnis',
+                    'file_profil_bisnis',
                     $data->profil_bisnis,
                     ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
                 );
