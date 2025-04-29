@@ -23,6 +23,9 @@
                             <th style="width: 100px; min-width: 100px">Status</th>
                             <th>Keterangan</th>
                             <th style="{!! $display !!}">Bobot Awal</th>
+                            @if (Auth::user()->role == 2)
+                                <th>Kematangan</th>
+                            @endif
                             <th>Penilaian</th>
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
@@ -105,7 +108,12 @@
                                     <td>{{ $temp != null && $temp->pivot->waktu != null ? date('Y-m-d', strtotime($temp->pivot->waktu)) : '-' }}
                                     </td>
                                 @endforeach --}}
+
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
+                                </td>
+                                @if (Auth::user()->role == 2)
+                                    <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
+                                @endif
                                 <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
                                 </td>
 
