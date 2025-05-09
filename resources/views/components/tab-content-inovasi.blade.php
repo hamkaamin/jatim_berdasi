@@ -65,7 +65,11 @@
                                         ->where('label', $status_label)
                                         ->where('tahun', Auth::user()->tahun)
                                         ->where('status', '<>', 0)
-                                        ->get();
+                                        ->get()
+                                        ->sortByDesc(function ($item) {
+                                            $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
+                                            return $totalNilai;
+                                        });
                                 }
                             } else {
                                 $data = $inovasi;
@@ -207,36 +211,47 @@
 <script>
     function btn_selanjutnya(token, id, juri_tahap) {
         var next_juri = juri_tahap + 1;
-        Swal.fire({
-            title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
-            text: "Pastikan data sebelumnya sudah disimpan!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, Lanjutkan!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                var routeUrl = "{{ route('inovasi.move') }}";
+        if (next_juri > 2) {
+            Swal.fire({
+                title: 'Gagal',
+                text: 'Penilaian sudah di tahap 2',
+                icon: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#d33', // merah, cocok untuk error
+                confirmButtonText: 'Tutup'
+            });
+        } else {
+            Swal.fire({
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
+                text: "Pastikan data sebelumnya sudah disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Lanjutkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var routeUrl = "{{ route('inovasi.move') }}";
 
-                $.post(routeUrl, {
-                        _token: token,
-                        id: id
-                    },
-                    function(data) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil!',
-                            text: data.message,
-                            showConfirmButton: true,
-                            timer: 1500
-                        }).then(() => {
-                            show_status('{{ csrf_token() }}', $('#statusFilter').val(),
-                                '{{ $area }}', '#show_inovasi');
+                    $.post(routeUrl, {
+                            _token: token,
+                            id: id
+                        },
+                        function(data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: data.message,
+                                showConfirmButton: true,
+                                timer: 1500
+                            }).then(() => {
+                                show_status('{{ csrf_token() }}', $('#statusFilter').val(),
+                                    '{{ $area }}', '#show_inovasi');
+                            });
                         });
-                    });
-            }
-        });
+                }
+            });
+        }
 
     }
 </script>
