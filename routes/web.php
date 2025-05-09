@@ -205,6 +205,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::post('/delete', [App\Http\Controllers\InovasiController::class, 'delete'])->name('delete');
             Route::post('/update', [App\Http\Controllers\InovasiController::class, 'update'])->name('update');
             Route::post('/sent', [App\Http\Controllers\InovasiController::class, 'sent'])->name('sent');
+            Route::post('/inovasi.move', [App\Http\Controllers\InovasiController::class, 'move'])->name('move');
             #get detail tematik using post
             Route::post('/inovasi/ajax_detail_tematik', [InovasiController::class, 'detail_tematik'])->name('ajax_detail_tematik');
             Route::post('/inovasi/ajax_kategori_inovasi', [InovasiController::class, 'kategori_inovasi'])->name('ajax_kategori_inovasi');

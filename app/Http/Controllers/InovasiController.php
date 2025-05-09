@@ -168,7 +168,11 @@ class InovasiController extends Controller
             $id_kategori = Helper::getKategoriRole(Auth::user()->role);
             $inovasi = $inovasi->whereIn('kategori_id',$id_kategori);
         }
-        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get();
+        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get()
+        ->sortByDesc(function ($item) {
+            $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
+            return  $totalNilai;
+        });
         // dd($inovasi);
         // dd($inovasi);
         // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
@@ -179,7 +183,7 @@ class InovasiController extends Controller
         }
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
-        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase'));
+        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase','area'));
     }
 
     public function bank_data(Request $request,$area)
@@ -721,6 +725,30 @@ class InovasiController extends Controller
             }
 
             return view($view, compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
+        
+    }
+
+    public function move(Request $request){
+        $inovasi = Inovasi::find($request->id);
+        try{
+            DB::beginTransaction();
+            $inovasi = Inovasi::find($request->id);
+            $inovasi->juri_tahap = $inovasi->juri_tahap+1;
+            $inovasi->save();
+            DB::commit();
+            return response()->json([
+                'status'=>true,
+                'message' => 'Inovasi Berhasil Masuk ke Tahap '.$inovasi->juri_tahap,
+            ],200);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' =>false,
+                'message' => 'Failed to update status and keterangan.',
+                'error' => $e->getMessage(),
+            ],500);
+        }
+        
         
     }
 }

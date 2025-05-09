@@ -79,10 +79,10 @@ $status_label = 0; @endphp
 
         <div class="tab-content" id="myTabContent">
             <x-tab-content-inovasi :kategori="null" :active="1" :inovasi="$inovasi" :label="$label"
-                :fase="$fase" />
+                :fase="$fase" :area="$area" />
             @foreach ($kategori as $item)
                 <x-tab-content-inovasi :kategori="$item" :active="0" :inovasi="[]" :label="$label"
-                    :fase="$fase" />
+                    :fase="$fase" :area="$area" />
             @endforeach
         </div>
     </div>

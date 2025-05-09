@@ -170,6 +170,11 @@
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a>
+                                        {{-- <button type="button"
+                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}')"
+                                            class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
+                                            data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
+                                                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button> --}}
                                     @endif
                                     @if ($item->status == 0 || $item->status == 4)
                                         <form id="deleteConfirm" style="all: unset"
@@ -198,6 +203,42 @@
     </div>
 </div>
 
+
+<script>
+    function btn_selanjutnya(token, id) {
+        Swal.fire({
+            title: 'Lanjutkan ke Penilaian?',
+            text: "Pastikan data sebelumnya sudah disimpan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Lanjutkan!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var routeUrl = "{{ route('inovasi.move') }}";
+
+                $.post(routeUrl, {
+                        _token: token,
+                        id: id
+                    },
+                    function(data) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: data.message,
+                            showConfirmButton: true,
+                            timer: 1500
+                        }).then(() => {
+                            show_status('{{ csrf_token() }}', $('#statusFilter').val(),
+                                '{{ $area }}', '#show_inovasi');
+                        });
+                    });
+            }
+        });
+
+    }
+</script>
 <script>
     $(document).ready(function() {
         $('.table-flush').DataTable();

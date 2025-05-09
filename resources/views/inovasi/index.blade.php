@@ -39,7 +39,7 @@
             <div class="col-12">
                 <!-- Status Filter -->
                 <div class="form-group">
-                    <label for="statusFilter">Filter Status</label>
+                    <label for="statusFilter">Filter Status </label>
                     <select onchange="show_status('{{ csrf_token() }}',this.value,'{{ $area }}','#show_inovasi')"
                         class="form-control" id="statusFilter" name="statusFilter">
                         <option value="">Semua</option>
