@@ -25,11 +25,11 @@
                     <div class="card mb-4">
                         <div class="card-header">
                             @php
-                                $penilaian_map = App\Models\PenilaianMap::whereIn('juri_id', function ($query) use (
-                                    $user_id,
-                                ) {
-                                    $query->select('id')->from('juris')->where('user_id', $user_id);
-                                })->first();
+                                $penilaian_map = App\Models\PenilaianMap::where('inovasi_id', $inovasi->id)
+                                    ->whereIn('juri_id', function ($query) use ($user_id) {
+                                        $query->select('id')->from('juris')->where('user_id', $user_id);
+                                    })
+                                    ->first();
 
                             @endphp
                             <div class="row">
@@ -43,6 +43,7 @@
                                     <div class="fw-semibold">
                                         {{ @$penilaian_map->signature_path ? 'Sudah Ditandatangani' : 'Belum Ditandatangani' }}
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -67,7 +68,9 @@
                                         @if ($item->pivot->user_id == $user_id)
                                             @php $no++; @endphp
                                             <tr>
-                                                <td>{{ $no }}</td>
+                                                <td>{{ $no }}
+
+                                                </td>
                                                 <td>{{ $item->bagian }}</td>
                                                 <td>{!! $item->indikator !!}</td>
                                                 <td>

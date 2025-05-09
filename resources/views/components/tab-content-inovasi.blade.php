@@ -166,12 +166,12 @@
                                         @endif --}}
                                     @endif
                                     @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5))
-                                        <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
+                                        {{-- <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
-                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a>
+                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a> --}}
                                         {{-- <button type="button"
-                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}')"
+                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button> --}}
@@ -205,9 +205,10 @@
 
 
 <script>
-    function btn_selanjutnya(token, id) {
+    function btn_selanjutnya(token, id, juri_tahap) {
+        var next_juri = juri_tahap + 1;
         Swal.fire({
-            title: 'Lanjutkan ke Penilaian?',
+            title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
             text: "Pastikan data sebelumnya sudah disimpan!",
             icon: 'warning',
             showCancelButton: true,
