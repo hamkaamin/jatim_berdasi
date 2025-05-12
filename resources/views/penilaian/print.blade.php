@@ -28,8 +28,12 @@
     @foreach ($kategori_juri as $user_id)
         @php $nojuri++; @endphp
         @php
-            $penilaian_map = App\Models\PenilaianMap::whereIn('juri_id', function ($query) use ($user_id) {
-                $query->select('id')->from('juris')->where('user_id', $user_id);
+            $penilaian_map = App\Models\PenilaianMap::whereIn('juri_id', function ($query) use (
+                $user_id,
+                $inovasi,
+                $juri_tahap,
+            ) {
+                $query->select('id')->from('juris')->where('user_id', $user_id)->where('juri_tahap', $juri_tahap);
             })
                 ->where('inovasi_id', $inovasi->id)
                 ->first();

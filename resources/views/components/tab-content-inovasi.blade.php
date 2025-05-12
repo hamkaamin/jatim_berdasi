@@ -77,9 +77,16 @@
                         @endphp
                         @foreach ($data as $item)
                             @php
+                                $tahap = "<span class='badge badge-secondary'>Belum Dinilai</span>";
+
                                 $disabled = '';
                                 if ($item->status != 2) {
                                     $display_nilai = 'display: none';
+                                }
+                                if ($item->juri_tahap == 1) {
+                                    $tahap = "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
+                                } elseif ($item->juri_tahap == 2) {
+                                    $tahap = "<span class='badge badge-success'>Tahap 2</span>";
                                 }
                             @endphp
                             <tr>
@@ -116,7 +123,8 @@
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
                                 </td>
                                 @if (Auth::user()->role == 2)
-                                    <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
+                                    <td><b>{{ $item->indikator->sum('pivot.bobot_akhir') }}</b>
+                                    </td>
                                 @endif
                                 <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
                                 </td>
@@ -174,11 +182,11 @@
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a> --}}
-                                        {{-- <button type="button"
+                                        <button type="button"
                                             onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
-                                                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button> --}}
+                                                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
                                     @endif
                                     @if ($item->status == 0 || $item->status == 4)
                                         <form id="deleteConfirm" style="all: unset"
@@ -231,7 +239,7 @@
                 confirmButtonText: 'Ya, Lanjutkan!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    var routeUrl = "{{ route('inovasi.move') }}";
+                    var routeUrl = "{{ route('penilaian.move') }}";
 
                     $.post(routeUrl, {
                             _token: token,

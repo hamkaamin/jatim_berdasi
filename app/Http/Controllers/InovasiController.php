@@ -728,27 +728,4 @@ class InovasiController extends Controller
         
     }
 
-    public function move(Request $request){
-        $inovasi = Inovasi::find($request->id);
-        try{
-            DB::beginTransaction();
-            $inovasi = Inovasi::find($request->id);
-            $inovasi->juri_tahap = $inovasi->juri_tahap+1;
-            $inovasi->save();
-            DB::commit();
-            return response()->json([
-                'status'=>true,
-                'message' => 'Inovasi Berhasil Masuk ke Tahap '.$inovasi->juri_tahap,
-            ],200);
-        }catch(\Exception $e){
-            DB::rollback();
-            return response()->json([
-                'status' =>false,
-                'message' => 'Failed to update status and keterangan.',
-                'error' => $e->getMessage(),
-            ],500);
-        }
-        
-        
-    }
 }

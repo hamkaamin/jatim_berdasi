@@ -50,7 +50,9 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                        <td>{{ $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
+                                        <td>
+
+                                            {{ $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
                                         </td>
                                         <td>
                                             @if ($item->status != 0)

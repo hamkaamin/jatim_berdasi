@@ -71,16 +71,17 @@ class PenilaianInovasiController extends Controller
         $inovasi = Inovasi::findOrFail($id);
         $juri = Juri::where('user_id',Auth::user()->id)->first();
             $data = [];
-            if ($inovasi->penilaian()->wherePivot('user_id', Auth::id())->count() == 0) {
+            if ($inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->count() == 0) {
                 $penilaians = Penilaian::where('kategori_id', $inovasi->kategori_id)->get();
                 foreach ($penilaians as $penilaian) {
                     $inovasi->penilaian()->attach($penilaian->id, [
-                        'user_id' => Auth::id()
+                        'user_id' => Auth::id(),
+                        'juri_tahap'=>$inovasi->juri_tahap,
                     ]);
                 }
             }
-        $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->get();
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->first();
+        $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->get();
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->where('juri_tahap',$inovasi->juri_tahap)->first();
         return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map'));
     }
 
@@ -90,10 +91,11 @@ class PenilaianInovasiController extends Controller
         $id =decrypt($request->id);
         $inovasi = Inovasi::findOrFail($id);
         $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->get();
-        $data = $inovasi->penilaian()
-                ->whereIn('user_id', $kategori_juri) // Filter berdasarkan kategori juri
-                ->get();
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_tahap',$inovasi->juri_tahap)->get();
+        // $data = $inovasi->penilaian()
+        //         ->whereIn('user_id', $kategori_juri) // Filter berdasarkan kategori juri
+        //         ->where('juri_tahap',$inovasi->juri_tahap)
+        //         ->get();
         $penilaian_per_juri = [];
 
         foreach ($kategori_juri as $user_id) {
@@ -102,18 +104,18 @@ class PenilaianInovasiController extends Controller
                 ->get();
         }
 
-        return view('penilaian.show', compact('kategori_juri','penilaian_per_juri','inovasi','data','jenis','penilaian_map'));
+        return view('penilaian.show', compact('kategori_juri','penilaian_per_juri','inovasi','jenis','penilaian_map'));
     }
 
-    public function print($id)
+    public function print($id,$juri_tahap)
     { 
         $id =decrypt($id);
         $inovasi = Inovasi::findOrFail($id);  
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->get(); 
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_tahap',$juri_tahap)->get(); 
         $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
 
-        $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->get();  // Filter berdasarkan kategori juri 
-        $pdf = PDF::loadview('penilaian.print', compact('kategori_juri','inovasi','data')); 
+        $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->where('juri_tahap',$juri_tahap)->get();  // Filter berdasarkan kategori juri 
+        $pdf = PDF::loadview('penilaian.print', compact('kategori_juri','inovasi','data','juri_tahap')); 
 
         $customPaper = array(0, 0, 595.35, 935.55);
         $pdf->setPaper($customPaper);
@@ -142,6 +144,7 @@ class PenilaianInovasiController extends Controller
                             ->where('inovasi_id', $inovasi->id)
                             ->where('penilaian_id', $penilaianId)
                             ->where('user_id', Auth::id())
+                            ->where('juri_tahap',$inovasi->juri_tahap)
                             ->update([
                                 'catatan_saran' => $catatanSaran,
                                 'nilai' => $nilai,
@@ -174,6 +177,7 @@ class PenilaianInovasiController extends Controller
                 $penilaian_map->inovasi_id = $inovasi->id;
                 $penilaian_map->juri_id = $request->juri_id;
                 $penilaian_map->total_nilai = $total_nilai;
+                $penilaian_map->juri_tahap = $inovasi->juri_tahap;
                 $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;
                 $penilaian_map->save();
             }
@@ -222,5 +226,45 @@ class PenilaianInovasiController extends Controller
         $nama_file = 'Export Penilaian Inovasi Kategori '.$kategori->nama_singkat.' '.Auth::user()->tahun.'_Tanggal_'.date('d-m-Y H-i-s').'.xlsx'; 
         return Excel::download(new PenilaianExport($jenis, $kategori_id),$nama_file);  
         session()->put('status', 'Data Opd berhasil diunduh!');
+    }
+
+
+    public function move(Request $request){
+        $inovasi = Inovasi::find($request->id);
+        try{
+            DB::beginTransaction();
+            $inovasi = Inovasi::find($request->id);
+            if($inovasi->juri_tahap == 1){
+                $juri = Juri::where('kategori_id', $inovasi->kategori_id)->get();
+                $juri_ids = $juri->pluck('id');
+
+                $jumlah_penilai = PenilaianMap::where('inovasi_id', $inovasi->id)
+                    ->where('juri_tahap', 1)
+                    ->whereIn('juri_id', $juri_ids)
+                    ->count();
+
+                if ($jumlah_penilai < $juri->count()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Ada juri yang belum menilai.',
+                        'error' => 'Gagal',
+                    ]);
+                }
+            }
+            $inovasi->juri_tahap = $inovasi->juri_tahap+1;
+            $inovasi->save();
+            DB::commit();
+            return response()->json([
+                'status'=>true,
+                'message' => 'Inovasi Berhasil Masuk ke Tahap '.$inovasi->juri_tahap,
+            ],200);
+        }catch(\Exception $e){
+            DB::rollback();
+            return response()->json([
+                'status' =>false,
+                'message' => 'Failed to update status and keterangan.',
+                'error' => $e->getMessage(),
+            ],500);
+        }
     }
 }

@@ -63,8 +63,22 @@
                                             @endphp
                                             @foreach ($get_penilaian_inovasi as $item)
                                                 @php
+                                                    $tahap =
+                                                        "<span class='badge badge-secondary rounded-pill'>Belum Dinilai</span>";
+
                                                     $row_class = '';
                                                     $background_color = ''; // default, jika belum diisi
+
+                                                    if ($item->status != 2) {
+                                                        $display_nilai = 'display: none';
+                                                    }
+                                                    if ($item->juri_tahap == 1) {
+                                                        $tahap =
+                                                            "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
+                                                    } elseif ($item->juri_tahap == 2) {
+                                                        $tahap =
+                                                            "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
+                                                    }
                                                 @endphp
 
                                                 @foreach ($item->penilaian as $penilaian)
@@ -75,6 +89,14 @@
                                                         @endphp
                                                     @endif
                                                 @endforeach
+                                                @php
+                                                    $nilai = $item->penilaian
+                                                        ->where('pivot.juri_tahap', $item->juri_tahap)
+                                                        ->sum(function ($pen) {
+                                                            return $pen->pivot->nilai;
+                                                        });
+
+                                                @endphp
 
                                                 <tr class="{{ $row_class }}">
                                                     <td>{{ $loop->iteration }}</td>
@@ -92,7 +114,9 @@
                                                         @endif
                                                     </td>
                                                     <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                                    <td>{{ $item->penilaian->sum('pivot.nilai') }}
+                                                    <td>
+                                                        {!! $tahap !!}
+                                                        {{ $nilai }}
                                                     </td>
                                                     <td>
                                                         {{-- @if ($item->status != 0)
@@ -147,6 +171,15 @@
                                                                 data-toggle="tooltip" data-placement="top"
                                                                 title="Penilaian Inovasi"><i
                                                                     class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
+
+                                                            <button type="button"
+                                                                onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                                                class="btn m-1 btn-block btn-sm"
+                                                                style="background-color:green;color:white"
+                                                                data-toggle="tooltip" data-placement="top"
+                                                                title="Tahap Selanjutnya"><i
+                                                                    class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya
+                                                            </button>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -171,6 +204,65 @@
     @section('script')
         @include('script.ubahWilayah')
         @include('script.ubahScopeOpd')
+
+
+        <script>
+            function btn_selanjutnya(token, id, juri_tahap) {
+                var next_juri = juri_tahap + 1;
+                if (next_juri > 2) {
+                    Swal.fire({
+                        title: 'Gagal',
+                        text: 'Penilaian sudah di tahap 2',
+                        icon: 'error',
+                        showCancelButton: false,
+                        confirmButtonColor: '#d33', // merah, cocok untuk error
+                        confirmButtonText: 'Tutup'
+                    });
+                } else {
+                    Swal.fire({
+                        title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
+                        text: "Pastikan data sebelumnya sudah disimpan!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#28a745',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Lanjutkan!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var routeUrl = "{{ route('penilaian.move') }}";
+
+                            $.post(routeUrl, {
+                                    _token: token,
+                                    id: id
+                                },
+                                function(data) {
+                                    if (data.status == true) {
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil!',
+                                            text: data.message,
+                                            showConfirmButton: true,
+                                            timer: 1500
+                                        }).then(() => {
+                                            location.reload();
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Gagal',
+                                            text: data.message,
+                                            icon: 'error',
+                                            showCancelButton: false,
+                                            confirmButtonColor: '#d33', // merah, cocok untuk error
+                                            confirmButtonText: 'Tutup'
+                                        });
+                                    }
+                                });
+                        }
+                    });
+                }
+
+            }
+        </script>
         <script>
             $(document).ready(function() {
                 $('#myTable0').DataTable({});
