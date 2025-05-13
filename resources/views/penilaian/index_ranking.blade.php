@@ -23,7 +23,11 @@
                         <div class="tab-content">
                             @foreach ($data_kategori as $datas)
                                 @php
-                                    $get_penilaian_inovasi = $datas->get_penilaian_inovasi($jenis, $datas->id);
+                                    $get_penilaian_inovasi = $datas->get_penilaian_inovasi(
+                                        $jenis,
+                                        $datas->id,
+                                        $juri_tahap,
+                                    );
                                 @endphp
                                 <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="tab-{{ $datas->id }}"
                                     role="tabpanel">

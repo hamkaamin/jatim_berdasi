@@ -38,7 +38,7 @@ class KategoriInovasi extends Model
         return $this->hasMany(Juri::class, 'kategori_id', 'id');
     }
 
-    public static function get_penilaian_inovasi($jenis,$kategori_id)
+    public static function get_penilaian_inovasi($jenis,$kategori_id,$juri_tahap)
     {
         if($jenis == 'iga'){
                 $inovasi = Inovasi::where('label',0)->where('status',2)->where('kategori_id',$kategori_id)->where('tahun',Auth::user()->tahun)->where('juri_tahap','!=',0)->get()
@@ -52,6 +52,7 @@ class KategoriInovasi extends Model
             ->where('label', 1)
             ->where('status', 2)
             ->where('kategori_id',$kategori_id)
+            ->where('juri_tahap',$juri_tahap)
             ->where('tahun',Auth::user()->tahun)
             ->where('juri_tahap','!=',0)
             ->get() // Ambil data dulu

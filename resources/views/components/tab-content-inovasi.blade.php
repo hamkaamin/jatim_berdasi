@@ -125,9 +125,36 @@
                                 @if (Auth::user()->role == 2)
                                     <td><b>{{ $item->indikator->sum('pivot.bobot_akhir') }}</b>
                                     </td>
+
+                                    <td>
+                                        @for ($i = 1; $i <= $item->juri_tahap; $i++)
+                                            @php
+                                                if ($i == 1) {
+                                                    $tahap =
+                                                        "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
+                                                } elseif ($i == 2) {
+                                                    $tahap =
+                                                        "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
+                                                }
+                                                $nilai = $item->penilaian
+                                                    ->where('pivot.juri_tahap', $i)
+                                                    ->sum(function ($pen) {
+                                                        return $pen->pivot->nilai;
+                                                    });
+
+                                            @endphp
+                                            {{-- {{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }} 
+                                        --}}
+
+                                            {!! $tahap !!}
+                                            {{ $nilai }}
+                                        @endfor
+
+                                        @if ($item->juri_tahap == 0)
+                                            <span class='badge badge-secondary'>Belum Dinilai</span>
+                                        @endif
+                                    </td>
                                 @endif
-                                <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
-                                </td>
 
                                 {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
                                 </td> --}}
