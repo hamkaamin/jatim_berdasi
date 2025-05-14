@@ -79,9 +79,6 @@
                         </div>
                     @endforeach
 
-                    blade
-                    Copy
-                    Edit
                     <div class="card-footer d-flex flex-column align-items-center">
                         <strong>Signature:</strong>
 
@@ -105,7 +102,8 @@
 
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('penilaian.index', $jenis) }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('penilaian.ranking', ['jenis' => $jenis, 'tahap' => $juri_tahap]) }}"
+                            class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

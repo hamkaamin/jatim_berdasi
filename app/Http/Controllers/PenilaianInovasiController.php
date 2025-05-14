@@ -66,6 +66,7 @@ class PenilaianInovasiController extends Controller
 
     public function edit(Request $request)
     {
+        $juri_tahap = $request->tahap;
         $jenis = $request->jenis;
         $id = decrypt($request->id);
         $inovasi = Inovasi::findOrFail($id);
@@ -82,7 +83,7 @@ class PenilaianInovasiController extends Controller
             }
         $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->get();
         $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->where('juri_tahap',$inovasi->juri_tahap)->first();
-        return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map'));
+        return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map','juri_tahap'));
     }
 
     public function show(Request $request)
