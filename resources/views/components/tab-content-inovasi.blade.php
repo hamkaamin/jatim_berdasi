@@ -25,8 +25,8 @@
                             <th style="{!! $display !!}">Bobot Awal</th>
                             @if (Auth::user()->role == 2)
                                 <th>Kematangan</th>
+                                <th>Penilaian</th>
                             @endif
-                            <th>Penilaian</th>
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
                     </thead>
