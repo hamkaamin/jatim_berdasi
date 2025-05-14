@@ -527,14 +527,7 @@ class InovasiController extends Controller
         // if param_akhir == null = gagal
         if ($inovasi->indikator()->count() <= 0 || $inovasi->indikator()->wherePivot('bobot_akhir','!=' ,null)->count() <= 0) {
             return redirect()->back()->with('error', 'Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !');
-        } else {
-            foreach ($inovasi->indikator()->get() as $indikator) {
-                $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $inovasi->id)->count();
-                if ($upload <= 0) {
-                    return redirect()->back()->with('error', 'Upload file pendukung untuk Indikator '.$indikator->nama.' terlebih dahulu !');
-                }
-            }
-        }
+        } 
         $inovasi->status = $request->status;
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
