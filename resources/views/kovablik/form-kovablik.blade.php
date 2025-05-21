@@ -35,7 +35,7 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-12 d-flex align-items-center">
-                                    <select name="kelompok_id" id="kelompok_id" class="js-example-basic-multiple" required
+                                    <select name="kelompok_id" id="kelompok_id" class="form-control" required
                                         onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
                                         <option value="">-- Pilih Kelompok --</option>
                                         @foreach ($kelompok as $item)
