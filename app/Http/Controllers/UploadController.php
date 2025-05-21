@@ -53,12 +53,23 @@ class UploadController extends Controller
                     return redirect()->back()->with('error','Maximal 2MB');
                 } else {
                     if($request->file($col[1])){
-                        $nama_file = Helper::save_file($request->file($col[1]), uniqid(), 'indikator_uploads', $data->{$col[1]});
-                        if($nama_file == 'file_error')
-                        {
-                            return redirect()->back()->with('error', 'Coba file lainnya');
+
+                        if ($request->file($col[1])) {
+                            $nama_file = Helper::save_file(
+                                $request->file('file'),
+                                uniqid(),
+                                'indikator_uploads',
+                                $data->{$col[1]},
+                                ['pdf', 'jpg', 'jpeg', 'png']
+                            );
+                    
+                            if ($nama_file['valid'] == false) {
+                                return redirect()->back()->with('error', $nama_file['message']);
+                            } else {
+                                $data->{$col[1]} = $nama_file['file_name'];
+                                $data->save();
+                            }
                         }
-                        $data->{$col[1]} = $nama_file;
                     }
                 }
 

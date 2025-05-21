@@ -30,7 +30,7 @@ class KategoriInovasi extends Model
 
     public function penilaians()
     {
-        return $this->hasMany(Penilaian::class, 'kategori_id', 'id');
+        return $this->hasMany(Penilaian::class, 'kategori_id', 'id')->orderBy('id', 'asc');
     }
 
     public function juris()
@@ -38,10 +38,10 @@ class KategoriInovasi extends Model
         return $this->hasMany(Juri::class, 'kategori_id', 'id');
     }
 
-    public function get_penilaian_inovasi($jenis,$kategori_id)
+    public static function get_penilaian_inovasi($jenis,$kategori_id,$juri_tahap)
     {
         if($jenis == 'iga'){
-                $inovasi = Inovasi::where('label',0)->where('status',2)->where('kategori_id',$kategori_id)->where('tahun',Auth::user()->tahun)->get()
+                $inovasi = Inovasi::where('label',0)->where('status',2)->where('kategori_id',$kategori_id)->where('tahun',Auth::user()->tahun)->where('juri_tahap','!=',0)->get()
                 ->sortByDesc(function ($item) {
                     $jurisCount = sizeof($item->kategori->juris);
                     $totalNilai = $item->penilaian->sum('pivot.nilai');
@@ -52,7 +52,9 @@ class KategoriInovasi extends Model
             ->where('label', 1)
             ->where('status', 2)
             ->where('kategori_id',$kategori_id)
+            ->where('juri_tahap',$juri_tahap)
             ->where('tahun',Auth::user()->tahun)
+            ->where('juri_tahap','!=',0)
             ->get() // Ambil data dulu
             ->sortByDesc(function ($item) {
                 $jurisCount = sizeof($item->kategori->juris);
