@@ -73,7 +73,8 @@
                 <div class="col-sm-4 d-flex align-items-center"><label>Role <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-sm-8">
-                    <select name="role" class="form-control" onchange="ubahRole(this.value)" required>
+                    <select name="role" class="form-control" data-datas='@json($data)'
+                        onchange="ubahRole(this.value, this.dataset.datas)" required>
                         <option disabled selected>-- Pilih Salah Satu --</option>
                         <option value="2">Verifikator</option>
                         {{-- <option value="3">Provinsi</option> --}}
@@ -91,11 +92,27 @@
                 </div>
             </div>
         @else
+            <div class="row my-2" id="pengguna-kategori">
+                <div class="col-sm-4 d-flex align-items-center"><label>Kategori </label>
+                </div>
+                <div class="col-sm-8">
+                    <ul>
+                        @foreach ($kategori as $item)
+                            <li><input {{ $data != null && $data['is_kategori_' . $item->id] == 1 ? 'checked' : '' }}
+                                    type="checkbox" name="{{ 'is_kategori_' . $item->id }}"
+                                    id="{{ 'is_kategori_' . $item->id }}"> <label
+                                    for="{{ 'is_kategori_' . $item->id }}">{{ $item->nama }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
             <div class="row my-2">
                 <div class="col-sm-4 d-flex align-items-center"><label>Role</label></div>
                 <div class="col-sm-8">{{ Helper::getRole($data->role) }}</div>
             </div>
         @endif
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>

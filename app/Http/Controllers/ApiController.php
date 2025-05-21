@@ -8,6 +8,7 @@ use App\Models\Integration;
 use App\Models\Opd;
 use App\Models\Tahapan;
 use App\Models\Upload;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -176,6 +177,7 @@ class ApiController extends Controller
         DB::beginTransaction(); 
         $ipAddress = $request->ip();
         $arr_data = $request->arr_data;
+        $username = $request->username;
         $kabkota_kode = $request->kabkota_kode;
         $url = $request->url;
         $n = new Integration(); 
@@ -186,6 +188,7 @@ class ApiController extends Controller
         $n->save();
 
         try {
+            $username = User::where('username',$username)->first();
             $arr_data = $request->arr_data;
             $arr_data = json_decode($arr_data, true);
     
@@ -201,6 +204,7 @@ class ApiController extends Controller
                 $inovasi->nama = $data_inovasi['nama'];
                 $inovasi->covid = $data_inovasi['covid'];
                 $inovasi->rancang_bangun = $data_inovasi['rancang_bangun'];
+                $inovasi->tahun = $data_inovasi['tahun'];
                 $inovasi->tujuan = $data_inovasi['tujuan'];
                 $inovasi->manfaat = $data_inovasi['manfaat'];
                 $inovasi->hasil = $data_inovasi['hasil'];
@@ -235,7 +239,7 @@ class ApiController extends Controller
                 $inovasi->waktu_pengembangan = $data_inovasi['waktu_pengembangan'];
                 $inovasi->is_pengembangan = $data_inovasi['is_pengembangan'];
                 
-                $inovasi->user_id = $request->kabkota_kode; 
+                $inovasi->user_id = $username->id; 
                 $inovasi->save();
     
                 // Sync 'urusan' relationship = urusan_id dapet dari mana ?

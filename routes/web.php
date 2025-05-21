@@ -23,6 +23,7 @@ Route::post('login_manual', [LoginManualController::class, 'login_manual'])->nam
 
 Route::group(['middleware' => ['XSS']], function () {
     Route::get('/insert_data_opd_sekolah', [App\Http\Controllers\HomeController::class, 'insert_data_opd_sekolah'])->name('insert_data_opd_sekolah');
+    Route::get('/synckabkota', [App\Http\Controllers\HomeController::class, 'synckabkota'])->name('insert_data_opd_sekolah');
     Route::get('/coba_insert_inovasi', [App\Http\Controllers\HomeController::class, 'coba_insert_inovasi'])->name('coba_insert_inovasi');
     Route::get('/get_all_opd', [App\Http\Controllers\HomeController::class, 'get_all_opd'])->name('get_all_opd');
     Route::middleware(['auth'])->group(function () {
@@ -324,10 +325,13 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/index/{jenis}', [PenilaianInovasiController::class, 'index'])->name('index');
             Route::get('/form/edit', [PenilaianInovasiController::class, 'edit'])->name('edit');
             Route::post('/form/save', [PenilaianInovasiController::class, 'save'])->name('save');
+            Route::get('/export/{kategori_id}/{jenis}', [PenilaianInovasiController::class, 'export'])->name('export');
             Route::get('/show', [PenilaianInovasiController::class, 'show'])->name('show');
 
             Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');
-            Route::get('/print/{id}', [PenilaianInovasiController::class, 'print'])->name('print');
+            Route::get('/print/{id}/{juri_tahap}', [PenilaianInovasiController::class, 'print'])->name('print');
+            Route::post('/move', [App\Http\Controllers\PenilaianInovasiController::class, 'move'])->name('move');
+
         });
 
         Route::prefix('rekap')->name('rekap.')->group(function () {

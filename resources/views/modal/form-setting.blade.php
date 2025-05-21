@@ -15,7 +15,7 @@
                 <select class="form-control select22_modal_setting_tahun" id="setting_tahun" name="tahun"
                     required="">
 
-                    {{ $last = date('Y') - 5 }}
+                    {{ $last = 2024 }}
                     {{ $now = date('Y') + 1 }}
                     @for ($i = $now; $i >= $last; $i--)
                         @php

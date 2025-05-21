@@ -50,23 +50,49 @@
     </a>
 </li>
 
-<li class="{{ Request::is('penilaian/ranking*') ? 'mm-active' : '' }}">
+<li class="{{ request()->is('penilaian/ranking') && request('tahap') == 1 ? 'mm-active' : '' }}">
     <a href="javascript: void(0);" class="has-arrow waves-effect">
         <i class="uil-file-check"></i>
-        <span>Ranking Penilaian</span>
+        <span>Ranking Tahap 1</span>
     </a>
     <ul class="sub-menu" aria-expanded="true">
         @if (Auth::user()->menu_iga == 1)
-            <li class="{{ Request::is('penilaian/ranking/iga') && request('jenis') == 'iga' ? 'mm-active' : '' }}">
-                <a href="{{ route('penilaian.ranking', ['jenis' => 'iga']) }}"
-                    class="{{ Request::is('penilaian/ranking/iga') && request('jenis') == 'iga' ? 'active' : '' }}">IGA</a>
+            <li
+                class="{{ Request::is('penilaian/ranking/iga') && request('jenis') == 'iga' && request('tahap') == 1 ? 'mm-active' : '' }}">
+                <a href="{{ route('penilaian.ranking', ['jenis' => 'iga', 'tahap' => '1']) }}"
+                    class="{{ Request::is('penilaian/ranking/iga') && request('jenis') == 'iga' && request('tahap') == 1 ? 'active' : '' }}">IGA</a>
             </li>
         @endif
         @if (Auth::user()->menu_inotek == 1)
             <li
-                class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' ? 'mm-active' : '' }}">
-                <a href="{{ route('penilaian.ranking', ['jenis' => 'inotek']) }}"
-                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' ? 'active' : '' }}">Inotek
+                class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 1 ? 'mm-active' : '' }}">
+                <a href="{{ route('penilaian.ranking', ['jenis' => 'inotek', 'tahap' => '1']) }}"
+                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 1 ? 'active' : '' }}">Inotek
+                    Awards</a>
+            </li>
+        @endif
+    </ul>
+</li>
+
+
+<li class="{{ request()->is('penilaian/ranking') && request('tahap') == 2 ? 'mm-active' : '' }}">
+    <a href="javascript: void(0);" class="has-arrow waves-effect">
+        <i class="uil-file-check"></i>
+        <span>Ranking Tahap 2</span>
+    </a>
+    <ul class="sub-menu" aria-expanded="true">
+        @if (Auth::user()->menu_iga == 1)
+            <li
+                class="{{ Request::is('penilaian/ranking/iga') && request('jenis') == 'iga' && request('tahap') == 2 ? 'mm-active' : '' }}">
+                <a href="{{ route('penilaian.ranking', ['jenis' => 'iga', 'tahap' => '2']) }}"
+                    class="{{ Request::is('penilaian/ranking/iga') && request('jenis') == 'iga' && request('tahap') == 2 ? 'active' : '' }}">IGA</a>
+            </li>
+        @endif
+        @if (Auth::user()->menu_inotek == 1)
+            <li
+                class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 2 ? 'mm-active' : '' }}">
+                <a href="{{ route('penilaian.ranking', ['jenis' => 'inotek', 'tahap' => '2']) }}"
+                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 2 ? 'active' : '' }}">Inotek
                     Awards</a>
             </li>
         @endif

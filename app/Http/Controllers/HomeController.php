@@ -308,8 +308,9 @@ class HomeController extends Controller
                 $data = ($request->id == 0) ? null : User::findOrFail($request->id);
                 $jabatan = Jabatan::all();
                 $golongan = Golongan::all();
+                $kategori = KategoriInovasi::get();
                 return response()->json(array(
-                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan'))->render()
+                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan','kategori'))->render()
                 ), 200);
                 break;
             case "inovasi_status":
@@ -732,5 +733,25 @@ class HomeController extends Controller
         $user->save();
         // session()->put('status', 'Setting berhasil disimpan!');
         return redirect()->back()->with('success', Config::get('save_success'));
+    }
+
+    public function synckabkota()
+    {
+        try {
+            $client = new Client();
+            $response = $client->request('GET', 'https://inotek.jemberkab.go.id/api/kab_hit_data', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+                ],
+                'verify' => false
+            ]);
+            
+
+            $data = json_decode($response->getBody(), true);
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

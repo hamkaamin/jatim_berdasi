@@ -23,7 +23,10 @@
                             <th style="width: 100px; min-width: 100px">Status</th>
                             <th>Keterangan</th>
                             <th style="{!! $display !!}">Bobot Awal</th>
-                            <th>Penilaian</th>
+                            @if (Auth::user()->role == 2)
+                                <th>Kematangan</th>
+                                <th>Penilaian</th>
+                            @endif
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
                     </thead>
@@ -62,7 +65,11 @@
                                         ->where('label', $status_label)
                                         ->where('tahun', Auth::user()->tahun)
                                         ->where('status', '<>', 0)
-                                        ->get();
+                                        ->get()
+                                        ->sortByDesc(function ($item) {
+                                            $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
+                                            return $totalNilai;
+                                        });
                                 }
                             } else {
                                 $data = $inovasi;
@@ -70,9 +77,16 @@
                         @endphp
                         @foreach ($data as $item)
                             @php
+                                $tahap = "<span class='badge badge-secondary'>Belum Dinilai</span>";
+
                                 $disabled = '';
                                 if ($item->status != 2) {
                                     $display_nilai = 'display: none';
+                                }
+                                if ($item->juri_tahap == 1) {
+                                    $tahap = "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
+                                } elseif ($item->juri_tahap == 2) {
+                                    $tahap = "<span class='badge badge-success'>Tahap 2</span>";
                                 }
                             @endphp
                             <tr>
@@ -105,9 +119,42 @@
                                     <td>{{ $temp != null && $temp->pivot->waktu != null ? date('Y-m-d', strtotime($temp->pivot->waktu)) : '-' }}
                                     </td>
                                 @endforeach --}}
+
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
-                                <td>{{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
                                 </td>
+                                @if (Auth::user()->role == 2)
+                                    <td><b>{{ $item->indikator->sum('pivot.bobot_akhir') }}</b>
+                                    </td>
+
+                                    <td>
+                                        @for ($i = 1; $i <= $item->juri_tahap; $i++)
+                                            @php
+                                                if ($i == 1) {
+                                                    $tahap =
+                                                        "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
+                                                } elseif ($i == 2) {
+                                                    $tahap =
+                                                        "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
+                                                }
+                                                $nilai = $item->penilaian
+                                                    ->where('pivot.juri_tahap', $i)
+                                                    ->sum(function ($pen) {
+                                                        return $pen->pivot->nilai;
+                                                    });
+
+                                            @endphp
+                                            {{-- {{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }} 
+                                        --}}
+
+                                            {!! $tahap !!}
+                                            {{ $nilai }}
+                                        @endfor
+
+                                        @if ($item->juri_tahap == 0)
+                                            <span class='badge badge-secondary'>Belum Dinilai</span>
+                                        @endif
+                                    </td>
+                                @endif
 
                                 {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
                                 </td> --}}
@@ -124,12 +171,12 @@
                                             data-placement="top" title="Download Excel"><i
                                                 class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                     @endif
-                                    {{-- @if ($item->kategori_id != 5) --}}
-                                    <a href="{{ route('inovasi.indikator.index', ['id' => $item->id], ['area' => 'bank_data']) }}"
-                                        class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
-                                        data-placement="top" title="Upload Indikator"><i
-                                            class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
-                                    {{-- @endif --}}
+                                    @if (Auth::user()->tahun == date('Y'))
+                                        <a href="{{ route('inovasi.indikator.index', ['id' => $item->id], ['area' => 'bank_data']) }}"
+                                            class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
+                                            data-placement="top" title="Upload Indikator"><i
+                                                class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
+                                    @endif
                                     <a href="{{ route('inovasi.detail', ['id' => encrypt($item->id)]) }}"
                                         class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
                                         data-placement="top" title="Detail Inovasi"><i
@@ -157,11 +204,16 @@
                                             </form>
                                         @endif --}}
                                     @endif
-                                    @if ($item->status == 2)
-                                        <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
+                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5))
+                                        {{-- <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
-                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
+                                                class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a> --}}
+                                        <button type="button"
+                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                            class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
+                                            data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
+                                                class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
                                     @endif
                                     @if ($item->status == 0 || $item->status == 4)
                                         <form id="deleteConfirm" style="all: unset"
@@ -190,6 +242,54 @@
     </div>
 </div>
 
+
+<script>
+    function btn_selanjutnya(token, id, juri_tahap) {
+        var next_juri = juri_tahap + 1;
+        if (next_juri > 2) {
+            Swal.fire({
+                title: 'Gagal',
+                text: 'Penilaian sudah di tahap 2',
+                icon: 'error',
+                showCancelButton: false,
+                confirmButtonColor: '#d33', // merah, cocok untuk error
+                confirmButtonText: 'Tutup'
+            });
+        } else {
+            Swal.fire({
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
+                text: "Pastikan data sebelumnya sudah disimpan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Lanjutkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var routeUrl = "{{ route('penilaian.move') }}";
+
+                    $.post(routeUrl, {
+                            _token: token,
+                            id: id
+                        },
+                        function(data) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: data.message,
+                                showConfirmButton: true,
+                                timer: 1500
+                            }).then(() => {
+                                show_status('{{ csrf_token() }}', $('#statusFilter').val(),
+                                    '{{ $area }}', '#show_inovasi');
+                            });
+                        });
+                }
+            });
+        }
+
+    }
+</script>
 <script>
     $(document).ready(function() {
         $('.table-flush').DataTable();

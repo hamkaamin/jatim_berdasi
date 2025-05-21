@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
- 
+
+use App\Models\KategoriInovasi;
 use Config;
 use Hash;
 use Helper;
@@ -27,7 +28,16 @@ class PenggunaController extends Controller
         $temp = [];
         $html = "";
         $user = Auth::user();
-        if ($request->type == 3) {
+        $data = $request->datas;
+        if($request->type == 2){
+            $kategori = KategoriInovasi::get();
+            $label = 'Kategori';
+            $type = 'row';
+            $html .= view('components.select-kategori', compact('kategori', 'label', 'type', 'data'))->render();
+
+            return response()->json(['msg' => $html], 200);
+        }
+        else if ($request->type == 3) {
             $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::all(), 'labelNext' => null];
         } elseif ($request->type == 4) {
             $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::where('id',35)->get(), 'labelNext' => 'kota'];
@@ -40,7 +50,7 @@ class PenggunaController extends Controller
                 if (Auth::user()->role == 3 || Helper::checkOpd('provinsi', $user)) {
                     $idWilayah = $user->role == 3 ? $user->province_id : $user->opd->provinsi_id;
                     $opds = Helper::getOpd('provinsi', $idWilayah, $opds);
-                } elseif ($user->role == 4 || Helper::checkOpd('kota', $user)) {
+                }elseif ($user->role == 4 || Helper::checkOpd('kota', $user)) {
                     $idWilayah = $user->role == 4 ? $user->regency_id : $user->opd->kabkota_id;
                     $opds = Helper::getOpd('kota', $idWilayah, $opds);
                 } elseif (Helper::checkOpd('kecamatan', $user) || Helper::checkOpd('kelurahan', $user)) {
@@ -72,6 +82,13 @@ class PenggunaController extends Controller
         $menu_inotek = @$request->menu_inotek ?? 0;
         $menu_iga = @$request->menu_iga ?? 0;
         $menu_kovablik = @$request->menu_kovablik ?? 0;
+
+
+        $is_kategori_1 = @$request->is_kategori_1 ?? 0;
+        $is_kategori_2 = @$request->is_kategori_2 ?? 0;
+        $is_kategori_3 = @$request->is_kategori_3 ?? 0;
+        $is_kategori_4 = @$request->is_kategori_4 ?? 0;
+        $is_kategori_5 = @$request->is_kategori_5 ?? 0;
         
         $username = strtolower($request->username);
         if ($request->id == 0) {
@@ -123,6 +140,11 @@ class PenggunaController extends Controller
         $data->menu_inotek = !empty($menu_inotek) ? 1 : 0;
         $data->menu_iga = !empty($menu_iga) ? 1 : 0;
         $data->menu_kovablik = !empty($menu_kovablik) ? 1 : 0;
+        $data->is_kategori_1 = !empty($is_kategori_1) ? 1 : 0;
+        $data->is_kategori_2 = !empty($is_kategori_2) ? 1 : 0;
+        $data->is_kategori_3 = !empty($is_kategori_3) ? 1 : 0;
+        $data->is_kategori_4 = !empty($is_kategori_4) ? 1 : 0;
+        $data->is_kategori_5 = !empty($is_kategori_5) ? 1 : 0;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }

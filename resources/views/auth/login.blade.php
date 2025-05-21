@@ -19,7 +19,7 @@
 </head>
 
 <body
-    style="background-image: url({{ asset(env('APP_BACKGROUND_LOGIN') ?? 'login-page-inovasi-daerah.jpg') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
+    style="background-image: url({{ asset(env('APP_BACKGROUND_LOGIN') ?? 'bg-logo.png') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row">
 
@@ -28,28 +28,28 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                @if($errors->any())
-                                <div class="alert alert-warning alert-styled-left">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <span><i class="icon-cross position-center"></i></span>
-                                        {{-- <span class="sr-only">Close</span> --}}
-                                    </button>
-                                    <span class="text-semibold">Gagal!</span>
+                                @if ($errors->any())
+                                    <div class="alert alert-warning alert-styled-left">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <span><i class="icon-cross position-center"></i></span>
+                                            {{-- <span class="sr-only">Close</span> --}}
+                                        </button>
+                                        <span class="text-semibold">Gagal!</span>
                                         @foreach ($errors->all() as $error)
-                                           {{ $error }}
-                                        @endforeach 
-                                </div>
-                                @endif  
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
+                                @endif
                                 @if (session()->has('statusT'))
-                                <div class="alert alert-warning alert-styled-left">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <span><i class="icon-cross position-center"></i></span>
-                                        {{-- <span class="sr-only">Close</span> --}}
-                                    </button>
-                                    <span class="text-semibold">Gagal!</span> {{ session()->get('statusT') }}
-                                    {{session()->forget('statusT')}}
-                                </div>
-                                @endif  
+                                    <div class="alert alert-warning alert-styled-left">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <span><i class="icon-cross position-center"></i></span>
+                                            {{-- <span class="sr-only">Close</span> --}}
+                                        </button>
+                                        <span class="text-semibold">Gagal!</span> {{ session()->get('statusT') }}
+                                        {{ session()->forget('statusT') }}
+                                    </div>
+                                @endif
                                 <p style="text-align: center; font-size: 14pt"><b>Log In</b></p>
                                 <hr>
                                 <form onsubmit="return loginUser('{{ csrf_token() }}');" method="POST"
@@ -86,9 +86,10 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mb-0"> 
+                                    <div class="row mb-0">
                                         <div class="col text-center">
-                                            <div class="g-recaptcha mt-4" data-sitekey="{{ config('services.recaptcha.key') }}"></div>
+                                            <div class="g-recaptcha mt-4"
+                                                data-sitekey="{{ config('services.recaptcha.key') }}"></div>
                                             <div id="txt_google_captcha_usulan"></div>
                                             {{-- <button class="g-recaptcha"
                                                 data-sitekey="6LdNA7wpAAAAAEP3b_5cVPE7Y5KN-JEn4j4Y9CG0"

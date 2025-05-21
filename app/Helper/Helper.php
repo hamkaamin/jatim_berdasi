@@ -40,6 +40,29 @@ class Helper
 		return $role;
 	}
 
+	public static function getKategoriRole($role_id)
+	{
+		if($role_id == 2){
+			$id_kategori = [];
+            if(Auth::user()->is_kategori_1 == 1){
+                $id_kategori[] = 1;
+            }if(Auth::user()->is_kategori_2 == 1){
+                $id_kategori[] = 2;
+            }
+            if(Auth::user()->is_kategori_3 == 1){
+                $id_kategori[] = 3;
+            }
+            if(Auth::user()->is_kategori_4 == 1){
+                $id_kategori[] = 4;
+            }
+            if(Auth::user()->is_kategori_5 == 1){
+                $id_kategori[] = 5;
+            }
+			
+		}
+		return $id_kategori;
+	}
+
 	public static function getOpdProvinsi($idStart, $array)
 	{
 		$array = self::getOpd('provinsi', $idStart, $array);
@@ -135,7 +158,8 @@ class Helper
 	// 	}
 	// }
 
-	public static function save_file($file, $name, $folder, $existing)
+	
+	public static function save_file($file, $name, $folder, $existing, $allowedExtensions = [])
 	{
 		try {
 			// Hapus file lama jika ada
@@ -143,25 +167,100 @@ class Helper
 				unlink(public_path("$folder/$existing"));
 			}
 
-			// Validasi ekstensi
-			$allowedExtensions = ['jpeg', 'png', 'jpg', 'xls', 'xlsx', 'csv', 'pdf'];
 			$extension = strtolower($file->getClientOriginalExtension());
+			$mime = $file->getMimeType();
 
 			if (!in_array($extension, $allowedExtensions)) {
-				return 'file_error';
+				return [
+					'valid' => false,
+					'message' => "Ekstensi .{$extension} tidak diperbolehkan."
+				];
 			}
 
-			// Simpan file dengan nama baru
-			$fileName = env('APP_URL') . '/' . $folder . '/' . $name . '.' . $extension;
+			$allowedMimes = self::get_mime_types($extension);
+
+			if (!in_array($mime, $allowedMimes)) {
+				return [
+					'valid' => false,
+					'message' => "Tipe File Upload {$mime} tidak valid. Allowed: " . implode(', ', $allowedMimes)
+				];
+			}
+
+			if ($file->getSize() > 2 * 1024 * 1024) {
+				return ['valid' => false, 'message' => 'Ukuran file melebihi batas maksimum 2MB.'];
+			}
+
+			try { 
+				// Cek isi konten: tidak boleh mengandung kode PHP
+				$content = file_get_contents($file->getRealPath());
+				if (preg_match('/<\?php/i', $content)) {
+					return ['valid' => false, 'message' => "Konten mengandung file PHP."];
+				} 
+			} catch (\Throwable $th) {
+				//throw $th;
+			}
+			// Validasi isi file
+			if ($extension === 'pdf') {
+				$handle = fopen($file->getRealPath(), 'r');
+				$firstLine = fgets($handle);
+				fclose($handle);
+
+				if (strpos($firstLine, '%PDF') !== 0) {
+					return [
+						'valid' => false,
+						'message' => 'Isi file PDF tidak valid.'
+					];
+				}
+			}
+
+			if (in_array($extension, ['jpg', 'jpeg', 'png'])) {
+				if (!@getimagesize($file->getRealPath())) {
+					return [
+						'valid' => false,
+						'message' => 'Isi file gambar tidak valid.'
+					];
+				}
+			}
+
+			// Simpan file
+			$fileName = $name . '.' . $extension;
 			$file->move(public_path($folder), $fileName);
 
-			// Kembalikan path relatif file
-			return "$fileName";
+			return [
+				'valid' => true,
+				'message' => 'File berhasil diunggah.',
+				'file_name' =>  env('APP_URL').'/'.$folder.'/'.$fileName
+			];
+
 		} catch (\Throwable $th) {
-			// Log error jika diperlukan
-			// Log::error("File upload error: " . $th->getMessage());
 			return 'file_error';
 		}
+	}
+
+	public static function get_mime_types($file_mimes) {
+		$mime_types = [];
+		if($file_mimes == 'pdf') {
+			$mime_types = ['application/pdf'];
+		} elseif($file_mimes == 'xls') {
+			$mime_types = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+		} elseif($file_mimes == 'doc') {
+			$mime_types = ['application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+		} elseif($file_mimes == 'zip') {
+			$mime_types = ['application/zip', 'application/x-zip-compressed'];
+		} elseif($file_mimes == 'jpg' || $file_mimes == 'jpeg' || $file_mimes == 'png') {
+			$mime_types = ['image/jpeg', 'image/png'];
+		}elseif($file_mimes == 'docx') {
+			$mime_types = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+		} elseif($file_mimes == 'xlsx') {
+			$mime_types = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+		} elseif($file_mimes == 'pptx') {
+			$mime_types = ['application/vnd.openxmlformats-officedocument.presentationml.presentation'];
+		} elseif($file_mimes == 'ppt') {
+			$mime_types = ['application/vnd.ms-powerpoint'];
+		} else {
+			$mime_types = ['*/*'];
+		}
+		return $mime_types;
 	}
 
 	public static function getStatusInovasi($id)
