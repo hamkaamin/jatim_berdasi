@@ -28,19 +28,6 @@
             <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="kelompok-tab-{{ $data->id }}" role="tabpanel">
                 <div class="col-12">
                     <ul class="nav nav-tabs">
-                        @foreach ($data->tahapan as $item)
-                            <li class="nav-item">
-                                <a data-toggle="tab" href="#tahapan-tab-{{ $data->id }}-{{ $item->id }}" 
-                                    class="{{ $loop->iteration == 1 ? 'active' : '' }} nav-link">
-                                    {{ $item->nama }} 
-                                    <span class="badge badge-primary">
-                                        {{ $item->proposals->where('kelompok_id', $data->id)->count() }}
-                                    </span>
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                    <div class="tab-content mt-2">
                         @foreach ($data->tahapan as $tahap)
                             <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="tahapan-tab-{{ $data->id }}-{{ $tahap->id }}" role="tabpanel">
                                 <h4>Proposal Kovablik</h4>
@@ -171,11 +158,11 @@
                                 </table>
                             </div>
                         @endforeach
-                    </div>
+                    </ul>
                 </div>
             </div>
         @endforeach
-        <form id="form-lolos" action="{{ route('penilaian-kovablik.pass') }}" method="POST">
+        <form id="form-lolos" action="{{ route('penilaian-kovablik.move') }}" method="POST">
             @csrf
             <div id="hidden-inputs"></div>
         </form>

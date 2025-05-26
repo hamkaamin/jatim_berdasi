@@ -178,7 +178,7 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::post('/', [KategoriKovablikController::class, 'save'])->name('save');
                     Route::post('/delete', [KategoriKovablikController::class, 'delete'])->name('delete');
                 });
-                
+
                 Route::prefix('kelompok_kovablik')->name('kelompok_kovablik.')->group(function () {
                     Route::get('/', [KelompokKovablikController::class, 'index'])->name('index');
                     Route::post('/', [KelompokKovablikController::class, 'save'])->name('save');
@@ -298,11 +298,12 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/index', [PenilaianKovablikController::class, 'index'])->name('index');
             Route::get('/form/edit', [PenilaianKovablikController::class, 'edit'])->name('edit');
             Route::post('/form/save', [PenilaianKovablikController::class, 'save'])->name('save');
+            Route::get('/export/{kelompok_id}', [PenilaianKovablikController::class, 'export'])->name('export');
             Route::get('/show', [PenilaianKovablikController::class, 'show'])->name('show');
-            Route::post('/pass', [PenilaianKovablikController::class, 'pass'])->name('pass');
 
             Route::get('/ranking', [PenilaianKovablikController::class, 'ranking'])->name('ranking');
             Route::get('/print/{id}', [PenilaianKovablikController::class, 'print'])->name('print');
+            Route::post('/move', [PenilaianKovablikController::class, 'move'])->name('move');
         });
 
         Route::prefix('pengguna')->name('pengguna.')->group(function () {
@@ -331,7 +332,6 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/ranking/{jenis}', [PenilaianInovasiController::class, 'ranking'])->name('ranking');
             Route::get('/print/{id}/{juri_tahap}', [PenilaianInovasiController::class, 'print'])->name('print');
             Route::post('/move', [App\Http\Controllers\PenilaianInovasiController::class, 'move'])->name('move');
-
         });
 
         Route::prefix('rekap')->name('rekap.')->group(function () {

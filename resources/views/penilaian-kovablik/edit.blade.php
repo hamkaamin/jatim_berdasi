@@ -163,13 +163,13 @@
                         $totalNilai = 0;
                     @endphp
                     @foreach ($data as $index => $item)
-                        @if ($item->tahapan_id == $proposal->tahapan_id) 
+                        @if ($item->tahapan_id == $proposal->juri_tahap) 
                             @php
                                 $no++;
                                 $totalNilai += optional($item->pivot)->nilai;
                             @endphp
                         @endif
-                        @if($proposal->tahapan_id == 1)
+                        @if($proposal->juri_tahap == 1)
                             @if($item->bagian == 'Latar Belakang dan Tujuan')
                                 <div class="row my-2">
                                     <div class="col-md-8">

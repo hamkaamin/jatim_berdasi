@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\ProposalKovablikExport;
 use App\Helper\Helper;
 use App\Models\Fase;
+use App\Models\JuriKovablik;
 use App\Models\KategoriKovablik;
 use App\Models\KelompokKovablik;
 use App\Models\ProposalKovablik;

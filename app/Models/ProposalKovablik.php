@@ -65,6 +65,6 @@ class ProposalKovablik extends Model
     public function penilaian()
     {
         return $this->belongsToMany(KategoriNilaiKovablik::class, 'penilaian_kovabliks', 'proposal_id', 'penilaian_id')
-            ->withPivot('user_id', 'catatan_saran', 'nilai');
+            ->withPivot('user_id', 'catatan_saran', 'nilai', 'juri_tahap');
     }
 }
