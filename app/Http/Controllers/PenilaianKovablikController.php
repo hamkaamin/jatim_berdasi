@@ -216,10 +216,12 @@ class PenilaianKovablikController extends Controller
             })->get();
         }
         if (Auth::user()->role == 2) {
-            // Dapatkan kelompok dari verifikator
-            // $id_kategori = Helper::getKategoriRole(Auth::user()->role);
-            // $data_kelompok = KelompokKovablik::whereIn('id', $id_kategori)->orderBy('id', 'asc')->get();
-            $data_kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
+            $data_kelompok = KelompokKovablik::whereIn('id', function ($query) {
+                $query->select('kelompok_id')
+                    ->from('verifikator_kovabliks')
+                    ->where('user_id', Auth::user()->id);
+            })
+                ->get();
         }
 
         return view('penilaian.index_ranking_kovablik', compact('data_kelompok', 'juri_tahap'));

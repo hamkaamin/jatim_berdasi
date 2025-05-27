@@ -67,10 +67,6 @@
                                                     if($totalNilai->count() > 0){
                                                         $thisJuri = \App\Models\JuriKovablik::where('user_id', Auth::id())->first();
                                                         $penilaianJuri = \App\Models\PenilaianKovablikMap::where('juri_id', $thisJuri->id)->where('proposal_id', $item->id)->first();
-                                                        $isLolos = 0;
-                                                        if($penilaianJuri != null){
-                                                            $isLolos = $penilaianJuri->is_lolos;
-                                                        }
                                                     }
 
                                                     $counter = 1;
@@ -86,15 +82,6 @@
                                                     <td>{{ $item->kelompok->nama}}</td>
                                                     <td>{{ implode(', ', $user->toArray()) }}</td>
                                                     <td>{{ $averageNilai == 0 ? '-' : number_format($averageNilai, 2) }}</td>
-                                                    @if ($tahap->id == 1)
-                                                        <td>
-                                                            @if($isLolos == 1)
-                                                                Lolos
-                                                            @else
-                                                                Tidak Lolos
-                                                            @endif
-                                                        </td>
-                                                    @endif
                                                     <td>
                                                         @if ($item->status != 0)
                                                             <a target="_blank"

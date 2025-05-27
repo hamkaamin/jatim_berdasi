@@ -40,6 +40,7 @@ use App\Models\Penilaian;
 use App\Models\ProposalKovablik;
 use App\Models\TahapanKovablik;
 use App\Models\Tematik;
+use App\Models\VerifikatorKovablik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
@@ -310,7 +311,7 @@ class HomeController extends Controller
                 $golongan = Golongan::all();
                 $kategori = KategoriInovasi::get();
                 return response()->json(array(
-                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan','kategori'))->render()
+                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan', 'kategori'))->render()
                 ), 200);
                 break;
             case "inovasi_status":
@@ -436,6 +437,15 @@ class HomeController extends Controller
                 $kelompok = KelompokKovablik::all();
                 return response()->json(array(
                     'msg' => view('modal.form-juri_kovablik', compact('data', 'kelompok', 'users'))->render()
+                ), 200);
+                break;
+
+            case "verifikator_kovablik":
+                $data = ($request->id == 0) ? null : VerifikatorKovablik::findOrFail($request->id);
+                $users = User::where('role', 2)->get();
+                $kelompok = KelompokKovablik::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-verifikator_kovablik', compact('data', 'kelompok', 'users'))->render()
                 ), 200);
                 break;
 
@@ -745,7 +755,7 @@ class HomeController extends Controller
                 ],
                 'verify' => false
             ]);
-            
+
 
             $data = json_decode($response->getBody(), true);
 

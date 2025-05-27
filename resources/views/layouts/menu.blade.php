@@ -196,6 +196,12 @@
             <i class="metismenu-icon pe-7s-ribbon"></i> <span>Juri Kovablik</span>
         </a>
     </li>
+
+    <li class="{{ Request::routeIs('master.verifikator_kovablik.*') ? 'mm-active' : '' }}">
+        <a href="{{ route('master.verifikator_kovablik.index') }}" class="{{ Request::routeIs('master.verifikator_kovablik.*') ? 'active' : '' }}">
+            <i class="metismenu-icon pe-7s-ribbon"></i> <span>Verifikator Kovablik</span>
+        </a>
+    </li>
 @else
     <li class="menu-title">Home</li>
     <li class="{{ Request::routeIs('home') ? 'mm-active' : '' }}">

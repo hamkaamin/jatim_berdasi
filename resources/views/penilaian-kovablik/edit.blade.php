@@ -526,7 +526,7 @@
                     <img src="{{ asset(@$penilaian_map->signature_path) }}">
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('penilaian-kovablik.index') }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('penilaian-kovablik.ranking', ['tahap' => $juri_tahap]) }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('title')
-    Inovasi {{ $label }}
+    Proposal Kovablik
 @endsection
 
 @section('title-desc')
-    Daftar Pengajuan Inovasi dari {{ $label }}
+    Daftar Pengajuan Proposal Kovablik
 @endsection
 
 @php

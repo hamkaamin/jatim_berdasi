@@ -27,6 +27,11 @@ class KelompokKovablik extends Model
         return $this->hasMany(JuriKovablik::class, 'kelompok_id', 'id');
     }
 
+    public function verifikators()
+    {
+        return $this->hasMany(VerifikatorKovablik::class, 'kelompok_id', 'id');
+    }
+
     public static function get_penilaian_kovablik($kelompok_id, $juri_tahap)
     {
         $kovablik = ProposalKovablik::with(['kelompok.juris', 'penilaian'])

@@ -138,6 +138,15 @@ class ProposalKovablikController extends Controller
         $proposal = $proposal->where('tahun', Auth::user()->tahun)->get();
         $kategori = KategoriKovablik::orderBy('id', 'asc')->get();
         $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
+
+        if (Auth::user()->role == 2) {
+            $kelompok = KelompokKovablik::whereIn('id', function ($query) {
+                $query->select('kelompok_id')
+                    ->from('verifikator_kovabliks')
+                    ->where('user_id', Auth::user()->id);
+            })
+                ->get();
+        }
         $setting = Setting::where('kode', 'tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
 
@@ -166,9 +175,9 @@ class ProposalKovablikController extends Controller
     public function save(Request $request)
     {
         $request->validate([
-            'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-            'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,doc,jpg,jpeg,png|max:2048',
-            'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,doc,jpg,jpeg,png|max:2048',
+            'dokumen_standart_pelayanan' => 'mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+            'dokumen_maklumat_pelayanan' => 'mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+            'dokumen_sk_pengelolaan_pengaduan' => 'mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
             'ringkasan' => ['required', new MaxWords(200)],
             'latar_belakang_dan_tujuan' => ['required', new MaxWords(300)],
             'kebaruan_atau_nilai_tambah' => ['required', new MaxWords(600)],
@@ -184,6 +193,16 @@ class ProposalKovablikController extends Controller
         ]);
 
         if ($request->id == 0) {
+            $request->validate([
+                'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+            ], [
+                '*.required' => ':attribute harus diisi',
+                '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
+                '*.max' => 'File maksimal berukuran 2MB',
+            ]);
+
             $data = new ProposalKovablik;
             $data->user_id = Auth::user()->id;
             $data->kode = uniqid();
@@ -232,19 +251,19 @@ class ProposalKovablikController extends Controller
         $data->save();
 
         if ($request->hasFile('dokumen_standart_pelayanan')) {
-            $nama_file = Helper::save_file($request->file('dokumen_standart_pelayanan'), uniqid(), 'file_standart_pelayanan', $data->anggaran);
-            $data->link_standart = $nama_file;
+            $nama_file = Helper::save_file($request->file('dokumen_standart_pelayanan'), uniqid(), 'file_standart_pelayanan', $data->anggaran, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $data->link_standart = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('dokumen_maklumat_pelayanan')) {
-            $nama_file = Helper::save_file($request->file('dokumen_maklumat_pelayanan'), uniqid(), 'file_maklumat_pelayanan', $data->file_rancang_bangun);
-            $data->link_maklumat = $nama_file;
+            $nama_file = Helper::save_file($request->file('dokumen_maklumat_pelayanan'), uniqid(), 'file_maklumat_pelayanan', $data->file_rancang_bangun, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $data->link_maklumat = $nama_file['file_name'];
             $data->save();
-        } 
+        }
 
         if ($request->hasFile('dokumen_sk_pengelolaan_pengaduan')) {
-            $nama_file = Helper::save_file($request->file('dokumen_sk_pengelolaan_pengaduan'), uniqid(), 'file_sk_pengelolaan_pengaduan', $data->file_anggaran);
-            $data->link_sk_pengaduan = $nama_file;
+            $nama_file = Helper::save_file($request->file('dokumen_sk_pengelolaan_pengaduan'), uniqid(), 'file_sk_pengelolaan_pengaduan', $data->file_anggaran, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $data->link_sk_pengaduan = $nama_file['file_name'];
             $data->save();
         }
 

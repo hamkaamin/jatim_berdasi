@@ -16,6 +16,7 @@ use App\Http\Controllers\PenilaianController;
 use App\Http\Controllers\PenilaianInovasiController;
 use App\Http\Controllers\PenilaianKovablikController;
 use App\Http\Controllers\TahapanKovablikController;
+use App\Http\Controllers\VerifikatorKovablikController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -201,6 +202,12 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::get('/', [JuriKovablikController::class, 'index'])->name('index');
                     Route::post('/', [JuriKovablikController::class, 'save'])->name('save');
                     Route::post('/delete', [JuriKovablikController::class, 'delete'])->name('delete');
+                });
+
+                Route::prefix('verifikator_kovablik')->name('verifikator_kovablik.')->group(function () {
+                    Route::get('/', [VerifikatorKovablikController::class, 'index'])->name('index');
+                    Route::post('/', [VerifikatorKovablikController::class, 'save'])->name('save');
+                    Route::post('/delete', [VerifikatorKovablikController::class, 'delete'])->name('delete');
                 });
             });
 

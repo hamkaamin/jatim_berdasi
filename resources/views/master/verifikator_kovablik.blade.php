@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('title')
-    Master Juri Kovablik
+    Master Verifikator Kovablik
 @endsection
 
 @section('buttons')
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="modal(0, 'juri_kovablik')">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPopup" onclick="modal(0, 'verifikator_kovablik')">
         Tambah Data</button>
 @endsection
 
@@ -19,7 +19,7 @@
                         <a data-toggle="tab" href="#tab-{{ $item->id }}"
                             class="{{ $loop->iteration == 1 ? 'active' : '' }} nav-link">
                             {{ $item->nama }} <span class="badge badge-primary">
-                                {{ sizeof($item->juris) }}
+                                {{ sizeof($item->verifikators) }}
                             </span>
                         </a>
                     </li>
@@ -30,28 +30,28 @@
                 @foreach ($data_kelompok as $data)
                     <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="tab-{{ $data->id }}"
                         role="tabpanel">
-                        <h4>Juri Inovasi</h4>
+                        <h4>Verifikator Inovasi</h4>
                         <div class="table-responsive p-3">
                             <table class="table align-items-center table-flush" id="myTable">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No.</th>
-                                        <th>Nama Juri</th>
+                                        <th>Nama Verifikator</th>
                                         <th style="width: 100px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data->juris as $item)
+                                    @foreach ($data->verifikators as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->user->name }}
                                             <td>
                                                 <button data-target="#modalPopup" data-toggle="modal"
-                                                    onclick="modal({{ $item->id }}, 'juri_kovablik')"
+                                                    onclick="modal({{ $item->id }}, 'verifikator_kovablik')"
                                                     class="btn m-1 btn-sm btn-block btn-warning"><i
                                                         class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
                                                 <form style="all: unset"
-                                                    action="{{ route('master.juri_kovablik.delete', ['id' => $item->id]) }}"
+                                                    action="{{ route('master.verifikator_kovablik.delete', ['id' => $item->id]) }}"
                                                     method="post">
                                                     @csrf
                                                     <button type="submit" class="btn m-1 btn-sm btn-block btn-danger"
