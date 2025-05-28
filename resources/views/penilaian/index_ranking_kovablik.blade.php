@@ -40,16 +40,20 @@
                                                 title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                         </div>
                                     </div>
-                                    <div class="d-flex justify-content-end">
-                                        <div class="mt-2 mb-2">
-                                            <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>
+                                    @if (Auth::user()->role == 2)
+                                        <div class="d-flex justify-content-end">
+                                            <div class="mt-2 mb-2">
+                                                <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
 
                                     <table class="table align-items-center table-flush" id="myTable">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th></th>
+                                                @if ($juri_tahap == '1' && Auth::user()->role == 2)
+                                                    <th></th>    
+                                                @endif
                                                 <th>No.</th>
                                                 <th style="min-width: 100px">Dibuat Oleh</th>
                                                 <th style="min-width: 200px">Nama</th>
@@ -83,8 +87,11 @@
                                                 @endforeach
 
                                                 <tr class="{{ $row_class }}">
-                                                    @if ($item->juri_tahap == 1)
-                                                        <td><input type="checkbox" style="transform: scale(2)" name="is_pass[]" class="is_pass" value="{{ $item->id }}"></td>
+                                                    @if ($item->juri_tahap == 1 && Auth::user()->role == 2)
+                                                        <td>
+                                                            <input type="checkbox" style="transform: scale(2)" name="is_pass[]" 
+                                                                class="is_pass" value="{{ $item->id }}" data-tahap="{{ $item->juri_tahap }}">
+                                                        </td>
                                                     @endif
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->user->name }}</td>
@@ -194,7 +201,8 @@
                 btn_selanjutnya(token, checkedIds, juri_tahap);
             }
             //Button masuk tahap selanjutnya
-            function btn_selanjutnya(token, id, juri_tahap) {
+            function btn_selanjutnya(token, ids, juri_tahap) {
+                var id = Array.isArray(ids) ? ids : [ids];
                 var next_juri = juri_tahap + 1;
                 if (next_juri > 2) {
                     Swal.fire({

@@ -8,17 +8,21 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="d-flex justify-content-end">
-                <div class="mt-2 mb-2">
-                    <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>
+            @if (Auth::user()->role == 2)
+                <div class="d-flex justify-content-end">
+                    <div class="mt-2 mb-2">
+                        <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>
+                    </div>
                 </div>
-            </div>
+            @endif
             <div style="width: 100%">
                 <table class="table align-items-center table-flush text-center"
                     id="myTable{{ $kelompok == null ? 0 : $kelompok->id }}">
                     <thead class="thead-light">
                         <tr>
-                            <th></th>
+                            @if (Auth::user()->role == 2)
+                                <th></th>
+                            @endif
                             <th>No.</th>
                             <th>Instansi</th>
                             <th>Judul</th>
@@ -79,15 +83,17 @@
                                 $disabled = '';
                             @endphp
                             <tr>
-                                <td>
-                                    <input type="checkbox" style="transform: scale(2)" name="is_pass[]" 
-                                           class="is_pass" value="{{ $item->id }}" data-tahap="{{ $item->juri_tahap }}"
-                                           @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) 
-                                                  && $item->juri_tahap < 2))
-                                              disabled
-                                           @endif
-                                           >
-                                </td>
+                                @if (Auth::user()->role == 2)
+                                    <td>
+                                        <input type="checkbox" style="transform: scale(2)" name="is_pass[]" 
+                                            class="is_pass" value="{{ $item->id }}" data-tahap="{{ $item->juri_tahap }}"
+                                            @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) 
+                                                    && $item->juri_tahap < 2))
+                                                disabled
+                                            @endif
+                                            >
+                                    </td>
+                                @endif
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->instansi }}</td>
                                 <td>{{ $item->judul }}</td>
