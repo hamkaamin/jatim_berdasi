@@ -89,27 +89,30 @@ class PenilaianKovablikController extends Controller
 
     public function move(Request $request)
     {
+        $ids = $request->input('id');
         try {
             DB::beginTransaction();
-            $kovablik = ProposalKovablik::find($request->id);
-            if ($kovablik->juri_tahap == 1) {
-                $juri = JuriKovablik::where('kelompok_id', $kovablik->kelompok_id)->get();
-                $juri_ids = $juri->pluck('id');
+            foreach ($ids as $id) {
+                $kovablik = ProposalKovablik::find($id);
+                if ($kovablik->juri_tahap == 1) {
+                    $juri = JuriKovablik::where('kelompok_id', $kovablik->kelompok_id)->get();
+                    $juri_ids = $juri->pluck('id');
 
-                $jumlah_penilai = PenilaianKovablikMap::where('proposal_id', $kovablik->id)
-                    ->where('juri_tahap', 1)
-                    ->whereIn('juri_id', $juri_ids)
-                    ->count();
-                if ($jumlah_penilai < $juri->count()) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Ada juri yang belum menilai.',
-                        'error' => 'Gagal',
-                    ]);
+                    $jumlah_penilai = PenilaianKovablikMap::where('proposal_id', $kovablik->id)
+                        ->where('juri_tahap', 1)
+                        ->whereIn('juri_id', $juri_ids)
+                        ->count();
+                    if ($jumlah_penilai < $juri->count()) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Ada juri yang belum menilai.',
+                            'error' => 'Gagal',
+                        ]);
+                    }
                 }
+                $kovablik->juri_tahap = $kovablik->juri_tahap + 1;
+                $kovablik->save();
             }
-            $kovablik->juri_tahap = $kovablik->juri_tahap + 1;
-            $kovablik->save();
             DB::commit();
             return response()->json([
                 'status' => true,

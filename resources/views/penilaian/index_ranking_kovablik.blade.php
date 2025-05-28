@@ -13,7 +13,6 @@
         <div class="col-12">
             <div class="row">
                 <div class="col-md-12">
-
                     <ul class="nav nav-tabs">
                         @foreach ($data_kelompok as $key => $item)
                             <x-tab-kovablik :kelompok="$item" :key="$key + 1" :active="$loop->iteration == 1 ? 1 : 0" />
@@ -33,7 +32,6 @@
                                     <h4>Proposal Kovablik</h4>
                                     <div class="row">
                                         <div class="col-md-11">
-                                            <a href=""></a>
                                         </div>
                                         <div class="col-md-1">
                                             <a target="_blank"
@@ -42,11 +40,16 @@
                                                 title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                         </div>
                                     </div>
-                                    <br><br>
+                                    <div class="d-flex justify-content-end">
+                                        <div class="mt-2 mb-2">
+                                            <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>
+                                        </div>
+                                    </div>
 
                                     <table class="table align-items-center table-flush" id="myTable">
                                         <thead class="thead-light">
                                             <tr>
+                                                <th></th>
                                                 <th>No.</th>
                                                 <th style="min-width: 100px">Dibuat Oleh</th>
                                                 <th style="min-width: 200px">Nama</th>
@@ -80,6 +83,9 @@
                                                 @endforeach
 
                                                 <tr class="{{ $row_class }}">
+                                                    @if ($item->juri_tahap == 1)
+                                                        <td><input type="checkbox" style="transform: scale(2)" name="is_pass[]" class="is_pass" value="{{ $item->id }}"></td>
+                                                    @endif
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $item->user->name }}</td>
                                                     <td>{{ $item->judul }}</td>
@@ -156,7 +162,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     @endsection
 
@@ -164,8 +169,31 @@
         @include('script.ubahWilayah')
         @include('script.ubahScopeOpd')
 
-
         <script>
+            //Masukkan proposal yang dicentang untuk ke tahap selanjutnya per batch
+            $(document).ready(function() {
+                document.querySelectorAll(".is_pass").forEach(function (checkbox) {
+                    checkbox.addEventListener("change", function () {
+                        let anyChecked = document.querySelectorAll(".is_pass:checked").length > 0;
+                        document.getElementById("btnPass").classList.toggle("d-none", !anyChecked);
+                    });
+                });
+            });
+            //Button masuk tahap selanjutnya per batch
+            function batch_selanjutnya(token) {
+                let checkedIds = [];
+                var juri_tahap = null;
+                const checked = document.querySelectorAll('.is_pass:checked');
+                checked.forEach(cb => {
+                    checkedIds.push(cb.value);
+                });
+
+                if (checked.length > 0) {
+                    juri_tahap = parseInt(checked[0].dataset.tahap);
+                }
+                btn_selanjutnya(token, checkedIds, juri_tahap);
+            }
+            //Button masuk tahap selanjutnya
             function btn_selanjutnya(token, id, juri_tahap) {
                 var next_juri = juri_tahap + 1;
                 if (next_juri > 2) {
@@ -219,7 +247,6 @@
                         }
                     });
                 }
-
             }
         </script>
         <script>

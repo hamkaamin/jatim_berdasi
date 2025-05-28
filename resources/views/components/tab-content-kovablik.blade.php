@@ -1,7 +1,6 @@
 @php
     $display = '';
     $display_nilai = '';
-    $setting = App\Models\Setting::where('kode', 'bobot_akhir')->first();
 @endphp
 
 <div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $kelompok == null ? 0 : $kelompok->id }}"
@@ -9,6 +8,11 @@
 
     <div class="row">
         <div class="col-md-12">
+            <div class="d-flex justify-content-end">
+                <div class="mt-2 mb-2">
+                    <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>
+                </div>
+            </div>
             <div style="width: 100%">
                 <table class="table align-items-center table-flush text-center"
                     id="myTable{{ $kelompok == null ? 0 : $kelompok->id }}">
@@ -62,7 +66,12 @@
                                         ->get();
                                 }
                             } else {
-                                $data = $proposal;
+                                if (Auth::user()->role == 2) {
+                                    $kelompok = App\Models\VerifikatorKovablik::where('user_id', Auth::user()->id)->pluck('kelompok_id');
+                                    $data = $proposal->whereIn('kelompok_id', $kelompok);
+                                } else {
+                                    $data = $proposal;
+                                }
                             }
                         @endphp
                         @foreach ($data as $item)
@@ -70,7 +79,15 @@
                                 $disabled = '';
                             @endphp
                             <tr>
-                                <td><input type="checkbox" style="transform: scale(2)" name="is_sent[]" id="is_sent[]" value="{{ $item->id }}"></td>
+                                <td>
+                                    <input type="checkbox" style="transform: scale(2)" name="is_pass[]" 
+                                           class="is_pass" value="{{ $item->id }}" data-tahap="{{ $item->juri_tahap }}"
+                                           @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) 
+                                                  && $item->juri_tahap < 2))
+                                              disabled
+                                           @endif
+                                           >
+                                </td>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->instansi }}</td>
                                 <td>{{ $item->judul }}</td>
@@ -172,7 +189,32 @@
 </div>
 
 <script>
-    function btn_selanjutnya(token, id, juri_tahap) {
+    //Masukkan proposal yang dicentang untuk ke tahap selanjutnya per batch
+    $(document).ready(function() {
+        document.querySelectorAll(".is_pass").forEach(function (checkbox) {
+            checkbox.addEventListener("change", function () {
+                let anyChecked = document.querySelectorAll(".is_pass:checked").length > 0;
+                document.getElementById("btnPass").classList.toggle("d-none", !anyChecked);
+            });
+        });
+    });
+    //Button masuk tahap selanjutnya per batch
+    function batch_selanjutnya(token) {
+        let checkedIds = [];
+        var juri_tahap = null;
+        const checked = document.querySelectorAll('.is_pass:checked');
+        checked.forEach(cb => {
+            checkedIds.push(cb.value);
+        });
+
+        if (checked.length > 0) {
+            juri_tahap = parseInt(checked[0].dataset.tahap);
+        }
+        btn_selanjutnya(token, checkedIds, juri_tahap);
+    }
+    //Button tahap selanjutnya individu
+    function btn_selanjutnya(token, ids, juri_tahap) {
+        var id = Array.isArray(ids) ? ids : [ids];
         var next_juri = juri_tahap + 1;
         if (next_juri > 2) {
             Swal.fire({
