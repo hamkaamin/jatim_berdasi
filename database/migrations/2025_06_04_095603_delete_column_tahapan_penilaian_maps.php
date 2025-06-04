@@ -13,7 +13,7 @@ class DeleteColumnTahapanPenilaianMaps extends Migration
      */
     public function up()
     {
-        Schema::table('penilaian_kovabliks', function (Blueprint $table) {
+        Schema::table('penilaian_kovabliks_maps', function (Blueprint $table) {
             $table->dropColumn('tahapan_id');
         });
     }
@@ -25,7 +25,7 @@ class DeleteColumnTahapanPenilaianMaps extends Migration
      */
     public function down()
     {
-        Schema::table('penilaian_kovabliks', function (Blueprint $table) {
+        Schema::table('penilaian_kovabliks_maps', function (Blueprint $table) {
             $table->integer('tahapan_id');
         });
     }
