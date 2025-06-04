@@ -186,7 +186,6 @@ class PenilaianKovablikController extends Controller
                     $penilaian_map = new PenilaianKovablikMap();
                 }
                 $penilaian_map->proposal_id = $proposal->id;
-                $penilaian_map->tahapan_id = $proposal->tahapan_id;
                 $penilaian_map->juri_id = $request->juri_id;
                 $penilaian_map->total_nilai = $total_nilai;
                 $penilaian_map->juri_tahap = $proposal->juri_tahap;

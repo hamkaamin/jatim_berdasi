@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
         // DB::table('indikator_provinsi')->where('provinsi_id', 35)->update([
         //     'bobot_akhir' => 10
         // ]);
-        // $this->call(KategoriKovablikSeeder::class);
-        // $this->call(KelompokKovablikSeeder::class);
-        // $this->call(TahapanKovablikSeeder::class);
+        $this->call(KategoriKovablikSeeder::class);
+        $this->call(KelompokKovablikSeeder::class);
+        $this->call(TahapanKovablikSeeder::class);
         $this->call(KategoriNilaiKovablikSeeder::class);
     }
 }
