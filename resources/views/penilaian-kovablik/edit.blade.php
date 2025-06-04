@@ -345,7 +345,7 @@
                                     </div>
                                 </div>
                                 <hr class="border-dark">
-                            @elseif($item->bagian == 'Penguatan Sumber Daya')
+                            @elseif($item->bagian == 'Sumber Daya')
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
@@ -380,7 +380,7 @@
                                     </div>
                                 </div>
                                 <hr class="border-dark">
-                            @elseif($item->bagian == 'Strategi Penguatan Keberlanjutan')
+                            @elseif($item->bagian == 'Strategi Keberlanjutan')
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
