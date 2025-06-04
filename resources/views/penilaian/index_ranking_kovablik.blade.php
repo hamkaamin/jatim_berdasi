@@ -30,17 +30,17 @@
                                 <div class="tab-pane {{ $loop->first ? 'active' : '' }}" id="tab-{{ $datas->id }}"
                                     role="tabpanel">
                                     <h4>Proposal Kovablik</h4>
-                                    <div class="row">
-                                        <div class="col-md-11">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <a target="_blank"
-                                                href="{{ route('penilaian-kovablik.export', ['kelompok_id' => $datas->id]) }}"
-                                                class="btn btn-success" data-toggle="tooltip" data-placement="top"
-                                                title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
-                                        </div>
-                                    </div>
                                     @if (Auth::user()->role == 2)
+                                        <div class="row">
+                                            <div class="col-md-11">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a target="_blank"
+                                                    href="{{ route('penilaian-kovablik.export', ['kelompok_id' => $datas->id]) }}"
+                                                    class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                                                    title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
+                                            </div>
+                                        </div>
                                         <div class="d-flex justify-content-end">
                                             <div class="mt-2 mb-2">
                                                 <button type="button" id="btnPass" class="btn btn-primary d-none" onclick="batch_selanjutnya('{{ csrf_token() }}')">Lolos ke Tahap Selanjutnya</button>

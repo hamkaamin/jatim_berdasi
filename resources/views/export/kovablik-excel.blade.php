@@ -12,8 +12,44 @@
         <td>{{ $proposal->judul }}</td>
     </tr>
     <tr>
-        <td>Dibuat Oleh</td>
+        <td>Kelompok Inovasi</td>
+        <td>
+            @foreach ($proposal->kelompok()->get() as $item)
+                {{ $item->nama }}@if (!$loop->last),&nbsp; @endif
+            @endforeach
+        </td>
+    </tr>
+    <tr>
+        <td>Dokumen Standart Pelayanan</td>
+        <td>{{ $proposal->link_standart }}</td>
+    </tr>
+    <tr>
+        <td>Dokumen Maklumat Pelayanan</td>
+        <td>{{ $proposal->link_maklumat }}</td>
+    </tr>
+    <tr>
+        <td>Dokumen SK Pengelolaan Pengaduan</td>
+        <td>{{ $proposal->link_sk_pengaduan }}</td>
+    </tr>
+    <tr>
+        <td>Instansi</td>
+        <td>{{ $proposal->instansi }}</td>
+    </tr>
+    <tr>
+        <td>Tanggal Inovasi Dimulai</td>
+        <td>{{ $proposal->tanggal_mulai }}</td>
+    </tr>
+    <tr>
+        <td>Penanggung Jawab/Inovator</td>
         <td>{{ $proposal->nama_inovator }}</td>
+    </tr>
+    <tr>
+        <td>No Tlpn.</td>
+        <td>{{ $proposal->no_telpon_inovator }}</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>{{ $proposal->email_inovator }}</td>
     </tr>
     <tr>
         <td>Kategori Inovasi</td>

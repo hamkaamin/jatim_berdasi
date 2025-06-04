@@ -145,7 +145,13 @@
                                     <a href="{{ route('kovablik.detail', ['id' => encrypt($item->id)]) }}"
                                         class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
                                         data-placement="top" title="Detail Proposal"><i
-                                            class="fa fa-eye"></i>&nbsp;&nbsp;Detail</a>
+                                            class="fa fa-eye"></i>&nbsp;&nbsp;
+                                            @if (Auth::user()->role == 2)
+                                                Detail & Verifikasi
+                                            @else
+                                                Detail
+                                            @endif
+                                    </a>
                                     @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) && $item->juri_tahap < 2)
                                         <button type="button"
                                             onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
