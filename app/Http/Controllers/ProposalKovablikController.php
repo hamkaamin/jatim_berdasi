@@ -7,6 +7,7 @@ use App\Helper\Helper;
 use App\Models\Fase;
 use App\Models\JuriKovablik;
 use App\Models\KategoriKovablik;
+use App\Models\KategoriNilaiKovablik;
 use App\Models\KelompokKovablik;
 use App\Models\ProposalKovablik;
 use App\Models\Setting;
@@ -346,8 +347,9 @@ class ProposalKovablikController extends Controller
                 $kategori = KategoriKovablik::where('id', 1)->orderBy('id', 'asc')->get();
             }
             $fase = Fase::where('active', 1)->first();
+            $kategoriNilai = KategoriNilaiKovablik::all();
 
-            return view('kovablik.form-kovablik', compact('data', 'kelompok', 'kategori', 'label', 'fase'));
+            return view('kovablik.form-kovablik', compact('data', 'kelompok', 'kategori', 'label', 'fase', 'kategoriNilai'));
         } else {
             return redirect()->back();
         }

@@ -14,11 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(RoleSeeder::class);
-        $this->call(KategoriInovasiSeeder::class);
-        $this->call(MasterPanduanSeeder::class);
+        // $this->call(RoleSeeder::class);
+        // $this->call(KategoriInovasiSeeder::class);
+        // $this->call(MasterPanduanSeeder::class);
         // DB::table('indikator_provinsi')->where('provinsi_id', 35)->update([
         //     'bobot_akhir' => 10
         // ]);
+        // $this->call(KategoriKovablikSeeder::class);
+        // $this->call(KelompokKovablikSeeder::class);
+        // $this->call(TahapanKovablikSeeder::class);
+        $this->call(KategoriNilaiKovablikSeeder::class);
     }
 }

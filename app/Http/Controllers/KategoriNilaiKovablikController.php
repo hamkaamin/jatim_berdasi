@@ -24,7 +24,7 @@ class KategoriNilaiKovablikController extends Controller
             $data = KategoriNilaiKovablik::findOrFail($request->id);
         }
         $data->bagian = $request->bagian;
-        $data->indikator = $request->indikator;
+        $data->indikator = $_POST['indikator'];
         $data->nilai_min = $request->nilai_min;
         $data->nilai_max = $request->nilai_max;
         $data->bobot_nilai = $request->bobot_nilai;

@@ -160,153 +160,87 @@
                         <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount1">0</span>/200</p>
                     </div>
 
-                    <div class="row my-2">
-                        <label><b>Latar Belakang dan Tujuan</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Uraikan latar belakang dan tujuan yang memuat:
-                                    <ul>
-                                        <li>Rumusan masalah yang menggambarkan kondisi awal sebelum implementasi</li>
-                                        <li>Kelompok sasaran masyarakat yang terdampak permasalahan</li>
-                                        <li>Tujuan inovasi dilengkapi dengan target yang terukur</li>
-                                    </ul>
-                                </li>
-                                <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
-                                <li>Maksimal 300 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="latar_belakang_dan_tujuan" class="ck-editor" required id="editor2" rows="10">
-                            @if ($data != null)
-                            {!! $data->latar_belakang !!}
-                            @else
-                            {!! old('latar_belakang') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount2">0</span>/300</p>
-                    </div>
+                    @foreach($kategoriNilai as $kategori)
+                        @if($kategori->tahapan_id == 1)
+                            <div class="row my-2">
+                                <label><b>{{ $kategori->bagian }}</b><span class="text-danger">*</span>
+                                    {!! $kategori->indikator !!}
+                                </label>
 
-                    <div class="row my-2">
-                        <label><b>Kebaruan/Nilai Tambah</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Jelaskan ide/gagasan dan keunggulan (keunikan/nilai tambah/kebaruan) dari inovasi ini.</li>
-                                <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
-                                <li>Maksimal 600 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="kebaruan_atau_nilai_tambah" class="ck-editor" required id="editor3" rows="10">
-                            @if ($data != null)
-                            {!! $data->nilai_tambah !!}
-                            @else
-                            {!! old('nilai_tambah') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount3">0</span>/600</p>
-                    </div>
-
-                    <div class="row my-2">
-                        <label><b>Implementasi Inovasi</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Uraikan imlementasi inovasi dalam mengatasi permasalahan yang dihadapi.</li>
-                                <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
-                                <li>Maksimal 200 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="implementasi_inovasi" class="ck-editor" required id="editor4" rows="10">
-                            @if ($data != null)
-                            {!! $data->implementasi !!}
-                            @else
-                            {!! old('implementasi') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount4">0</span>/200</p>
-                    </div>
-
-                    <div class="row my-2">
-                        <label><b>Signifikansi</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Uraikan dampak inovasi (bandingkan kondisi sebelum dan sesudah inovasi diimplementasikan).</li>
-                                <li>Jelaskan metode yang digunakan untuk mengukur dampak inovasi.</li>
-                                <li>Lengkapi uraian tersebut dengan melampirkan data dukung berupa laporan hasil evaluasi inovasi baik dari eksternal maupun internal yang memuat data sebelum dan sesudah implementasi inovasi (kualitatif dan kuantitatif).</li>
-                                <li>Maksimal 600 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="signifikansi" class="ck-editor" required id="editor5" rows="10">
-                            @if ($data != null)
-                            {!! $data->signifikansi !!}
-                            @else
-                            {!! old('signifikansi') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount5">0</span>/600</p>
-                    </div>
-
-                    <div class="row my-2">
-                        <label><b>Adaptabilitas</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Apakah inovasi ini sudah direplikasi?</li>
-                                <li>Jika sudah, sebutkan UPP dan/atau instansi yang mereplikasi inovasi.</li>
-                                <li>Jelaskan potensi inovasi untuk direplikasi dengan menggambarkan luasan populasi dan kesamaan karakter masalah yang dialami atau ada pada daerah lain.</li>
-                                <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
-                                <li>Maksimal 300 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="adaptabilitas" class="ck-editor" required id="editor6" rows="10">
-                            @if ($data != null)
-                            {!! $data->adaptabilitas !!}
-                            @else
-                            {!! old('adaptabilitas') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount6">0</span>/300</p>
-                    </div>
-
-                    <div class="row my-2">
-                        <label><b>Sumber Daya</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Jelaskan penguatan sumber daya yang digunakan setelah ditetapkan sebagai top inovasi terpuji, yang terdiri dari:
-                                    <ul>
-                                        <li>Sumber daya keuangan;</li>
-                                        <li>Sumber daya manusia;</li>
-                                        <li>Metode;</li>
-                                        <li>Peralatan atau material;</li>
-                                    </ul>
-                                </li>
-                                <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
-                                <li>Maksimal 200 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="sumber_daya" class="ck-editor" required id="editor7" rows="10">
-                            @if ($data != null)
-                            {!! $data->sumber_daya !!}
-                            @else
-                            {!! old('sumber_daya') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount7">0</span>/200</p>
-                    </div>
-
-                    <div class="row my-2">
-                        <label><b>Strategi Keberlanjutan</b><span class="text-danger">*</span>
-                            <ul class="mb-1">
-                                <li>Jelaskan strategi penguatan keberlanjutan inovasi, yang terdiri dari:
-                                    <ul>
-                                        <li>Strategi institusional berupa penguatan regulasi atau dasar hukum implementasi dan/atau pemberlakuan inovasi;</li>
-                                        <li>Strategi manajerial berupa penguatan peningkatan kapasitas SDM, kinerja organisasi, penjaminan kualitas dan/atau pemberlakuan SOP;</li>
-                                        <li>Strategi sosial berupa penguatan partisipasi/kolaborasi pemangku kepentingan yang terlibat dan peran masing-masing pihak;</li>
-                                    </ul>
-                                </li>
-                                <li>Lengkapi uraian tersebut di atas dengan melampirkan data pendukung yang relevan.</li>
-                                <li>Maksimal 500 kata</li>
-                            </ul>
-                        </label>
-                        <textarea name="strategi_keberlanjutan" class="ck-editor" required id="editor8" rows="10">
-                            @if ($data != null)
-                            {!! $data->strategi_keberlanjutan !!}
-                            @else
-                            {!! old('strategi_keberlanjutan') !!}
-                            @endif
-                        </textarea>
-                        <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount8">0</span>/500</p>
-                    </div>
+                                @if($kategori->bagian == 'Latar Belakang dan Tujuan')
+                                    <p>Maksimal 300 kata</p>
+                                    <textarea name="latar_belakang_dan_tujuan" class="ck-editor" required id="editor2" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->latar_belakang !!}
+                                        @else
+                                        {!! old('latar_belakang') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount2">0</span>/300</p>
+                                @elseif($kategori->bagian == 'Kebaruan/Nilai Tambah')
+                                    <p>Maksimal 600 kata</p>
+                                    <textarea name="kebaruan_atau_nilai_tambah" class="ck-editor" required id="editor3" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->nilai_tambah !!}
+                                        @else
+                                        {!! old('nilai_tambah') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount3">0</span>/600</p>
+                                @elseif($kategori->bagian == 'Implementasi Inovasi')
+                                    <p>Maksimal 200 kata</p>
+                                    <textarea name="implementasi_inovasi" class="ck-editor" required id="editor4" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->implementasi !!}
+                                        @else
+                                        {!! old('implementasi') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount4">0</span>/200</p>
+                                @elseif($kategori->bagian == 'Signifikansi')
+                                    <p>Maksimal 600 kata</p>
+                                    <textarea name="signifikansi" class="ck-editor" required id="editor5" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->signifikansi !!}
+                                        @else
+                                        {!! old('signifikansi') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount5">0</span>/600</p>
+                                @elseif($kategori->bagian == 'Adaptabilitas')
+                                    <p>Maksimal 300 kata</p>
+                                    <textarea name="adaptabilitas" class="ck-editor" required id="editor6" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->adaptabilitas !!}
+                                        @else
+                                        {!! old('adaptabilitas') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount6">0</span>/300</p>
+                                @elseif($kategori->bagian == 'Sumber Daya')
+                                    <p>Maksimal 200 kata</p>
+                                    <textarea name="sumber_daya" class="ck-editor" required id="editor7" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->sumber_daya !!}
+                                        @else
+                                        {!! old('sumber_daya') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount7">0</span>/200</p>
+                                @elseif($kategori->bagian == 'Strategi Keberlanjutan')
+                                    <p>Maksimal 500 kata</p>
+                                    <textarea name="strategi_keberlanjutan" class="ck-editor" required id="editor8" rows="10">
+                                        @if ($data != null)
+                                        {!! $data->strategi_keberlanjutan !!}
+                                        @else
+                                        {!! old('strategi_keberlanjutan') !!}
+                                        @endif
+                                    </textarea>
+                                    <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount8">0</span>/500</p>
+                                @endif
+                            </div>
+                        @endif
+                    @endforeach
 
                     <br><br><br>
                     <div class="row mt-4">
