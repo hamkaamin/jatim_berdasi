@@ -173,7 +173,7 @@
                                         @if ($data != null)
                                         {!! $data->latar_belakang !!}
                                         @else
-                                        {!! old('latar_belakang') !!}
+                                        {!! old('latar_belakang_dan_tujuan') !!}
                                         @endif
                                     </textarea>
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount2">0</span>/300</p>
@@ -183,7 +183,7 @@
                                         @if ($data != null)
                                         {!! $data->nilai_tambah !!}
                                         @else
-                                        {!! old('nilai_tambah') !!}
+                                        {!! old('kebaruan_atau_nilai_tambah') !!}
                                         @endif
                                     </textarea>
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount3">0</span>/600</p>
@@ -193,7 +193,7 @@
                                         @if ($data != null)
                                         {!! $data->implementasi !!}
                                         @else
-                                        {!! old('implementasi') !!}
+                                        {!! old('implementasi_inovasi') !!}
                                         @endif
                                     </textarea>
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount4">0</span>/200</p>
