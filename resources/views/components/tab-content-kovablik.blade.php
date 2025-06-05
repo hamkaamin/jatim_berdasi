@@ -129,7 +129,7 @@
                                         @endif
                                     </td>
                                 @endif
-                                <td>
+                                <td style="max-width: 200px;">
                                     @if ($item->status != 0)
                                         <a target="_blank"
                                             href="{{ route('kovablik.export', ['type' => 'pdf', 'id' => $item->id]) }}"

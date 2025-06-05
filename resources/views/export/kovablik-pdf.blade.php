@@ -129,19 +129,19 @@
         <tr>
             <td>
                 <b>1.3. Dokumen Standart Pelayanan</b><br>
-                {{ $proposal->link_standart }}<br><br>
+                <a href="{{ $proposal->link_standart }}">{{ $proposal->link_standart }}</a><br><br>
             </td>
         </tr>
         <tr>
             <td>
                 <b>1.4. Dokumen Maklumat Pelayanan</b><br>
-                {{ $proposal->link_maklumat }} <br><br>
+                <a href="{{ $proposal->link_maklumat }}">{{ $proposal->link_maklumat }}</a><br><br>
             </td>
         </tr>
         <tr>
             <td>
                 <b>1.5. Dokumen SK Pengelolaan Pengaduan</b><br>
-                {{ $proposal->link_sk_pengaduan }} <br><br>
+                <a href="{{ $proposal->link_sk_pengaduan }}">{{ $proposal->link_sk_pengaduan }}</a><br><br>
             </td>
         </tr>
         <tr>

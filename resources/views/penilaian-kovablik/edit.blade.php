@@ -511,7 +511,14 @@
 
                     <div class="card-footer d-flex flex-column align-items-center">
                         <strong>Signature:</strong>
-                        <canvas id="signature-pad" class="border rounded mb-3" width="400" height="200"></canvas>
+                        {{-- Signature Image (jika sudah ada) --}}
+                        <img src="{{ asset($penilaian_map->signature_path ?? '') }}" alt="Signature" class="img-fluid mb-3"
+                            id="signature-image"
+                            style="{{ empty($penilaian_map->signature_path) ? 'display: none;' : '' }}">
+
+                        {{-- Signature Canvas (untuk tanda tangan baru) --}}
+                        <canvas id="signature-pad" class="border rounded mb-3" width="400" height="200"
+                            style="{{ empty($penilaian_map->signature_path) ? '' : 'display: none;' }}"></canvas>
                         <button type="button" class="btn btn-danger mb-2" id="clear-signature">Clear Signature</button>
 
                         <strong>Total Nilai:</strong>
@@ -522,8 +529,6 @@
                     <input type="hidden" value="{{ $juri->id }}" name="juri_id" id="juri_id">
 
                     <br>
-
-                    <img src="{{ asset(@$penilaian_map->signature_path) }}">
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('penilaian-kovablik.ranking', ['tahap' => $juri_tahap]) }}" class="btn btn-secondary">Kembali</a>
@@ -539,54 +544,61 @@
     @endif
 @endsection
 <script>
-    // Inisialisasi Canvas
-    const canvas = document.getElementById('signature-pad');
-    const ctx = canvas.getContext('2d');
-    let drawing = false;
+    document.addEventListener("DOMContentLoaded", function() {
+        const canvas = document.getElementById("signature-pad");
+        const ctx = canvas?.getContext("2d");
+        const clearButton = document.getElementById("clear-signature");
+        const signatureDataInput = document.getElementById("signature_data");
+        const img = document.getElementById("signature-image");
 
-    // Load existing signature jika ada
-    const existingSignature = document.getElementById('signature_data').value;
-    if (existingSignature) {
-        const image = new Image();
-        image.onload = () => {
-            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-        };
-        image.src = existingSignature.startsWith('data:image') ? existingSignature : `/${existingSignature}`;
-    }
+        let drawing = false;
 
-    // Event menggambar di canvas
-    canvas.addEventListener('mousedown', (e) => {
-        drawing = true;
-        ctx.beginPath();
-        ctx.moveTo(e.offsetX, e.offsetY);
-    });
+        // Event untuk menggambar tanda tangan
+        if (canvas && ctx) {
+            canvas.addEventListener("mousedown", function(e) {
+                drawing = true;
+                ctx.beginPath();
+                ctx.moveTo(e.offsetX, e.offsetY);
+            });
 
-    canvas.addEventListener('mousemove', (e) => {
-        if (drawing) {
-            ctx.lineTo(e.offsetX, e.offsetY);
-            ctx.stroke();
+            canvas.addEventListener("mousemove", function(e) {
+                if (drawing) {
+                    ctx.lineTo(e.offsetX, e.offsetY);
+                    ctx.stroke();
+                }
+            });
+
+            canvas.addEventListener("mouseup", function() {
+                drawing = false;
+                saveSignature();
+            });
+
+            canvas.addEventListener("mouseleave", function() {
+                drawing = false;
+            });
+
+            function saveSignature() {
+                const dataURL = canvas.toDataURL("image/png");
+                signatureDataInput.value = dataURL;
+            }
         }
-    });
 
-    canvas.addEventListener('mouseup', () => {
-        drawing = false;
-    });
+        // Tombol clear
+        clearButton.addEventListener("click", function() {
+            // Kalau sebelumnya ada gambar (sudah ditandatangani)
+            if (img && img.style.display !== "none") {
+                img.style.display = "none";
+                canvas.style.display = "block";
+                signatureDataInput.value = "";
 
-    canvas.addEventListener('mouseout', () => {
-        drawing = false;
-    });
-
-    // Clear signature
-    document.getElementById('clear-signature').addEventListener('click', () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        document.getElementById('signature_data').value = '';
-    });
-
-    // Simpan tanda tangan sebelum form dikirim
-    const form = document.getElementById('form-penilaian');
-    form.addEventListener('submit', () => {
-        const signatureData = canvas.toDataURL('image/png');
-        document.getElementById('signature_data').value = signatureData;
+                if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            // Kalau lagi tanda tangan pakai canvas
+            else if (canvas && ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                signatureDataInput.value = "";
+            }
+        });
     });
 </script>
 

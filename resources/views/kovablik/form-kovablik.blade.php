@@ -90,7 +90,7 @@
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Instansi</b> <span
                                     class="text-danger">*</span></label></div>
                         <div class="col-sm-8"><input type="text" required name="instansi" class="form-control"
-                                value="{{ $data != null ? $data->instansi : old('instansi') }}"></div>
+                                value="{{ $data->instansi ?? old('instansi', Auth::user()->name) }}"></div>
                     </div>
 
                     <div class="row my-2">
@@ -150,7 +150,7 @@
                                 <li>maksimal 200 kata</li>
                             </ul>
                         </label>
-                        <textarea name="ringkasan" class="ck-editor" required id="editor1" rows="10">
+                        <textarea name="ringkasan" class="ck-editor" data-label="Ringkasan" id="editor1" rows="10">
                             @if ($data != null)
                             {!! $data->ringkasan !!}
                             @else
@@ -169,7 +169,7 @@
 
                                 @if($kategori->bagian == 'Latar Belakang dan Tujuan')
                                     <p>Maksimal 300 kata</p>
-                                    <textarea name="latar_belakang_dan_tujuan" class="ck-editor" required id="editor2" rows="10">
+                                    <textarea name="latar_belakang_dan_tujuan" class="ck-editor" data-label="Latar Belakang dan Tujuan" id="editor2" rows="10">
                                         @if ($data != null)
                                         {!! $data->latar_belakang !!}
                                         @else
@@ -179,7 +179,7 @@
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount2">0</span>/300</p>
                                 @elseif($kategori->bagian == 'Kebaruan/Nilai Tambah')
                                     <p>Maksimal 600 kata</p>
-                                    <textarea name="kebaruan_atau_nilai_tambah" class="ck-editor" required id="editor3" rows="10">
+                                    <textarea name="kebaruan_atau_nilai_tambah" class="ck-editor" data-label="Kebaruan/Nilai Tambah" id="editor3" rows="10">
                                         @if ($data != null)
                                         {!! $data->nilai_tambah !!}
                                         @else
@@ -189,7 +189,7 @@
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount3">0</span>/600</p>
                                 @elseif($kategori->bagian == 'Implementasi Inovasi')
                                     <p>Maksimal 200 kata</p>
-                                    <textarea name="implementasi_inovasi" class="ck-editor" required id="editor4" rows="10">
+                                    <textarea name="implementasi_inovasi" class="ck-editor" data-label="Implementasi Inovasi" id="editor4" rows="10">
                                         @if ($data != null)
                                         {!! $data->implementasi !!}
                                         @else
@@ -199,7 +199,7 @@
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount4">0</span>/200</p>
                                 @elseif($kategori->bagian == 'Signifikansi')
                                     <p>Maksimal 600 kata</p>
-                                    <textarea name="signifikansi" class="ck-editor" required id="editor5" rows="10">
+                                    <textarea name="signifikansi" class="ck-editor" data-label="Signifikansi" id="editor5" rows="10">
                                         @if ($data != null)
                                         {!! $data->signifikansi !!}
                                         @else
@@ -209,7 +209,7 @@
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount5">0</span>/600</p>
                                 @elseif($kategori->bagian == 'Adaptabilitas')
                                     <p>Maksimal 300 kata</p>
-                                    <textarea name="adaptabilitas" class="ck-editor" required id="editor6" rows="10">
+                                    <textarea name="adaptabilitas" class="ck-editor" data-label="Adaptabilitas" id="editor6" rows="10">
                                         @if ($data != null)
                                         {!! $data->adaptabilitas !!}
                                         @else
@@ -219,7 +219,7 @@
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount6">0</span>/300</p>
                                 @elseif($kategori->bagian == 'Sumber Daya')
                                     <p>Maksimal 200 kata</p>
-                                    <textarea name="sumber_daya" class="ck-editor" required id="editor7" rows="10">
+                                    <textarea name="sumber_daya" class="ck-editor" data-label="Sumber Daya" id="editor7" rows="10">
                                         @if ($data != null)
                                         {!! $data->sumber_daya !!}
                                         @else
@@ -229,7 +229,7 @@
                                     <p class="mb-0 text-end">Jumlah Kata: <span id="wordCount7">0</span>/200</p>
                                 @elseif($kategori->bagian == 'Strategi Keberlanjutan')
                                     <p>Maksimal 500 kata</p>
-                                    <textarea name="strategi_keberlanjutan" class="ck-editor" required id="editor8" rows="10">
+                                    <textarea name="strategi_keberlanjutan" class="ck-editor" data-label="Strategi Keberlanjutan" id="editor8" rows="10">
                                         @if ($data != null)
                                         {!! $data->strategi_keberlanjutan !!}
                                         @else
