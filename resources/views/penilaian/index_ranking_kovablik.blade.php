@@ -36,7 +36,7 @@
                                             </div>
                                             <div class="col-md-1">
                                                 <a target="_blank"
-                                                    href="{{ route('penilaian-kovablik.export', ['kelompok_id' => $datas->id]) }}"
+                                                    href="{{ route('penilaian-kovablik.export', ['kelompok_id' => $datas->id, 'juri_tahap' => $juri_tahap]) }}"
                                                     class="btn btn-success" data-toggle="tooltip" data-placement="top"
                                                     title="Download Excel"><i class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
                                             </div>
@@ -132,7 +132,7 @@
                                                             <span class='badge badge-secondary'>Belum Dinilai</span>
                                                         @endif
                                                     </td>
-                                                    <td>
+                                                    <td style="max-width: 100px;">
                                                         @if (Auth::user()->role == 7)
                                                             <a href="{{ route('penilaian-kovablik.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id, 'tahap' => $item->juri_tahap]) }}"
                                                                 class="btn m-1 btn-block btn-sm btn-warning"

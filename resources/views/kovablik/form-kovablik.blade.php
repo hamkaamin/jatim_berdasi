@@ -53,7 +53,7 @@
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen Standart Pelayanan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_standart_pelayanan" required>
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_standart_pelayanan" {{ !$data ? 'required' : '' }}>
                             @if ($data != null)
                                 <br><a href="{{ $data->link_standart }}" target="_blank">Download
                                     File
@@ -65,7 +65,7 @@
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen Maklumat Pelayanan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_maklumat_pelayanan" required>
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_maklumat_pelayanan" {{ !$data ? 'required' : '' }}>
                             @if ($data != null)
                                 <br><a href="{{ $data->link_maklumat }}" target="_blank">Download
                                     File
@@ -77,7 +77,7 @@
                     <div class="row my-2">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen SK Pengelolaan Pengaduan</b> <span
                                     class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_sk_pengelolaan_pengaduan" required>
+                        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="dokumen_sk_pengelolaan_pengaduan" {{ !$data ? 'required' : '' }}>
                             @if ($data != null)
                                 <br><a href="{{ $data->link_sk_pengaduan }}" target="_blank">Download
                                     File

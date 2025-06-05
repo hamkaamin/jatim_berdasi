@@ -17,7 +17,7 @@ class PenilaianKovablikExport implements FromView,ShouldAutoSize, WithColumnWidt
 {
     use Exportable;
     protected $kelompok_id;
-
+    protected $juri_tahap;
 
     public function columnWidths(): array
     {
@@ -28,22 +28,24 @@ class PenilaianKovablikExport implements FromView,ShouldAutoSize, WithColumnWidt
             'D' => 15,
         ];
     }
-    function __construct($kelompok_id) {
+    function __construct($kelompok_id, $juri_tahap) {
         $this->kelompok_id = $kelompok_id; 
+        $this->juri_tahap = $juri_tahap; 
     }
 
     public function view(): View
     {
         $kelompok_id = $this->kelompok_id; 
-        $data = KelompokKovablik::get_penilaian_kovablik($kelompok_id);
-        return view('penilaian.export', compact(
+        $juri_tahap = $this->juri_tahap;
+        $data = KelompokKovablik::get_penilaian_kovablik($kelompok_id, $juri_tahap);
+        return view('penilaian-kovablik.export', compact(
             'data'
         ));
     }
     public function styles(Worksheet $sheet)
     {
         // Total rows (1 for header + count($data))
-        $rowCount = 1 + KelompokKovablik::get_penilaian_kovablik($this->kelompok_id)->count();
+        $rowCount = 1 + KelompokKovablik::get_penilaian_kovablik($this->kelompok_id, $this->juri_tahap)->count();
 
         // Set border for all cells (A1:D{lastRow})
         $cellRange = 'A1:D' . $rowCount;

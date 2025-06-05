@@ -229,11 +229,11 @@ class PenilaianKovablikController extends Controller
         return view('penilaian.index_ranking_kovablik', compact('data_kelompok', 'juri_tahap'));
     }
 
-    public function export($kelompok_id)
+    public function export($juri_tahap, $kelompok_id)
     {
         $kategori = KelompokKovablik::find($kelompok_id);
         $nama_file = 'Export Penilaian Inovasi Kategori ' . $kategori->nama_singkat . ' ' . Auth::user()->tahun . '_Tanggal_' . date('d-m-Y H-i-s') . '.xlsx';
-        return Excel::download(new PenilaianKovablikExport($kelompok_id), $nama_file);
+        return Excel::download(new PenilaianKovablikExport($kelompok_id, $juri_tahap), $nama_file);
         session()->put('status', 'Data Opd berhasil diunduh!');
     }
 

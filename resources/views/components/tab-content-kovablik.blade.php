@@ -122,6 +122,7 @@
 
                                             {!! $tahap !!}
                                             {{ $nilai }}
+                                            <br>
                                         @endfor
 
                                         @if ($item->juri_tahap == 0)
@@ -129,7 +130,7 @@
                                         @endif
                                     </td>
                                 @endif
-                                <td style="max-width: 200px;">
+                                <td style="max-width: 100px;">
                                     @if ($item->status != 0)
                                         <a target="_blank"
                                             href="{{ route('kovablik.export', ['type' => 'pdf', 'id' => $item->id]) }}"

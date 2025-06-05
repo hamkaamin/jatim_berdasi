@@ -305,7 +305,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/index', [PenilaianKovablikController::class, 'index'])->name('index');
             Route::get('/form/edit', [PenilaianKovablikController::class, 'edit'])->name('edit');
             Route::post('/form/save', [PenilaianKovablikController::class, 'save'])->name('save');
-            Route::get('/export/{kelompok_id}', [PenilaianKovablikController::class, 'export'])->name('export');
+            Route::get('/export/{juri_tahap}/{kelompok_id}', [PenilaianKovablikController::class, 'export'])->name('export');
             Route::get('/show', [PenilaianKovablikController::class, 'show'])->name('show');
 
             Route::get('/ranking', [PenilaianKovablikController::class, 'ranking'])->name('ranking');
