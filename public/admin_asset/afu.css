@@ -1,0 +1,99 @@
+.fixed-header .app-main {
+    padding-top: 0;
+}
+
+.app-header.header-shadow {
+    position: sticky;
+    top: 0;
+}
+
+.app-header .app-header-left {
+    height: 100%;
+    max-width: 68%;
+}
+
+.app-header.header-shadow .menu-container {
+    height: 100%;
+}
+
+.app-header.header-shadow .menu-container .vertical-nav-menu.metismenu {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    height: 100%;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+.app-header.header-shadow
+    .menu-container
+    .vertical-nav-menu.metismenu
+    li.app-sidebar__heading {
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    margin: 0;
+    position: relative;
+}
+
+.app-header.header-shadow
+    .menu-container
+    .vertical-nav-menu.metismenu
+    li.app-sidebar__heading:hover
+    .sub-menu,
+.app-header.header-shadow
+    .menu-container
+    .vertical-nav-menu.metismenu
+    li.app-sidebar__heading.hover
+    .sub-menu {
+    display: flex;
+}
+
+.app-header.header-shadow
+    .menu-container
+    .vertical-nav-menu.metismenu
+    .app-sidebar__heading
+    .sub-menu {
+    background-color: #fafbfc;
+    display: none;
+    flex-direction: column;
+    -webkit-filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.3));
+    padding: 8px;
+    position: absolute;
+    top: 60px;
+}
+
+.app-header.header-shadow
+    .menu-container
+    .vertical-nav-menu.metismenu
+    li.app-sidebar__heading
+    ul
+    i {
+    display: none;
+}
+
+.vertical-nav-menu .app-sidebar__heading .afu.metismenu-icon {
+    display: none;
+}
+.afu.menu-container
+    .vertical-nav-menu
+    .app-sidebar__heading
+    .afu.metismenu-icon {
+    display: block;
+    line-height: 30px;
+    height: 30px;
+    margin-top: 0;
+    position: static;
+    width: 30px;
+}
+
+@media (min-width: 768px) {
+    .app-sidebar {
+        display: none;
+    }
+    .fixed-sidebar .app-main .app-main__outer {
+        padding-left: 0;
+    }
+}

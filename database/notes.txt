@@ -1,0 +1,20 @@
+role : (ada field no hp)
+- superadmin
+- provinsi (bisa buatin 3 bawah)
+- kab kota
+- opd prov
+- opd kab kota
+- umum (tapi harus dicantolin sama 4 user di atas (karena mereka dibuatin))
+- verifikator -> verifikasi indikator per inovasi (ngubah bobot tervalidasi)
+
+semua role di atas bisa upload tipe inovasi, kecuali verifikator
+
+indikator per inovasi :
+- bobot dibedakan menjadi bobot diajukan & bobot tervalidasi
+
+ada status per inovasi : draft, proses, setuju, tolak, revisi
+kalau status ditolak = bisa kasih keterangan
+
+lomba inovasi daerah itu sama dengan inovasi daerah yg di DB inovasi, cumaa kan kalau yg di lomba inovasi itu yang sudah disetujui ga ditampilkan lagi...cuma ini jangan ditiru
+
+list inovasi : misal user dinkes membuat user baru di bawahnya dia yaitu user a,b,c...masing2 user bawahan input 2 inovasi...berarti tampilan di seluruh user di bawah dinkes harus ada 6 inovasi
