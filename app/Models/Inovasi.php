@@ -82,12 +82,6 @@ class Inovasi extends Model
         return $this->belongsToMany('App\Models\Indikator', 'indikator_inovasi', 'inovasi_id', 'indikator_id')->withPivot('param_awal', 'param_akhir', 'bobot_awal', 'bobot_akhir', 'catatan')->withTrashed();
     }
 
-    public function penilaian()
-    {
-        return $this->belongsToMany('App\Models\Penilaian', 'penilaian_inovasi', 'inovasi_id', 'penilaian_id')
-            ->withPivot('user_id', 'catatan_saran', 'nilai');
-    }
-
     public function upload()
     {
         return $this->hasMany('App\Models\Upload', 'inovasi_id', 'id');

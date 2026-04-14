@@ -6,7 +6,6 @@ use App\Models\Kecamatan;
 use App\Models\Kelurahan;
 use App\Models\Kota;
 use App\Models\Opd;
-use Illuminate\Support\Facades\Auth;
 
 class Helper
 {
@@ -17,12 +16,14 @@ class Helper
 			$role = "Super Admin";
 		} elseif ($role_id == 2) {
 			$role = "Verifikator";
+		} elseif ($role_id == 3) {
+			$role = "Admin - Provinsi";
 		} elseif ($role_id == 5) {
-			$role = "Pengusul";
+			$role = "Admin - Kab/Kota";
 		} elseif ($role_id == 4) {
-			$role = "Pengusul";
-		} elseif ($role_id == 7) {
-			$role = "Juri";
+			$role = "OPD";
+		} elseif ($role_id == 6) {
+			$role = "Umum";
 		}
 		return $role;
 	}
@@ -103,53 +104,19 @@ class Helper
 		return false;
 	}
 
-	// public static function save_file($file, $name, $folder, $existing)
-	// {
-	// 	try {
-	// 		if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
-	// 			unlink(public_path('/'.$folder.'/'.$existing));
-	// 		}
-	// 		$nama_file = env('APP_URL').'/'.$folder.'/'.$name.'.'.$file->getClientOriginalExtension();
-	// 		$file->move($folder, $nama_file);
-	// 		return $nama_file;
-	// 	} catch (\Throwable $th) {
-	// 		// if(Auth::user()->username == 'balitbangda_kabupaten_bangkalan'){
-	// 		// 	throw $th;
-	// 		// }
-	// 		$nama_file = "file_error";
-
-	// 		return $nama_file;
-	// 	}
-	// }
-
 	public static function save_file($file, $name, $folder, $existing)
 	{
-		// try {
-			// Hapus file lama jika ada
-			if ($existing && file_exists(public_path("$folder/$existing"))) {
-				unlink(public_path("$folder/$existing"));
+		try {
+			if ($existing != null && file_exists(public_path('/'.$folder.'/'.$existing))) {
+				unlink(public_path('/'.$folder.'/'.$existing));
 			}
-
-			// Validasi ekstensi
-			$allowedExtensions = ['jpeg', 'png', 'jpg', 'xls', 'xlsx', 'csv', 'pdf'];
-			$extension = strtolower($file->getClientOriginalExtension());
-
-			if (!in_array($extension, $allowedExtensions)) {
-				return 'file_error';
-			}
-
-			// Simpan file dengan nama baru
-			$fileName = env('APP_URL').'/'.$folder.'/'.$name . '.' . $extension;
-			$file->move(public_path($folder), $fileName);
-
-			// Kembalikan path relatif file
-			return "$fileName";
-
-		// } catch (\Throwable $th) {
-		// 	// Log error jika diperlukan
-		// 	// Log::error("File upload error: " . $th->getMessage());
-		// 	return 'file_error';
-		// }
+			$nama_file = env('APP_URL').'/'.$folder.'/'.$name.'.'.$file->getClientOriginalExtension();
+			$file->move($folder, $nama_file);
+			return $nama_file;
+		} catch (\Throwable $th) {
+			$nama_file = "file_error";
+			return $nama_file;
+		}
 	}
 
 	public static function getStatusInovasi($id)

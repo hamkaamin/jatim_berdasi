@@ -8,13 +8,10 @@
     Daftar Pengajuan Inovasi dari {{ $label }}
 @endsection
 
-@php
-    $display = 'display:block';
-@endphp
-
 @if (Auth::user()->role != 2)
-
     @section('buttons')
+        <a href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
+            class="btn btn-primary">Tambah Data</a>
     @endsection
 @endif
 
@@ -27,70 +24,34 @@
     <form action="{{ route('inovasi.sent') }}" method="POST" name="kirimInovasi" id="kirimInovasi"
         onsubmit="return confirmSubmit()">
         @csrf
-        <div class="main-card mb-3 card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-12">
-                        <!-- Status Filter -->
-                        <div class="form-group">
-                            <label for="statusFilter" class="card-title">Filter Status</label>
-                            <select
-                                onchange="show_status('{{ csrf_token() }}',this.value,'{{ $area }}','#show_inovasi')"
-                                class="form-control" id="statusFilter" name="statusFilter">
-                                <option value="">Semua</option>
-                                <option value="0">Draft</option>
-                                <option value="1">Proses</option>
-                                <option value="2">Setuju</option>
-                                <option value="3">Tolak</option>
-                                <option value="4">Revisi</option>
-                                <option value="5">Kirim</option>
-                            </select>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="statusFilter">Kategori</label>
-                            <select
-                                onchange="show_status('{{ csrf_token() }}',$('#statusFilter').val(),'{{ $area }}','#show_inovasi')"
-                                class="form-control" id="kategori_inovasi" name="kategori_inovasi">
-                                <option value="">Semua</option>
-                                @foreach ($kategori as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    @if (env('APP_OPD_JATIM') == 1)
-                        @if (Auth::user()->role == 2)
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim
-                                        Berdasi</b></button>
-                                <br><br>
-                            </div>
-                        @endif
-                    @endif
-                    <div class="col-2">
-                        @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                            @if (Auth::user()->role == 4 || Auth::user()->role == 5)
-                                <a style="{!! $display !!}"
-                                    href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
-                                    class="btn btn-primary">Tambah Data</a>
-                            @endif
-                        @else
-                            <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
-                                class="btn btn-danger">Tambah Data</a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
             <div class="col-12">
-                <div class="main-card mb-3 card">
-                    <div class="card-body" id="show_inovasi">
-                        loading...
-                    </div>
+                <!-- Status Filter -->
+                <div class="form-group">
+                    <label for="statusFilter">Filter Status</label>
+                    <select onchange="show_status('{{ csrf_token() }}',this.value,'{{ $area }}','#show_inovasi')"
+                        class="form-control" id="statusFilter" name="statusFilter">
+                        <option value="">Semua</option>
+                        <option value="0">Draft</option>
+                        <option value="1">Proses</option>
+                        <option value="2">Setuju</option>
+                        <option value="3">Tolak</option>
+                        <option value="4">Revisi</option>
+                        <option value="5">Kirim</option>
+                    </select>
                 </div>
             </div>
+            @if (env('APP_OPD_JATIM') == 1)
+                <div class="col-2">
+                    <button type="submit" class="btn btn-success" id="submitButton"><b>Kirim Ke Jatim
+                            Berdasi</b></button>
+                    <br><br>
+                </div>
+            @endif
+        </div>
+        <div id="show_inovasi">
+
         </div>
     </form>
 @endsection
@@ -105,7 +66,6 @@
         </div>`;
 
         function show_status(token, status, area, target) {
-            var kategori = $('#kategori_inovasi').val();
             $(target).html(loading);
             $.ajax({
                 url: '{{ route('inovasi.show_inovasi') }}',
@@ -113,7 +73,6 @@
                 data: {
                     _token: token,
                     status: status,
-                    kategori: kategori,
                     area: area
                 },
                 success: function(data) {

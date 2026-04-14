@@ -1,9 +1,9 @@
 <?php
 
 namespace Database\Seeders;
- 
+
+use DB;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(RoleSeeder::class);
-        $this->call(KategoriInovasiSeeder::class);
-        
-        // DB::table('indikator_provinsi')->where('provinsi_id', 35)->update([
-        //     'bobot_akhir' => 10
-        // ]);
+        DB::table('indikator_provinsi')->where('provinsi_id', 35)->update([
+            'bobot_akhir' => 10
+        ]);
     }
 }

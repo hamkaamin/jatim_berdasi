@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        date_default_timezone_set('Asia/Jakarta');
         if(env('APP_HTTPS',0) == 1) {
             \URL::forceScheme('https');
         }

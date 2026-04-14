@@ -17,7 +17,6 @@ class ProfilController extends Controller
     {
         if ($request->new_password == $request->confirm_password) {
             Auth::user()->password = Hash::make($request->confirm_password);
-            Auth::user()->updated_by = Auth::user()->username;
             Auth::user()->save();
             return redirect()->back()->with('success', 'Password berhasil diubah !');
         }

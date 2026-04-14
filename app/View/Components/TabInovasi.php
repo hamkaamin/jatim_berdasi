@@ -6,15 +6,15 @@ use Illuminate\View\Component;
 
 class TabInovasi extends Component
 {
-    public $kategori, $active;
+    public $tahapan, $active;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($kategori, $active)
+    public function __construct($tahapan, $active)
     {
-        $this->kategori = $kategori;
+        $this->tahapan = $tahapan;
         $this->active = $active;
     }
 

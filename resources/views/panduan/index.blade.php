@@ -10,37 +10,33 @@
 
 
 @section('content')
-    <div class="main-card mb-3 card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col">
-                    <h4>Panduan Inovasi</h4>
-                    <div class="table-responsive p-3">
-                        <table class="table align-items-center table-flush" id="myTable">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Nama</th>
-                                    <th>File</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php $no=0; @endphp
-                                @foreach ($data as $item)
-                                    @php
-                                        $no++;
-                                    @endphp
-                                    <tr>
-                                        <td>{{ $no }}</td>
-                                        <td>{{ $item->nama }}</td>
-                                        <td><a href="{{ asset($item->path) }}" target="_blank">File</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="col">
+            <h4>Panduan Inovasi</h4>
+            <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush" id="myTable">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama</th>
+                            <th>File</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php $no=0; @endphp
+                        @foreach ($data as $item)
+                            @php
+                                $no++;
+                            @endphp
+                            <tr>
+                                <td>{{ $no }}</td>
+                                <td>{{ $item->nama }}</td>
+                                <td><a href="{{ asset($item->path) }}" target="_blank">File</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

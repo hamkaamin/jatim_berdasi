@@ -57,11 +57,6 @@
                     $logo = 'admin_asset/logo-bangkalan.png';
                     $width = '100';
                 @endphp
-            @elseif (env('APP_NAME') == 'BRIDA SUMENEP')
-                @php
-                    $logo = 'logo-sumenep.png';
-                    $width = '100';
-                @endphp
             @elseif(env('APP_NAME') == 'JEMBER SIABANG')
                 @php
                     $logo = 'admin_asset/logo-kabupatenjember.png';
@@ -226,7 +221,10 @@ Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
                 <td>
                     <b>1.1{{ $counter }}. Waktu {{ $item->nama }} Inovasi</b><br>
                     @php
-                        $temp = $item->belongsToManyInovasi()->where('inovasi_id', $inovasi->id)->first();
+                        $temp = $item
+                            ->belongsToManyInovasi()
+                            ->where('inovasi_id', $inovasi->id)
+                            ->first();
                     @endphp
                     {{ $temp != null && $temp->pivot->waktu != null ? date('d-m-Y', strtotime($temp->pivot->waktu)) : '-' }}
                     <br><br>
@@ -311,7 +309,10 @@ Bangkalan Kreatif, Inovatif dan Teknologi (BRAVO) ';
                 <td>{{ $item->pivot->param_awal != null ? $item->pivot->param_awal : '-' }}</td>
                 <td>
                     @php
-                        $temp = $inovasi->upload()->where('indikator_id', $item->id)->where('file', '<>', null);
+                        $temp = $inovasi
+                            ->upload()
+                            ->where('indikator_id', $item->id)
+                            ->where('file', '<>', null);
                     @endphp
                     @if ($temp->count() > 0)
                         @foreach ($temp->get() as $upload)

@@ -35,10 +35,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo('App\Models\Kota', 'regency_id', 'id');
     }
 
-    public function roles()
-    {
-        return $this->belongsTo(Role::class, 'role', 'id');
-    }    /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

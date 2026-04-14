@@ -22,42 +22,15 @@
     style="background-image: url({{ asset(env('APP_BACKGROUND_LOGIN') ?? 'login-page-inovasi-daerah.jpg') }}); background-repeat: no-repeat;    background-size: 100% 100%;height: 100vh;background-position: center; ">
     <div class="container h-100 d-flex align-items-center justify-content-center">
         <div class="row">
-
             <div class="col-lg-12">
                 <div class="card box-shadow" style="border-radius: 1em;background-color: rgba(255,255,255,0.4)">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                @if ($errors->any())
-                                    <div class="alert alert-warning alert-styled-left">
-                                        <button type="button" class="close" data-dismiss="alert">
-                                            <span><i class="icon-cross position-center"></i></span>
-                                            {{-- <span class="sr-only">Close</span> --}}
-                                        </button>
-                                        <span class="text-semibold">Gagal!</span>
-                                        @foreach ($errors->all() as $error)
-                                            {{ $error }}
-                                        @endforeach
-                                    </div>
-                                @endif
-                                @if (session()->has('statusT'))
-                                    <div class="alert alert-warning alert-styled-left">
-                                        <button type="button" class="close" data-dismiss="alert">
-                                            <span><i class="icon-cross position-center"></i></span>
-                                            {{-- <span class="sr-only">Close</span> --}}
-                                        </button>
-                                        <span class="text-semibold">Gagal!</span> {{ session()->get('statusT') }}
-                                        {{ session()->forget('statusT') }}
-                                    </div>
-                                @endif
-                                <p style="text-align: center; font-size: 14pt"><b>
-                                        Log In<br>
-                                        {{ env('APP_NAME','') }}
-                                    </b>
-                                </p>
+                                <p style="text-align: center; font-size: 14pt"><b>Log In</b></p>
                                 <hr>
                                 <form onsubmit="return loginUser('{{ csrf_token() }}');" method="POST"
-                                    action="{{ route('login_manual') }}">
+                                    action="{{ route('login') }}">
                                     @csrf
                                     <div class="row mb-3">
                                         <div class="col">
@@ -102,24 +75,6 @@
                                             <button type="submit" class="btn btn-primary btn-block btnSubmitForm">
                                                 {{ __('Login') }}
                                             </button>
-                                            @if (env('APP_NAME') == 'BANGKALAN BRAVO')
-                                                <a style="background-color: #86AB89"
-                                                    href="https://indeks.inovasi.bskdn.kemendagri.go.id/v2/"
-                                                    target="_blank" type="button" class="btn btn-block">
-                                                    Pendaftaran Lomba Inovasi Perangkat Daerah 2024
-                                                </a>
-                                                <a style="background-color: #86AB89"
-                                                    href="https://bit.ly/formpendaftaranBravo2024kategorimasyarakat"
-                                                    target="_blank" type="button" class="btn  btn-block">
-                                                    Pendaftaran Lomba Inovasi Masyarakat 2024
-                                                </a>
-
-                                                <a style="background-color: #86AB89"
-                                                    href="https://drive.google.com/drive/u/0/folders/1K6CKYsqQJkbHHNtMBPk1uH0MWHXYK4KN"
-                                                    target="_blank" type="button" class="btn btn-block">
-                                                    Pedoman Teknis Lomba Inovasi 2024
-                                                </a>
-                                            @endif
                                             {{-- @if (Route::has('password.request'))
                                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                                     {{ __('Forgot Your Password?') }}

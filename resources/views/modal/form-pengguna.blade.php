@@ -61,9 +61,14 @@
                 <div class="col-sm-8">
                     <select name="role" class="form-control" onchange="ubahRole(this.value)" required>
                         <option disabled selected>-- Pilih Salah Satu --</option>
-                        <option value="2">Verifikator</option>
-                        <option value="4">Pengusul</option>
-                        <option value="7">Juri</option>
+                        @if (Auth::user()->role == 1)
+                            <option value="2">Verifikator</option>
+                            <option value="3">Admin - Provinsi</option>
+                            <option value="4">Admin - Kabupaten / Kota</option>
+                        @else
+                            <option value="6">Umum</option>
+                        @endif
+                        <option value="5">OPD</option>
                     </select>
                     <small>Role hanya dapat ditentukan pada saat pembuatan data Pengguna baru. <b>Pastikan data yang
                             dimasukkan pada form ini sudah benar !</b></small>

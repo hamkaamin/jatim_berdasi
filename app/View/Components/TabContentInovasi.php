@@ -6,19 +6,19 @@ use Illuminate\View\Component;
 
 class TabContentInovasi extends Component
 {
-    public $kategori, $active, $inovasi,$label,$fase;
+    public $tahapan, $active, $kolom, $inovasi,$label;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($kategori, $active, $inovasi,$label,$fase)
+    public function __construct($tahapan, $active, $kolom, $inovasi,$label)
     {
-        $this->kategori = $kategori;
+        $this->tahapan = $tahapan;
         $this->active = $active;
+        $this->kolom = $kolom;
         $this->inovasi = $inovasi;
         $this->label = $label;
-        $this->fase = $fase;
 
     }
 

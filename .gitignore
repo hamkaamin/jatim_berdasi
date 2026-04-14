@@ -14,9 +14,3 @@ yarn-error.log
 /.idea
 /.vscode
 .DS_Store
-
-# Runtime user uploads (keep out of VCS)
-/public/indikator_uploads/*
-!/public/indikator_uploads/.gitignore
-/public/file_*/*
-!/public/file_*/.gitignore
