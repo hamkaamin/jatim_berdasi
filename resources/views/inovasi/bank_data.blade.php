@@ -20,11 +20,6 @@
                                     <th>No.</th>
                                     <th style="min-width: 100px">Dibuat Oleh</th>
                                     <th style="min-width: 200px">Nama</th>
-                                    <th>Tahapan</th>
-                                    <th>Kategori</th>
-                                    <th style="width: 100px; min-width: 100px">Status</th>
-                                    <th>Keterangan</th>
-                                    <th>Kematangan</th>
                                     <th style="width: 100px; min-width: 100px"></th>
                                 </tr>
                             </thead>
@@ -38,44 +33,23 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $item->user->name }}</td>
                                         <td>{{ $item->nama }}</td>
-                                        <td>{{ $item->belongsToTahapan->nama }}</td>
-                                        <td>{{ $item->kategori->nama ?? ' ' }}</td>
-                                        <td>{!! Helper::getStatusInovasi($item->status) !!}</td>
                                         <td>
-                                            @if ($item->keterangan != null)
-                                                {{ $item->keterangan }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                        <td>
-                                            @if ($item->status != 0)
-                                                <a target="_blank"
-                                                    href="{{ route('inovasi.export', ['type' => 'pdf', 'id' => $item->id]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
-                                                    data-placement="top" title="Download Pdf"><i
-                                                        class="fa fa-file-pdf"></i>&nbsp;&nbsp;PDF</a>
-                                                <a target="_blank"
-                                                    href="{{ route('inovasi.export', ['type' => 'excel', 'id' => $item->id]) }}"
-                                                    class="btn m-1 btn-block btn-sm btn-success" data-toggle="tooltip"
-                                                    data-placement="top" title="Download Excel"><i
-                                                        class="fa fa-file-excel"></i>&nbsp;&nbsp;Excel</a>
-                                            @endif
-                                            <a href="{{ route('inovasi.indikator.index', ['id' => $item->id, 'area' => 'bank_data']) }}"
+
+                                            <a href="{{ route('inovasi.detail', ['id' => encrypt($item->id)]) }}"
+                                                class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
+                                                data-placement="top" title="Detail Inovasi"><i
+                                                    class="fa fa-eye"></i>&nbsp;&nbsp;Detail</a>
+                                            {{-- <a href="{{ route('inovasi.indikator.index', ['id' => $item->id, 'area' => 'bank_data']) }}"
                                                 class="btn m-1 btn-block btn-sm btn-secondary" data-toggle="tooltip"
                                                 data-placement="top" title="Upload Indikator"><i
-                                                    class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
-                                            @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
+                                                    class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a> --}}
+                                            {{-- @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
                                                 <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id)]) }}"
                                                     class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                                     data-placement="top" title="Edit Inovasi"><i
                                                         class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
                                             @endif
-                                            @if (
-                                                ($item->status != 2 && $item->user_id == Auth::user()->id) ||
-                                                    Auth::user()->username == 'salehsayanglatifah' ||
-                                                    Auth::user()->username == 'pemdkotkabatest')
+                                            @if (($item->status != 2 && $item->user_id == Auth::user()->id) || Auth::user()->username == 'salehsayanglatifah' || Auth::user()->username == 'pemdkotkabatest')
                                                 <form style="all: unset"
                                                     action="{{ route('inovasi.delete', ['id' => $item->id]) }}"
                                                     method="post">
@@ -85,7 +59,7 @@
                                                         data-toggle="tooltip" data-placement="top" title="Hapus Inovasi"><i
                                                             class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
                                                 </form>
-                                            @endif
+                                            @endif --}}
                                         </td>
                                     </tr>
                                 @endforeach

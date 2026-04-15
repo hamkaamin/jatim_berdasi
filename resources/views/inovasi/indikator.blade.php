@@ -8,30 +8,10 @@
     <b>
         Nama Inovasi : </b> {{ $inovasi->nama }} <br>
     <b>Status Inovasi : </b> {!! Helper::getStatusInovasi($inovasi->status) !!} <br>
+    <b>Kategori Inovasi : </b> {!! $inovasi->kategori->nama !!} <br>
 @endsection
 
 @section('buttons')
-    @if (env('APP_CLOSE_APP') == 0)
-        @php
-            $label = $inovasi->label;
-        @endphp
-        @if ($area_label == 'bank_data')
-            @php
-                $label = 2;
-            @endphp
-        @endif
-        <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @elseif($label == 0) href="{{ route('inovasi.index', ['area' => 'kota']) }}" @else href="{{ route('bank_data.index', ['area' => 'bank_data']) }}" @endif
-            class="btn btn-light">Kembali </a>
-        @if ($inovasi->status == 0 || $inovasi->status == 4)
-            <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
-                @csrf
-                <input type="hidden" name="label" value="{{ $inovasi->label }}">
-                <button type="submit" class="btn btn-primary" name="status" value="1"
-                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Submit
-                    Inovasi</button>
-            </form>
-        @endif
-    @endif
     @if (Auth::user()->role == 2)
         <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
             onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
@@ -111,6 +91,43 @@
             </div>
         </div>
     </div>
+    @if (env('APP_CLOSE_APP') == 0)
+        @php
+            $label = $inovasi->label;
+        @endphp
+        @if ($area_label == 'bank_data')
+            @php
+                $label = 2;
+            @endphp
+        @endif
+
+        <br><br><br>
+        <div class="row">
+            <div class="col-md-3">
+
+                <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @elseif($label == 0) href="{{ route('inovasi.index', ['area' => 'kota']) }}" @else href="{{ route('bank_data.index', ['area' => 'bank_data']) }}" @endif
+                    class="btn btn-light">Kembali </a>
+            </div>
+            <div class="col-md-7"></div>
+            <div class="col-md-2">
+                @if ($inovasi->status == 0 || $inovasi->status == 4)
+                    <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
+                        @csrf
+                        <input type="hidden" name="label" value="{{ $inovasi->label }}">
+                        @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+                            <button type="submit" class="btn btn-primary" name="status" value="1"
+                                onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
+                                Inovasi</button>
+                        @else
+                            <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
+                                class="btn btn-danger">Kirim
+                                inovasi</a>
+                        @endif
+                    </form>
+                @endif
+            </div>
+        </div>
+    @endif
 @endsection
 
 @section('script')

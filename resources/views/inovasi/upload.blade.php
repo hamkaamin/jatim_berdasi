@@ -1,4 +1,4 @@
-'@extends('layouts.main')
+@extends('layouts.main')
 @section('title')
     Upload Indikator Inovasi {{ Helper::get_label_inovasi($inovasi->label) }}
 @endsection

@@ -8,14 +8,15 @@
     </div>
     <div class="modal-body">
         <div class="row my-2">
-            <div class="col-sm-4 d-flex align-items-center"><label>Nama <span class="text-danger">*</span></label></div>
+            <div class="col-sm-4 d-flex align-items-center"><label>Tahun <span class="text-danger">*</span></label>
+            </div>
             <div class="col-sm-8">
 
                 <select class="form-control select22_modal_setting_tahun" id="setting_tahun" name="tahun"
                     required="">
 
-                    {{ $last = date('Y') - 5 }}
-                    {{ $now = date('Y') + 3 }}
+                    {{ $last = 2024 }}
+                    {{ $now = date('Y') + 1 }}
                     @for ($i = $now; $i >= $last; $i--)
                         @php
                             $selected = '';

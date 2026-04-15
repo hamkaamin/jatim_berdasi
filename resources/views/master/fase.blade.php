@@ -21,8 +21,9 @@
                 <table class="table align-items-center table-flush" id="myTable">
                     <thead class="thead-light">
                         <tr>
-                            <th>Nomor</th>
+                            <th style="width: 1%">Nomor</th>
                             <th>Nama</th>
+                            <th>Ket</th>
                             <th>Aktif</th>
                             <th>Tanggal Berakhir</th>
                             <th style="width: 100px"></th>
@@ -35,6 +36,7 @@
                             <tr>
                                 <td>{{ $no }}</td>
                                 <td>{{ $item->nama }}</td>
+                                <td>{{ $item->keterangan }}</td>
                                 <td>
                                     @if ($item->active == 1)
                                         <span class="badge badge-success">Yes</span>

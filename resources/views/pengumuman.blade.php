@@ -26,6 +26,7 @@
                             <th>File</th>
                             <th>Dibuat Pada</th>
                             <th>Update Terakhir</th>
+                            <th>Aktif</th>
                             <th style="width: 100px"></th>
                         </tr>
                     </thead>
@@ -42,8 +43,17 @@
                                         -
                                     @endif
                                 </td>
+
                                 <td>{{ $item->created_at }}</td>
                                 <td>{{ $item->updated_at }}</td>
+
+                                <td>
+                                    @if ($item->is_aktif == 1)
+                                        <span class="badge badge-success">Yes</span>
+                                    @else
+                                        <span class="badge badge-danger">No</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <button data-target="#modalPopup" data-toggle="modal"
                                         onclick="modal({{ $item->id }}, 'pengumuman')"

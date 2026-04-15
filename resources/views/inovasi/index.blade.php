@@ -8,10 +8,20 @@
     Daftar Pengajuan Inovasi dari {{ $label }}
 @endsection
 
+@php
+    $display = 'display:block';
+@endphp
+
 @if (Auth::user()->role != 2)
+
     @section('buttons')
-        <a href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
-            class="btn btn-primary">Tambah Data</a>
+        @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
+            <a style="{!! $display !!}"
+                href="{{ route('inovasi.edit', ['id' => 0, 'label' => $label == 'Awards' ? 1 : 0]) }}"
+                class="btn btn-primary">Tambah Data</a>
+        @else
+            <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#" class="btn btn-danger">Tambah Data</a>
+        @endif
     @endsection
 @endif
 
@@ -29,7 +39,7 @@
             <div class="col-12">
                 <!-- Status Filter -->
                 <div class="form-group">
-                    <label for="statusFilter">Filter Status</label>
+                    <label for="statusFilter">Filter Status </label>
                     <select onchange="show_status('{{ csrf_token() }}',this.value,'{{ $area }}','#show_inovasi')"
                         class="form-control" id="statusFilter" name="statusFilter">
                         <option value="">Semua</option>
@@ -39,6 +49,18 @@
                         <option value="3">Tolak</option>
                         <option value="4">Revisi</option>
                         <option value="5">Kirim</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="statusFilter">Kategori</label>
+                    <select
+                        onchange="show_status('{{ csrf_token() }}',$('#statusFilter').val(),'{{ $area }}','#show_inovasi')"
+                        class="form-control" id="kategori_inovasi" name="kategori_inovasi">
+                        <option value="">Semua</option>
+                        @foreach ($kategori as $item)
+                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -66,6 +88,7 @@
         </div>`;
 
         function show_status(token, status, area, target) {
+            var kategori = $('#kategori_inovasi').val();
             $(target).html(loading);
             $.ajax({
                 url: '{{ route('inovasi.show_inovasi') }}',
@@ -73,6 +96,7 @@
                 data: {
                     _token: token,
                     status: status,
+                    kategori: kategori,
                     area: area
                 },
                 success: function(data) {

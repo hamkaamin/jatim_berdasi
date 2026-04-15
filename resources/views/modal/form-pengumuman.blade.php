@@ -26,11 +26,22 @@
         </div>
         <div class="row my-2">
             <div class="col-sm-4 d-flex align-items-center"><label>File</label></div>
-            <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png," name="file" required>
-                @if ($data != null && $data->file != null && file_exists(public_path('/file_pengumuman/' . $data->file)))
-                    <br><a target="_blank" href="{{ asset('file_pengumuman/' . $data->file) }}">Download File
+            <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="file">
+                @if ($data != null && $data->file != null)
+                    <br><a target="_blank" href="{{ $data->file }}">Download File
                         Pengumuman</a>
                 @endif
+            </div>
+        </div>
+
+
+        <div class="row my-2">
+            <label class="control-label col-sm-4">Aktif</label>
+            <div class="col-sm-8">
+                <select name="is_aktif" class="form-control" id="is_aktif">
+                    <option {{ @$data->is_aktif == 0 ? 'selected' : '' }} value="0">Tidak Aktif</option>
+                    <option {{ @$data->is_aktif == 1 ? 'selected' : '' }} value="1">Aktif</option>
+                </select>
             </div>
         </div>
     </div>

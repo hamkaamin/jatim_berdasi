@@ -32,6 +32,9 @@
 @endif
 <script>
     $(document).ready(function() {
-        $("#{{ strtolower($label) . '_id' }}").select2();
+        $("#{{ strtolower($label) . '_id' }}").select2({
+            dropdownParent: $('#modalContent'),
+            width: 'resolve',
+        });
     });
 </script>

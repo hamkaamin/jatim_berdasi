@@ -26,7 +26,7 @@
                                     <th>Keterangan</th>
                                     <th>Kematangan</th>
                                     <th>Nilai</th>
-                                    <th style="width: 100px; min-width: 100px"></th>
+                                    <th style="width: 100px; min-width: 100px">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,7 +50,10 @@
                                             @endif
                                         </td>
                                         <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
-                                        <td>{{ $item->penilaian->avg('pivot.nilai') }}</td>
+                                        <td>
+
+                                            {{ $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
+                                        </td>
                                         <td>
                                             @if ($item->status != 0)
                                                 <a target="_blank"
@@ -69,7 +72,7 @@
                                                 data-placement="top" title="Upload Indikator"><i
                                                     class="fa fa-folder-open"></i>&nbsp;&nbsp;Indikator</a>
                                             @if (($item->status == 0 || Auth::user()->role == 2) && $item->status != 2)
-                                                <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id)]) }}"
+                                                <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id), 'tahap' => $juri_tahap]) }}"
                                                     class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                                     data-placement="top" title="Edit Inovasi"><i
                                                         class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
@@ -90,12 +93,12 @@
                                             @endif
 
                                             @if (Auth::user()->role == 7)
-                                                <a href="{{ route('penilaian.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id]) }}"
+                                                <a href="{{ route('penilaian.edit', ['id' => encrypt($item->id), 'user_id' => Auth::user()->id, 'jenis' => $jenis]) }}"
                                                     class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                                     data-placement="top" title="Penilaian Inovasi"><i
                                                         class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
                                             @else
-                                                <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
+                                                <a href="{{ route('penilaian.show', ['id' => encrypt($item->id), 'jenis' => $jenis]) }}"
                                                     class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                                     data-placement="top" title="Penilaian Inovasi"><i
                                                         class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>

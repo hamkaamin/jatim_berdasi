@@ -25,10 +25,24 @@
                     value="{{ $data != null ? $data->email : '' }}"></div>
         </div>
         <div class="row my-2">
-            <div class="col-sm-4 d-flex align-items-center"><label>Telepon <span class="text-danger">*</span></label>
+            <div class="col-sm-4 d-flex align-items-center"><label>Telepon </label>
             </div>
-            <div class="col-sm-8"><input type="number" name="phone" class="form-control" required
+            <div class="col-sm-8"><input type="number" name="phone" class="form-control"
                     value="{{ $data != null ? $data->phone : '' }}"></div>
+        </div>
+        <div class="row my-2">
+            <div class="col-sm-4 d-flex align-items-center"><label>Akses Menu </label>
+            </div>
+            <div class="col-sm-8">
+                <ul>
+                    <li><input {{ $data != null && $data->menu_inotek == 1 ? 'checked' : '' }} type="checkbox"
+                            name="menu_inotek" id="tmb_menu_inotek"> <label for="tmb_menu_inotek">Inotek</label></li>
+                    <li><input {{ $data != null && $data->menu_iga == 1 ? 'checked' : '' }} type="checkbox"
+                            name="menu_iga" id="tmb_menu_iga"> <label for="tmb_menu_iga">IGA</label></li>
+                    <li><input {{ $data != null && $data->menu_kovablik == 1 ? 'checked' : '' }} type="checkbox"
+                            name="menu_kovablik" id="tmb_menu_kovablik"> <label for="tmb_menu_kovablik">Kovablik</label>
+                    </li>
+            </div>
         </div>
         <div class="row my-2" style="display: none;">
             <div class="col-sm-4 d-flex align-items-center"><label>Jabatan</label></div>
@@ -59,16 +73,14 @@
                 <div class="col-sm-4 d-flex align-items-center"><label>Role <span class="text-danger">*</span></label>
                 </div>
                 <div class="col-sm-8">
-                    <select name="role" class="form-control" onchange="ubahRole(this.value)" required>
+                    <select name="role" class="form-control" data-datas='@json($data)'
+                        onchange="ubahRole(this.value, this.dataset.datas)" required>
                         <option disabled selected>-- Pilih Salah Satu --</option>
-                        @if (Auth::user()->role == 1)
-                            <option value="2">Verifikator</option>
-                            <option value="3">Admin - Provinsi</option>
-                            <option value="4">Admin - Kabupaten / Kota</option>
-                        @else
-                            <option value="6">Umum</option>
-                        @endif
-                        <option value="5">OPD</option>
+                        <option value="2">Verifikator</option>
+                        {{-- <option value="3">Provinsi</option> --}}
+                        <option value="4">Admin OPD Provinsi</option>
+                        <option value="5">Admin Kab/Kota</option>
+                        <option value="7">Juri</option>
                     </select>
                     <small>Role hanya dapat ditentukan pada saat pembuatan data Pengguna baru. <b>Pastikan data yang
                             dimasukkan pada form ini sudah benar !</b></small>
@@ -80,11 +92,27 @@
                 </div>
             </div>
         @else
+            <div class="row my-2" id="pengguna-kategori">
+                <div class="col-sm-4 d-flex align-items-center"><label>Kategori </label>
+                </div>
+                <div class="col-sm-8">
+                    <ul>
+                        @foreach ($kategori as $item)
+                            <li><input {{ $data != null && $data['is_kategori_' . $item->id] == 1 ? 'checked' : '' }}
+                                    type="checkbox" name="{{ 'is_kategori_' . $item->id }}"
+                                    id="{{ 'is_kategori_' . $item->id }}"> <label
+                                    for="{{ 'is_kategori_' . $item->id }}">{{ $item->nama }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
             <div class="row my-2">
                 <div class="col-sm-4 d-flex align-items-center"><label>Role</label></div>
                 <div class="col-sm-8">{{ Helper::getRole($data->role) }}</div>
             </div>
         @endif
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
