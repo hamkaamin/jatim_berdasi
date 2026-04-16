@@ -6,6 +6,8 @@ use Config;
 use Helper;
 use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PengumumanController extends Controller
 {
@@ -17,40 +19,45 @@ class PengumumanController extends Controller
 
     public function save(Request $request)
     {
-        $validator = Validator::make($request->all(), [ 
-            'file_rancang_bangun' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048', 
-            'profil_bisnis' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
-            'anggaran' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
-        ], [  
-            'file_rancang_bangun.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
-            'file_rancang_bangun.max' => 'File maksimal berukuran 2MB', 
-            'profil_bisnis.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
-            'profil_bisnis.max' => 'File maksimal berukuran 2MB', 
-            'anggaran.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
-            'anggaran.max' => 'File maksimal berukuran 2MB', 
-        ]);
-        if ($validator->fails()) {
-            $msg = "";
-            foreach ($validator->messages()->all() as $message) {
-                $msg .= $message . ". ";
-            }
-            return redirect()->back()->with('error', $msg)->withInput($request->input());
-
+        if ($request->id == 0) {
+            $data = new Pengumuman;
         } else {
-            if ($request->id == 0) {
-                $data = new Pengumuman;
-            } else {
-                $data = Pengumuman::findOrFail($request->id);
-            }
+            $data = Pengumuman::findOrFail($request->id);
+        }
+        try {
+            DB::beginTransaction();
+        
             $data->judul = $request->judul;
             $data->deskripsi = $request->deskripsi;
+            $data->is_aktif = $request->is_aktif;
             $data->save();
+        
             if ($request->hasFile('file')) {
-                $nama_file = Helper::save_file($request->file('file'), uniqid(), 'file_pengumuman', $data->file);
-                $data->file = $nama_file;
-                $data->save();
+                $nama_file = Helper::save_file(
+                    $request->file('file'),
+                    uniqid(),
+                    'file_pengumuman',
+                    $data->file,
+                    ['pdf', 'jpg', 'jpeg', 'png']
+                );
+        
+                if ($nama_file['valid'] == false) {
+                    DB::rollBack();
+                    return redirect()->back()->with('error', $nama_file['message']);
+                } else {
+                    $data->file = $nama_file['file_name'];
+                    $data->save();
+                }
             }
+        
+            DB::commit();
             return redirect()->back()->with('success', Config::get('save_success'));
+        
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // Log error kalau perlu
+            // Log::error($th->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
         }
     }
 

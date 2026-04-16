@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/indikator_uploads
+/public/uploads/
 /storage/*.key
 /vendor
 .env
@@ -14,3 +16,4 @@ yarn-error.log
 /.idea
 /.vscode
 .DS_Store
+public/theme_assets/js/pages/leaflet-map.init.js

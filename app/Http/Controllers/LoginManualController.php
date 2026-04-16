@@ -11,7 +11,7 @@ class LoginManualController extends Controller
 {
     public function resetallpass()
     {
-        $users = User::all();
+        $users = User::whereIn('role', [3,4,5,7])->get();
         foreach($users as $u)
         {
             $u->password = Hash::make($u->username);

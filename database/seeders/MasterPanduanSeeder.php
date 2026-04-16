@@ -15,7 +15,11 @@ class MasterPanduanSeeder extends Seeder
     public function run()
     {
         DB::table('master_panduans')->delete();
-        DB::table('master_panduans')->insert(['nama' => 'Manual Book Aplikasi Jatim Berdasi 2024 (Pengusul)','path'=>'user-manual/jatim-berdasi/Manual Book new panduan jatim berdasi.pdf','role'=>5]);
-        DB::table('master_panduans')->insert(['nama' => 'Manual Book Aplikasi Jatim Berdasi 2024 (Verifikator)','path'=>'user-manual/jatim-berdasi/Manual Book Aplikasi Jatim Berdasi 2024 (Verifikator).pdf','role'=>2]);DB::table('master_panduans')->insert(['nama' => 'Manual Book Aplikasi Jatim Berdasi 2024 (Superadmin)','path'=>'user-manual/jatim-berdasi/Manual Book Aplikasi Jatim Berdasi 2024 (Superadmin).pdf','role'=>1]);
+        DB::table('master_panduans')->insert(['nama' => 'Menu Dashboard','path'=>'user-manual/jatim-berdasi/1. Menu Dashboard.mp4','role'=>5]);
+        DB::table('master_panduans')->insert(['nama' => 'Setting Tahun','path'=>'user-manual/jatim-berdasi/2. Setting Tahun.mp4','role'=>5]);
+        DB::table('master_panduans')->insert(['nama' => 'Ganti Password','path'=>'user-manual/jatim-berdasi/3. Ganti Password.mp4','role'=>5]);
+        DB::table('master_panduans')->insert(['nama' => 'Cara Melakukan Usulan_Pengajuan Inovasi','path'=>'user-manual/jatim-berdasi/4. Cara Melakukan Usulan_Pengajuan Inovasi.mp4','role'=>5]);
+        DB::table('master_panduans')->insert(['nama' => 'Cara Melakukan Verifikasi Usulan_Pengajuan Inovasi (Verifikator)','path'=>'user-manual/jatim-berdasi/5. Cara Melakukan Verifikasi Usulan_Pengajuan Inovasi (Verifikator).mp4','role'=>5]);
+        DB::table('master_panduans')->insert(['nama' => 'Cara Melakukan Penilaian Usulan_Pengajuan Inovasi (Juri)','path'=>'user-manual/jatim-berdasi/6. Cara Melakukan Penilaian Usulan_Pengajuan Inovasi (Juri).mp4','role'=>5]);
     }
 }

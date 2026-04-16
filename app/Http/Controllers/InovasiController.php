@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Config;
 use Excel;
 use Helper;
@@ -17,14 +16,18 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
 use App\Models\DetailTematik;
+use App\Models\Fase;
 use App\Models\KategoriInovasi;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
+use App\Models\Setting;
 use App\Models\Tematik;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Svg\Tag\Rect;
 
 class InovasiController extends Controller
 {
@@ -35,8 +38,8 @@ class InovasiController extends Controller
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
-            $inovasi = Inovasi::where('status', 2);
-            $label = "Daerah";
+            $inovasi = Inovasi::where('label', 0)->where('status', 0);
+            $label = "IGA";
         } elseif ($area == 'masyarakat') {
             $inovasi = Inovasi::where('label', 1);
             $label = "Awards";
@@ -52,7 +55,7 @@ class InovasiController extends Controller
         } elseif($area == 'kota'){
             $label = "Kota / Kab";
             $tahapan = Tahapan::where('id','<>',6)->get();
-            $inovasi = Inovasi::where('label', 0);
+            $inovasi = Inovasi::where('label', 1);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
@@ -81,8 +84,20 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
-        $inovasi = $inovasi->get();
-        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area'));
+        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get();
+        // dd($inovasi);
+        // dd($inovasi);
+        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
+        $kategori = KategoriInovasi::get();
+        if(Auth::user()->role == 2){
+            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+            $kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+        }
+        
+        $setting = Setting::where('kode','tambah_inovasi')->first();
+        $fase = Fase::where('active', 1)->first();
+        // dd($tahapan, $tahapanKolom);
+        return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
 
     public function show_tahapan(Request $request)
@@ -104,8 +119,8 @@ class InovasiController extends Controller
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
-            $inovasi = Inovasi::where('status', 2);
-            $label = "Daerah";
+            $inovasi = Inovasi::where('label', 0)->where('status','<>' ,0);
+            $label = "IGA";
         } elseif ($area == 'masyarakat') {
             $inovasi = Inovasi::where('label', 1);
             $label = "Awards";
@@ -119,9 +134,9 @@ class InovasiController extends Controller
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
         } elseif($area == 'kota'){
-            $label = "Kota / Kab";
+            $label = "Awards";
             $tahapan = Tahapan::where('id','<>',6)->get();
-            $inovasi = Inovasi::where('label', 0);
+            $inovasi = Inovasi::where('label', 1);
             if (Auth::user()->role == 2) {
                 $inovasi = $inovasi->where('status', '<>', 0);
             }
@@ -150,21 +165,50 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', Auth::user()) || Helper::checkUserUmum('opd-kelurahan', Auth::user())) {
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
-        if($request->status != ''){
-            $inovasi = $inovasi->where('status',$request->status);
+        if(Auth::user()->role == 2){
+            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+            $inovasi = $inovasi->whereIn('kategori_id',$id_kategori);
         }
-        $inovasi = $inovasi->get();
-        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label'));
+        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get()
+        ->sortByDesc(function ($item) {
+            $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
+            return  $totalNilai;
+        });
+        // dd($inovasi);
+        // dd($inovasi);
+        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
+        $kategori = KategoriInovasi::orderBy('id','asc')->get();
+        if(Auth::user()->role == 2){
+            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
+            $kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+        }
+        $setting = Setting::where('kode','tambah_inovasi')->first();
+        $fase = Fase::where('active', 1)->first();
+        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase','area'));
     }
 
     public function bank_data(Request $request,$area)
     {
-        $inovasi = Inovasi::with('kategori')->where('status',2)->get();
+        $inovasi = Inovasi::with('kategori')->where('status',2)->where('tahun',Auth::user()->tahun)->get();
         return view('inovasi.bank_data', compact('inovasi','area'));
     }
 
     public function edit(Request $request)
-    { 
+    {
+        $fase = Fase::where('active',1)->first();
+        $nama_fase = $fase->nama;
+        if($nama_fase == 'inotek'){
+            $area = 'masyarakat';
+            $cek_label = 1;
+            $nama_fase = 'INOTEK';
+        }else if($nama_fase == 'iga'){
+            $area = 'provinsi';
+            $cek_label = 0;
+            $nama_fase = 'IGA';
+        }
+        if($cek_label != $request->label && $request->id == 0){
+            return redirect()->route('inovasi.index',$area)->with('error','Fase '.$nama_fase.' Sedang Ditutup');
+        }
         if (count($request->input()) <= 3 && isset($request->id)) {
             $data = null;
             $tahapan = Tahapan::all();
@@ -174,19 +218,19 @@ class InovasiController extends Controller
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $tematik = Tematik::all();
-            $kategori = KategoriInovasi::all();
+            $kategori = KategoriInovasi::orderBy('id','asc')->get();
             if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
-                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
+                $kategori = KategoriInovasi::orderBy('id','asc')->get();
+            }else{
+                if ($request->id != 0) {
+                    $inovasi = Inovasi::find(decrypt($request->id));
+                    $kategori = KategoriInovasi::orderBy('id','asc')->get();
+
+                }
             }
             $label = 0;
-            if (isset($request->label)) {
-                $label = $request->label;
-            }
-            if($label == 0){
-                $kategori = $kategori->where('kategori_id',1);
-            }
             
-            $kategori = $kategori->get();
+            // $kategori = $kategori->get();
             if ($request->id != 0) {
                 $id = decrypt($request->id);
                 $data = Inovasi::findOrFail($id);
@@ -195,10 +239,58 @@ class InovasiController extends Controller
                 }
                 $label = $data->label;
             }
-            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
+
+            if (isset($request->label)) {
+                $label = $request->label;
+            }
+            if($label == 0){
+                $kategori =KategoriInovasi::where('id',1)->orderBy('id','asc')->get();
+            }
+            $fase = Fase::where('active', 1)->first();
+
+            return view('inovasi.form-inovasi', compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
         } else { 
             return redirect()->back();
         }
+    }
+
+    public function detail(Request $request)
+    {
+        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+            $inisiator = Inisiator::all();
+            $jenis = Jenis::all();
+            $bentuk = Bentuk::all();
+            $urusan = Urusan::all();
+            $tematik = Tematik::all();
+            $kategori = KategoriInovasi::all();
+            $view = 'inovasi.detail-inovasi';
+            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
+                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
+            }else{
+                if ($request->id != 0) {
+                    $inovasi = Inovasi::find(decrypt($request->id));
+                    $kategori = KategoriOpd::where('opd_id',$inovasi->user->opd_id)->where('is_aktif',1);
+                }
+            }
+            $label = 0;
+            
+            $kategori = $kategori->get();
+            if ($request->id != 0) {
+                $id = decrypt($request->id);
+                $data = Inovasi::findOrFail($id);
+                $label = $data->label;
+                if($data->kategori_id == 5){
+                    $view = 'inovasi.detail-inovasi-kategori-5';
+                }
+            }
+
+            if (isset($request->label)) {
+                $label = $request->label;
+            }
+            if($label == 0){
+                $kategori = $kategori->where('kategori_id',1);
+            }
+            return view($view, compact('data','kategori', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
     }
 
     public function limit_words($string, $word_limit) {
@@ -215,12 +307,10 @@ class InovasiController extends Controller
     {
         $validator = Validator::make($request->all(), [ 
             'file_rancang_bangun' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048', 
-            'profil_bisnis' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
             'anggaran' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048', 
         ], [  
             'file_rancang_bangun.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
             'file_rancang_bangun.max' => 'File maksimal berukuran 2MB', 
-            'profil_bisnis.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
             'profil_bisnis.max' => 'File maksimal berukuran 2MB', 
             'anggaran.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
             'anggaran.max' => 'File maksimal berukuran 2MB', 
@@ -266,9 +356,9 @@ class InovasiController extends Controller
                     if ($data->nama == null) {
                         $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
                     }
-                    if ($data->bentuk_id == null) {
-                        $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
-                    }
+                    // if ($data->bentuk_id == null) {
+                    //     $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
+                    // }
                     if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
                         $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
                     } else {
@@ -305,7 +395,7 @@ class InovasiController extends Controller
             }
 
             $data->nama = $request->nama;
-            $data->tahapan_id = $request->tahapan_id;
+            $data->tahapan_id = $request->kategori_id == 5 ? 6 : $request->tahapan_id;
             $data->kategori_id = $request->kategori_id;
             $data->inisiator_id = $request->inisiator_id;
             $data->jenis_id = $request->jenis_id;
@@ -323,7 +413,9 @@ class InovasiController extends Controller
             $data->waktu_uji_coba = $request->waktu_uji_coba;
             $data->waktu_penerapan = $request->waktu_penerapan;
             $data->waktu_pengembangan = $request->waktu_pengembangan;
-            $data->is_pengembangan = $request->is_pengembangan;
+            $data->visi = @$request->visi;
+            $data->misi = @$request->misi;
+            $data->tahun = Auth::user()->tahun;
             $data->url = env('APP_URL');
             $data->save();
             $data->urusan()->sync($request->urusan_id);
@@ -332,44 +424,94 @@ class InovasiController extends Controller
             }
             $data->tahapan()->sync($tempArr);
             if ($request->hasFile('anggaran')) {
-                $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran);
-                $data->anggaran = $nama_file;
-                $data->save();
+                $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran,['pdf','jpg','jpeg','png','xlsx']);
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', 'File Anggaran tidak sesuai format !');
+                }else{
+                    $data->anggaran = $nama_file;
+                    $data->save();
+                }
             }
-            if ($request->hasFile('file_rancang_bangun')) {
-                $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
-                $data->file_rancang_bangun = $nama_file;
-                $data->save();
-            }
-            if ($request->hasFile('profil_bisnis')) {
-                $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
-                $data->profil_bisnis = $nama_file;
-                $data->save();
-            }
+            // if ($request->hasFile('file_rancang_bangun')) {
+            //     $nama_file = Helper::save_file($request->file('file_rancang_bangun'), uniqid(), 'file_rancang_bangun', $data->file_rancang_bangun);
+            //     $data->file_rancang_bangun = $nama_file;
+            //     $data->save();
+            // } 
 
-            if ($request->hasFile('file_anggaran')) {
-                $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
-                $data->file_anggaran = $nama_file;
-                $data->save();
-            }
+            // if ($request->hasFile('file_anggaran')) {
+            //     $nama_file = Helper::save_file($request->file('file_anggaran'), uniqid(), 'file_perlu_anggaran', $data->file_anggaran);
+            //     $data->file_anggaran = $nama_file;
+            //     $data->save();
+            // }
             
             if ($request->hasFile('file_dokumen_haki')) {
-                $nama_file = Helper::save_file($request->file('file_dokumen_haki'), uniqid(), 'file_dokumen_haki', $data->file_dokumen_haki);
-                $data->file_dokumen_haki = $nama_file;
-                $data->save();
+                $nama_file = Helper::save_file(
+                    $request->file('file_dokumen_haki'),
+                    uniqid(),
+                    'file_dokumen_haki',
+                    $data->file_dokumen_haki,
+                    ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+                );
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', $nama_file['message']);
+                }else{
+                    $data->file_dokumen_haki = $nama_file['file_name'];
+                    $data->save();
+                }
             }
             
             if ($request->hasFile('file_penghargaan')) {
-                $nama_file = Helper::save_file($request->file('file_penghargaan'), uniqid(), 'file_penghargaan', $data->file_penghargaan);
-                $data->file_dokumen_haki = $nama_file;
+                $nama_file = Helper::save_file(
+                    $request->file('file_penghargaan'),
+                    uniqid(),
+                    'file_penghargaan',
+                    $data->file_penghargaan,
+                    ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+                );
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', $nama_file['message']);
+                }else{
+                    $data->file_penghargaan = $nama_file['file_name'];
+                    $data->save();
+                }
                 $data->save();
             }
 
             if ($request->hasFile('profil_bisnis')) {
-                $nama_file = Helper::save_file($request->file('profil_bisnis'), uniqid(), 'file_profil_bisnis', $data->profil_bisnis);
-                $data->profil_bisnis = $nama_file;
+                
+                $nama_file = Helper::save_file(
+                    $request->file('profil_bisnis'),
+                    uniqid(),
+                    'file_profil_bisnis',
+                    $data->profil_bisnis,
+                    ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+                );
+                if($nama_file['valid'] == false){
+                    return redirect()->back()->with('error', $nama_file['message']);
+                }else{
+                    $data->profil_bisnis = $nama_file['file_name'];
+                    $data->save();
+                }
                 $data->save();
             }
+
+            // if ($request->hasFile('file_hasil_inovasi')) {
+            //     $nama_file = Helper::save_file($request->file('file_hasil_inovasi'), uniqid(), 'file_hasil_inovasi', $data->file_hasil_inovasi);
+            //     $data->file_hasil_inovasi = $nama_file;
+            //     $data->save();
+            // }
+
+            // if ($request->hasFile('file_kajian')) {
+            //     $nama_file = Helper::save_file($request->file('file_kajian'), uniqid(), 'file_kajian', $data->file_kajian);
+            //     $data->file_kajian = $nama_file;
+            //     $data->save();
+            // }
+
+            // if ($request->hasFile('file_struktur_oragnisasi')) {
+            //     $nama_file = Helper::save_file($request->file('file_struktur_oragnisasi'), uniqid(), 'file_struktur_oragnisasi', $data->file_struktur_oragnisasi);
+            //     $data->file_struktur_oragnisasi = $nama_file;
+            //     $data->save();
+            // }
             $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
             return redirect($route)->with('success', Config::get('save_success').'. Mohon melengkapi data-data indikator agar Inovasi dapat diproses !');
         }
@@ -382,6 +524,11 @@ class InovasiController extends Controller
             'verify' => false, // Disable SSL verification
         ]);
         $inovasi = Inovasi::findOrFail($request->id);
+        // if bobot_akhor == null =  gagal
+        // if param_akhir == null = gagal
+        if ($inovasi->indikator()->count() <= 0 || $inovasi->indikator()->wherePivot('bobot_akhir','!=' ,null)->count() <= 0) {
+            return redirect()->back()->with('error', 'Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !');
+        } 
         $inovasi->status = $request->status;
         $inovasi->keterangan = $request->keterangan;
         $inovasi->save();
@@ -399,7 +546,7 @@ class InovasiController extends Controller
                     ];
                 }
 
-                $response = $client->request('POST', $inovasi->integration->url.'api/kab_status_data_update', [
+                $response = $client->request('POST', $inovasi->integration->url.'/api/kab_status_data_update', [
                     'headers' => [
                         'Accept' => 'application/json',
                     ],
@@ -460,8 +607,19 @@ class InovasiController extends Controller
                     $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
                 }
             }
+            else{
+                    if($inovasi->kategori_id != $inovasi?->indikator()->first()->kategori_id){
+                        $inovasi->indikator()->detach();
+                        $indikator = Indikator::where('label', 0)->where('kategori_id',$inovasi->kategori_id)->get();
+                        foreach ($indikator as $item) {
+                            $inovasi->indikator()->attach($item->id,['kategori_id'=>$item->kategori_id]);
+                        }
+                    }
+            }
             $data = $inovasi->indikator()->get();
-            return view('inovasi.indikator', compact('data', 'inovasi','area_label'));
+            $fase = Fase::where('active', 1)->first();
+
+            return view('inovasi.indikator', compact('data', 'inovasi','area_label','fase'));
         // } else {
         //     return redirect()->back();
         // }
@@ -526,4 +684,54 @@ class InovasiController extends Controller
         # move data to the <select>
         return view('inovasi.detail_tematik', compact('detail_tematik','data'));
     }
+
+    public function kategori_inovasi(Request $request)
+    {
+        $inovasi_id = $request->inovasi_id;
+        $kategori_id = $request->kategori_id;
+            $data = null;
+            $tahapan = Tahapan::all();
+            $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+            $inisiator = Inisiator::all();
+            $jenis = Jenis::all();
+            $bentuk = Bentuk::all();
+            $urusan = Urusan::all();
+            $tematik = Tematik::all();
+            $kategori = KategoriInovasi::all();
+            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
+                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
+            }else{
+                if ($inovasi_id != 0) {
+                    $inovasi = Inovasi::find(decrypt($inovasi_id));
+                    $kategori = KategoriOpd::where('opd_id',$inovasi->user->opd_id)->where('is_aktif',1);
+                }
+            }
+            $label = 0;
+            
+            $kategori = $kategori->get();
+            if ($inovasi_id != 0) {
+                $id = $inovasi_id;
+                $data = Inovasi::findOrFail($id);
+                if($data->user_id != Auth::user()->id){
+                    return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
+                }
+                $label = $data->label;
+            }
+
+            if (isset($request->label)) {
+                $label = $request->label;
+            }
+            if($label == 0){
+                $kategori = $kategori->where('kategori_id',1);
+            }
+            $fase = Fase::where('active', 1)->first();
+            $view = 'inovasi.ajax_inovasi';
+            if($kategori_id == 5){
+                $view= 'inovasi.form.kategori_5';
+            }
+
+            return view($view, compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
+        
+    }
+
 }

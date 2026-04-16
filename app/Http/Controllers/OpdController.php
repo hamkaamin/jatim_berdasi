@@ -137,9 +137,19 @@ class OpdController extends Controller
         $data->telp = $request->telp;
 		$data->save();
         if ($request->hasFile('logo')) {
-            $nama_file = Helper::save_file($request->file('logo'), uniqid(), 'logo_opd', $data->logo);
-            $data->logo = $nama_file;
-		    $data->save();
+            $nama_file = Helper::save_file(
+                $request->file('logo'),
+                uniqid(),
+                'logo_opd',
+                $data->logo,
+                ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
+            );
+            if($nama_file['valid'] == false){
+                return redirect()->back()->with('error', $nama_file['message']);
+            }else{
+                $data->logo = $nama_file['file_name'];
+                $data->save();
+            }
         }
         return redirect()->back()->with('success', Config::get('save_success'));
     }

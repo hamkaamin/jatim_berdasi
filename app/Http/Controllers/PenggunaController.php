@@ -2,84 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
+use App\Models\KategoriInovasi;
 use Config;
 use Hash;
 use Helper;
 use App\Models\Kota;
 use App\Models\Opd;
 use App\Models\Provinsi;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PenggunaController extends Controller
 {
     public function index(Request $request)
     {
-        set_time_limit(0);
-        $user = Auth::user();
-        $data = User::where('id', '<>', $user->id);
-        if ($user->role != 1 && $user->role != 2) {
-            $data = $data->whereNotIn('role', [1,2]);
-            $arrOpd = [];
-            $opds = [];
-            if ($user->role == 3 || Helper::checkOpd('provinsi', $user)) {
-                $arrKota = [];
-                $idWilayah = $user->role == 3 ? $user->province_id : $user->opd->provinsi_id;
-                $provinsi = Provinsi::findOrFail($idWilayah);
-                $opds = (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : Helper::getOpd('provinsi', $idWilayah, $opds);
-                foreach ($provinsi->kota()->get() as $kota) {
-                    $arrKota[] = $kota->id;
-                }
-                foreach ($opds as $opd) {
-                    $arrOpd[] = $opd->id;
-                }
-                $data = $data->where(function($query) use ($user, $arrKota, $arrOpd, $idWilayah){
-                    $query->where('maker_id', $user->id)->orWhere('province_id', $idWilayah)->orWhereIn('regency_id', $arrKota)->orWhereIn('opd_id', $arrOpd);
-                });
-            } elseif ($user->role == 4 || Helper::checkOpd('kota', $user)) {
-                $idWilayah = $user->role == 4 ? $user->regency_id : $user->opd->kabkota_id;
-                $opds = (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : Helper::getOpd('kota', $idWilayah, $opds);
-                foreach ($opds as $opd) {
-                    $arrOpd[] = $opd->id;
-                }
-                $data = $data->where(function($query) use ($user, $arrOpd, $idWilayah){
-                    $query->where('maker_id', $user->id)->orWhere('regency_id', $idWilayah)->orWhereIn('opd_id', $arrOpd);
-                });
-            } elseif (Helper::checkOpd('kecamatan', $user) || Helper::checkOpd('kelurahan', $user)) {
-                $idWilayah = Helper::checkOpd('kecamatan', $user) ? $user->opd->kecamatan_id : $user->opd->kelurahan_id ;
-                $opds = Helper::checkOpd('kecamatan', $user) ? Helper::getOpd('kecamatan', $idWilayah, $opds) : Helper::getOpd('kelurahan', $idWilayah, $opds);
-                $opds = (isset($request->scope) && $request->scope != null && $request->{$request->scope.'_id'} != null) ? Helper::getOpd($request->scope, $request->{$request->scope.'_id'}, $opds) : $opds;
-                foreach ($opds as $opd) {
-                    $arrOpd[] = $opd->id;
-                }
-                $data = $data->where(function($query) use ($user, $arrOpd){
-                    $query->where('maker_id', $user->id)->orWhereIn('opd_id', $arrOpd);
-                });
-            } elseif ($user->role == 6) {
-                $idWilayah = "";
-                if ($user->province_id != null) {
-                    $idWilayah = $user->province_id;
-                    $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhere('province_id', $idWilayah);
-                    });
-                } elseif ($user->regency_id != null) {
-                    $idWilayah = $user->regency_id;
-                    $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhere('regency_id', $idWilayah);
-                    });
-                } elseif ($user->opd_id != null) {
-                    $idWilayah = $user->opd_id;
-                    $data = $data->where(function($query) use ($user, $idWilayah){
-                        $query->where('maker_id', $user->id)->orWhere('opd_id', $idWilayah);
-                    });
-                }
-
-            }
-        }
-        $data = $data->get();
-        // dd($data);
-        return view('daftar-pengguna', compact('data'));
+        set_time_limit(0);  
+        $roles = Role::orderByRaw('id != 5, id != 4')->get(); 
+        return view('daftar-pengguna', compact('roles','request'));
     }
 
     public function change_role(Request $request)
@@ -87,7 +28,16 @@ class PenggunaController extends Controller
         $temp = [];
         $html = "";
         $user = Auth::user();
-        if ($request->type == 3) {
+        $data = $request->datas;
+        if($request->type == 2){
+            $kategori = KategoriInovasi::get();
+            $label = 'Kategori';
+            $type = 'row';
+            $html .= view('components.select-kategori', compact('kategori', 'label', 'type', 'data'))->render();
+
+            return response()->json(['msg' => $html], 200);
+        }
+        else if ($request->type == 3) {
             $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::all(), 'labelNext' => null];
         } elseif ($request->type == 4) {
             $temp[] = ['label' => 'Provinsi', 'wilayah' => Provinsi::where('id',35)->get(), 'labelNext' => 'kota'];
@@ -100,7 +50,7 @@ class PenggunaController extends Controller
                 if (Auth::user()->role == 3 || Helper::checkOpd('provinsi', $user)) {
                     $idWilayah = $user->role == 3 ? $user->province_id : $user->opd->provinsi_id;
                     $opds = Helper::getOpd('provinsi', $idWilayah, $opds);
-                } elseif ($user->role == 4 || Helper::checkOpd('kota', $user)) {
+                }elseif ($user->role == 4 || Helper::checkOpd('kota', $user)) {
                     $idWilayah = $user->role == 4 ? $user->regency_id : $user->opd->kabkota_id;
                     $opds = Helper::getOpd('kota', $idWilayah, $opds);
                 } elseif (Helper::checkOpd('kecamatan', $user) || Helper::checkOpd('kelurahan', $user)) {
@@ -129,6 +79,17 @@ class PenggunaController extends Controller
 
     public function save(Request $request)
     {
+        $menu_inotek = @$request->menu_inotek ?? 0;
+        $menu_iga = @$request->menu_iga ?? 0;
+        $menu_kovablik = @$request->menu_kovablik ?? 0;
+
+
+        $is_kategori_1 = @$request->is_kategori_1 ?? 0;
+        $is_kategori_2 = @$request->is_kategori_2 ?? 0;
+        $is_kategori_3 = @$request->is_kategori_3 ?? 0;
+        $is_kategori_4 = @$request->is_kategori_4 ?? 0;
+        $is_kategori_5 = @$request->is_kategori_5 ?? 0;
+        
         $username = strtolower($request->username);
         if ($request->id == 0) {
             $validated = $request->validate([
@@ -175,6 +136,15 @@ class PenggunaController extends Controller
         $data->phone = $request->phone;
         $data->jabatan_id = $request->jabatan_id;
         $data->golongan_id = $request->golongan_id;
+        $data->tahun = Auth::user()->tahun;
+        $data->menu_inotek = !empty($menu_inotek) ? 1 : 0;
+        $data->menu_iga = !empty($menu_iga) ? 1 : 0;
+        $data->menu_kovablik = !empty($menu_kovablik) ? 1 : 0;
+        $data->is_kategori_1 = !empty($is_kategori_1) ? 1 : 0;
+        $data->is_kategori_2 = !empty($is_kategori_2) ? 1 : 0;
+        $data->is_kategori_3 = !empty($is_kategori_3) ? 1 : 0;
+        $data->is_kategori_4 = !empty($is_kategori_4) ? 1 : 0;
+        $data->is_kategori_5 = !empty($is_kategori_5) ? 1 : 0;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
@@ -183,6 +153,7 @@ class PenggunaController extends Controller
     {
         $data = User::findOrFail($request->id);
         $data->password = Hash::make($data->username);
+        $data->updated_by = Auth::user()->username;
         $data->save();
         return redirect()->back()->with('success', 'Password dengan username = '.$data->username.' berhasil di-reset !');
     }

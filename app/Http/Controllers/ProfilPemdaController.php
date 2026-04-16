@@ -64,25 +64,23 @@ class ProfilPemdaController extends Controller
 
     public function upload_pakta(Request $request)
     {
-        $validator = Validator::make($request->all(), [ 
-            'pakta_integritas' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048', 
-        ], [  
-            'pakta_integritas.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
-            'pakta_integritas.max' => 'File maksimal berukuran 2MB', 
-        ]);
-        if ($validator->fails()) {
-            $msg = "";
-            foreach ($validator->messages()->all() as $message) {
-                $msg .= $message . ". ";
+        if ($request->hasFile('file')) {
+            $nama_file = Helper::save_file(
+                $request->file('pakta_integritas'),
+                uniqid(),
+                'pakta_integritas',
+                $request->file('pakta_integritas'),
+                ['pdf', 'jpg', 'jpeg', 'png']
+            );
+    
+            if ($nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message']);
+            } else {
+                Auth::user()->pakta_integritas = $nama_file;
+                Auth::user()->save();
             }
-            return redirect()->back()->with('error', $msg)->withInput($request->input());
-
-        } else {
-            $nama_file = Helper::save_file($request->file('pakta_integritas'), uniqid(), 'pakta_integritas', Auth::user()->pakta_integritas);
-            Auth::user()->pakta_integritas = $nama_file;
-            Auth::user()->save();
-            return redirect()->back()->with('success', 'Pakta integritas berhasil di-upload !');
         }
+        return redirect()->back()->with('success', 'Pakta integritas berhasil di-upload !');
     }
 
     public function saveParam(Request $request)

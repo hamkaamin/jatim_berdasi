@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Config;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Redirect;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        date_default_timezone_set('Asia/Jakarta');
+        if (env('REDIRECT', '') != '') {
+            Redirect::away(env('REDIRECT', ''))->send();
+        }  
+
         if(env('APP_HTTPS',0) == 1) {
             \URL::forceScheme('https');
         }

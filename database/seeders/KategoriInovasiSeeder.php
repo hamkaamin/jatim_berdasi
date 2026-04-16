@@ -20,5 +20,6 @@ class KategoriInovasiSeeder extends Seeder
         DB::table('kategori_inovasis')->insert(['id' => 3, 'kode'=>3, 'nama'=>'Kategori III : Agribis & Energi Terbarukan', 'nama_singkat' => 'Agribis & Energi Terbarukan']); 
         DB::table('kategori_inovasis')->insert(['id' => 4, 'kode'=>4, 'nama'=>'Kategori IV : Sosial Budaya', 'nama_singkat' => 'Sosial Budaya']); 
         DB::table('kategori_inovasis')->insert(['id' => 5, 'kode'=>5, 'nama'=>'Kategori V : Inovasi Milenial', 'nama_singkat' => 'Inovasi Milenial']); 
+    
     }
 }

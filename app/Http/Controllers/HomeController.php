@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Excel;
 use Helper;
 use App\Models\Bentuk;
@@ -25,15 +24,28 @@ use App\Models\Upload;
 use App\Models\Urusan;
 use App\Models\User;
 use App\Exports\CompileInovasiExport;
+use App\Models\Contact;
 use App\Models\DefinisiOperasional;
 use App\Models\DetailTematik;
+use App\Models\Fase;
+use App\Models\Juri;
+use App\Models\JuriKovablik;
 use App\Models\KategoriInovasi;
+use App\Models\KategoriKovablik;
+use App\Models\KategoriNilaiKovablik;
 use App\Models\KategoriOpd;
 use App\Models\KategoriTahapan;
+use App\Models\KelompokKovablik;
+use App\Models\Penilaian;
+use App\Models\ProposalKovablik;
+use App\Models\TahapanKovablik;
 use App\Models\Tematik;
+use App\Models\VerifikatorKovablik;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -147,22 +159,37 @@ class HomeController extends Controller
         } elseif (Auth::user()->role == 1) {
             $count_opd = Opd::count();
             $count_user = User::count();
-            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user'));
+            $contact = Contact::first();
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'count_opd', 'count_user', 'contact'));
         } else {
             $arrayCount = [];
-            for ($i = 0; $i <= 1; $i++) {
-                for ($j = 1; $j <= 4; $j++) {
-                    $query = Inovasi::where('status', $j)->where('label', $i);
+            for ($i = 0; $i <= 2; $i++) {
+                if ($i < 2) {
+                    for ($j = 1; $j <= 4; $j++) {
+                        $query = Inovasi::where('status', $j)->where('label', $i);
 
-                    if (Auth::user()->role == 4 || Auth::user()->role == 5) {
-                        $query->where('user_id', Auth::user()->id);
+                        if (Auth::user()->role == 4 || Auth::user()->role == 5) {
+                            $query->where('user_id', Auth::user()->id);
+                        }
+
+                        $count = $query->count();
+                        $arrayCount[$i][$j] = $count;
                     }
+                } else {
+                    for ($j = 1; $j <= 4; $j++) {
+                        $query = ProposalKovablik::where('status', $j)->where('label', $i);
 
-                    $count = $query->count();
-                    $arrayCount[$i][$j] = $count;
+                        if (Auth::user()->role == 4 || Auth::user()->role == 5) {
+                            $query->where('user_id', Auth::user()->id);
+                        }
+
+                        $count = $query->count();
+                        $arrayCount[$i][$j] = $count;
+                    }
                 }
             }
-            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount'));
+            $contact = Contact::first();
+            return view('welcome', compact('total_opd_melapor', 'rata_isi', 'rata_total', 'rata_kab', 'rata_kota', 'arrayCount', 'contact'));
         }
     }
 
@@ -282,8 +309,9 @@ class HomeController extends Controller
                 $data = ($request->id == 0) ? null : User::findOrFail($request->id);
                 $jabatan = Jabatan::all();
                 $golongan = Golongan::all();
+                $kategori = KategoriInovasi::get();
                 return response()->json(array(
-                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan'))->render()
+                    'msg' => view('modal.form-pengguna', compact('data', 'jabatan', 'golongan', 'kategori'))->render()
                 ), 200);
                 break;
             case "inovasi_status":
@@ -338,6 +366,93 @@ class HomeController extends Controller
                 $tematik = Tematik::get();
                 return response()->json(array(
                     'msg' => view('modal.form-detail-tematik', compact('data', 'tematik'))->render()
+                ), 200);
+                break;
+
+            case "setting":
+                return response()->json(array(
+                    'msg' => view('modal.form-setting')->render()
+                ), 200);
+                break;
+            case "penilaian":
+                $data = ($request->id == 0) ? null : Penilaian::findOrFail($request->id);
+                $kategori = KategoriInovasi::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-penilaian', compact('data', 'kategori'))->render()
+                ), 200);
+                break;
+            case "juri":
+                $data = ($request->id == 0) ? null : Juri::findOrFail($request->id);
+                $users = User::where('role', 7)->get();
+                $kategori = KategoriInovasi::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-juri', compact('data', 'kategori', 'users'))->render()
+                ), 200);
+                break;
+            case "fase":
+                $data = ($request->id == 0) ? null : Fase::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-fase', compact('data'))->render()
+                ), 200);
+                break;
+            case "contact":
+                $data = ($request->id == 0) ? null : Contact::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-contact', compact('data'))->render()
+                ), 200);
+                break;
+
+            case "kategori_kovablik":
+                $data = ($request->id == 0) ? null : KategoriKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-kategori_kovablik', compact('data'))->render()
+                ), 200);
+                break;
+
+            case "kelompok_kovablik":
+                $data = ($request->id == 0) ? null : KelompokKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-kelompok_kovablik', compact('data'))->render()
+                ), 200);
+                break;
+
+            case "tahapan_kovablik":
+                $data = ($request->id == 0) ? null : TahapanKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-tahapan_kovablik', compact('data'))->render()
+                ), 200);
+                break;
+
+            case "kategori_nilai_kovablik":
+                $data = ($request->id == 0) ? null : KategoriNilaiKovablik::findOrFail($request->id);
+                $tahapan = TahapanKovablik::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'tahapan'))->render()
+                ), 200);
+                break;
+
+            case "juri_kovablik":
+                $data = ($request->id == 0) ? null : JuriKovablik::findOrFail($request->id);
+                $users = User::where('role', 7)->get();
+                $kelompok = KelompokKovablik::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-juri_kovablik', compact('data', 'kelompok', 'users'))->render()
+                ), 200);
+                break;
+
+            case "verifikator_kovablik":
+                $data = ($request->id == 0) ? null : VerifikatorKovablik::findOrFail($request->id);
+                $users = User::where('role', 2)->get();
+                $kelompok = KelompokKovablik::all();
+                return response()->json(array(
+                    'msg' => view('modal.form-verifikator_kovablik', compact('data', 'kelompok', 'users'))->render()
+                ), 200);
+                break;
+
+            case "kovablik_status":
+                $data = ProposalKovablik::findOrFail($request->id);
+                return response()->json(array(
+                    'msg' => view('modal.form-status-kovablik', compact('data'))->render()
                 ), 200);
                 break;
         }
@@ -618,6 +733,35 @@ class HomeController extends Controller
                 $users->password = bcrypt($item->username);
                 $users->save();
             }
+        }
+    }
+
+    public function setting_save(Request $request)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $user->tahun = $request->tahun;
+        $user->save();
+        // session()->put('status', 'Setting berhasil disimpan!');
+        return redirect()->back()->with('success', Config::get('save_success'));
+    }
+
+    public function synckabkota()
+    {
+        try {
+            $client = new Client();
+            $response = $client->request('GET', 'https://inotek.jemberkab.go.id/api/kab_hit_data', [
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
+                ],
+                'verify' => false
+            ]);
+
+
+            $data = json_decode($response->getBody(), true);
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 }
