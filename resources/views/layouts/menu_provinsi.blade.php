@@ -30,19 +30,39 @@
 </div>
 <li class="menu-title">Data Inovasi Daerah</li>
 
-<li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
-        class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
-        <i class="uil-medal"></i> <span>Lomba Inovasi</span>
-    </a>
-</li>
+@if(Auth::user()->menu_inotek == 1)
+    @if($fase->nama == 'inotek')
+        <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
+                <i class="uil-medal"></i> <span>Lomba Inovasi</span>
+            </a>
+        </li>
+    @else
+        <li>
+            <a href="javascript:;" onclick="alertKu('warning', 'Fase peng-inputan Lomba Inovasi sedang ditutup')">
+                <i class="uil-medal"></i> <span>Lomba Inovasi</span>
+            </a>
+        </li>
+    @endif
+@endif
 
-<li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
-    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
-        class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
-        <i class="uil-trophy"></i> <span>IGA</span>
-    </a>
-</li>
+@if(Auth::user()->menu_iga == 1)
+    @if($fase->nama == 'iga')
+        <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+            <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
+                <i class="uil-trophy"></i> <span>IGA</span>
+            </a>
+        </li>
+    @else
+        <li>
+            <a href="javascript:;" onclick="alertKu('warning', 'Fase peng-inputan IGA sedang ditutup')">
+                <i class="uil-trophy"></i> <span>IGA</span>
+            </a>
+        </li>
+    @endif
+@endif
 
 <li class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
     <a href="{{ route('bank_data.index', ['area' => 'bank_data']) }}"
