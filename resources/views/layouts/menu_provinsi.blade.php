@@ -30,67 +30,19 @@
 </div>
 <li class="menu-title">Data Inovasi Daerah</li>
 
-<li class="{{ Request::is('penilaian*') ? 'mm-active' : '' }}">
-    <a href="javascript: void(0);" class="has-arrow waves-effect">
-        <i class="uil-file-check"></i>
-        <span>Lomba Inovasi</span>
+<li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+        class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
+        <i class="uil-medal"></i> <span>Lomba Inovasi</span>
     </a>
-    <ul class="sub-menu" aria-expanded="true">
-
-        @php
-            $fase = App\Models\Fase::where('active', 1)->where('timer', 1)->first(); 
-        @endphp 
-        @if(Auth::user()->menu_iga == 1)
-            @if($fase->nama == 'iga')
-                <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
-                    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
-                        class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
-                        <i class="uil-trophy"></i> <span>IGA</span>
-                    </a>
-                </li>
-            @else 
-                <li>
-                    <a href="javascript:;" onclick="alertKu('warning', 'Fase peninputan IGA sedang ditutup')">
-                        <i class="uil-trophy"></i> <span>IGA</span>
-                    </a>
-                </li>
-            @endif
-        @endif
-        @if(Auth::user()->menu_inotek == 1)
-            @if($fase->nama == 'inotek')
-                <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
-                    <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
-                        class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
-                        <i class="uil-medal"></i> <span>INOTEK</span>
-                    </a>
-                </li>
-            @else 
-                <li>
-                    <a href="javascript:;" onclick="alertKu('warning', 'Fase peninputan Inotek sedang ditutup')">
-                        <i class="uil-medal"></i> <span>INOTEK</span>
-                    </a>
-                </li>
-            @endif
-        @endif
-        @if(Auth::user()->menu_kovablik == 1)
-            @if($fase->nama == 'kovablik')
-                <li class="{{ request()->is('kovablik/masyarakat') ? 'mm-active' : '' }}">
-                    <a href="{{ route('kovablik.index', ['area' => 'masyarakat']) }}"
-                        class="{{ request()->is('kovablik/masyarakat') ? 'active' : '' }}">
-                        <i class="uil-award"></i> <span>KOVABLIK</span>
-                    </a>
-                </li>
-            @else 
-                <li>
-                    <a href="javascript:;" onclick="alertKu('warning', 'Fase peninputan Kovablik sedang ditutup')">
-                        <i class="uil-award"></i> <span>KOVABLIK</span>
-                    </a>
-                </li>
-            @endif
-        @endif
-    </ul>
 </li>
 
+<li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+    <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+        class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
+        <i class="uil-trophy"></i> <span>IGA</span>
+    </a>
+</li>
 
 <li class="{{ Request::routeIs('bank_data.*') ? 'mm-active' : '' }}">
     <a href="{{ route('bank_data.index', ['area' => 'bank_data']) }}"
