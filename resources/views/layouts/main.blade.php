@@ -221,12 +221,13 @@
                 <div class="container-fluid">
 
                     @php
-                        $fase_aktif = App\Models\Fase::where('timer', 1)->first();
-                        $pengumuman = App\Models\Pengumuman::where('is_aktif', 1)->get();
+                        $fases_aktif = App\Models\Fase::where('timer', 1)->get();
+                        $fase_aktif  = $fases_aktif->first();
+                        $pengumuman  = App\Models\Pengumuman::where('is_aktif', 1)->get();
                     @endphp
                     @if ($fase_aktif)
                         <div class="timer">
-                            <span class="timer-title">Fase {{ $fase_aktif->keterangan ?? '' }} Berakhir
+                            <span class="timer-title">Fase {{ $fases_aktif->pluck('keterangan')->implode(' & ') }} Berakhir
                                 Dalam</span>
                             <br>
                             <div class="timer-inner">

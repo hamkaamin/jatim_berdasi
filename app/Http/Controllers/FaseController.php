@@ -40,12 +40,7 @@ class FaseController extends Controller
         $nama = $request->nama;
         $keterangan = $request->keterangan;
         $fase = Fase::orderBy('id', 'desc')->first();
-        $lastid = (@$fase->id ?? 0) + 2;
-        $active = $request->active; 
-        
-        if ($active == 1) {
-            Fase::where('active', 1)->update(['active' => 0,'timer'=>0]);
-        }
+        $active = $request->active;
 
         if ($request->id == 0) {
             $data = new Fase();
@@ -62,7 +57,7 @@ class FaseController extends Controller
         $data->save();
 
         $stat = 'status';
-        $msg = "Data Berhasil Disimpan"; 
+        $msg = "Data Berhasil Disimpan";
         return redirect()->back()->with('success', Config::get('save_success'));
     }
 
@@ -100,7 +95,7 @@ class FaseController extends Controller
         //
     }
 
-    
+
     public function delete(Request $request)
     {
         $data = Fase::findOrFail($request->id);

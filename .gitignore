@@ -17,3 +17,4 @@ yarn-error.log
 /.vscode
 .DS_Store
 public/theme_assets/js/pages/leaflet-map.init.js
+/.env.testing
