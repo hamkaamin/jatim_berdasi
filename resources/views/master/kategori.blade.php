@@ -23,6 +23,7 @@
                             <th>No.</th>
                             <th>Nama</th>
                             <th>Status</th>
+                            <th>Kovablik?</th>
                             <th style="width: 100px"></th>
                         </tr>
                     </thead>
@@ -32,6 +33,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama }}</td>
                                 <td><span class="badge badge-{{ $item->is_aktif ? 'success' : 'danger' }}">{{ $item->is_aktif ? 'Aktif' : 'Tidak Aktif' }}</span></td>
+                                <td><span class="badge badge-{{ $item->is_kovablik ? 'success' : 'danger' }}">{{ $item->is_kovablik ? 'Ya' : 'Tidak' }}</span></td>
                                 <td>
                                     <button data-target="#modalPopup" data-toggle="modal"
                                         onclick="modal({{ $item->id }}, 'kategori')"
