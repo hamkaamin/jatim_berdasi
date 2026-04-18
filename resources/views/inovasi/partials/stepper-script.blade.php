@@ -26,10 +26,13 @@
             var kovablik = selectedOption.data('is-kovablik');
             isKovablik = kovablik == 1;
 
+            var form = document.getElementById('form-edit-inovasi');
             if (isKovablik) {
+                form.action = form.dataset.actionKovablik;
                 $('#stepper-2 .stepper-label').html('Klasifikasi &amp;<br>Administrasi');
                 $('#stepper-3 .stepper-label').html('Data Pendukung<br>&amp; Narasi');
             } else {
+                form.action = form.dataset.actionInovasi;
                 $('#stepper-2 .stepper-label').html('Klasifikasi<br>Inovasi');
                 $('#stepper-3 .stepper-label').html('Deskripsi &amp;<br>Dokumen');
             }

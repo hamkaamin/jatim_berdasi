@@ -20,7 +20,9 @@
         <div class="row">
             <div class="col">
                 <form action="{{ route('inovasi.save', ['id' => $data != null ? $data->id : 0]) }}" method="post"
-                    enctype="multipart/form-data" id="form-edit-inovasi">
+                    enctype="multipart/form-data" id="form-edit-inovasi"
+                    data-action-inovasi="{{ route('inovasi.save', ['id' => $data != null ? $data->id : 0]) }}"
+                    data-action-kovablik="{{ route('kovablik.save', ['id' => $data != null ? $data->id : 0]) }}">
                     <input type="hidden" name="label" value="{{ $label }}">
                     @csrf
                     @php

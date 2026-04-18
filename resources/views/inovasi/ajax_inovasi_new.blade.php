@@ -89,10 +89,10 @@
             <label><b>Asta Cita</b> <span class="text-danger">*</span></label>
         </div>
         <div class="col-sm-8">
-            <select name="asta_cita" id="asta_cita" class="form-control">
+            <select name="asta_cita_id" id="asta_cita_id" class="form-control">
                 <option value="" selected disabled>-- Pilih Salah Satu --</option>
                 @foreach ($astaCita as $item)
-                    <option value="{{ $item->id }}" @if (($data != null && $data->asta_cita == $item->id) || old('asta_cita') == $item->id) selected @endif>
+                    <option value="{{ $item->id }}" @if (($data != null && $data->asta_cita_id == $item->id) || old('asta_cita_id') == $item->id) selected @endif>
                         {{ $item->name }}</option>
                 @endforeach
             </select>

@@ -395,6 +395,7 @@ class InovasiController extends Controller
             $data->jenis_id = $request->jenis_id;
             $data->bentuk_id = $request->bentuk_id;
             $data->tematik_id = $request->tematik_id;
+            $data->asta_cita_id = $request->asta_cita_id;
             $data->detail_tematik_id = $request->detail_tematik_id;
             $data->nama_inisiator = $request->nama_inisiator;
             $data->covid = $request->covid;
@@ -683,63 +684,50 @@ class InovasiController extends Controller
     {
         $inovasi_id = $request->inovasi_id;
         $kategori_id = $request->kategori_id;
-            $data = null;
-            $tahapan = Tahapan::all();
-            $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-            $inisiator = Inisiator::all();
-            $jenis = Jenis::all();
-            $bentuk = Bentuk::all();
-            $urusan = Urusan::all();
-            $astaCita = AstaCita::all();
-            $kategori = KategoriInovasi::all();
-            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
-                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
-            }else{
-                if ($inovasi_id != 0) {
-                    $inovasi = Inovasi::find(decrypt($inovasi_id));
-                    $kategori = KategoriOpd::where('opd_id',$inovasi->user->opd_id)->where('is_aktif',1);
-                }
-            }
-            $label = 0;
+        $data = null;
+        $tahapan = Tahapan::all();
+        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
+        $inisiator = Inisiator::all();
+        $jenis = Jenis::all();
+        $bentuk = Bentuk::all();
+        $urusan = Urusan::all();
+        $astaCita = AstaCita::all();
+        $label = 0;
 
-            $kategori = $kategori->get();
-            if ($inovasi_id != 0) {
-                $id = $inovasi_id;
-                $data = Inovasi::findOrFail($id);
-                if($data->user_id != Auth::user()->id){
-                    return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
-                }
-                $label = $data->label;
+        if ($inovasi_id != 0) {
+            $id = $inovasi_id;
+            $data = Inovasi::findOrFail($id);
+            if($data->user_id != Auth::user()->id){
+                return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
             }
+            $label = $data->label;
+        }
 
-            if (isset($request->label)) {
-                $label = $request->label;
-            }
-            if($label == 0){
-                $kategori = $kategori->where('kategori_id',1);
-            }
-            $fase = Fase::where('active', 1)->first();
+        if (isset($request->label)) {
+            $label = $request->label;
+        }
+        $fase = Fase::where('active', 1)->first();
 
-            $selectedKategori = KategoriInovasi::find($kategori_id);
-            if ($selectedKategori && $selectedKategori->is_kovablik) {
-                $kategoriKovablik = KategoriKovablik::all();
-                $kelompok = KelompokKovablik::all();
-                $kovablikData = null;
-                return view('kovablik.form-kovablik-new', [
-                    'data'     => $kovablikData,
-                    'kategori' => $kategoriKovablik,
-                    'kelompok' => $kelompok,
-                    'label'    => $label,
-                    'fase'     => $fase,
-                ]);
-            }
+        $selectedKategori = KategoriInovasi::find($kategori_id);
+        if ($selectedKategori && $selectedKategori->is_kovablik) {
+            $kategoriKovablik = KategoriKovablik::all();
+            $kelompok = KelompokKovablik::all();
+            $kovablikData = null;
+            return view('kovablik.form-kovablik-new', [
+                'data'     => $kovablikData,
+                'kategori' => $kategoriKovablik,
+                'kelompok' => $kelompok,
+                'label'    => $label,
+                'fase'     => $fase,
+            ]);
+        }
 
-            $view = 'inovasi.ajax_inovasi_new';
-            if($kategori_id == 5){
-                $view= 'inovasi.form.kategori_5_new';
-            }
+        $view = 'inovasi.ajax_inovasi_new';
+        if($kategori_id == 5){
+            $view = 'inovasi.form.kategori_5_new';
+        }
 
-            return view($view, compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','astaCita','fase'));
+        return view($view, compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','astaCita','fase'));
 
     }
 
