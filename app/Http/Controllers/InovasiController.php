@@ -702,6 +702,7 @@ class InovasiController extends Controller
                 'kelompok' => $kelompok,
                 'label'    => $label,
                 'fase'     => $fase,
+                'astaCita' => $astaCita
             ]);
         }
 

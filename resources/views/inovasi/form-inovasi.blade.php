@@ -56,7 +56,7 @@
 
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
                                 @if ($user->province_id != null)
                                     PROVINSI {{ $user->provinsi->name }}
                                 @elseif ($user->regency_id != null)
@@ -76,21 +76,21 @@
                         </div>
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
                                 {{ $user->name . ' - ' . $user->username }}
                             </div>
                         </div>
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inovasi</b> <span
                                         class="text-danger">*</span></label></div>
-                            <div class="col-sm-8"><input type="text" required name="nama" class="form-control"
-                                    value="{{ $data != null ? $data->nama : old('nama') }}"></div>
+                            <div class="col-sm-9"><input type="text" required name="nama" class="form-control"
+                                    value="{{ $data != null ? ($data->nama ?? $data->judul) : old('nama') }}"></div>
                         </div>
 
                         <div class="row my-2">
                             <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b> <span
                                         class="text-danger">*</span></label></div>
-                            <div class="col-sm-8">
+                            <div class="col-sm-9">
                                 <div class="row">
                                     <div class="col-12 d-flex align-items-center">
                                         <select name="kategori_id" id="kategori_id" class="form-control" required>
@@ -98,7 +98,11 @@
                                             @foreach ($kategori as $item)
                                                 <option value="{{ $item->id }}"
                                                     data-is-kovablik="{{ $item->is_kovablik ? '1' : '0' }}"
-                                                    @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
+                                                    @if (
+                                                        old('kategori_id') == $item->id ||
+                                                        ($data && !($data instanceof \App\Models\ProposalKovablik) && $data->kategori_id == $item->id) ||
+                                                        ($data instanceof \App\Models\ProposalKovablik && $item->is_kovablik)
+                                                    ) selected @endif>
                                                     {{ $item->nama }}
                                                 </option>
                                             @endforeach

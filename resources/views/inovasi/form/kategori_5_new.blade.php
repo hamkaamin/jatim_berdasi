@@ -6,14 +6,14 @@
     <div class="row my-2">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Perangkat Daerah</b> <span
                     class="text-danger">*</span></label></div>
-        <div class="col-sm-8"><input type="text" required name="perangkat_daerah" class="form-control"
+        <div class="col-sm-9"><input type="text" required name="perangkat_daerah" class="form-control"
                 value="{{ $data != null ? $data->perangkat_daerah : old('perangkat_daerah') }}"></div>
     </div>
 
     <div class="row my-3">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Inisiator Inovasi</b> <span
                     class="text-danger">*</span></label></div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <div class="row">
                 @foreach ($inisiator as $item)
                     <div class="col-6 d-flex align-items-center">
@@ -31,7 +31,7 @@
     <div class="row my-3">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Jenis Inovasi</b> <span
                     class="text-danger">*</span></label></div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <div class="row">
                 @foreach ($jenis as $item)
                     <div class="col-6 d-flex align-items-center">
@@ -49,14 +49,14 @@
     <div class="row my-2">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inisiator</b> <span
                     class="text-danger">*</span></label></div>
-        <div class="col-sm-8"><input type="text" required name="nama_inisiator" class="form-control"
+        <div class="col-sm-9"><input type="text" required name="nama_inisiator" class="form-control"
                 value="{{ $data != null ? $data->nama_inisiator : old('nama_inisiator') }}"></div>
     </div>
 
     <div class="row my-2">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Ujicoba Inovasi</b> <span
                     class="text-danger">*</span></label></div>
-        <div class="col-sm-8"><input type="date" required name="waktu_uji_coba" class="form-control"
+        <div class="col-sm-9"><input type="date" required name="waktu_uji_coba" class="form-control"
                 value="{{ $data != null ? $data->waktu_uji_coba : old('waktu_uji_coba') }}">
         </div>
     </div>
@@ -64,7 +64,7 @@
     <div class="row my-2">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Penerapan Inovasi</b> <span
                     class="text-danger">*</span></label></div>
-        <div class="col-sm-8"><input type="date" required name="waktu_penerapan" class="form-control"
+        <div class="col-sm-9"><input type="date" required name="waktu_penerapan" class="form-control"
                 value="{{ $data != null ? $data->waktu_penerapan : old('waktu_penerapan') }}">
         </div>
     </div>
@@ -74,7 +74,7 @@
             <label><b>Apakah sudah ada pengembangan inovasi tersebut</b> <span
                     class="text-danger">*</span></label>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <div class="row">
                 <div class="col-6 d-flex align-items-center">
                     <input type="radio" class="pb-0 mb-0 ml-2" id="pengembangan_1" value="1"
@@ -92,7 +92,7 @@
         <div class="col-sm-3 d-flex align-items-center">
             <label><b>Waktu Pengembangan Inovasi</b> <span class="text-danger">*</span></label>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <input type="date" name="waktu_pengembangan" class="form-control"
                 value="{{ $data != null ? $data->waktu_pengembangan : old('waktu_pengembangan') }}">
         </div>
@@ -121,7 +121,7 @@
     <div class="row my-2">
         <div class="col-sm-3 d-flex align-items-start"><label><b>Rancang bangun dan pokok perubahan
                     yang dilakukan</b><span class="text-danger">*</span></label></div>
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <textarea name="rancang_bangun" oninput="countWords()" class="form-control" required
                 id="inputText">
 @if ($data != null)
@@ -141,7 +141,7 @@
         <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika
                     ada)</b></label>
         </div>
-        <div class="col-sm-8"><input accept=".jpg,.jpeg,.png,.pdf" type="file" name="profil_bisnis">
+        <div class="col-sm-9"><input accept=".jpg,.jpeg,.png,.pdf" type="file" name="profil_bisnis">
             @if ($data != null)
                 <br><a href="{{ $data->profil_bisnis }}" target="_blank">Download File Profil Bisnis</a>
             @endif
@@ -150,7 +150,7 @@
 
     <div class="row my-2">
         <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
-        <div class="col-sm-8"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="file_penghargaan">
+        <div class="col-sm-9"><input type="file" accept=".jpg,.jpeg,.png,.pdf" name="file_penghargaan">
             @if ($data != null)
                 <br><a href="{{ $data->file_penghargaan }}" target="_blank">Download File Penghargaan</a>
             @endif
