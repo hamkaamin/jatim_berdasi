@@ -23,6 +23,7 @@ class KategoriController extends Controller
         }
         $data->nama = $request->nama;
         $data->is_aktif = $request->is_active;
+        $data->is_kovablik = $request->is_kovablik;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }

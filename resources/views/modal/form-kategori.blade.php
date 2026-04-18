@@ -21,6 +21,15 @@
                 </select>
             </div>
         </div>
+        <div class="row mb-3">
+            <label class="control-label col-sm-4">Kovablik?</label>
+            <div class="col-sm-8">
+                <select name="is_kovablik" class="form-control" id="is_kovablik">
+                    <option {{ @$data->is_kovablik == 0 ? 'selected' : '' }} value="0">Tidak</option>
+                    <option {{ @$data->is_kovablik == 1 ? 'selected' : '' }} value="1">Ya</option>
+                </select>
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
