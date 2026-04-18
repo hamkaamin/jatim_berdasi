@@ -30,10 +30,11 @@
 </div>
 <li class="menu-title">Data Inovasi Daerah</li>
 @php
-    $fase = App\Models\Fase::where('active', 1)->where('timer', 1)->first();
+    $fase = App\Models\Fase::where('active', 1)->where('timer', 1)->get();
+    $faseName = $fase ? $fase->pluck('nama')->toArray() : [];
 @endphp
 @if(Auth::user()->menu_inotek == 1)
-    @if($fase->nama == 'inotek')
+    @if(in_array('inovasi', $faseName) || in_array('kovablik', $faseName))
         <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
             <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
                 class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
@@ -42,7 +43,7 @@
         </li>
     @else
         <li>
-            <a href="javascript:;" onclick="alertKu('warning', 'Fase peng-inputan Lomba Inovasi sedang ditutup')">
+            <a href="javascript:;" onclick="alertKu('warning', 'Fase penginputan Lomba Inovasi sedang ditutup, silakan coba lagi lain waktu')">
                 <i class="uil-medal"></i> <span>Lomba Inovasi</span>
             </a>
         </li>
@@ -50,7 +51,7 @@
 @endif
 
 @if(Auth::user()->menu_iga == 1)
-    @if($fase->nama == 'iga')
+    @if(in_array('iga', $faseName))
         <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
             <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
                 class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
@@ -59,7 +60,7 @@
         </li>
     @else
         <li>
-            <a href="javascript:;" onclick="alertKu('warning', 'Fase peng-inputan IGA sedang ditutup')">
+            <a href="javascript:;" onclick="alertKu('warning', 'Fase penginputan IGA sedang ditutup, silakan coba lagi lain waktu')">
                 <i class="uil-trophy"></i> <span>IGA</span>
             </a>
         </li>

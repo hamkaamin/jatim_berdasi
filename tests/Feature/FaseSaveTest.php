@@ -127,21 +127,7 @@ class FaseSaveTest extends TestCase
 
     // --- Active flag logic ---
 
-    public function test_setting_active_1_deactivates_all_other_fases()
-    {
-        $fase1 = (new Fase)->forceFill(['nama' => 'iga',    'active' => 1, 'timer' => 1]);
-        $fase1->save();
-        $fase2 = (new Fase)->forceFill(['nama' => 'inotek', 'active' => 1, 'timer' => 1]);
-        $fase2->save();
-
-        $this->actingAs($this->superadmin())
-            ->post(route('master.fase.save'), $this->payload(['active' => 1]));
-
-        $this->assertDatabaseHas('fases', ['id' => $fase1->id, 'active' => 0, 'timer' => 0]);
-        $this->assertDatabaseHas('fases', ['id' => $fase2->id, 'active' => 0, 'timer' => 0]);
-    }
-
-    public function test_new_fase_with_active_1_is_saved_as_active()
+    public function test_fase_saved_with_active_1_is_active()
     {
         $this->actingAs($this->superadmin())
             ->post(route('master.fase.save'), $this->payload(['active' => 1]));
@@ -151,13 +137,36 @@ class FaseSaveTest extends TestCase
         $this->assertEquals(1, $fase->timer);
     }
 
-    public function test_setting_active_0_does_not_deactivate_other_fases()
+    public function test_fase_saved_with_active_0_is_inactive()
     {
-        (new Fase)->forceFill(['nama' => 'iga', 'active' => 1, 'timer' => 1])->save();
-
         $this->actingAs($this->superadmin())
             ->post(route('master.fase.save'), $this->payload(['active' => 0]));
 
+        $fase = Fase::orderBy('id', 'desc')->first();
+        $this->assertEquals(0, $fase->active);
+        $this->assertEquals(0, $fase->timer);
+    }
+
+    public function test_multiple_fases_can_be_active_simultaneously()
+    {
+        $existing = (new Fase)->forceFill(['nama' => 'inotek', 'active' => 1, 'timer' => 1]);
+        $existing->save();
+
+        $this->actingAs($this->superadmin())
+            ->post(route('master.fase.save'), $this->payload(['nama' => 'iga', 'active' => 1]));
+
+        $this->assertDatabaseHas('fases', ['id' => $existing->id, 'active' => 1, 'timer' => 1]);
         $this->assertDatabaseHas('fases', ['nama' => 'iga', 'active' => 1, 'timer' => 1]);
+    }
+
+    public function test_saving_fase_does_not_affect_other_fases_active_status()
+    {
+        $other = (new Fase)->forceFill(['nama' => 'kovablik', 'active' => 1, 'timer' => 1]);
+        $other->save();
+
+        $this->actingAs($this->superadmin())
+            ->post(route('master.fase.save'), $this->payload(['nama' => 'iga', 'active' => 0]));
+
+        $this->assertDatabaseHas('fases', ['id' => $other->id, 'active' => 1, 'timer' => 1]);
     }
 }
