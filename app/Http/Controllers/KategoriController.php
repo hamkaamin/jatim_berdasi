@@ -10,7 +10,7 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $data = KategoriInovasi::all();
+        $data = KategoriInovasi::orderBy('id', 'asc')->get();
         return view('master.kategori', compact('data'));
     }
 
@@ -22,6 +22,7 @@ class KategoriController extends Controller
             $data = KategoriInovasi::findOrFail($request->id);
         }
         $data->nama = $request->nama;
+        $data->is_aktif = $request->is_active;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
