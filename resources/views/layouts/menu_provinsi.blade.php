@@ -29,7 +29,9 @@
     @endif
 </div>
 <li class="menu-title">Data Inovasi Daerah</li>
-
+@php
+    $fase = App\Models\Fase::where('active', 1)->where('timer', 1)->first();
+@endphp
 @if(Auth::user()->menu_inotek == 1)
     @if($fase->nama == 'inotek')
         <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
