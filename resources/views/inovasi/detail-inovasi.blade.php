@@ -1,11 +1,11 @@
 @extends('layouts.main')
 
 @section('title')
-    {{ $data != null ? 'Edit' : 'Tambah' }} Inovasi
+    Detail Inovasi
 @endsection
 
 @section('title-desc')
-    Form untuk {{ $data != null ? 'Mengedit' : 'Menambah' }} Data Inovasi dalam Sistem
+    Isian detail dari data inovasi
 @endsection
 
 @section('buttons')
@@ -98,6 +98,15 @@
                     </div>
                     <div class="col-sm-8">
                         {{ $data != null && $data->tematik ? $data->tematik->nama : 'Tidak Ada Data' }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center">
+                        <label><b>Asta Cita</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                        {{ $data != null && $data->AstaCita ? $data->AstaCita->name : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
@@ -208,26 +217,6 @@
         <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
             class="btn btn-light">
             Kembali</a>
-        {{-- @if ($data != null && $data->status == 0)
-            <form style="all: unset" action="{{ route('inovasi.save', ['id' => $data->id]) }}" method="post">
-                @csrf
-                <input type="hidden" name="label" value="{{ $data->label }}">
-                <button type="submit" class="btn btn-primary" name="status" value="1"
-                    onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
-                    Inovasi</button>
-            </form>
-        @endif --}}
-
-        {{-- @if (Auth::user()->role == 2)
-            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modalPopup"
-                onclick="modal({{ request()->id }}, 'inovasi_status')">Update Status Inovasi</button>
-        @endif --}}
     @endif
 
-@endsection
-
-@section('script')
-    @include('script.select2-multiple')
-    @include('script.ck-editor')
-    @include('script.modal')
 @endsection

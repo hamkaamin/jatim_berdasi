@@ -250,41 +250,24 @@ class InovasiController extends Controller
 
     public function detail(Request $request)
     {
-        $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
-            $inisiator = Inisiator::all();
-            $jenis = Jenis::all();
-            $bentuk = Bentuk::all();
-            $urusan = Urusan::all();
-            $tematik = Tematik::all();
-            $kategori = KategoriInovasi::all();
-            $view = 'inovasi.detail-inovasi';
-            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
-                $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
-            }else{
-                if ($request->id != 0) {
-                    $inovasi = Inovasi::find(decrypt($request->id));
-                    $kategori = KategoriOpd::where('opd_id',$inovasi->user->opd_id)->where('is_aktif',1);
-                }
+        $view = 'inovasi.detail-inovasi';
+        $label = 0;
+        if ($request->id != 0) {
+            $id = decrypt($request->id);
+            $data = Inovasi::with([
+                'belongsToTahapan', 'kategori', 'inisiator', 'jenis', 'bentuk', 'tematik', 'astaCita', 'urusan', 'user'
+            ])->findOrFail($id);
+            $label = $data->label;
+            if($data->kategori_id == 5){
+                $view = 'inovasi.detail-inovasi-kategori-5';
             }
-            $label = 0;
+        }
 
-            $kategori = $kategori->get();
-            if ($request->id != 0) {
-                $id = decrypt($request->id);
-                $data = Inovasi::findOrFail($id);
-                $label = $data->label;
-                if($data->kategori_id == 5){
-                    $view = 'inovasi.detail-inovasi-kategori-5';
-                }
-            }
+        if (isset($request->label)) {
+            $label = $request->label;
+        }
 
-            if (isset($request->label)) {
-                $label = $request->label;
-            }
-            if($label == 0){
-                $kategori = $kategori->where('kategori_id',1);
-            }
-            return view($view, compact('data','kategori', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik'));
+        return view($view, compact('data','label'));
     }
 
     public function limit_words($string, $word_limit) {
