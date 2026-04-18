@@ -293,6 +293,7 @@
             success: function(response) {
                 if (response != 'failed') {
                     $(target).html(response);
+                    ckEditorsInited = false;
                     div_tahapan(token, '#div_tahapan', form_id);
                     if (typeof callback === 'function') callback();
                 } else {

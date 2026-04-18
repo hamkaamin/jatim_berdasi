@@ -83,14 +83,11 @@
                 $('#step-panel-3-kov').addClass('step-panel-active');
             } else {
                 $('#step-panel-3').addClass('step-panel-active');
-                if (!ckEditorsInited) {
-                    ckEditorsInited = true;
-                    var editors = document.querySelectorAll('.ck-editor');
-                    for (var i = 0; i < editors.length; i++) {
-                        ClassicEditor.create(editors[i]).catch(function(error) {
-                            console.error(error);
-                        });
-                    }
+            }
+            if (!ckEditorsInited) {
+                ckEditorsInited = true;
+                if (typeof window.initCkEditorCount === 'function') {
+                    window.initCkEditorCount();
                 }
             }
         }
