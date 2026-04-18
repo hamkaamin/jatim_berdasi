@@ -16,8 +16,8 @@
             <label class="control-label col-sm-4">Status</label>
             <div class="col-sm-8">
                 <select name="is_active" class="form-control" id="is_active">
-                    <option {{ @$data->is_active == 0 ? 'selected' : '' }} value="0">Tidak Aktif</option>
-                    <option {{ @$data->is_active == 1 ? 'selected' : '' }} value="1">Aktif</option>
+                    <option {{ @$data->is_aktif == 0 ? 'selected' : '' }} value="0">Tidak Aktif</option>
+                    <option {{ @$data->is_aktif == 1 ? 'selected' : '' }} value="1">Aktif</option>
                 </select>
             </div>
         </div>
