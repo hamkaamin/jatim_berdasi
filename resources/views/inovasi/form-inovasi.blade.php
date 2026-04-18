@@ -1,5 +1,9 @@
 @extends('layouts.main')
 
+@push('styles')
+    @include('inovasi.partials.stepper-style')
+@endpush
+
 @section('title')
     {{ $data != null ? 'Edit' : 'Tambah' }} Inovasi
 @endsection
@@ -22,57 +26,71 @@
                     @php
                         $user = $data != null ? $data->user : Auth::user();
                     @endphp
-                    <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
-                        <div class="col-sm-8">
-                            @if ($user->province_id != null)
-                                PROVINSI {{ $user->provinsi->name }}
-                            @elseif ($user->regency_id != null)
-                                {{ $user->kota->name }}
-                            @elseif ($user->opd_id != null)
-                                @if ($user->opd->provinsi_id != null)
-                                    PROVINSI {{ $user->opd->provinsi->name }}
-                                @elseif ($user->opd->kabkota_id != null)
-                                    {{ $user->opd->kota->name }}
-                                @elseif ($user->opd->kecamatan_id != null)
-                                    KECAMATAN {{ $user->opd->kecamatan->name }}
-                                @elseif ($user->opd->kelurahan_id != null)
-                                    KELURAHAN {{ $user->opd->kelurahan->name }}
-                                @endif
-                            @endif
+                    <!-- ===== STEPPER HEADER ===== -->
+                    <div class="stepper-header" id="stepperHeader">
+                        <div class="stepper-item step-active" id="stepper-1">
+                            <div class="stepper-circle">1</div>
+                            <div class="stepper-label">Informasi<br>Dasar</div>
                         </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
-                        <div class="col-sm-8">
-                            {{ $user->name . ' - ' . $user->username }}
+                        <div class="stepper-item" id="stepper-2">
+                            <div class="stepper-circle">2</div>
+                            <div class="stepper-label">Klasifikasi<br>Inovasi</div>
                         </div>
-                    </div>
-                    <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inovasi</b> <span
-                                    class="text-danger">*</span></label></div>
-                        <div class="col-sm-8"><input type="text" required name="nama" class="form-control"
-                                value="{{ $data != null ? $data->nama : old('nama') }}"></div>
+                        <div class="stepper-item" id="stepper-3">
+                            <div class="stepper-circle">3</div>
+                            <div class="stepper-label">Deskripsi &amp;<br>Dokumen</div>
+                        </div>
                     </div>
 
-                    <div class="row my-2">
-                        <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b> <span
-                                    class="text-danger">*</span></label></div>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                @if (Auth::user()->role == 4 || Auth::user()->role == 5)
-                                    {{-- @foreach ($kategori as $item) --}}
+                    <!-- ===== PROGRESS BAR ===== -->
+                    <div class="stepper-progress">
+                        <div class="stepper-progress-bar" id="stepperProgress" style="width: 16%"></div>
+                    </div>
+
+                    <div class="step-panel step-panel-active" id="step-panel-1">
+                        <p class="step-panel-title">Langkah 1 &mdash; Informasi Dasar</p>
+                        <p class="step-panel-subtitle">Identitas umum inovasi yang akan didaftarkan</p>
+                        <hr class="step-divider">
+
+                        <div class="row my-2">
+                            <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
+                            <div class="col-sm-8">
+                                @if ($user->province_id != null)
+                                    PROVINSI {{ $user->provinsi->name }}
+                                @elseif ($user->regency_id != null)
+                                    {{ $user->kota->name }}
+                                @elseif ($user->opd_id != null)
+                                    @if ($user->opd->provinsi_id != null)
+                                        PROVINSI {{ $user->opd->provinsi->name }}
+                                    @elseif ($user->opd->kabkota_id != null)
+                                        {{ $user->opd->kota->name }}
+                                    @elseif ($user->opd->kecamatan_id != null)
+                                        KECAMATAN {{ $user->opd->kecamatan->name }}
+                                    @elseif ($user->opd->kelurahan_id != null)
+                                        KELURAHAN {{ $user->opd->kelurahan->name }}
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
+                            <div class="col-sm-8">
+                                {{ $user->name . ' - ' . $user->username }}
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inovasi</b> <span
+                                        class="text-danger">*</span></label></div>
+                            <div class="col-sm-8"><input type="text" required name="nama" class="form-control"
+                                    value="{{ $data != null ? $data->nama : old('nama') }}"></div>
+                        </div>
+
+                        <div class="row my-2">
+                            <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b> <span
+                                        class="text-danger">*</span></label></div>
+                            <div class="col-sm-8">
+                                <div class="row">
                                     <div class="col-12 d-flex align-items-center">
-                                        {{-- <select name="kategori_id" id="kategori_id" class="form-control" required
-                                            onchange="div_tahapan('{{ csrf_token() }}','#div_tahapan','#form-edit-inovasi')">
-                                            <option value="">-- Pilih Kategori --</option>
-                                            @foreach ($kategori as $item)
-                                                <option value="{{ $item->kategori->id }}"
-                                                    @if (old('kategori_id') == $item->kategori->id || ($data && $data->kategori_id == $item->kategori->id)) selected @endif>
-                                                    {{ $item->kategori->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select> --}}
                                         <select name="kategori_id" id="kategori_id" class="form-control" required
                                             onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
                                             <option value="">-- Pilih Kategori --</option>
@@ -84,23 +102,11 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    {{-- @endforeach --}}
-                                @else
-                                    @foreach ($kategori as $item)
-                                        <div class="col-6 d-flex align-items-center">
-                                            <input type="radio" id="kategori_{{ $item->id }}"
-                                                value="{{ $item->id }}" name="kategori_id"
-                                                @if (old('kategori_id') == $item->id ||
-                                                        ($data == null && $loop->iteration == 1) ||
-                                                        ($data != null && $data->kategori_id == $item->id))  @endif><label class="pb-0 mb-0 ml-2"
-                                                onclick="div_tahapan('{{ csrf_token() }}','#div_tahapan','#form-edit-inovasi')">{{ $item->kategori->nama }}
-                                                for="kategori_{{ $item->id }}">{{ $item->nama }}</label>
-                                        </div>
-                                    @endforeach
-                                @endif
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div id="div_kategori_inovasi">
 
                     </div>
@@ -350,4 +356,5 @@
 @section('script')
     {{-- @include('script.select2-multiple') --}}
     @include('script.modal')
+    @include('inovasi.partials.stepper-script')
 @endsection

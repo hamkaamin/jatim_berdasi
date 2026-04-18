@@ -299,7 +299,7 @@ class ProposalKovablikController extends Controller
 
     public function edit(Request $request)
     {
-        $fase = Fase::where('active', 1)->first();
+        $fase = Fase::where('active', 1)->where('nama', 'kovablik')->first();
         $nama_fase = $fase->nama;
 
         if ($nama_fase == 'inotek') {

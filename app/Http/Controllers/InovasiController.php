@@ -217,23 +217,18 @@ class InovasiController extends Controller
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $tematik = Tematik::all();
-            $kategori = KategoriInovasi::orderBy('id','asc')->get();
-            if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
-                $kategori = KategoriInovasi::orderBy('id','asc')->get();
-            }else{
-                if ($request->id != 0) {
-                    $inovasi = Inovasi::find(decrypt($request->id));
-                    $kategori = KategoriInovasi::orderBy('id','asc')->get();
-
-                }
-            }
+            $kategori = KategoriInovasi::orderBy('id','asc')->where('id', '!=', 1)->get();
             $label = 0;
+
             if ($request->id != 0) {
                 $id = decrypt($request->id);
+                $inovasi = Inovasi::find(decrypt($request->id));
                 $data = Inovasi::findOrFail($id);
+
                 if($data->user_id != Auth::user()->id){
                     return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
                 }
+
                 $label = $data->label;
             }
 
