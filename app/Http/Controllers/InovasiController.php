@@ -15,10 +15,13 @@ use App\Models\Tahapan;
 use App\Models\Upload;
 use App\Models\Urusan;
 use App\Exports\InovasiExport;
+use App\Models\AstaCita;
 use App\Models\DetailTematik;
 use App\Models\Fase;
 use App\Models\KategoriInovasi;
+use App\Models\KategoriKovablik;
 use App\Models\KategoriOpd;
+use App\Models\KelompokKovablik;
 use App\Models\KategoriTahapan;
 use App\Models\Setting;
 use App\Models\Tematik;
@@ -217,7 +220,7 @@ class InovasiController extends Controller
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $tematik = Tematik::all();
-            $kategori = KategoriInovasi::orderBy('id','asc')->where('id', '!=', 1)->get();
+            $kategori = KategoriInovasi::where('id', '!=', 1)->orderBy('is_kovablik','desc')->get();
             $label = 0;
 
             if ($request->id != 0) {
@@ -687,7 +690,7 @@ class InovasiController extends Controller
             $jenis = Jenis::all();
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
-            $tematik = Tematik::all();
+            $astaCita = AstaCita::all();
             $kategori = KategoriInovasi::all();
             if(Auth::user()->role == 4 || Auth::user()->role == 5 || Auth::user()->role == 7 ){
                 $kategori = KategoriOpd::where('opd_id',Auth::user()->opd_id)->where('is_aktif',1);
@@ -716,12 +719,27 @@ class InovasiController extends Controller
                 $kategori = $kategori->where('kategori_id',1);
             }
             $fase = Fase::where('active', 1)->first();
-            $view = 'inovasi.ajax_inovasi';
-            if($kategori_id == 5){
-                $view= 'inovasi.form.kategori_5';
+
+            $selectedKategori = KategoriInovasi::find($kategori_id);
+            if ($selectedKategori && $selectedKategori->is_kovablik) {
+                $kategoriKovablik = KategoriKovablik::all();
+                $kelompok = KelompokKovablik::all();
+                $kovablikData = null;
+                return view('kovablik.form-kovablik-new', [
+                    'data'     => $kovablikData,
+                    'kategori' => $kategoriKovablik,
+                    'kelompok' => $kelompok,
+                    'label'    => $label,
+                    'fase'     => $fase,
+                ]);
             }
 
-            return view($view, compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','tematik','fase'));
+            $view = 'inovasi.ajax_inovasi_new';
+            if($kategori_id == 5){
+                $view= 'inovasi.form.kategori_5_new';
+            }
+
+            return view($view, compact('data','kategori', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','astaCita','fase'));
 
     }
 

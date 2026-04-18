@@ -21,7 +21,11 @@
                 alertKu('warning', 'Kategori Inovasi wajib dipilih sebelum melanjutkan.');
                 return;
             }
-            isKovablik = (kategori === '1');
+
+            var selectedOption = $('#form-edit-inovasi').find('select[name="kategori_id"] option:selected');
+            var kovablik = selectedOption.data('is-kovablik');
+            isKovablik = kovablik == 1;
+
             if (isKovablik) {
                 $('#stepper-2 .stepper-label').html('Klasifikasi &amp;<br>Administrasi');
                 $('#stepper-3 .stepper-label').html('Data Pendukung<br>&amp; Narasi');
@@ -29,6 +33,11 @@
                 $('#stepper-2 .stepper-label').html('Klasifikasi<br>Inovasi');
                 $('#stepper-3 .stepper-label').html('Deskripsi &amp;<br>Dokumen');
             }
+
+            div_kategori_inovasi('{{ csrf_token() }}', '#div_kategori_inovasi', '#form-edit-inovasi', {{ $data ? $data->id : 'null' }}, function() {
+                goToStep(2);
+            });
+            return;
         }
         goToStep(fromStep + 1);
     }

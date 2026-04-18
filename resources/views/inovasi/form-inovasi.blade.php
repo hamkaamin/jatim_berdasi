@@ -91,11 +91,11 @@
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-12 d-flex align-items-center">
-                                        <select name="kategori_id" id="kategori_id" class="form-control" required
-                                            onchange="div_kategori_inovasi('{{ csrf_token() }}','#div_kategori_inovasi','#form-edit-inovasi',{{ $data ? $data->id : 'null' }})">
+                                        <select name="kategori_id" id="kategori_id" class="form-control" required>
                                             <option value="">-- Pilih Kategori --</option>
                                             @foreach ($kategori as $item)
                                                 <option value="{{ $item->id }}"
+                                                    data-is-kovablik="{{ $item->is_kovablik ? '1' : '0' }}"
                                                     @if (old('kategori_id') == $item->id || ($data && $data->kategori_id == $item->id)) selected @endif>
                                                     {{ $item->nama }}
                                                 </option>
@@ -105,6 +105,17 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="stepper-nav">
+                            <span class="step-badge">Langkah 1 dari 3</span>
+                            <div>
+                                <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'provinsi']) }}" @endif
+                                    class="btn btn-light btn-lg mr-2">Batal</a>
+                                <button type="button" class="btn btn-primary btn-lg" onclick="stepperNext(1)">
+                                    Selanjutnya <i class="uil-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="div_kategori_inovasi">
@@ -112,41 +123,6 @@
                     </div>
 
 
-                    <br><br><br>
-                    <div class="row mt-4">
-                        <div class="col text-left">
-                            <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
-                                class="btn btn-light btn-lg">Batal</a>
-                        </div>
-                        <div class="col text-right">
-
-                            @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                                <button class="btn btn-success btn-lg" type="submit" name="status"
-                                    value="0">Simpan</button>
-                            @else
-                                <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
-                                    class="btn btn-danger">Simpan</a>
-                            @endif
-                            @if ($data != null && $data->status == 0)
-                                @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                                    @if (env('APP_NAME') == 'INOVASI DAERAH')
-                                        <button style="display: none" type="submit" class="btn btn-primary" name="status"
-                                            value="1"
-                                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
-                                            Inovasi</button>
-                                    @else
-                                        <button type="submit" class="btn btn-primary" name="status" value="1"
-                                            onclick="if(!confirm('Apakah Anda yakin akan submit data Inovasi ini? (Pastikan seluruh isian wajib telah terisi dan telah melengkapi data-data INDIKATOR yang dibutuhkan)')){return false;}">Kirim
-                                            Inovasi</button>
-                                    @endif
-                                @else
-                                    <a onclick="alertKu('warning', 'Fase Usulan sedang tutup');" href="#"
-                                        class="btn btn-danger">Kirim
-                                        inovasi</a>
-                                @endif
-                            @endif
-                        </div>
-                    </div>
                 </form>
             </div>
 
@@ -211,14 +187,9 @@
         pengembangan0.addEventListener('change', toggleWaktuPenerapanRow);
     });
     document.addEventListener("DOMContentLoaded", function() {
-        // Check if we're in edit mode and if tematik_id is set
-        var tematikId = "{{ $data ? $data->tematik_id : '' }}";
         var inovasiId = "{{ $data ? $data->id : '' }}";
         var token = "{{ csrf_token() }}";
 
-        if (tematikId) {
-            get_detail_tematik(tematikId, inovasiId);
-        }
         div_kategori_inovasi(token, '#div_kategori_inovasi', '#form-edit-inovasi', inovasiId)
 
         var maxSize = 2 * 1024 * 1024;
@@ -306,7 +277,7 @@
             });
     }
 
-    function div_kategori_inovasi(token, target, form_id, inovasi_id) {
+    function div_kategori_inovasi(token, target, form_id, inovasi_id, callback) {
         var kategori_id = $(form_id).find('select[name="kategori_id"] option:selected').val();
 
         $.ajax({
@@ -321,6 +292,7 @@
                 if (response != 'failed') {
                     $(target).html(response);
                     div_tahapan(token, '#div_tahapan', form_id);
+                    if (typeof callback === 'function') callback();
                 } else {
                     console.log(response);
                 }
