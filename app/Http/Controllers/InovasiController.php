@@ -172,7 +172,7 @@ class InovasiController extends Controller
             $id_kategori = Helper::getKategoriRole(Auth::user()->role);
             $inovasi = $inovasi->whereIn('kategori_id',$id_kategori);
         }
-        $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get()
+        $inovasi = $inovasi->with(['indikator', 'user', 'kategori', 'penilaian'])->where('tahun',Auth::user()->tahun)->get()
         ->sortByDesc(function ($item) {
             $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
             return  $totalNilai;
@@ -180,14 +180,48 @@ class InovasiController extends Controller
         // dd($inovasi);
         // dd($inovasi);
         // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
-        $kategori = KategoriInovasi::orderBy('id','asc')->get();
-        if(Auth::user()->role == 2){
-            $id_kategori = Helper::getKategoriRole(Auth::user()->role);
-            $kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+        $status_label = in_array($area, ['masyarakat', 'pemda', 'kota']) ? 1 : 0;
+        $user = Auth::user();
+        $withCountCallback = function ($q) use ($status_label, $user) {
+            $q->where('tahun', $user->tahun)->where('label', $status_label);
+            if ($user->role == 3 || Helper::checkUserUmum('provinsi', $user)) {
+                $q->where('provinsi_id', $user->province_id);
+            } elseif ($user->role == 4 || Helper::checkUserUmum('kota', $user)) {
+                $q->where('user_id', $user->id);
+            } elseif ($user->role == 5) {
+                $q->where('kota_id', $user->opd->kabkota_id)->where('user_id', $user->id);
+            } elseif (Helper::checkOpd('kecamatan', $user) || Helper::checkUserUmum('opd-kecamatan', $user)) {
+                $q->where('kecamatan_id', $user->opd->kecamatan_id);
+            } elseif (Helper::checkOpd('kelurahan', $user) || Helper::checkUserUmum('opd-kelurahan', $user)) {
+                $q->where('kelurahan_id', $user->opd->kelurahan_id);
+            }
+        };
+
+        $kategori = KategoriInovasi::withCount(['hasManyInovasi' => $withCountCallback])
+            ->orderBy('is_kovablik', 'desc')->get();
+        if ($user->role == 2) {
+            $id_kategori = Helper::getKategoriRole($user->role);
+            $kategori = KategoriInovasi::withCount(['hasManyInovasi' => $withCountCallback])
+                ->whereIn('id', $id_kategori)->orderBy('id', 'asc')->get();
         }
+
+        $kovablikQuery = \App\Models\ProposalKovablik::where('tahun', $user->tahun);
+        if ($user->role == 3 || Helper::checkUserUmum('provinsi', $user)) {
+            $kovablikQuery->where('provinsi_id', $user->province_id);
+        } elseif ($user->role == 4 || Helper::checkUserUmum('kota', $user)) {
+            $kovablikQuery->where('user_id', $user->id);
+        } elseif ($user->role == 5) {
+            $kovablikQuery->where('kota_id', $user->opd->kabkota_id)->where('user_id', $user->id);
+        } elseif (Helper::checkOpd('kecamatan', $user) || Helper::checkUserUmum('opd-kecamatan', $user)) {
+            $kovablikQuery->where('kecamatan_id', $user->opd->kecamatan_id);
+        } elseif (Helper::checkOpd('kelurahan', $user) || Helper::checkUserUmum('opd-kelurahan', $user)) {
+            $kovablikQuery->where('kelurahan_id', $user->opd->kelurahan_id);
+        }
+        $kovablikCount = $kovablikQuery->count();
+
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
-        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase','area'));
+        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase','area','kovablikCount'));
     }
 
     public function bank_data(Request $request,$area)
