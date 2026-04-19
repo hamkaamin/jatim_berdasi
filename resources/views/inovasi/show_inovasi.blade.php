@@ -1,6 +1,17 @@
-<div class="row">
-    @if (Auth::user()->role != 2)
-        <div class="col-12">
+<div class="row gy-3">
+    @if ($inovasi->count() > 0 || $kovablik->count() == 0)
+    <div class="col-12">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <x-tab-inovasi :kategori="null" :key="0" :active="1" />
+            @foreach ($kategori as $key => $item)
+                <x-tab-inovasi :kategori="$item" :key="$key + 1" :active="0" :count="$item->is_kovablik ? $kovablikCount : $inovasi->where('kategori_id', $item->id)->count()"/>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    {{-- @if (Auth::user()->role != 2)
+        <div class="col-12 mt-3">
             <div class="row g-4 mb-4">
                 @foreach ($kategori as $item)
                     <div class="col-3">
@@ -21,16 +32,10 @@
                 @endforeach
             </div>
         </div>
-    @endif
+    @endif --}}
+
     @if ($inovasi->count() > 0 || $kovablik->count() == 0)
     <div class="col-12">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <x-tab-inovasi :kategori="null" :key="0" :active="1" />
-            @foreach ($kategori as $key => $item)
-                <x-tab-inovasi :kategori="$item" :key="$key + 1" :active="0" />
-            @endforeach
-        </ul>
-
         <div class="tab-content" id="myTabContent">
             <x-tab-content-inovasi :kategori="null" :active="1" :inovasi="$inovasi" :label="$label"
                 :fase="$fase" :area="$area" />

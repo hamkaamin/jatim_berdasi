@@ -8,6 +8,9 @@
         </div>
         <span class="z-20 position-relative">
             {{ $kategori == null ? 'Semua' : ucwords($kategori->nama) }}
+            @if (!is_null($count))
+                <span class="badge ml-1 text-white shadow border border-gray" style="background-color: {{ $bgColor }};">{{ $count }}</span>
+            @endif
         </span>
     </a>
 </li>
