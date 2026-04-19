@@ -22,6 +22,7 @@
             </div>
         </div>
     @endif
+    @if ($inovasi->count() > 0 || $kovablik->count() == 0)
     <div class="col-12">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <x-tab-inovasi :kategori="null" :key="0" :active="1" />
@@ -39,4 +40,25 @@
             @endforeach
         </div>
     </div>
+    @endif
+
+    @if ($kovablik->count() > 0)
+    <div class="col-12 mt-4">
+        <h5 class="font-weight-bold">Proposal Kovablik</h5>
+        <ul class="nav nav-tabs" id="myTabKovablik" role="tablist">
+            <x-tab-kovablik :kelompok="null" :key="0" :active="1" prefix="kov-tab" />
+            @foreach ($kelompok as $key => $item)
+                <x-tab-kovablik :kelompok="$item" :key="$key + 1" :active="0" prefix="kov-tab" />
+            @endforeach
+        </ul>
+        <div class="tab-content" id="myTabKovablikContent">
+            <x-tab-content-kovablik :kelompok="null" :active="1" :proposal="$kovablik" :label="$label"
+                :fase="$fase" prefix="kov-tab" />
+            @foreach ($kelompok as $item)
+                <x-tab-content-kovablik :kelompok="$item" :active="0" :proposal="[]" :label="$label"
+                    :fase="$fase" prefix="kov-tab" />
+            @endforeach
+        </div>
+    </div>
+    @endif
 </div>

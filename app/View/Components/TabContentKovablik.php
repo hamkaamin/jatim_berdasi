@@ -6,20 +6,20 @@ use Illuminate\View\Component;
 
 class TabContentKovablik extends Component
 {
-    public $kelompok, $active, $proposal,$label,$fase;
+    public $kelompok, $active, $proposal, $label, $fase, $prefix;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($kelompok, $active, $proposal,$label,$fase)
+    public function __construct($kelompok, $active, $proposal, $label, $fase, $prefix = 'tab')
     {
         $this->kelompok = $kelompok;
         $this->active = $active;
         $this->proposal = $proposal;
         $this->label = $label;
         $this->fase = $fase;
-
+        $this->prefix = $prefix;
     }
 
     /**

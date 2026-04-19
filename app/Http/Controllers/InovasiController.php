@@ -217,11 +217,21 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', $user) || Helper::checkUserUmum('opd-kelurahan', $user)) {
             $kovablikQuery->where('kelurahan_id', $user->opd->kelurahan_id);
         }
-        $kovablikCount = $kovablikQuery->count();
+        $kovablik = $kovablikQuery->get();
+        $kovablikCount = $kovablik->count();
+
+        $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
+        if ($user->role == 2) {
+            $kelompok = KelompokKovablik::whereIn('id', function ($query) use ($user) {
+                $query->select('kelompok_id')
+                    ->from('verifikator_kovabliks')
+                    ->where('user_id', $user->id);
+            })->get();
+        }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
-        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','kategori','fase','area','kovablikCount'));
+        return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label', 'kategori', 'fase', 'area', 'kovablikCount', 'kovablik', 'kelompok'));
     }
 
     public function bank_data(Request $request,$area)

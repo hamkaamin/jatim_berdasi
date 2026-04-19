@@ -292,6 +292,6 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('.table-flush').DataTable();
+        $('#myTable{{ $kategori == null ? 0 : $kategori->id }}').DataTable();
     });
 </script>

@@ -3,7 +3,7 @@
     $display_nilai = '';
 @endphp
 
-<div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $kelompok == null ? 0 : $kelompok->id }}"
+<div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="{{ $prefix }}-{{ $kelompok == null ? 0 : $kelompok->id }}"
     role="tabpanel" aria-labelledby="{{ $kelompok == null ? 0 : $kelompok->id }}-tab">
 
     <div class="row">
@@ -17,7 +17,7 @@
             @endif
             <div style="width: 100%">
                 <table class="table align-items-center table-flush text-center"
-                    id="myTable{{ $kelompok == null ? 0 : $kelompok->id }}">
+                    id="myTableKov{{ $kelompok == null ? 0 : $kelompok->id }}">
                     <thead class="thead-light">
                         <tr>
                             @if (Auth::user()->role == 2)
@@ -273,6 +273,6 @@
 
     }
     $(document).ready(function() {
-        $('.table-flush').DataTable();
+        $('#myTableKov{{ $kelompok == null ? 0 : $kelompok->id }}').DataTable();
     });
 </script>

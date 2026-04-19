@@ -6,17 +6,18 @@ use Illuminate\View\Component;
 
 class TabKovablik extends Component
 {
-    public $kelompok, $active, $key, $bgColor;
+    public $kelompok, $active, $key, $bgColor, $prefix;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($kelompok, $active, $key)
+    public function __construct($kelompok, $active, $key, $prefix = 'tab')
     {
         $this->kelompok = $kelompok;
         $this->active = $active;
         $this->key = $key;
+        $this->prefix = $prefix;
         if (($this->key % 8) == 0) {
             $this->bgColor = "#ED4D4D";
         } elseif (($this->key % 8) == 1) {
