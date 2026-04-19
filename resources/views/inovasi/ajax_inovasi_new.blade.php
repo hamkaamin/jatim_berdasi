@@ -390,6 +390,74 @@
 <script>
     $('.js-example-basic-multiple').select2();
 
+    (function () {
+        var KEY = 'step2_{{ $kategori_id }}';
+
+        function save() {
+            var out = {};
+            document.querySelectorAll('.step-panel input:not([type="file"]):not([type="hidden"]), .step-panel select, .step-panel textarea').forEach(function (el) {
+                if (!el.name) return;
+                if (el.type === 'radio' || el.type === 'checkbox') {
+                    if (el.checked) out[el.name] = el.value;
+                } else if (el.multiple) {
+                    out[el.name] = Array.from(el.selectedOptions).map(function (o) { return o.value; });
+                } else {
+                    out[el.name] = el.value;
+                }
+            });
+            if (window.CKEDITOR) {
+                Object.keys(CKEDITOR.instances).forEach(function (id) {
+                    out['__ck__' + id] = CKEDITOR.instances[id].getData();
+                });
+            }
+            localStorage.setItem(KEY, JSON.stringify(out));
+        }
+
+        function restore() {
+            var raw = localStorage.getItem(KEY);
+            if (!raw) return;
+            var data; try { data = JSON.parse(raw); } catch (e) { return; }
+
+            Object.keys(data).forEach(function (name) {
+                if (name.indexOf('__ck__') === 0) return;
+                var val = data[name];
+                var els = document.querySelectorAll('[name="' + name + '"]');
+                els.forEach(function (el) {
+                    if (el.type === 'radio' || el.type === 'checkbox') {
+                        el.checked = (el.value === val);
+                    } else if (el.multiple && Array.isArray(val)) {
+                        Array.from(el.options).forEach(function (o) { o.selected = val.includes(o.value); });
+                        $(el).trigger('change');
+                    } else if (el.type !== 'file') {
+                        el.value = val;
+                    }
+                });
+            });
+
+            var ckData = {};
+            Object.keys(data).forEach(function (n) { if (n.indexOf('__ck__') === 0) ckData[n.slice(6)] = data[n]; });
+            if (Object.keys(ckData).length) {
+                var tries = 0, iv = setInterval(function () {
+                    tries++;
+                    Object.keys(ckData).forEach(function (id) {
+                        if (window.CKEDITOR && CKEDITOR.instances[id] && CKEDITOR.instances[id].status === 'ready') {
+                            CKEDITOR.instances[id].setData(ckData[id]);
+                            delete ckData[id];
+                        }
+                    });
+                    if (!Object.keys(ckData).length || tries > 30) clearInterval(iv);
+                }, 200);
+            }
+        }
+
+        document.querySelectorAll('[onclick*="stepperNext"]').forEach(function (btn) {
+            btn.addEventListener('click', save);
+        });
+
+        restore();
+        window.clearStep2Storage = function () { localStorage.removeItem(KEY); };
+    }());
+
     (function() {
         var pengembangan1 = document.getElementById('pengembangan_1');
         var pengembangan0 = document.getElementById('pengembangan_0');

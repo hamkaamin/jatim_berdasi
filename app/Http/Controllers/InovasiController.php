@@ -697,12 +697,13 @@ class InovasiController extends Controller
             $kelompok = KelompokKovablik::all();
             $kovablikData = null;
             return view('kovablik.form-kovablik-new', [
-                'data'     => $kovablikData,
-                'kategori' => $kategoriKovablik,
-                'kelompok' => $kelompok,
-                'label'    => $label,
-                'fase'     => $fase,
-                'astaCita' => $astaCita
+                'data'        => $kovablikData,
+                'kategori'    => $kategoriKovablik,
+                'kelompok'    => $kelompok,
+                'label'       => $label,
+                'fase'        => $fase,
+                'astaCita'    => $astaCita,
+                'kategori_id' => $kategori_id,
             ]);
         }
 
@@ -711,7 +712,7 @@ class InovasiController extends Controller
             $view = 'inovasi.form.kategori_5_new';
         }
 
-        return view($view, compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label','astaCita','fase'));
+        return view($view, compact('data', 'tahapan', 'inisiator', 'jenis', 'bentuk', 'urusan', 'tahapanKolom', 'label', 'astaCita', 'fase', 'kategori_id'));
 
     }
 

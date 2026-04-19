@@ -177,6 +177,46 @@
 
 @include('script.ck-editor')
 <script>
+    (function () {
+        var KEY = 'step2_{{ $kategori_id }}';
+
+        function save() {
+            var out = {};
+            document.querySelectorAll('.step-panel input:not([type="file"]):not([type="hidden"]), .step-panel select, .step-panel textarea').forEach(function (el) {
+                if (!el.name) return;
+                if (el.type === 'radio' || el.type === 'checkbox') {
+                    if (el.checked) out[el.name] = el.value;
+                } else {
+                    out[el.name] = el.value;
+                }
+            });
+            localStorage.setItem(KEY, JSON.stringify(out));
+        }
+
+        function restore() {
+            var raw = localStorage.getItem(KEY);
+            if (!raw) return;
+            var data; try { data = JSON.parse(raw); } catch (e) { return; }
+
+            Object.keys(data).forEach(function (name) {
+                document.querySelectorAll('[name="' + name + '"]').forEach(function (el) {
+                    if (el.type === 'radio' || el.type === 'checkbox') {
+                        el.checked = (el.value === data[name]);
+                    } else if (el.type !== 'file') {
+                        el.value = data[name];
+                    }
+                });
+            });
+        }
+
+        document.querySelectorAll('[onclick*="stepperNext"]').forEach(function (btn) {
+            btn.addEventListener('click', save);
+        });
+
+        restore();
+        window.clearStep2Storage = function () { localStorage.removeItem(KEY); };
+    }());
+
     (function() {
         var pengembangan1 = document.getElementById('pengembangan_1');
         var pengembangan0 = document.getElementById('pengembangan_0');

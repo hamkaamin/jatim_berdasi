@@ -143,6 +143,31 @@ class ProposalKovablikSaveTest extends TestCase
         $response->assertSessionHasErrors('kov_strategi');
     }
 
+    // --- Validasi dokumen (form lama vs form baru) ---
+
+    public function test_old_form_requires_standard_documents_when_creating()
+    {
+        // Tanpa form_type = 'new', ketiga dokumen wajib ada
+        $response = $this->actingAs($this->user())
+            ->post(route('kovablik.save'), $this->payload());
+
+        $response->assertSessionHasErrors([
+            'dokumen_standart_pelayanan',
+            'dokumen_maklumat_pelayanan',
+            'dokumen_sk_pengelolaan_pengaduan',
+        ]);
+    }
+
+    public function test_new_form_type_allows_create_without_standard_documents()
+    {
+        // form_type = 'new' → ketiga dokumen tidak wajib
+        $response = $this->actingAs($this->user())
+            ->post(route('kovablik.save'), $this->payload(['form_type' => 'new']));
+
+        $response->assertSessionMissing('errors');
+        $response->assertSessionHas('success');
+    }
+
     // --- Create (id = 0) ---
 
     public function test_creates_new_proposal_kovablik_and_redirects()
