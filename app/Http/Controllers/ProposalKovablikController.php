@@ -195,15 +195,17 @@ class ProposalKovablikController extends Controller
         ]);
 
         if ($request->id == 0) {
-            $request->validate([
-                'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-                'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-                'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-            ], [
-                '*.required' => ':attribute harus diisi',
-                '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
-                '*.max' => 'File maksimal berukuran 2MB',
-            ]);
+            if ($request->form_type !== 'new') {
+                $request->validate([
+                    'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                    'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                    'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                ], [
+                    '*.required' => ':attribute harus diisi',
+                    '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
+                    '*.max' => 'File maksimal berukuran 2MB',
+                ]);
+            }
 
             $data = new ProposalKovablik;
             $data->user_id = Auth::user()->id;
