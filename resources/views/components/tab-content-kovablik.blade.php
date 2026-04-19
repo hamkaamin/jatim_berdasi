@@ -3,7 +3,7 @@
     $display_nilai = '';
 @endphp
 
-<div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="tab-{{ $kelompok == null ? 0 : $kelompok->id }}"
+<div class="tab-pane fade {{ $active == 1 ? 'show active' : '' }}" id="{{ $prefix }}-{{ $kelompok == null ? 0 : $kelompok->id }}"
     role="tabpanel" aria-labelledby="{{ $kelompok == null ? 0 : $kelompok->id }}-tab">
 
     <div class="row">
@@ -17,7 +17,7 @@
             @endif
             <div style="width: 100%">
                 <table class="table align-items-center table-flush text-center"
-                    id="myTable{{ $kelompok == null ? 0 : $kelompok->id }}">
+                    id="myTableKov{{ $kelompok == null ? 0 : $kelompok->id }}">
                     <thead class="thead-light">
                         <tr>
                             @if (Auth::user()->role == 2)
@@ -28,6 +28,7 @@
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>Kelompok</th>
+                            <th>Penilaian</th>
                             <th>Status</th>
                             @if (Auth::user()->role == 2)
                                 <th>Penilaian</th>
@@ -40,7 +41,9 @@
                             $status_label = 2;
                             $data = [];
                             if ($kelompok != null) {
-                                if (Auth::user()->role == 4) {
+                                if (!empty($proposal) && ($proposal instanceof \Illuminate\Support\Collection ? $proposal->isNotEmpty() : count($proposal) > 0)) {
+                                    $data = collect($proposal)->where('kelompok_id', $kelompok->id)->values();
+                                } elseif (Auth::user()->role == 4) {
                                     $data = $kelompok
                                         ->hasManyKovablik()
                                         ->where('user_id', Auth::user()->id)
@@ -85,9 +88,9 @@
                             <tr>
                                 @if (Auth::user()->role == 2)
                                     <td>
-                                        <input type="checkbox" style="transform: scale(2)" name="is_pass[]" 
+                                        <input type="checkbox" style="transform: scale(2)" name="is_pass[]"
                                             class="is_pass" value="{{ $item->id }}" data-tahap="{{ $item->juri_tahap }}"
-                                            @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) 
+                                            @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5)
                                                     && $item->juri_tahap < 2))
                                                 disabled
                                             @endif
@@ -99,6 +102,7 @@
                                 <td>{{ $item->judul }}</td>
                                 <td>{{ $item->kategori->nama}}</td>
                                 <td>{{ $item->kelompok->nama}}</td>
+                                <td><span class="badge badge-secondary">Belum ada penilaian</span></td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
                                 @if (Auth::user()->role == 2)
                                     <td>
@@ -161,7 +165,7 @@
                                             class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
                                     @endif
                                     @if (($item->status == 0 || $item->status == 4) && $item->status != 2 && $item->status != 1)
-                                        <a href="{{ route('kovablik.edit', ['id' => encrypt($item->id), 'label' => 2]) }}"
+                                        <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id), 'label' => 2]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Proposal"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>
@@ -273,6 +277,6 @@
 
     }
     $(document).ready(function() {
-        $('.table-flush').DataTable();
+        $('#myTableKov{{ $kelompok == null ? 0 : $kelompok->id }}').DataTable();
     });
 </script>

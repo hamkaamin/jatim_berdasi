@@ -6,16 +6,17 @@ use Illuminate\View\Component;
 
 class TabInovasi extends Component
 {
-    public $kategori, $active, $key, $bgColor;
+    public $kategori, $active, $key, $bgColor, $count;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($kategori, $active, $key)
+    public function __construct($kategori, $active, $key, $count = null)
     {
         $this->kategori = $kategori;
         $this->active = $active;
+        $this->count = $count;
         $this->key = $key;
         if (($this->key % 8) == 0) {
             $this->bgColor = "#ED4D4D";

@@ -231,7 +231,9 @@
             <small class="text-muted">Minimal 200 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" value="" name="file_latar_belakang" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" value="" name="file_latar_belakang"
+                    accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -260,7 +262,9 @@
             <small class="text-muted">Minimal 150 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" value="" name="file_tujuan_outcome" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" value="" name="file_tujuan_outcome"
+                    accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -288,7 +292,8 @@
             <small class="text-muted">Minimal 200 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" value="" name="file_cara_kerja" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" value="" name="file_cara_kerja" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -315,7 +320,8 @@
             <small class="text-muted">Minimal 200 kata</small>
             <diV>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" value="" name="file_kebaharuan" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" value="" name="file_kebaharuan" accept=".jpg,.jpeg,.png,.pdf">
             </diV>
         </div>
     </div>
@@ -346,7 +352,9 @@
             <small class="text-muted">Minimal 200 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" name="file_mekanisme_monitoring" value="" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" name="file_mekanisme_monitoring" value=""
+                    accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -378,7 +386,9 @@
             <small class="text-muted">Minimal 300 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" value="" name="file_bentuk_dampak" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" value="" name="file_bentuk_dampak"
+                    accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -426,7 +436,9 @@
             <small class="text-muted">Minimal 300 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" value="" name="file_potensi_replikasi" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" value="" name="file_potensi_replikasi"
+                    accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -468,7 +480,9 @@
             <small class="text-muted">Minimal 150 kata</small>
             <div class="row">
                 <label>Link File</label>
-                <input type="text" value="" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" name="file_sumber_daya" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" value=""
+                    placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" name="file_sumber_daya" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -518,7 +532,8 @@
             <small class="text-muted">Minimal 300 kata</small>
             <div>
                 <label>Link File</label>
-                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2" class="form-control mt-2" name="file_upaya" value="" accept=".jpg,.jpeg,.png,.pdf">
+                <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
+                    class="form-control mt-2" name="file_upaya" value="" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -553,12 +568,14 @@
         if (kelompok) toggleInstansiAsal(kelompok);
     })();
 
-    (function () {
+    (function() {
         var KEY = 'step2_{{ $kategori_id }}';
 
         function save() {
             var out = {};
-            document.querySelectorAll('.step-panel input:not([type="file"]):not([type="hidden"]), .step-panel select, .step-panel textarea').forEach(function (el) {
+            document.querySelectorAll(
+                '.step-panel input:not([type="file"]):not([type="hidden"]), .step-panel select, .step-panel textarea'
+                ).forEach(function(el) {
                 if (!el.name) return;
                 if (el.type === 'radio' || el.type === 'checkbox') {
                     if (el.checked) out[el.name] = el.value;
@@ -567,7 +584,7 @@
                 }
             });
             if (window.CKEDITOR) {
-                Object.keys(CKEDITOR.instances).forEach(function (id) {
+                Object.keys(CKEDITOR.instances).forEach(function(id) {
                     out['__ck__' + id] = CKEDITOR.instances[id].getData();
                 });
             }
@@ -577,44 +594,58 @@
         function restore() {
             var raw = localStorage.getItem(KEY);
             if (!raw) return;
-            var data; try { data = JSON.parse(raw); } catch (e) { return; }
+            var data;
+            try {
+                data = JSON.parse(raw);
+            } catch (e) {
+                return;
+            }
 
-            Object.keys(data).forEach(function (name) {
+            Object.keys(data).forEach(function(name) {
                 if (name.indexOf('__ck__') === 0) return;
                 var val = data[name];
-                document.querySelectorAll('[name="' + name + '"]').forEach(function (el) {
-                    if (el.type === 'radio' || el.type === 'checkbox') {
-                        el.checked = (el.value === val);
-                    } else if (el.type !== 'file') {
-                        el.value = val;
+                document.querySelectorAll('[name="' + name + '"]').forEach(function(el) {
+                    // PERBAIKAN: Hanya timpa jika value elemen masih kosong
+                    if (el.type !== 'file' && (!el.value || el.value === "")) {
+                        if (el.type === 'radio' || el.type === 'checkbox') {
+                            el.checked = (el.value === val);
+                        } else {
+                            el.value = val;
+                        }
                     }
                 });
             });
 
             var ckData = {};
-            Object.keys(data).forEach(function (n) { if (n.indexOf('__ck__') === 0) ckData[n.slice(6)] = data[n]; });
+            Object.keys(data).forEach(function(n) {
+                if (n.indexOf('__ck__') === 0) ckData[n.slice(6)] = data[n];
+            });
             if (Object.keys(ckData).length) {
-                var tries = 0, iv = setInterval(function () {
-                    tries++;
-                    Object.keys(ckData).forEach(function (id) {
-                        if (window.CKEDITOR && CKEDITOR.instances[id] && CKEDITOR.instances[id].status === 'ready') {
-                            CKEDITOR.instances[id].setData(ckData[id]);
-                            delete ckData[id];
-                        }
-                    });
-                    if (!Object.keys(ckData).length || tries > 30) clearInterval(iv);
-                }, 200);
+                var tries = 0,
+                    iv = setInterval(function() {
+                        tries++;
+                        Object.keys(ckData).forEach(function(id) {
+                            if (window.CKEDITOR && CKEDITOR.instances[id] && CKEDITOR.instances[id]
+                                .status === 'ready') {
+                                CKEDITOR.instances[id].setData(ckData[id]);
+                                delete ckData[id];
+                            }
+                        });
+                        if (!Object.keys(ckData).length || tries > 30) clearInterval(iv);
+                    }, 200);
             }
 
             var kelompok = document.getElementById('kelompok_id');
             if (kelompok && window.toggleInstansiAsal) toggleInstansiAsal(kelompok);
         }
 
-        document.querySelectorAll('[onclick*="stepperNext"]').forEach(function (btn) {
+        document.querySelectorAll('[onclick*="stepperNext"]').forEach(function(btn) {
             btn.addEventListener('click', save);
         });
 
         restore();
-        window.clearStep2Storage = function () { localStorage.removeItem(KEY); };
+        window.clearStep2Storage = function() {
+            localStorage.removeItem(KEY);
+        };
     }());
 </script>

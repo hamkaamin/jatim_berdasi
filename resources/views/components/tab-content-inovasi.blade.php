@@ -23,6 +23,7 @@
                             <th style="width: 100px; min-width: 100px">Status</th>
                             <th>Keterangan</th>
                             <th style="{!! $display !!}">Bobot Awal</th>
+                            <th>Penilaian</th>
                             @if (Auth::user()->role == 2)
                                 <th>Kematangan</th>
                                 <th>Penilaian</th>
@@ -122,6 +123,9 @@
 
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
                                 </td>
+                                <td>
+                                    <span class="badge badge-secondary">Belum ada penilaian</span>
+                                </td>
                                 @if (Auth::user()->role == 2)
                                     <td><b>{{ $item->indikator->sum('pivot.bobot_akhir') }}</b>
                                     </td>
@@ -143,7 +147,7 @@
                                                     });
 
                                             @endphp
-                                            {{-- {{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }} 
+                                            {{-- {{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
                                         --}}
 
                                             {!! $tahap !!}
@@ -292,6 +296,6 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('.table-flush').DataTable();
+        $('#myTable{{ $kategori == null ? 0 : $kategori->id }}').DataTable();
     });
 </script>
