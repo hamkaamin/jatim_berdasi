@@ -28,6 +28,7 @@
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>Kelompok</th>
+                            <th>Penilaian</th>
                             <th>Status</th>
                             @if (Auth::user()->role == 2)
                                 <th>Penilaian</th>
@@ -87,9 +88,9 @@
                             <tr>
                                 @if (Auth::user()->role == 2)
                                     <td>
-                                        <input type="checkbox" style="transform: scale(2)" name="is_pass[]" 
+                                        <input type="checkbox" style="transform: scale(2)" name="is_pass[]"
                                             class="is_pass" value="{{ $item->id }}" data-tahap="{{ $item->juri_tahap }}"
-                                            @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) 
+                                            @if (!($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5)
                                                     && $item->juri_tahap < 2))
                                                 disabled
                                             @endif
@@ -101,6 +102,7 @@
                                 <td>{{ $item->judul }}</td>
                                 <td>{{ $item->kategori->nama}}</td>
                                 <td>{{ $item->kelompok->nama}}</td>
+                                <td><span class="badge badge-secondary">Belum ada penilaian</span></td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
                                 @if (Auth::user()->role == 2)
                                     <td>
