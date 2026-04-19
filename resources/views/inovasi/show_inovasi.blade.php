@@ -55,7 +55,7 @@
             <x-tab-content-kovablik :kelompok="null" :active="1" :proposal="$kovablik" :label="$label"
                 :fase="$fase" prefix="kov-tab" />
             @foreach ($kelompok as $item)
-                <x-tab-content-kovablik :kelompok="$item" :active="0" :proposal="[]" :label="$label"
+                <x-tab-content-kovablik :kelompok="$item" :active="0" :proposal="$kovablik" :label="$label"
                     :fase="$fase" prefix="kov-tab" />
             @endforeach
         </div>

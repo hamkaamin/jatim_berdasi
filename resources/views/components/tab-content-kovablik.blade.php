@@ -40,7 +40,9 @@
                             $status_label = 2;
                             $data = [];
                             if ($kelompok != null) {
-                                if (Auth::user()->role == 4) {
+                                if (!empty($proposal) && ($proposal instanceof \Illuminate\Support\Collection ? $proposal->isNotEmpty() : count($proposal) > 0)) {
+                                    $data = collect($proposal)->where('kelompok_id', $kelompok->id)->values();
+                                } elseif (Auth::user()->role == 4) {
                                     $data = $kelompok
                                         ->hasManyKovablik()
                                         ->where('user_id', Auth::user()->id)
