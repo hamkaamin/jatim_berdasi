@@ -163,7 +163,7 @@
                                             class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
                                     @endif
                                     @if (($item->status == 0 || $item->status == 4) && $item->status != 2 && $item->status != 1)
-                                        <a href="{{ route('kovablik.edit', ['id' => encrypt($item->id), 'label' => 2]) }}"
+                                        <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id), 'label' => 2]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Proposal"><i
                                                 class="fa fa-edit"></i>&nbsp;&nbsp;Edit</a>

@@ -88,9 +88,7 @@ class InovasiController extends Controller
             $inovasi = $inovasi->where('kelurahan_id', Auth::user()->opd->kelurahan_id);
         }
         $inovasi = $inovasi->where('tahun',Auth::user()->tahun)->get();
-        // dd($inovasi);
-        // dd($inovasi);
-        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
+        
         $kategori = KategoriInovasi::get();
         if(Auth::user()->role == 2){
             $id_kategori = Helper::getKategoriRole(Auth::user()->role);
@@ -99,7 +97,7 @@ class InovasiController extends Controller
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->first();
-        // dd($tahapan, $tahapanKolom);
+        
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
 
@@ -243,12 +241,16 @@ class InovasiController extends Controller
     public function edit(Request $request)
     {
         $reqLabel = $request->label;
-        if($reqLabel != 1 && $reqLabel != 0){
+        if($reqLabel != 1 && $reqLabel != 0 && $reqLabel != 2){
             logger()->error('Ada percobaan akses halaman dengan label salah (' . $reqLabel . '). IP : ' . request()->ip());
             return redirect()->route('home')->with('error','Kesalahan dalam mengakses halaman');
         }
 
-        $currentFaseName = $reqLabel == 1 ? 'inotek' : 'iga';
+        if ($reqLabel == 2) {
+            $currentFaseName = 'kovablik';
+        } else {
+            $currentFaseName = $reqLabel == 1 ? 'inotek' : 'iga';
+        }
         $fase = Fase::where('active',1)->where('nama',$currentFaseName)->first();
 
         if (!$fase) {
@@ -257,6 +259,24 @@ class InovasiController extends Controller
 
         if (count($request->input()) <= 3 && isset($request->id)) {
             $data = null;
+            $label = $reqLabel ?? 0;
+            $kategori = KategoriInovasi::where('id', '!=', 1)->orderBy('is_kovablik','desc')->get();
+
+            if ($reqLabel == 2) {
+                if ($request->id != 0) {
+                    $id = decrypt($request->id);
+                    $data = \App\Models\ProposalKovablik::findOrFail($id);
+
+                    if ($data->user_id != Auth::user()->id) {
+                        return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
+                    }
+
+                    $label = $data->label;
+                }
+
+                // return view('inovasi.form-inovasi', compact('data', 'kategori', 'label', 'fase'));
+            }
+
             $tahapan = Tahapan::all();
             $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
             $inisiator = Inisiator::all();
@@ -264,12 +284,9 @@ class InovasiController extends Controller
             $bentuk = Bentuk::all();
             $urusan = Urusan::all();
             $tematik = Tematik::all();
-            $kategori = KategoriInovasi::where('id', '!=', 1)->orderBy('is_kovablik','desc')->get();
-            $label = 0;
 
-            if ($request->id != 0) {
+            if ($request->id != 0 && is_null($data)) {
                 $id = decrypt($request->id);
-                $inovasi = Inovasi::find(decrypt($request->id));
                 $data = Inovasi::findOrFail($id);
 
                 if($data->user_id != Auth::user()->id){
@@ -711,6 +728,8 @@ class InovasiController extends Controller
     {
         $inovasi_id = $request->inovasi_id;
         $kategori_id = $request->kategori_id;
+        $selectedKategori = KategoriInovasi::find($kategori_id);
+
         $data = null;
         $tahapan = Tahapan::all();
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
@@ -723,7 +742,8 @@ class InovasiController extends Controller
 
         if ($inovasi_id != 0) {
             $id = $inovasi_id;
-            $data = Inovasi::findOrFail($id);
+            $data = $selectedKategori->is_kovablik ? \App\Models\ProposalKovablik::find($id) : Inovasi::find($id);
+            if (!$data) abort(404);
             if($data->user_id != Auth::user()->id){
                 return redirect()->back()->with('error', 'Forbidden Authentication !')->withInput($request->input());
             }
@@ -735,11 +755,10 @@ class InovasiController extends Controller
         }
         $fase = Fase::where('active', 1)->first();
 
-        $selectedKategori = KategoriInovasi::find($kategori_id);
         if ($selectedKategori && $selectedKategori->is_kovablik) {
             $kategoriKovablik = KategoriKovablik::all();
             $kelompok = KelompokKovablik::all();
-            $kovablikData = null;
+            $kovablikData = ($data instanceof \App\Models\ProposalKovablik) ? $data : null;
             return view('kovablik.form-kovablik-new', [
                 'data'        => $kovablikData,
                 'kategori'    => $kategoriKovablik,

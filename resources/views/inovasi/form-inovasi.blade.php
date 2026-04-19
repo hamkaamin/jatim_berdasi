@@ -177,20 +177,18 @@
         const pengembangan0 = document.getElementById('pengembangan_0');
         const waktuPenerapanRow = document.getElementById('waktu_penerapan_row');
 
-        const toggleWaktuPenerapanRow = () => {
-            if (pengembangan1.checked) {
-                waktuPenerapanRow.style.display = 'flex';
-            } else {
-                waktuPenerapanRow.style.display = 'none';
-            }
-        };
-
-        // Initial check on page load
-        toggleWaktuPenerapanRow();
-
-        // Add event listeners
-        pengembangan1.addEventListener('change', toggleWaktuPenerapanRow);
-        pengembangan0.addEventListener('change', toggleWaktuPenerapanRow);
+        if (pengembangan1 && pengembangan0 && waktuPenerapanRow) {
+            const toggleWaktuPenerapanRow = () => {
+                if (pengembangan1.checked) {
+                    waktuPenerapanRow.style.display = 'flex';
+                } else {
+                    waktuPenerapanRow.style.display = 'none';
+                }
+            };
+            toggleWaktuPenerapanRow();
+            pengembangan1.addEventListener('change', toggleWaktuPenerapanRow);
+            pengembangan0.addEventListener('change', toggleWaktuPenerapanRow);
+        }
     });
     document.addEventListener("DOMContentLoaded", function() {
         var inovasiId = "{{ $data ? $data->id : '' }}";
