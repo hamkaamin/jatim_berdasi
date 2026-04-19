@@ -42,6 +42,7 @@
     <link href="{{ asset('theme_assets/css/app.min.css') }}" id="app-style" rel="stylesheet" type="text/css" />
     {{-- End Adjustable Minible CSS --}}
 
+    @stack('styles')
     <style>
         .timer {
             background: rgb(57, 57, 57);

@@ -97,4 +97,14 @@ class Inovasi extends Model
     {
         return $this->belongsTo('App\Models\KategoriInovasi', 'kategori_id', 'id');
     }
+
+    public function tematik()
+    {
+        return $this->belongsTo('App\Models\Tematik', 'tematik_id', 'id');
+    }
+
+    public function astaCita()
+    {
+        return $this->belongsTo('App\Models\AstaCita', 'asta_cita_id', 'id');
+    }
 }

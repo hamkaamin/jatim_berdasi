@@ -179,14 +179,15 @@ class ProposalKovablikController extends Controller
             'dokumen_standart_pelayanan' => 'mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
             'dokumen_maklumat_pelayanan' => 'mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
             'dokumen_sk_pengelolaan_pengaduan' => 'mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-            'ringkasan' => ['required', new MaxWords(200)],
-            'latar_belakang_dan_tujuan' => ['required', new MaxWords(300)],
-            'kebaruan_atau_nilai_tambah' => ['required', new MaxWords(600)],
-            'implementasi_inovasi' => ['required', new MaxWords(200)],
-            'signifikansi' => ['required', new MaxWords(600)],
-            'adaptabilitas' => ['required', new MaxWords(300)],
-            'sumber_daya' => ['required', new MaxWords(200)],
-            'strategi_keberlanjutan' => ['required', new MaxWords(500)],
+            'kov_latar_belakang' => ['required'],
+            'kov_tujuan' => ['required'],
+            'kov_cara_kerja' => ['required'],
+            'kov_keunggulan' => ['required'],
+            'kov_mekanisme' => ['required'],
+            'kov_dampak' => ['required'],
+            'kov_difusi' => ['required'],
+            'kov_sumber_daya' => ['required'],
+            'kov_strategi' => ['required'],
         ], [
             '*.required' => ':attribute harus diisi',
             '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
@@ -194,15 +195,17 @@ class ProposalKovablikController extends Controller
         ]);
 
         if ($request->id == 0) {
-            $request->validate([
-                'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-                'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-                'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
-            ], [
-                '*.required' => ':attribute harus diisi',
-                '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
-                '*.max' => 'File maksimal berukuran 2MB',
-            ]);
+            if ($request->form_type !== 'new') {
+                $request->validate([
+                    'dokumen_standart_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                    'dokumen_maklumat_pelayanan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                    'dokumen_sk_pengelolaan_pengaduan' => 'required|mimes:pdf,docx,doc,jpg,jpeg,png|max:2048',
+                ], [
+                    '*.required' => ':attribute harus diisi',
+                    '*.mimes' => 'File harus pdf / doc / jpg / jpeg / png',
+                    '*.max' => 'File maksimal berukuran 2MB',
+                ]);
+            }
 
             $data = new ProposalKovablik;
             $data->user_id = Auth::user()->id;
@@ -232,38 +235,77 @@ class ProposalKovablikController extends Controller
         }
 
         $data->label = $request->label;
-        $data->judul = $request->judul;
+        $data->judul = $request->nama;
         $data->kelompok_id = $request->kelompok_id;
-        $data->instansi = $request->instansi;
+        $data->instansi = $request->kov_instansi_asal;
+        $data->jenis_inovasi = $request->kov_jenis_inovasi;
         $data->tanggal_mulai = $request->tanggal_mulai;
         $data->nama_inovator = $request->nama_inovator;
+        $data->nip_inovator = $request->kov_nip_inovator;
         $data->no_telpon_inovator = $request->no_telpon_inovator;
+        $data->nomor_iga = $request->kov_nomor_iga;
+        $data->link_video = $request->kov_link_video;
+        $data->keterangan_video = $request->kov_keterangan_video;
+        $data->sektor_pemerintahan_id = $request->kov_sektor_pemerintahan_id;
+        $data->asta_cita_id = $request->kov_asta_cita_id;
         $data->email_inovator = $request->email_inovator;
-        $data->kategori_id = $request->kategori_id;
+        $data->kategori_id = $request->kategori_kovablik_id;
         $data->ringkasan = $request->ringkasan;
-        $data->latar_belakang = $request->latar_belakang_dan_tujuan;
-        $data->nilai_tambah = $request->kebaruan_atau_nilai_tambah;
+        $data->koordinat = $request->kov_koordinat;
+        $data->latar_belakang = $request->kov_latar_belakang;
+        $data->tujuan_outcome = $request->kov_tujuan;
+        $data->cara_kerja = $request->kov_cara_kerja;
+        $data->kebaharuan = $request->kov_keunggulan;
+        $data->mekanisme_monitoring = $request->kov_mekanisme;
+        $data->bentuk_dampak = $request->kov_dampak;
+        $data->potensi_replikasi = $request->kov_difusi;
+        $data->sumber_daya = $request->kov_sumber_daya;
+        $data->strategi_keberlanjutan = $request->kov_strategi;
         $data->implementasi = $request->implementasi_inovasi;
         $data->signifikansi = $request->signifikansi;
         $data->adaptabilitas = $request->adaptabilitas;
-        $data->sumber_daya = $request->sumber_daya;
-        $data->strategi_keberlanjutan = $request->strategi_keberlanjutan;
+        $data->status = $request->status;
+
+        $data->file_latar_belakang = $request->file_latar_belakang;
+        $data->file_tujuan_outcome = $request->file_tujuan_outcome;
+        $data->file_cara_kerja = $request->file_cara_kerja;
+        $data->file_kebaharuan = $request->file_kebaharuan;
+        $data->file_mekanisme_monitoring = $request->file_mekanisme_monitoring;
+        $data->file_bentuk_dampak = $request->file_bentuk_dampak;
+        $data->file_potensi_replikasi = $request->file_potensi_replikasi;
+        $data->file_sumber_daya = $request->file_sumber_daya;
+        $data->file_upaya = $request->file_upaya;
+
         $data->tahun = Auth::user()->tahun;
         $data->save();
 
+        if ($request->hasFile('kov_dokumen_pernyataan_implementasi')) {
+            $nama_file = Helper::save_file($request->file('kov_dokumen_pernyataan_implementasi'), uniqid(), 'file_surat_pernyataan_implementasi', $data->dokumen_surat_pernyataan_implementasi, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $data->dokumen_surat_pernyataan_implementasi = $nama_file['file_name'];
+            $data->save();
+        }
+        if ($request->hasFile('kov_dokumen_pernyataan_inovator')) {
+            $nama_file = Helper::save_file($request->file('kov_dokumen_pernyataan_inovator'), uniqid(), 'file_surat_pernyataan_inovator', $data->dokumen_pernyataan_inovator, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $data->dokumen_pernyataan_inovator = $nama_file['file_name'];
+            $data->save();
+        }
+        if ($request->hasFile('kov_file_kesediaan_replikasi')) {
+            $nama_file = Helper::save_file($request->file('kov_file_kesediaan_replikasi'), uniqid(), 'file_kesediaan_replikasi', $data->file_kesediaan_replikasi, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $data->file_kesediaan_replikasi = $nama_file['file_name'];
+            $data->save();
+        }
         if ($request->hasFile('dokumen_standart_pelayanan')) {
-            $nama_file = Helper::save_file($request->file('dokumen_standart_pelayanan'), uniqid(), 'file_standart_pelayanan', $data->anggaran, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $nama_file = Helper::save_file($request->file('dokumen_standart_pelayanan'), uniqid(), 'file_standart_pelayanan', $data->link_standart, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
             $data->link_standart = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('dokumen_maklumat_pelayanan')) {
-            $nama_file = Helper::save_file($request->file('dokumen_maklumat_pelayanan'), uniqid(), 'file_maklumat_pelayanan', $data->file_rancang_bangun, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $nama_file = Helper::save_file($request->file('dokumen_maklumat_pelayanan'), uniqid(), 'file_maklumat_pelayanan', $data->link_maklumat, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
             $data->link_maklumat = $nama_file['file_name'];
             $data->save();
         }
-
         if ($request->hasFile('dokumen_sk_pengelolaan_pengaduan')) {
-            $nama_file = Helper::save_file($request->file('dokumen_sk_pengelolaan_pengaduan'), uniqid(), 'file_sk_pengelolaan_pengaduan', $data->file_anggaran, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            $nama_file = Helper::save_file($request->file('dokumen_sk_pengelolaan_pengaduan'), uniqid(), 'file_sk_pengelolaan_pengaduan', $data->link_sk_pengaduan, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
             $data->link_sk_pengaduan = $nama_file['file_name'];
             $data->save();
         }
@@ -299,7 +341,7 @@ class ProposalKovablikController extends Controller
 
     public function edit(Request $request)
     {
-        $fase = Fase::where('active', 1)->first();
+        $fase = Fase::where('active', 1)->where('nama', 'kovablik')->first();
         $nama_fase = $fase->nama;
 
         if ($nama_fase == 'inotek') {
