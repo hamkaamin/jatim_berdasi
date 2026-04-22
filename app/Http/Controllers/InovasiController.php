@@ -195,7 +195,7 @@ class InovasiController extends Controller
             }
         };
 
-        $kategori = KategoriInovasi::where('is_active', 1)->withCount(['hasManyInovasi' => $withCountCallback])
+        $kategori = KategoriInovasi::where('is_aktif', 1)->withCount(['hasManyInovasi' => $withCountCallback])
             ->orderBy('is_kovablik', 'desc')->orderBy('id', 'asc')->get();
         if ($user->role == 2) {
             $id_kategori = Helper::getKategoriRole($user->role);
