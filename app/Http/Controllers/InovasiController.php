@@ -730,6 +730,10 @@ class InovasiController extends Controller
         $kategori_id = $request->kategori_id;
         $selectedKategori = KategoriInovasi::find($kategori_id);
 
+        if (!$selectedKategori) {
+            return redirect()->back()->with('error', 'Kategori Inovasi Tidak Ditemukan');
+        }
+
         $data = null;
         $tahapan = Tahapan::all();
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
