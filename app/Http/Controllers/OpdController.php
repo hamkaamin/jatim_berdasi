@@ -144,8 +144,8 @@ class OpdController extends Controller
                 $data->logo,
                 ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
             );
-            if($nama_file['valid'] == false){
-                return redirect()->back()->with('error', $nama_file['message']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
             }else{
                 $data->logo = $nama_file['file_name'];
                 $data->save();

@@ -281,31 +281,49 @@ class ProposalKovablikController extends Controller
 
         if ($request->hasFile('kov_dokumen_pernyataan_implementasi')) {
             $nama_file = Helper::save_file($request->file('kov_dokumen_pernyataan_implementasi'), uniqid(), 'file_surat_pernyataan_implementasi', $data->dokumen_surat_pernyataan_implementasi, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
+            }
             $data->dokumen_surat_pernyataan_implementasi = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('kov_dokumen_pernyataan_inovator')) {
             $nama_file = Helper::save_file($request->file('kov_dokumen_pernyataan_inovator'), uniqid(), 'file_surat_pernyataan_inovator', $data->dokumen_pernyataan_inovator, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
+            }
             $data->dokumen_pernyataan_inovator = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('kov_file_kesediaan_replikasi')) {
             $nama_file = Helper::save_file($request->file('kov_file_kesediaan_replikasi'), uniqid(), 'file_kesediaan_replikasi', $data->file_kesediaan_replikasi, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
+            }
             $data->file_kesediaan_replikasi = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('dokumen_standart_pelayanan')) {
             $nama_file = Helper::save_file($request->file('dokumen_standart_pelayanan'), uniqid(), 'file_standart_pelayanan', $data->link_standart, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
+            }
             $data->link_standart = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('dokumen_maklumat_pelayanan')) {
             $nama_file = Helper::save_file($request->file('dokumen_maklumat_pelayanan'), uniqid(), 'file_maklumat_pelayanan', $data->link_maklumat, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
+            }
             $data->link_maklumat = $nama_file['file_name'];
             $data->save();
         }
         if ($request->hasFile('dokumen_sk_pengelolaan_pengaduan')) {
             $nama_file = Helper::save_file($request->file('dokumen_sk_pengelolaan_pengaduan'), uniqid(), 'file_sk_pengelolaan_pengaduan', $data->link_sk_pengaduan, ['pdf', 'docx', 'doc', 'jpg', 'jpeg', 'png']);
+            if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
+            }
             $data->link_sk_pengaduan = $nama_file['file_name'];
             $data->save();
         }

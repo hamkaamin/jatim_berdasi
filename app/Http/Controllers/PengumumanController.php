@@ -40,10 +40,10 @@ class PengumumanController extends Controller
                     $data->file,
                     ['pdf', 'jpg', 'jpeg', 'png']
                 );
-        
-                if ($nama_file['valid'] == false) {
+
+                if (!is_array($nama_file) || $nama_file['valid'] == false) {
                     DB::rollBack();
-                    return redirect()->back()->with('error', $nama_file['message']);
+                    return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
                 } else {
                     $data->file = $nama_file['file_name'];
                     $data->save();

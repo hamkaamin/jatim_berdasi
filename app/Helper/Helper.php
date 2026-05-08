@@ -7,6 +7,7 @@ use App\Models\Kelurahan;
 use App\Models\Kota;
 use App\Models\Opd;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Helper
 {
@@ -58,7 +59,7 @@ class Helper
             if(Auth::user()->is_kategori_5 == 1){
                 $id_kategori[] = 5;
             }
-			
+
 		}
 		return $id_kategori;
 	}
@@ -158,7 +159,7 @@ class Helper
 	// 	}
 	// }
 
-	
+
 	public static function save_file($file, $name, $folder, $existing, $allowedExtensions = [])
 	{
 		try {
@@ -190,14 +191,14 @@ class Helper
 				return ['valid' => false, 'message' => 'Ukuran file melebihi batas maksimum 2MB.'];
 			}
 
-			try { 
+			try {
 				// Cek isi konten: tidak boleh mengandung kode PHP
 				$content = file_get_contents($file->getRealPath());
 				if (preg_match('/<\?php/i', $content)) {
 					return ['valid' => false, 'message' => "Konten mengandung file PHP."];
-				} 
+				}
 			} catch (\Throwable $th) {
-				//throw $th;
+				throw $th;
 			}
 			// Validasi isi file
 			if ($extension === 'pdf') {
@@ -233,7 +234,8 @@ class Helper
 			];
 
 		} catch (\Throwable $th) {
-			return 'file_error';
+            Log::error($th->getMessage());
+			return $th->getMessage();
 		}
 	}
 

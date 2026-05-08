@@ -464,10 +464,10 @@ class InovasiController extends Controller
             $data->tahapan()->sync($tempArr);
             if ($request->hasFile('anggaran')) {
                 $nama_file = Helper::save_file($request->file('anggaran'), uniqid(), 'file_anggaran', $data->anggaran,['pdf','jpg','jpeg','png','xlsx']);
-                if($nama_file['valid'] == false){
+                if (!is_array($nama_file) || $nama_file['valid'] == false) {
                     return redirect()->back()->with('error', 'File Anggaran tidak sesuai format !');
-                }else{
-                    $data->anggaran = $nama_file;
+                } else {
+                    $data->anggaran = $nama_file['file_name'];
                     $data->save();
                 }
             }
@@ -491,12 +491,13 @@ class InovasiController extends Controller
                     $data->file_dokumen_haki,
                     ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
                 );
-                if($nama_file['valid'] == false){
-                    return redirect()->back()->with('error', $nama_file['message']);
-                }else{
-                    $data->file_dokumen_haki = $nama_file['file_name'];
-                    $data->save();
+                
+                if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                    return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
                 }
+
+                $data->file_dokumen_haki = $nama_file['file_name'];
+                $data->save();
             }
 
             if ($request->hasFile('file_penghargaan')) {
@@ -507,12 +508,12 @@ class InovasiController extends Controller
                     $data->file_penghargaan,
                     ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
                 );
-                if($nama_file['valid'] == false){
-                    return redirect()->back()->with('error', $nama_file['message']);
-                }else{
-                    $data->file_penghargaan = $nama_file['file_name'];
-                    $data->save();
+
+                if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                    return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
                 }
+
+                $data->file_penghargaan = $nama_file['file_name'];
                 $data->save();
             }
 
@@ -525,12 +526,12 @@ class InovasiController extends Controller
                     $data->profil_bisnis,
                     ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
                 );
-                if($nama_file['valid'] == false){
-                    return redirect()->back()->with('error', $nama_file['message']);
-                }else{
-                    $data->profil_bisnis = $nama_file['file_name'];
-                    $data->save();
+
+                if (!is_array($nama_file) || $nama_file['valid'] == false) {
+                    return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
                 }
+
+                $data->profil_bisnis = $nama_file['file_name'];
                 $data->save();
             }
 
