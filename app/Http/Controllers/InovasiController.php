@@ -29,6 +29,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Svg\Tag\Rect;
 
@@ -491,7 +492,7 @@ class InovasiController extends Controller
                     $data->file_dokumen_haki,
                     ['pdf', 'jpg', 'jpeg', 'png', 'xlsx']
                 );
-                
+
                 if (!is_array($nama_file) || $nama_file['valid'] == false) {
                     return redirect()->back()->with('error', $nama_file['message'] ?? $nama_file);
                 }
@@ -732,6 +733,7 @@ class InovasiController extends Controller
         $selectedKategori = KategoriInovasi::find($kategori_id);
 
         if (!$selectedKategori) {
+            Log::error('Kategori Inovasi Tidak Ditemukan', ['kategori_id' => $kategori_id]);
             return redirect()->back()->with('error', 'Kategori Inovasi Tidak Ditemukan');
         }
 

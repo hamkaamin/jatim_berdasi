@@ -190,11 +190,14 @@
             pengembangan0.addEventListener('change', toggleWaktuPenerapanRow);
         }
     });
+
     document.addEventListener("DOMContentLoaded", function() {
         var inovasiId = "{{ $data ? $data->id : '' }}";
         var token = "{{ csrf_token() }}";
 
-        div_kategori_inovasi(token, '#div_kategori_inovasi', '#form-edit-inovasi', inovasiId)
+        if (inovasiId) {
+            div_kategori_inovasi(token, '#div_kategori_inovasi', '#form-edit-inovasi', inovasiId)
+        }
 
         var maxSize = 2 * 1024 * 1024;
 
