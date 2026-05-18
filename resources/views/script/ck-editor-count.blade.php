@@ -1,5 +1,5 @@
 <script>
-    let editorInstances = [];
+    var editorInstances = [];
 
     // Dipanggil dari stepper saat step-panel-3 sudah visible
     window.initCkEditorCount = function() {

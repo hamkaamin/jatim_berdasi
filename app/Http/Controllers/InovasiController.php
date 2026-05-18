@@ -443,6 +443,9 @@ class InovasiController extends Controller
             $data->asta_cita_id = $request->asta_cita_id;
             $data->detail_tematik_id = $request->detail_tematik_id;
             $data->nama_inisiator = $request->nama_inisiator;
+            if (isset($request->perangkat_daerah)) {
+                $data->perangkat_daerah = $request->perangkat_daerah;
+            }
             $data->koordinat = @$request->koordinat;
             $data->covid = $request->covid;
             $data->rancang_bangun = $request->rancang_bangun;

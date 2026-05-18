@@ -101,8 +101,7 @@
     <div class="stepper-nav">
         <span class="step-badge">Langkah 2 dari 3</span>
         <div>
-            <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
-                class="btn btn-light btn-lg mr-2">Batal</a>
+            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" class="btn btn-light btn-lg mr-2">Batal</a>
             <button type="button" class="btn btn-light btn-lg mr-2" onclick="stepperPrev(2)">
                 <i class="uil-arrow-left"></i> Sebelumnya
             </button>
@@ -160,8 +159,7 @@
     <div class="stepper-nav">
         <span class="step-badge">Langkah 3 dari 3</span>
         <div>
-            <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
-                class="btn btn-light btn-lg mr-2">Batal</a>
+            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" class="btn btn-light btn-lg mr-2">Batal</a>
             <button type="button" class="btn btn-light btn-lg mr-2" onclick="stepperPrev(3)">
                 <i class="uil-arrow-left"></i> Sebelumnya
             </button>
@@ -213,7 +211,9 @@
             btn.addEventListener('click', save);
         });
 
+        @if ($data == null)
         restore();
+        @endif
         window.clearStep2Storage = function () { localStorage.removeItem(KEY); };
     }());
 

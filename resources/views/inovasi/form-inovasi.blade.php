@@ -300,6 +300,12 @@
             },
             success: function(response) {
                 if (response != 'failed') {
+                    if (window.editorInstances && window.editorInstances.length) {
+                        window.editorInstances.forEach(function(item) {
+                            try { item.editor.destroy(); } catch(e) {}
+                        });
+                        window.editorInstances = [];
+                    }
                     $(target).html(response);
                     ckEditorsInited = false;
                     div_tahapan(token, '#div_tahapan', form_id);

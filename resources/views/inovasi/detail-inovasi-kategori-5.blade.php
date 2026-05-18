@@ -15,7 +15,7 @@
     @if (env('APP_CLOSE_APP') == 0)
         <div class="row">
             <div class="col">
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
 
                     @php
@@ -39,23 +39,30 @@
                         @endif
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
                     <div class="col-sm-8">
                         {{ $user->name . ' - ' . $user->username }}
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->nama : old('nama') }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null && $data->kategori ? $data->kategori->nama : 'Tidak Ada Data' }}
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Perangkat Daerah</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null && $data->perangkat_daerah ? $data->perangkat_daerah : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
@@ -66,7 +73,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inisiator</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->nama_inisiator : old('nama_inisiator') }}
@@ -78,31 +85,37 @@
                         {{ $data != null && $data->jenis ? $data->jenis->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Ujicoba Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->waktu_uji_coba : old('waktu_uji_coba') }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Penerapan Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->waktu_penerapan : old('waktu_penerapan') }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Waktu Pengembangan Inovasi</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null ? ($data->is_pengembangan ? 'Ya' : 'Tidak') : 'Tidak Ada Data' }}
+                        {{ $data != null ? ($data->waktu_pengembangan ?? '-') : 'Tidak Ada Data' }}
+                    </div>
+                </div>
+                
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Rancang bangun dan pokok perubahan yang dilakukan</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->rancang_bangun : old('rancang_bangun') }}
                     </div>
                 </div>
 
-
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika ada)</b></label>
                     </div>
                     <div class="col-sm-8">
@@ -114,7 +127,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_penghargaan)
