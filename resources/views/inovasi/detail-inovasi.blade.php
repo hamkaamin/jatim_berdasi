@@ -15,7 +15,7 @@
     @if (env('APP_CLOSE_APP') == 0)
         <div class="row">
             <div class="col">
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Pemda</b></label></div>
 
                     @php
@@ -39,20 +39,20 @@
                         @endif
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
                     <div class="col-sm-8">
                         {{ $user->name . ' - ' . $user->username }}
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->nama : old('nama') }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Kategori Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null && $data->kategori ? $data->kategori->nama : 'Tidak Ada Data' }}
@@ -73,10 +73,16 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Nama Inisiator</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->nama_inisiator : old('nama_inisiator') }}
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Koordinat</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->koordinat : old('koordinat') }}
                     </div>
                 </div>
                 <div class="row my-3">
@@ -85,14 +91,14 @@
                         {{ $data != null && $data->jenis ? $data->jenis->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Bentuk Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null && $data->bentuk ? $data->bentuk->nama : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Tematik</b></label>
                     </div>
@@ -101,7 +107,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Asta Cita</b></label>
                     </div>
@@ -110,7 +116,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Urusan Inovasi</b></label></div>
                     <div class="col-sm-8">
                         @if ($data && $data->urusan->count())
@@ -125,30 +131,58 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Ujicoba Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->waktu_uji_coba : old('waktu_uji_coba') }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Waktu Penerapan Inovasi</b></label></div>
                     <div class="col-sm-8">
                         {{ $data != null ? $data->waktu_penerapan : old('waktu_penerapan') }}
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Waktu Pengembangan Inovasi</b></label>
                     </div>
                     <div class="col-sm-8">
-                        {{ $data != null ? ($data->is_pengembangan ? 'Ya' : 'Tidak') : 'Tidak Ada Data' }}
+                        {{ $data != null ? ($data->waktu_pengembangan ?? '-') : 'Tidak Ada Data' }}
                     </div>
                 </div>
 
-                <div class="row my-2" style="display: none">
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Rancang bangun dan pokok perubahan yang dilakukan</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->rancang_bangun : old('rancang_bangun') }}
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Tujuan Inovasi</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->tujuan : old('tujuan') }}
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Manfaat yang diperoleh</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->manfaat : old('manfaat') }}
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Hasil Inovasi</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data != null ? $data->hasil : old('hasil') }}
+                    </div>
+                </div>
+
+                <div class="row my-3" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Covid 19</b></label>
                     </div>
@@ -156,7 +190,7 @@
                         {{ $data != null ? ($data->covid ? 'Covid-19' : 'Non Covid-19') : 'Tidak Ada Data' }}
                     </div>
                 </div>
-                <div class="row my-2" style="display: none">
+                <div class="row my-3" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Anggaran (Jika diperlukan)</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_anggaran)
@@ -167,7 +201,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2" style="display: none">
+                <div class="row my-3" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>File Rancang Bangun</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_rancang_bangun)
@@ -178,7 +212,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2" style="display: none">
+                <div class="row my-3" style="display: none">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Profil Bisnis (.ppt) (Jika ada)</b></label>
                     </div>
                     <div class="col-sm-8">
@@ -190,7 +224,7 @@
                     </div>
                 </div>
 
-                <div class="row my-2">
+                <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Dokumen HAKI</b></label></div>
                     <div class="col-sm-8">
                         @if ($data != null && $data->file_dokumen_haki)
@@ -201,7 +235,7 @@
                     </div>
                 </div>
                 @if ($data->kategori_id == 5)
-                    <div class="row my-2">
+                    <div class="row my-3">
                         <div class="col-sm-3 d-flex align-items-center"><label><b>Penghargaan</b></label></div>
                         <div class="col-sm-8">
                             @if ($data != null && $data->file_penghargaan)
@@ -214,9 +248,7 @@
                 @endif
             </div>
         </div>
-        <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'kota']) }}" @endif
-            class="btn btn-light">
-            Kembali</a>
+        <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" class="btn btn-light">Kembali</a>
     @endif
 
 @endsection
