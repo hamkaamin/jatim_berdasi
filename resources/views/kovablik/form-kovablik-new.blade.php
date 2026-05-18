@@ -232,8 +232,8 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" value="" name="file_latar_belakang"
-                    accept=".jpg,.jpeg,.png,.pdf">
+                    class="form-control mt-2" name="file_latar_belakang"
+                    accept=".jpg,.jpeg,.png,.pdf" value="{{ $data != null ? $data->file_latar_belakang : old('file_latar_belakang') }}">
             </div>
         </div>
     </div>
@@ -263,8 +263,7 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" value="" name="file_tujuan_outcome"
-                    accept=".jpg,.jpeg,.png,.pdf">
+                    class="form-control mt-2" value="{{ $data != null ? $data->file_tujuan_outcome : old('file_tujuan_outcome') }}" name="file_tujuan_outcome" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -293,7 +292,7 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" value="" name="file_cara_kerja" accept=".jpg,.jpeg,.png,.pdf">
+                    class="form-control mt-2" value="{{ $data != null ? $data->file_cara_kerja : old('file_cara_kerja') }}" name="file_cara_kerja" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -321,7 +320,7 @@
             <diV>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" value="" name="file_kebaharuan" accept=".jpg,.jpeg,.png,.pdf">
+                    class="form-control mt-2" value="{{ $data != null ? $data->file_kebaharuan : old('file_kebaharuan') }}" name="file_kebaharuan" accept=".jpg,.jpeg,.png,.pdf">
             </diV>
         </div>
     </div>
@@ -353,7 +352,7 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" name="file_mekanisme_monitoring" value=""
+                    class="form-control mt-2" name="file_mekanisme_monitoring" value="{{ $data != null ? $data->file_mekanisme_monitoring : old('file_mekanisme_monitoring') }}"
                     accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
@@ -387,7 +386,7 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" value="" name="file_bentuk_dampak"
+                    class="form-control mt-2" value="{{ $data != null ? $data->file_bentuk_dampak : old('file_bentuk_dampak') }}" name="file_bentuk_dampak"
                     accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
@@ -437,8 +436,7 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" value="" name="file_potensi_replikasi"
-                    accept=".jpg,.jpeg,.png,.pdf">
+                    class="form-control mt-2" value="{{ $data != null ? $data->file_potensi_replikasi : old('file_potensi_replikasi') }}" name="file_potensi_replikasi" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -480,7 +478,7 @@
             <small class="text-muted">Minimal 150 kata</small>
             <div class="row">
                 <label>Link File</label>
-                <input type="text" value=""
+                <input type="text" value="{{ $data != null ? $data->file_sumber_daya : old('file_sumber_daya') }}"
                     placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
                     class="form-control mt-2" name="file_sumber_daya" accept=".jpg,.jpeg,.png,.pdf">
             </div>
@@ -533,7 +531,7 @@
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
-                    class="form-control mt-2" name="file_upaya" value="" accept=".jpg,.jpeg,.png,.pdf">
+                    class="form-control mt-2" name="file_upaya" value="{{ $data != null ? $data->file_upaya : old('file_upaya') }}" accept=".jpg,.jpeg,.png,.pdf">
             </div>
         </div>
     </div>
@@ -541,8 +539,7 @@
     <div class="stepper-nav">
         <span class="step-badge">Langkah 3 dari 3</span>
         <div>
-            <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'pemda']) }}" @else href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @endif
-                class="btn btn-light btn-lg mr-2">Batal</a>
+            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" class="btn btn-light btn-lg mr-2">Batal</a>
             <button type="button" class="btn btn-light btn-lg mr-2" onclick="stepperPrev(3)">
                 <i class="uil-arrow-left"></i> Sebelumnya
             </button>

@@ -115,8 +115,7 @@
                         <div class="stepper-nav">
                             <span class="step-badge">Langkah 1 dari 3</span>
                             <div>
-                                <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @else href="{{ route('inovasi.index', ['area' => 'provinsi']) }}" @endif
-                                    class="btn btn-light btn-lg mr-2">Batal</a>
+                                <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" class="btn btn-light btn-lg mr-2">Batal</a>
                                 <button type="button" class="btn btn-primary btn-lg" onclick="stepperNext(1)">
                                     Selanjutnya <i class="uil-arrow-right"></i>
                                 </button>
@@ -170,8 +169,12 @@
     // Panggil fungsi saat halaman dimuat, jika dalam mode edit
     document.addEventListener('DOMContentLoaded', (event) => {
 
-        if ('{{ $data ? true : false }}') {
+        if ('{{ $data ? 'true' : 'false' }}' === 'true') {
             div_tahapan('{{ csrf_token() }}', '#div_tahapan', '#form-edit-inovasi');
+        } else {
+            Object.keys(localStorage).forEach(function(key) {
+                if (key.indexOf('step2_') === 0) localStorage.removeItem(key);
+            });
         }
         const pengembangan1 = document.getElementById('pengembangan_1');
         const pengembangan0 = document.getElementById('pengembangan_0');
