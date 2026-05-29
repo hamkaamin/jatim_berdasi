@@ -16,6 +16,13 @@
         <div class="row">
             <div class="col">
                 <div class="row my-2">
+                    <div class="col-sm-3 d-flex align-items-center"><label><b>Dibuat Oleh</b></label></div>
+                    <div class="col-sm-8">
+                        {{ $data->user->name . ' - ' . $data->user->username }}
+                    </div>
+                </div>
+
+                <div class="row my-2">
                     <div class="col-sm-3 d-flex align-items-center">
                         <label><b>Judul Inovasi</b></label>
                     </div>
