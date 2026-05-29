@@ -97,7 +97,7 @@ class InovasiController extends Controller
         }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        $fase = Fase::where('active', 1)->first();
+        $fase = Fase::where('active', 1)->where('kode', 'inotek')->first();
 
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
@@ -176,9 +176,7 @@ class InovasiController extends Controller
             $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
             return  $totalNilai;
         });
-        // dd($inovasi);
-        // dd($inovasi);
-        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
+
         $status_label = in_array($area, ['masyarakat', 'pemda', 'kota']) ? 1 : 0;
         $user = Auth::user();
         $withCountCallback = function ($q) use ($status_label, $user) {
@@ -229,7 +227,8 @@ class InovasiController extends Controller
         }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        $fase = Fase::where('active', 1)->first();
+        $fase = Fase::where('active', 1)->where('kode', 'inotek')->first();
+
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label', 'kategori', 'fase', 'area', 'kovablikCount', 'kovablik', 'kelompok'));
     }
 

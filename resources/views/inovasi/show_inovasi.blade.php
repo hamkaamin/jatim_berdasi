@@ -1,4 +1,6 @@
 <div class="row gy-3">
+    @php $kovablikKategori = $kategori->firstWhere('is_kovablik', true); @endphp
+
     @if ($inovasi->count() > 0 || $kovablik->count() == 0)
         <div class="col-12">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -23,7 +25,7 @@
         </div>
     @endif
 
-    @if ($kovablik->count() > 0)
+    @if ($kovablik->count() > 0 && $kovablikKategori)
         @if (Auth::user()->role != 2)
             <div class="col-12" id="kovablik-cards" style="display:none;">
                 <div class="row g-4 mb-4">
@@ -67,7 +69,6 @@
         </div>
     @endif
 
-    @php $kovablikKategori = $kategori->firstWhere('is_kovablik', true); @endphp
     @if ($kovablikKategori)
         <script>
             document.body.addEventListener('click', function(e) {
@@ -77,23 +78,22 @@
                 if (tab) {
                     let tabId = tab.getAttribute('id');
 
-                    let tabTextElement = tab.querySelector('.z-20');
-                    let tabName = tabTextElement ? tabTextElement.childNodes[0].textContent.trim() : 'Tab';
-
                     let idKovablik = "{{ $kovablikKategori->id }}-tab";
                     let isKovablik = (tabId === idKovablik);
                     let isAll = (tabId === '0-tab');
 
+                    const kovablikCards = document.getElementById('kovablik-cards');
+
                     if (isKovablik) {
-                        document.getElementById('kovablik-cards').style.display = 'block';
+                        if (kovablikCards) kovablikCards.style.display = 'block';
                         document.getElementById('inovasi-tab-content-area').style.display = 'none';
                         document.getElementById('kovablik-section').style.display = 'block';
                     } else if (isAll) {
-                        document.getElementById('kovablik-cards').style.display = 'none';
+                        if (kovablikCards) kovablikCards.style.display = 'none';
                         document.getElementById('inovasi-tab-content-area').style.display = 'block';
                         document.getElementById('kovablik-section').style.display = 'block';
                     } else {
-                        document.getElementById('kovablik-cards').style.display = 'none';
+                        if (kovablikCards) kovablikCards.style.display = 'none';
                         document.getElementById('inovasi-tab-content-area').style.display = 'block';
                         document.getElementById('kovablik-section').style.display = 'none';
                     }
