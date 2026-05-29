@@ -203,7 +203,9 @@ class InovasiController extends Controller
         }
 
         $kovablikQuery = \App\Models\ProposalKovablik::where('tahun', $user->tahun);
-        if ($user->role == 3 || Helper::checkUserUmum('provinsi', $user)) {
+        if ($user->role == 2) {
+            $kovablikQuery->where('status', '<>', 0);
+        } elseif ($user->role == 3 || Helper::checkUserUmum('provinsi', $user)) {
             $kovablikQuery->where('provinsi_id', $user->province_id);
         } elseif ($user->role == 4 || Helper::checkUserUmum('kota', $user)) {
             $kovablikQuery->where('user_id', $user->id);

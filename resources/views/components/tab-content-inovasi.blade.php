@@ -206,7 +206,7 @@
                                             data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a> --}}
                                         <button type="button"
-                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                            onclick="btn_selanjutnya_inovasi('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
@@ -240,12 +240,12 @@
 
 
 <script>
-    function btn_selanjutnya(token, id, juri_tahap) {
-        var next_juri = juri_tahap + 1;
-        if (next_juri > 2) {
+    function btn_selanjutnya_inovasi(token, id, juri_tahap) {
+        var next_juri = juri_tahap + 2;
+        if (next_juri > 3) {
             Swal.fire({
                 title: 'Gagal',
-                text: 'Penilaian sudah di tahap 2',
+                text: 'Penilaian sudah di tahap 3',
                 icon: 'error',
                 showCancelButton: false,
                 confirmButtonColor: '#d33', // merah, cocok untuk error
@@ -253,7 +253,7 @@
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 2) + ` ?`,
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,
