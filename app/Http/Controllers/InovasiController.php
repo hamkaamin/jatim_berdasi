@@ -199,7 +199,7 @@ class InovasiController extends Controller
         if ($user->role == 2) {
             $id_kategori = Helper::getKategoriRole($user->role);
             $kategori = KategoriInovasi::withCount(['hasManyInovasi' => $withCountCallback])
-                ->whereIn('id', $id_kategori)->orderBy('id', 'asc')->get();
+                ->whereIn('id', $id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id', 'asc')->get();
         }
 
         $kovablikQuery = \App\Models\ProposalKovablik::where('tahun', $user->tahun);
@@ -214,7 +214,7 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', $user) || Helper::checkUserUmum('opd-kelurahan', $user)) {
             $kovablikQuery->where('kelurahan_id', $user->opd->kelurahan_id);
         }
-        $kovablik = $kovablikQuery->get();
+        $kovablik = $kovablikQuery->with(['kategori', 'kelompok', 'kelompok.juris', 'penilaian'])->get();
         $kovablikCount = $kovablik->count();
 
         $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();

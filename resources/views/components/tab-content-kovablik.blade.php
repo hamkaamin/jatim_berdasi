@@ -28,11 +28,8 @@
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>Kelompok</th>
-                            <th>Penilaian</th>
                             <th>Status</th>
-                            @if (Auth::user()->role == 2)
-                                <th>Penilaian</th>
-                            @endif
+                            <th>Penilaian</th>
                             <th>Act</th>
                         </tr>
                     </thead>
@@ -74,8 +71,8 @@
                                 }
                             } else {
                                 if (Auth::user()->role == 2) {
-                                    $kelompok = App\Models\VerifikatorKovablik::where('user_id', Auth::user()->id)->pluck('kelompok_id');
-                                    $data = $proposal->whereIn('kelompok_id', $kelompok);
+                                    $kelompokIds = App\Models\VerifikatorKovablik::where('user_id', Auth::user()->id)->pluck('kelompok_id');
+                                    $data = $proposal->whereIn('kelompok_id', $kelompokIds);
                                 } else {
                                     $data = $proposal;
                                 }
@@ -100,9 +97,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->instansi }}</td>
                                 <td>{{ $item->judul }}</td>
-                                <td>{{ $item->kategori->nama}}</td>
-                                <td>{{ $item->kelompok->nama}}</td>
-                                <td><span class="badge badge-secondary">Belum ada penilaian</span></td>
+                                <td>{{ $item->kategori?->nama }}</td>
+                                <td>{{ $item->kelompok?->nama }}</td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
                                 @if (Auth::user()->role == 2)
                                     <td>

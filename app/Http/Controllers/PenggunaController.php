@@ -18,8 +18,8 @@ class PenggunaController extends Controller
 {
     public function index(Request $request)
     {
-        set_time_limit(0);  
-        $roles = Role::orderByRaw('id != 5, id != 4')->get(); 
+        set_time_limit(0);
+        $roles = Role::orderByRaw('id != 5, id != 4')->get();
         return view('daftar-pengguna', compact('roles','request'));
     }
 
@@ -83,13 +83,13 @@ class PenggunaController extends Controller
         $menu_iga = @$request->menu_iga ?? 0;
         $menu_kovablik = @$request->menu_kovablik ?? 0;
 
-
         $is_kategori_1 = @$request->is_kategori_1 ?? 0;
         $is_kategori_2 = @$request->is_kategori_2 ?? 0;
         $is_kategori_3 = @$request->is_kategori_3 ?? 0;
         $is_kategori_4 = @$request->is_kategori_4 ?? 0;
         $is_kategori_5 = @$request->is_kategori_5 ?? 0;
-        
+        $is_kategori_6 = @$request->is_kategori_6 ?? 0;
+
         $username = strtolower($request->username);
         if ($request->id == 0) {
             $validated = $request->validate([
@@ -145,6 +145,7 @@ class PenggunaController extends Controller
         $data->is_kategori_3 = !empty($is_kategori_3) ? 1 : 0;
         $data->is_kategori_4 = !empty($is_kategori_4) ? 1 : 0;
         $data->is_kategori_5 = !empty($is_kategori_5) ? 1 : 0;
+        $data->is_kategori_6 = !empty($is_kategori_6) ? 1 : 0;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }

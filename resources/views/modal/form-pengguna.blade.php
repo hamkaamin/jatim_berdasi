@@ -36,12 +36,12 @@
             <div class="col-sm-8">
                 <ul>
                     <li><input {{ $data != null && $data->menu_inotek == 1 ? 'checked' : '' }} type="checkbox"
-                            name="menu_inotek" id="tmb_menu_inotek"> <label for="tmb_menu_inotek">Inotek</label></li>
+                            name="menu_inotek" id="tmb_menu_inotek"> <label for="tmb_menu_inotek">Lomba Inovasi</label></li>
                     <li><input {{ $data != null && $data->menu_iga == 1 ? 'checked' : '' }} type="checkbox"
                             name="menu_iga" id="tmb_menu_iga"> <label for="tmb_menu_iga">IGA</label></li>
-                    <li><input {{ $data != null && $data->menu_kovablik == 1 ? 'checked' : '' }} type="checkbox"
+                    {{-- <li><input {{ $data != null && $data->menu_kovablik == 1 ? 'checked' : '' }} type="checkbox"
                             name="menu_kovablik" id="tmb_menu_kovablik"> <label for="tmb_menu_kovablik">Kovablik</label>
-                    </li>
+                    </li> --}}
             </div>
         </div>
         <div class="row my-2" style="display: none;">
