@@ -177,7 +177,7 @@
                                         class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
                                         data-placement="top" title="Detail Inovasi"><i
                                             class="fa fa-eye"></i>&nbsp;&nbsp;Detail</a>
-                                    @if (($item->status == 0 || $item->status == 4 || Auth::user()->role == 2) && $item->status != 2 && $item->status != 1)
+                                    @if (($item->status == 0 || $item->status == 4) && $item->status != 2 && $item->status != 1 && Auth::user()->role != 2 && Auth::user()->role != 7)
                                         <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id), 'label' => 1]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Inovasi"><i
@@ -211,7 +211,7 @@
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
                                     @endif
-                                    @if ($item->status == 0 || $item->status == 4)
+                                    @if (($item->status == 0 || $item->status == 4) && (Auth::user()->role != 2 && Auth::user()->role != 7))
                                         <form id="deleteConfirm" style="all: unset"
                                             action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
