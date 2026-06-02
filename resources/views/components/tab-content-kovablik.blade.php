@@ -101,7 +101,7 @@
                                 <td>{{ $item->kelompok?->nama }}</td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
                                 <td>
-                                    @if ($item->juri_tahap == 0 || $item->juri_tahap == 1)
+                                    @if ($item->juri_tahap == 0)
                                         <span class='badge badge-secondary'>Belum Dinilai</span>
                                     @else
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)
