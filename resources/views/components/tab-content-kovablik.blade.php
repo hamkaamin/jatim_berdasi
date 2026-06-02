@@ -238,7 +238,7 @@
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap) + ` ?`,
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,
