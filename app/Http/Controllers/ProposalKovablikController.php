@@ -170,6 +170,8 @@ class ProposalKovablikController extends Controller
             $label = $request->label;
         }
 
+        $data->load(['user', 'sektorPemerintah', 'astaCita']);
+
         return view($view, compact('data', 'kategori', 'label'));
     }
 

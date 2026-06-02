@@ -67,4 +67,14 @@ class ProposalKovablik extends Model
         return $this->belongsToMany(KategoriNilaiKovablik::class, 'penilaian_kovabliks', 'proposal_id', 'penilaian_id')
             ->withPivot('user_id', 'catatan_saran', 'nilai', 'juri_tahap');
     }
+
+    public function sektorPemerintah()
+    {
+        return $this->belongsTo(SektorPemerintahan::class, 'sektor_pemerintahan_id');
+    }
+
+    public function astaCita()
+    {
+        return $this->belongsTo(AstaCita::class, 'asta_cita_id');
+    }
 }

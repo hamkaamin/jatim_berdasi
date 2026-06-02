@@ -157,28 +157,28 @@
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Rancang bangun dan pokok perubahan yang dilakukan</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null ? $data->rancang_bangun : old('rancang_bangun') }}
+                        {!! $data != null ? $data->rancang_bangun : old('rancang_bangun') !!}
                     </div>
                 </div>
 
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Tujuan Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null ? $data->tujuan : old('tujuan') }}
+                        {!! $data != null ? $data->tujuan : old('tujuan') !!}
                     </div>
                 </div>
 
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Manfaat yang diperoleh</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null ? $data->manfaat : old('manfaat') }}
+                        {!! $data != null ? $data->manfaat : old('manfaat') !!}
                     </div>
                 </div>
 
                 <div class="row my-3">
                     <div class="col-sm-3 d-flex align-items-center"><label><b>Hasil Inovasi</b></label></div>
                     <div class="col-sm-8">
-                        {{ $data != null ? $data->hasil : old('hasil') }}
+                        {!! $data != null ? $data->hasil : old('hasil') !!}
                     </div>
                 </div>
 
