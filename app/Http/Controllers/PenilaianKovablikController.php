@@ -150,21 +150,16 @@ class PenilaianKovablikController extends Controller
                     $nilai = $nilai * $bobot / 100;
 
                     if (is_numeric($nilai)) {
-                        $pivot = $proposal->penilaian()
-                            ->wherePivot('user_id', Auth::id())
-                            ->wherePivot('penilaian_id', $penilaianId)
-                            ->first();
-
-                        if ($pivot) {
-                            DB::table('penilaian_kovabliks')
-                                ->where('proposal_id', $proposal->id)
-                                ->where('penilaian_id', $penilaianId)
-                                ->where('user_id', Auth::id())
-                                ->where('juri_tahap', $proposal->juri_tahap)
-                                ->update([
-                                    'catatan_saran' => $catatanSaran,
-                                    'nilai' => $nilai,
-                                ]);
+                        $updated = DB::table('penilaian_kovabliks')
+                            ->where('proposal_id', $proposal->id)
+                            ->where('penilaian_id', $penilaianId)
+                            ->where('user_id', Auth::id())
+                            ->where('juri_tahap', $proposal->juri_tahap)
+                            ->update([
+                                'catatan_saran' => $catatanSaran,
+                                'nilai' => $nilai,
+                            ]);
+                        if ($updated) {
                             $total_nilai += $nilai;
                         }
                     }
