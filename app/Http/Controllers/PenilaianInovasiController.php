@@ -231,7 +231,6 @@ class PenilaianInovasiController extends Controller
 
 
     public function move(Request $request){
-        $inovasi = Inovasi::find($request->id);
         try{
             DB::beginTransaction();
             $inovasi = Inovasi::find($request->id);

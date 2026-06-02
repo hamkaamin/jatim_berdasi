@@ -255,8 +255,8 @@
                         },
                         function(data) {
                             Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil!',
+                                icon: data.status ? 'success' : 'error',
+                                title: data.status ? 'Berhasil!' : 'Gagal!',
                                 text: data.message,
                                 showConfirmButton: true,
                                 timer: 1500

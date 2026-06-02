@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\PenilaianKovablikExport;
 use App\Models\Juri;
 use App\Models\JuriKovablik;
+use App\Models\KategoriInovasi;
 use App\Models\KategoriKovablik;
 use App\Models\KategoriNilaiKovablik;
 use App\Models\KelompokKovablik;
@@ -101,7 +102,8 @@ class PenilaianKovablikController extends Controller
             foreach ($ids as $id) {
                 $kovablik = ProposalKovablik::find($id);
                 if ($kovablik->juri_tahap == 1) {
-                    $juri = JuriKovablik::where('kelompok_id', $kovablik->kelompok_id)->get();
+                    $kategori = KategoriInovasi::where('is_kovablik', 1)->first();
+                    $juri = Juri::where('kategori_id', $kategori->id)->get();
                     $juri_ids = $juri->pluck('id');
 
                     $jumlah_penilai = PenilaianKovablikMap::where('proposal_id', $kovablik->id)

@@ -38,7 +38,7 @@ class InovasiController extends Controller
     public function index(Request $request, $area)
     {
         $tahapan = Tahapan::all();
-        $inovasi = Inovasi::where('deleted_at', 0);
+        $inovasi = Inovasi::query();
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
@@ -117,7 +117,7 @@ class InovasiController extends Controller
     public function show_inovasi(Request $request){
         $area = $request->area;
         $tahapan = Tahapan::all();
-        $inovasi = Inovasi::where('deleted_at', 0);
+        $inovasi = Inovasi::query();
         $label = "";
         $tahapanKolom = Tahapan::where('tampilkan_kolom', 1)->get();
         if ($area == 'daerah') {
