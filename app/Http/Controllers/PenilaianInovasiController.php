@@ -47,16 +47,21 @@ class PenilaianInovasiController extends Controller
         $id = decrypt($request->id);
         $inovasi = Inovasi::findOrFail($id);
         $juri = Juri::where('user_id',Auth::user()->id)->first();
-            $data = [];
-            if ($inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->count() == 0) {
-                $penilaians = Penilaian::where('kategori_id', $inovasi->kategori_id)->get();
-                foreach ($penilaians as $penilaian) {
-                    $inovasi->penilaian()->attach($penilaian->id, [
-                        'user_id' => Auth::id(),
-                        'juri_tahap'=>$inovasi->juri_tahap,
-                    ]);
-                }
+        $penilaians = Penilaian::where('kategori_id', $inovasi->kategori_id)->get();
+        foreach ($penilaians as $penilaian) {
+            $exists = DB::table('penilaian_inovasi')
+                ->where('inovasi_id', $inovasi->id)
+                ->where('penilaian_id', $penilaian->id)
+                ->where('user_id', Auth::id())
+                ->where('juri_tahap', $inovasi->juri_tahap)
+                ->exists();
+            if (!$exists) {
+                $inovasi->penilaian()->attach($penilaian->id, [
+                    'user_id' => Auth::id(),
+                    'juri_tahap' => $inovasi->juri_tahap,
+                ]);
             }
+        }
         $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->get();
         $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->where('juri_tahap',$inovasi->juri_tahap)->first();
         return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map','juri_tahap'));

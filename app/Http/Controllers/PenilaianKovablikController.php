@@ -53,10 +53,15 @@ class PenilaianKovablikController extends Controller
         $juri_tahap = $request->tahap;
         $proposal = ProposalKovablik::findOrFail($id);
         $juri = JuriKovablik::where('user_id', Auth::user()->id)->where('kelompok_id', $proposal->kelompok_id)->first();
-        $data = [];
-        if ($proposal->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $proposal->juri_tahap)->count() == 0) {
-            $penilaians = KategoriNilaiKovablik::where('tahapan_id', $proposal->juri_tahap)->get();
-            foreach ($penilaians as $penilaian) {
+        $penilaians = KategoriNilaiKovablik::where('tahapan_id', $proposal->juri_tahap)->get();
+        foreach ($penilaians as $penilaian) {
+            $exists = DB::table('penilaian_kovabliks')
+                ->where('proposal_id', $proposal->id)
+                ->where('penilaian_id', $penilaian->id)
+                ->where('user_id', Auth::id())
+                ->where('juri_tahap', $proposal->juri_tahap)
+                ->exists();
+            if (!$exists) {
                 $proposal->penilaian()->attach($penilaian->id, [
                     'user_id' => Auth::id(),
                     'juri_tahap' => $proposal->juri_tahap,
@@ -64,6 +69,7 @@ class PenilaianKovablikController extends Controller
             }
         }
         $data = $proposal->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $proposal->juri_tahap)->get();
+
         $penilaian_map = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->where('juri_tahap', $proposal->juri_tahap)->first();
         return view('penilaian-kovablik.edit', compact('data', 'proposal', 'juri', 'penilaian_map', 'juri_tahap'));
     }
