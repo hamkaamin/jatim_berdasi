@@ -18,7 +18,7 @@ class JuriController extends Controller
     public function index()
     {
         $juri = Juri::get();
-        $data_kategori = KategoriInovasi::orderBy('id','asc')->get();
+        $data_kategori = KategoriInovasi::orderBy('is_kovablik', 'desc')->orderBy('is_aktif', 'desc')->orderBy('id','asc')->get();
         return view('master.juri', compact('juri','data_kategori'));
     }
 
@@ -38,7 +38,7 @@ class JuriController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    
+
      public function save(Request $request)
      {
         if ($request->id == 0) {
@@ -46,7 +46,7 @@ class JuriController extends Controller
         } else {
             $data = Juri::findOrFail($request->id);
         }
-        
+
         $data->user_id = $request->user_id;
         $data->kategori_id = $request->kategori_id;
 		$data->save();
