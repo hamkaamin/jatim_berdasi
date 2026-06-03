@@ -60,12 +60,12 @@
             } else {
                 var namaInisiator = $.trim($('#form-edit-inovasi').find('[name="nama_inisiator"]').val());
                 var jenisChecked  = $('[name="jenis_id"]:checked').val();
-                var urusan        = $('[name="urusan_id[]"]').val();
+                var urusanEl      = $('[name="urusan_id[]"]');
                 var waktuUji      = $('#form-edit-inovasi').find('[name="waktu_uji_coba"]').val();
                 var waktuPenerapan = $('#form-edit-inovasi').find('[name="waktu_penerapan"]').val();
                 if (!namaInisiator)                    errors.push('Nama Inisiator wajib diisi');
                 if (!jenisChecked)                     errors.push('Jenis Inovasi wajib dipilih');
-                if (!urusan || !urusan.length)         errors.push('Urusan Inovasi wajib dipilih');
+                if (urusanEl.length && (!urusanEl.val() || !urusanEl.val().length)) errors.push('Urusan Inovasi wajib dipilih');
                 if (!waktuUji)                         errors.push('Waktu Ujicoba Inovasi wajib diisi');
                 if (!waktuPenerapan)                   errors.push('Waktu Penerapan Inovasi wajib diisi');
             }
