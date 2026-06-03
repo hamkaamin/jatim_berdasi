@@ -104,12 +104,11 @@
         <br><br><br>
         <div class="row">
             <div class="col-md-3">
-
                 <a @if ($label == 1) href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}" @elseif($label == 0) href="{{ route('inovasi.index', ['area' => 'kota']) }}" @else href="{{ route('bank_data.index', ['area' => 'bank_data']) }}" @endif
                     class="btn btn-light">Kembali </a>
             </div>
             <div class="col-md-7"></div>
-            <div class="col-md-2">
+            <div class="col-md-2 text-end">
                 @if ($inovasi->status == 0 || $inovasi->status == 4)
                     <form style="all: unset" action="{{ route('inovasi.save', ['id' => request()->id]) }}" method="post">
                         @csrf

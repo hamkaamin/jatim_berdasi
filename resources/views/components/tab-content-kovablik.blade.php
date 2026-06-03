@@ -101,7 +101,7 @@
                                 <td>{{ $item->kelompok?->nama }}</td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
                                 <td>
-                                    @if ($item->juri_tahap == 0 || $item->juri_tahap == 1)
+                                    @if ($item->juri_tahap == 0)
                                         <span class='badge badge-secondary'>Belum Dinilai</span>
                                     @else
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)
@@ -123,7 +123,7 @@
                                             @endphp
 
                                             {!! $tahap !!}
-                                            {{ $nilai }}
+                                            {{ $i < $item->juri_tahap && (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
                                             <br>
                                         @endfor
                                     @endif
@@ -238,7 +238,7 @@
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap) + ` ?`,
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,
@@ -255,8 +255,8 @@
                         },
                         function(data) {
                             Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil!',
+                                icon: data.status ? 'success' : 'error',
+                                title: data.status ? 'Berhasil!' : 'Gagal!',
                                 text: data.message,
                                 showConfirmButton: true,
                                 timer: 1500

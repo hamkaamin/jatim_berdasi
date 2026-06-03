@@ -45,17 +45,16 @@
             <li
                 class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 1 ? 'mm-active' : '' }}">
                 <a href="{{ route('penilaian.ranking', ['jenis' => 'inotek', 'tahap' => '1']) }}"
-                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 1 ? 'active' : '' }}">Inotek
-                    Awards</a>
+                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 1 ? 'active' : '' }}">Lomba Inovasi</a>
             </li>
         @endif
-        @if (Auth::user()->menu_kovablik == 1)
+        {{-- @if (Auth::user()->menu_kovablik == 1)
             <li
                 class="{{ Request::is('penilaian-kovablik') ? 'mm-active' : '' }}">
                 <a href="{{ route('penilaian-kovablik.ranking', ['tahap' => '1']) }}"
                     class="{{ Request::is('penilaian-kovablik') ? 'active' : '' }}">Kovablik</a>
             </li>
-        @endif
+        @endif --}}
     </ul>
 </li>
 
@@ -77,17 +76,16 @@
             <li
                 class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 2 ? 'mm-active' : '' }}">
                 <a href="{{ route('penilaian.ranking', ['jenis' => 'inotek', 'tahap' => '2']) }}"
-                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 2 ? 'active' : '' }}">Inotek
-                    Awards</a>
+                    class="{{ Request::is('penilaian/ranking/inotek') && request('jenis') == 'inotek' && request('tahap') == 2 ? 'active' : '' }}">Lomba Inovasi</a>
             </li>
         @endif
-        @if (Auth::user()->menu_kovablik == 1)
+        {{-- @if (Auth::user()->menu_kovablik == 1)
             <li
                 class="{{ Request::is('penilaian-kovablik') ? 'mm-active' : '' }}">
                 <a href="{{ route('penilaian-kovablik.ranking', ['tahap' => '2']) }}"
                     class="{{ Request::is('penilaian-kovablik') ? 'active' : '' }}">Kovablik</a>
             </li>
-        @endif
+        @endif --}}
     </ul>
 </li>
 

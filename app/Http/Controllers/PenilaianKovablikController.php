@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\PenilaianKovablikExport;
 use App\Models\Juri;
 use App\Models\JuriKovablik;
+use App\Models\KategoriInovasi;
 use App\Models\KategoriKovablik;
 use App\Models\KategoriNilaiKovablik;
 use App\Models\KelompokKovablik;
@@ -53,10 +54,15 @@ class PenilaianKovablikController extends Controller
         $juri_tahap = $request->tahap;
         $proposal = ProposalKovablik::findOrFail($id);
         $juri = JuriKovablik::where('user_id', Auth::user()->id)->where('kelompok_id', $proposal->kelompok_id)->first();
-        $data = [];
-        if ($proposal->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $proposal->juri_tahap)->count() == 0) {
-            $penilaians = KategoriNilaiKovablik::where('tahapan_id', $proposal->juri_tahap)->get();
-            foreach ($penilaians as $penilaian) {
+        $penilaians = KategoriNilaiKovablik::where('tahapan_id', $proposal->juri_tahap)->get();
+        foreach ($penilaians as $penilaian) {
+            $exists = DB::table('penilaian_kovabliks')
+                ->where('proposal_id', $proposal->id)
+                ->where('penilaian_id', $penilaian->id)
+                ->where('user_id', Auth::id())
+                ->where('juri_tahap', $proposal->juri_tahap)
+                ->exists();
+            if (!$exists) {
                 $proposal->penilaian()->attach($penilaian->id, [
                     'user_id' => Auth::id(),
                     'juri_tahap' => $proposal->juri_tahap,
@@ -64,6 +70,7 @@ class PenilaianKovablikController extends Controller
             }
         }
         $data = $proposal->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $proposal->juri_tahap)->get();
+
         $penilaian_map = PenilaianKovablikMap::where('proposal_id', $id)->where('juri_id', $juri->id)->where('juri_tahap', $proposal->juri_tahap)->first();
         return view('penilaian-kovablik.edit', compact('data', 'proposal', 'juri', 'penilaian_map', 'juri_tahap'));
     }
@@ -95,7 +102,8 @@ class PenilaianKovablikController extends Controller
             foreach ($ids as $id) {
                 $kovablik = ProposalKovablik::find($id);
                 if ($kovablik->juri_tahap == 1) {
-                    $juri = JuriKovablik::where('kelompok_id', $kovablik->kelompok_id)->get();
+                    $kategori = KategoriInovasi::where('is_kovablik', 1)->first();
+                    $juri = Juri::where('kategori_id', $kategori->id)->get();
                     $juri_ids = $juri->pluck('id');
 
                     $jumlah_penilai = PenilaianKovablikMap::where('proposal_id', $kovablik->id)
@@ -144,21 +152,16 @@ class PenilaianKovablikController extends Controller
                     $nilai = $nilai * $bobot / 100;
 
                     if (is_numeric($nilai)) {
-                        $pivot = $proposal->penilaian()
-                            ->wherePivot('user_id', Auth::id())
-                            ->wherePivot('penilaian_id', $penilaianId)
-                            ->first();
-
-                        if ($pivot) {
-                            DB::table('penilaian_kovabliks')
-                                ->where('proposal_id', $proposal->id)
-                                ->where('penilaian_id', $penilaianId)
-                                ->where('user_id', Auth::id())
-                                ->where('juri_tahap', $proposal->juri_tahap)
-                                ->update([
-                                    'catatan_saran' => $catatanSaran,
-                                    'nilai' => $nilai,
-                                ]);
+                        $updated = DB::table('penilaian_kovabliks')
+                            ->where('proposal_id', $proposal->id)
+                            ->where('penilaian_id', $penilaianId)
+                            ->where('user_id', Auth::id())
+                            ->where('juri_tahap', $proposal->juri_tahap)
+                            ->update([
+                                'catatan_saran' => $catatanSaran,
+                                'nilai' => $nilai,
+                            ]);
+                        if ($updated) {
                             $total_nilai += $nilai;
                         }
                     }
