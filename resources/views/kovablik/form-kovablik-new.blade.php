@@ -227,7 +227,7 @@
 {!! old('kov_latar_belakang') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 200 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -246,7 +246,7 @@
                     inovasi. Penjelasan disertai dengan
                     target terukur .
                 </li>
-                <li>maksimal 150 kata</li>
+                <li>maksimal 200 kata</li>
             </ul>
         </label>
         <div class="col-12">
@@ -258,7 +258,7 @@
 {!! old('kov_tujuan') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 150 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -287,7 +287,7 @@
 {!! old('kov_cara_kerja') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 200 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -315,7 +315,7 @@
 {!! old('kov_keunggulan') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 200 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <diV>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -347,7 +347,7 @@
 {!! old('kov_mekanisme') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 200 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -370,7 +370,7 @@
                     Jelaskan Dampak Dalam Mencapai Target Asta Cita /program prioritas Presiden
                     sesuai yang dipilih
                 </li>
-                <li>maksimal 300 kata</li>
+                <li>maksimal 200 kata</li>
             </ul>
         </label>
         <div class="col-12">
@@ -381,7 +381,7 @@
 {!! old('kov_dampak') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 300 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -419,7 +419,7 @@
                     dan/ atau instansi yang
                     telah mereplikasi inovasi
                 </li>
-                <li>maksimal 150 kata</li>
+                <li>maksimal 200 kata</li>
             </ul>
         </label>
         <div class="col-12">
@@ -431,7 +431,7 @@
 {!! old('kov_difusi') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 300 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
@@ -463,7 +463,7 @@
                     (nominal dan sumber
                     anggaran)
                 </li>
-                <li>maksimal 150 kata</li>
+                <li>maksimal 200 kata</li>
             </ul>
         </label>
         <div class="col-12">
@@ -474,7 +474,7 @@
 {!! old('kov_sumber_daya') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 150 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div class="row">
                 <label>Link File</label>
                 <input type="text" value="{{ $data != null ? $data->file_sumber_daya : old('file_sumber_daya') }}"
@@ -514,7 +514,7 @@
                 <li>Strategi Sosial berupa kolaborasi
                     bersama pemangku kepenQngan
                     dan perannya.</li>
-                <li>maksimal 300 kata</li>
+                <li>maksimal 200 kata</li>
             </ul>
         </label>
         <div class="col-12">
@@ -526,7 +526,7 @@
 {!! old('kov_strategi') !!}
 @endif
 </textarea>
-            <small class="text-muted">Minimal 300 kata</small>
+            <small class="text-muted">Maksimal 200 kata</small>
             <div>
                 <label>Link File</label>
                 <input type="text" placeholder="Contoh : https://drive.google.com/drive/1231823912109ajskdjh1i2"
