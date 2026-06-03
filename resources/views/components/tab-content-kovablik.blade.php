@@ -182,11 +182,11 @@
                                         <form id="deleteConfirm" style="all: unset"
                                             action="{{ route('kovablik.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
-                                            <button onclick="hapus_data('{{ csrf_token() }}','{{ $item->id }}')"
+                                            <button onclick="hapus_data_kovablik('{{ csrf_token() }}','{{ $item->id }}')"
                                                 type="button" class="btn m-1 btn-block btn-sm btn-danger delete-btn"
-                                                data-toggle="modal" data-target="#confirmDeleteModal"
                                                 data-toggle="tooltip" data-placement="top" title="Hapus Proposal">
                                                 <i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus
+                                            </button>
                                         </form>
                                     @endif
                                 </td>
@@ -209,6 +209,27 @@
             });
         });
     });
+    function hapus_data_kovablik(token, id) {
+        if (confirm('Apakah anda yakin menghapus data ini ? ')) {
+            if (confirm('Apakah anda benar-benar yakin menghapus ini ? ')) {
+                var routeUrl = "{{ route('kovablik.delete') }}";
+                $.post(routeUrl, { _token: token, id: id }, function(data) {
+                    if (data.success) {
+                        $('#container-alert').html(
+                            '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                            '<strong>Success!</strong> ' + data.message +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                            '<span aria-hidden="true">&times;</span>' +
+                            '</button></div>'
+                        );
+                        setTimeout(function() { location.reload(); }, 1000);
+                    } else {
+                        alert('Failed to delete data: ' + data.message);
+                    }
+                });
+            }
+        }
+    }
     //Button masuk tahap selanjutnya per batch
     function batch_selanjutnya(token) {
         let checkedIds = [];
