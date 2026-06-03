@@ -97,7 +97,7 @@ class InovasiController extends Controller
         }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        $fase = Fase::where('active', 1)->where('kode', 'inotek')->first();
+        $fase = Fase::where('active', 1)->where('nama', 'inotek')->first();
 
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }

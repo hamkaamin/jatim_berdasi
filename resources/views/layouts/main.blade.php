@@ -222,7 +222,7 @@
                 <div class="container-fluid">
 
                     @php
-                        $fases_aktif = App\Models\Fase::where('timer', 1)->get();
+                        $fases_aktif = App\Models\Fase::where('timer', 1)->where('nama', '<>', 'kovablik')->get();
                         $fase_aktif  = $fases_aktif->first();
                         $pengumuman  = App\Models\Pengumuman::where('is_aktif', 1)->get();
                     @endphp
@@ -1167,7 +1167,7 @@
     {{-- End Adjustable Minible Script --}}
 
     {{-- GSAP Script --}}
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Flip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
     <script>
