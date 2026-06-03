@@ -28,11 +28,8 @@
                             <th>Judul</th>
                             <th>Kategori</th>
                             <th>Kelompok</th>
-                            <th>Penilaian</th>
                             <th>Status</th>
-                            @if (Auth::user()->role == 2)
-                                <th>Penilaian</th>
-                            @endif
+                            <th>Penilaian</th>
                             <th>Act</th>
                         </tr>
                     </thead>
@@ -74,8 +71,8 @@
                                 }
                             } else {
                                 if (Auth::user()->role == 2) {
-                                    $kelompok = App\Models\VerifikatorKovablik::where('user_id', Auth::user()->id)->pluck('kelompok_id');
-                                    $data = $proposal->whereIn('kelompok_id', $kelompok);
+                                    $kelompokIds = App\Models\VerifikatorKovablik::where('user_id', Auth::user()->id)->pluck('kelompok_id');
+                                    $data = $proposal->whereIn('kelompok_id', $kelompokIds);
                                 } else {
                                     $data = $proposal;
                                 }
@@ -100,12 +97,13 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->instansi }}</td>
                                 <td>{{ $item->judul }}</td>
-                                <td>{{ $item->kategori->nama}}</td>
-                                <td>{{ $item->kelompok->nama}}</td>
-                                <td><span class="badge badge-secondary">Belum ada penilaian</span></td>
+                                <td>{{ $item->kategori?->nama }}</td>
+                                <td>{{ $item->kelompok?->nama }}</td>
                                 <td>{!! Helper::getStatusKovablik($item->status) !!}</td>
-                                @if (Auth::user()->role == 2)
-                                    <td>
+                                <td>
+                                    @if ($item->juri_tahap == 0 || $item->juri_tahap == 1)
+                                        <span class='badge badge-secondary'>Belum Dinilai</span>
+                                    @else
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)
                                             @php
                                                 if ($i == 1) {
@@ -128,12 +126,8 @@
                                             {{ $nilai }}
                                             <br>
                                         @endfor
-
-                                        @if ($item->juri_tahap == 0)
-                                            <span class='badge badge-secondary'>Belum Dinilai</span>
-                                        @endif
-                                    </td>
-                                @endif
+                                    @endif
+                                </td>
                                 <td style="max-width: 100px;">
                                     @if ($item->status != 0)
                                         <a target="_blank"
@@ -244,7 +238,7 @@
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap) + ` ?`,
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,

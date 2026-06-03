@@ -97,7 +97,7 @@ class InovasiController extends Controller
         }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        $fase = Fase::where('active', 1)->first();
+        $fase = Fase::where('active', 1)->where('kode', 'inotek')->first();
 
         return view('inovasi.index', compact('tahapan', 'tahapanKolom', 'inovasi', 'label','area','kategori','setting','fase'));
     }
@@ -176,9 +176,7 @@ class InovasiController extends Controller
             $totalNilai = $item->indikator->sum('pivot.bobot_akhir');
             return  $totalNilai;
         });
-        // dd($inovasi);
-        // dd($inovasi);
-        // dd($inovasi,$label,Auth::user()->tahun,Auth::user()->id);
+
         $status_label = in_array($area, ['masyarakat', 'pemda', 'kota']) ? 1 : 0;
         $user = Auth::user();
         $withCountCallback = function ($q) use ($status_label, $user) {
@@ -201,11 +199,13 @@ class InovasiController extends Controller
         if ($user->role == 2) {
             $id_kategori = Helper::getKategoriRole($user->role);
             $kategori = KategoriInovasi::withCount(['hasManyInovasi' => $withCountCallback])
-                ->whereIn('id', $id_kategori)->orderBy('id', 'asc')->get();
+                ->whereIn('id', $id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id', 'asc')->get();
         }
 
         $kovablikQuery = \App\Models\ProposalKovablik::where('tahun', $user->tahun);
-        if ($user->role == 3 || Helper::checkUserUmum('provinsi', $user)) {
+        if ($user->role == 2) {
+            $kovablikQuery->where('status', '<>', 0);
+        } elseif ($user->role == 3 || Helper::checkUserUmum('provinsi', $user)) {
             $kovablikQuery->where('provinsi_id', $user->province_id);
         } elseif ($user->role == 4 || Helper::checkUserUmum('kota', $user)) {
             $kovablikQuery->where('user_id', $user->id);
@@ -216,7 +216,7 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', $user) || Helper::checkUserUmum('opd-kelurahan', $user)) {
             $kovablikQuery->where('kelurahan_id', $user->opd->kelurahan_id);
         }
-        $kovablik = $kovablikQuery->get();
+        $kovablik = $kovablikQuery->with(['kategori', 'kelompok', 'kelompok.juris', 'penilaian'])->get();
         $kovablikCount = $kovablik->count();
 
         $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
@@ -229,7 +229,8 @@ class InovasiController extends Controller
         }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
-        $fase = Fase::where('active', 1)->first();
+        $fase = Fase::where('active', 1)->where('kode', 'inotek')->first();
+
         return view('inovasi.show_inovasi', compact('tahapan', 'tahapanKolom', 'inovasi', 'label', 'kategori', 'fase', 'area', 'kovablikCount', 'kovablik', 'kelompok'));
     }
 

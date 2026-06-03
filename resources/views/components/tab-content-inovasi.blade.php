@@ -24,10 +24,6 @@
                             <th>Keterangan</th>
                             <th style="{!! $display !!}">Bobot Awal</th>
                             <th>Penilaian</th>
-                            @if (Auth::user()->role == 2)
-                                <th>Kematangan</th>
-                                <th>Penilaian</th>
-                            @endif
                             <th style="width: 100px; min-width: 100px">Act</th>
                         </tr>
                     </thead>
@@ -124,41 +120,37 @@
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
                                 </td>
                                 <td>
-                                    <span class="badge badge-secondary">Belum ada penilaian</span>
-                                </td>
-                                @if (Auth::user()->role == 2)
-                                    <td><b>{{ $item->indikator->sum('pivot.bobot_akhir') }}</b>
-                                    </td>
-
-                                    <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        @if ($item->indikator->sum('pivot.bobot_akhir') != null && $item->juri_tahap != 0)
+                                            <div class="d-flex gap-1 align-items-center">
+                                                <span class='badge badge-primary rounded-pill'>Tahap 1</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                            </div>
+                                        @endif
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)
-                                            @php
-                                                if ($i == 1) {
-                                                    $tahap =
-                                                        "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
-                                                } elseif ($i == 2) {
-                                                    $tahap =
-                                                        "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
-                                                }
-                                                $nilai = $item->penilaian
-                                                    ->where('pivot.juri_tahap', $i)
-                                                    ->sum(function ($pen) {
-                                                        return $pen->pivot->nilai;
-                                                    });
-
-                                            @endphp
-                                            {{-- {{ sizeof($item->kategori->juris) > 0 ? $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) : 0 }}
-                                        --}}
-
-                                            {!! $tahap !!}
-                                            {{ $nilai }}
+                                            <div class="d-flex gap-1 align-items-center">
+                                                @php
+                                                    if ($i == 1) {
+                                                        $tahap =
+                                                            "<span class='badge badge-primary rounded-pill'>Tahap 2</span>";
+                                                    } elseif ($i == 2) {
+                                                        $tahap =
+                                                            "<span class='badge badge-success rounded-pill'>Tahap 3</span>";
+                                                    }
+                                                    $nilai = $item->penilaian
+                                                        ->where('pivot.juri_tahap', $i)
+                                                        ->sum(function ($pen) {
+                                                            return $pen->pivot->nilai;
+                                                        });
+                                                @endphp
+                                                {!! $tahap !!}
+                                                {{ $nilai }}
+                                            </div>
                                         @endfor
-
                                         @if ($item->juri_tahap == 0)
                                             <span class='badge badge-secondary'>Belum Dinilai</span>
                                         @endif
-                                    </td>
-                                @endif
+                                    </div>
+                                </td>
 
                                 {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
                                 </td> --}}
@@ -185,7 +177,7 @@
                                         class="btn m-1 btn-block btn-sm btn-info" data-toggle="tooltip"
                                         data-placement="top" title="Detail Inovasi"><i
                                             class="fa fa-eye"></i>&nbsp;&nbsp;Detail</a>
-                                    @if (($item->status == 0 || $item->status == 4 || Auth::user()->role == 2) && $item->status != 2 && $item->status != 1)
+                                    @if (($item->status == 0 || $item->status == 4) && $item->status != 2 && $item->status != 1 && Auth::user()->role != 2 && Auth::user()->role != 7)
                                         <a href="{{ route('inovasi.edit', ['id' => encrypt($item->id), 'label' => 1]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Edit Inovasi"><i
@@ -214,12 +206,12 @@
                                             data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a> --}}
                                         <button type="button"
-                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                            onclick="btn_selanjutnya_inovasi('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
                                     @endif
-                                    @if ($item->status == 0 || $item->status == 4)
+                                    @if (($item->status == 0 || $item->status == 4) && (Auth::user()->role != 2 && Auth::user()->role != 7))
                                         <form id="deleteConfirm" style="all: unset"
                                             action="{{ route('inovasi.delete', ['id' => $item->id]) }}" method="post">
                                             @csrf
@@ -248,12 +240,12 @@
 
 
 <script>
-    function btn_selanjutnya(token, id, juri_tahap) {
-        var next_juri = juri_tahap + 1;
-        if (next_juri > 2) {
+    function btn_selanjutnya_inovasi(token, id, juri_tahap) {
+        var next_juri = juri_tahap + 2;
+        if (next_juri > 3) {
             Swal.fire({
                 title: 'Gagal',
-                text: 'Penilaian sudah di tahap 2',
+                text: 'Penilaian sudah di tahap 3',
                 icon: 'error',
                 showCancelButton: false,
                 confirmButtonColor: '#d33', // merah, cocok untuk error
@@ -261,7 +253,7 @@
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
+                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 2) + ` ?`,
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,

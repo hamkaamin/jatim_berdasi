@@ -59,6 +59,9 @@ class Helper
             if(Auth::user()->is_kategori_5 == 1){
                 $id_kategori[] = 5;
             }
+            if(Auth::user()->is_kategori_6 == 1){
+                $id_kategori[] = 6;
+            }
 
 		}
 		return $id_kategori;

@@ -5,31 +5,22 @@
         <span>Dashboard</span>
     </a>
 </li>
-<li class="menu-title">Lomba Inovasi Daerah</li>
+<li class="menu-title">Data Inovasi Daerah</li>
 @if (env('APP_OPD_JATIM') == 0)
-    @if (Auth::user()->menu_iga == 1)
-        <li class="{{ request()->is('inovasi/daerah') ? 'mm-active' : '' }}">
-            <a href="{{ route('inovasi.index', ['area' => 'daerah']) }}"
-                class="{{ request()->is('inovasi/daerah') ? 'active' : '' }}">
-                <i class="uil-trophy"></i> <span>IGA</span>
-            </a>
-        </li>
-    @endif
-
     @if (Auth::user()->menu_inotek == 1)
-        <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
-            <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
-                class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
-                <i class="uil-medal"></i> <span>INOTEK AWARDS</span>
+        <li class="{{ request()->is('inovasi/masyarakat') ? 'mm-active' : '' }}">
+            <a href="{{ route('inovasi.index', ['area' => 'masyarakat']) }}"
+                class="{{ request()->is('inovasi/masyarakat') ? 'active' : '' }}">
+                <i class="uil-medal"></i> <span>Lomba Inovasi</span>
             </a>
         </li>
     @endif
 
-    @if (Auth::user()->menu_kovablik == 1)
-        <li class="{{ request()->is('kovablik/masyarakat') ? 'mm-active' : '' }}">
-            <a href="{{ route('kovablik.index', ['area' => 'masyarakat']) }}"
-                class="{{ request()->is('kovablik/masyarakat') ? 'active' : '' }}">
-                <i class="uil-award"></i> <span>KOVABLIK</span>
+    @if (Auth::user()->menu_iga == 1)
+        <li class="{{ request()->is('inovasi/provinsi') ? 'mm-active' : '' }}">
+            <a href="{{ route('inovasi.index', ['area' => 'provinsi']) }}"
+                class="{{ request()->is('inovasi/provinsi') ? 'active' : '' }}">
+                <i class="uil-trophy"></i> <span>IGA</span>
             </a>
         </li>
     @endif
@@ -37,7 +28,7 @@
     <li class="{{ request()->is('inovasi/kota') ? 'mm-active' : '' }}">
         <a href="{{ route('inovasi.index', ['area' => 'kota']) }}"
             class="{{ request()->is('inovasi/kota') ? 'active' : '' }}">
-            <i class="uil-medal"></i> <span>INOTEK AWARDS</span>
+            <i class="uil-medal"></i> <span>Lomba Inovasi</span>
         </a>
     </li>
 @endif
