@@ -346,14 +346,34 @@ class InovasiController extends Controller
     public function save(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file_rancang_bangun' => 'mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048',
-            'anggaran' => 'mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048',
+            'nama'                => 'required',
+            'kategori_id'         => 'required',
+            'nama_inisiator'      => 'required_unless:kategori_id,5',
+            'jenis_id'            => 'required_unless:kategori_id,5',
+            'waktu_uji_coba'      => 'required_unless:kategori_id,5|nullable|date',
+            'waktu_penerapan'     => 'required_unless:kategori_id,5|nullable|date',
+            'rancang_bangun'      => 'required',
+            'tujuan'              => 'required_unless:kategori_id,5',
+            'manfaat'             => 'required_unless:kategori_id,5',
+            'hasil'               => 'required_unless:kategori_id,5',
+            'file_rancang_bangun' => 'nullable|mimes:pdf,docx,doc,jpg,jpeg,png,xlsx|max:2048',
+            'anggaran'            => 'nullable|mimes:pdf,doc,jpg,jpeg,png,xlsx|max:2048',
         ], [
-            'file_rancang_bangun.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
-            'file_rancang_bangun.max' => 'File maksimal berukuran 2MB',
-            'profil_bisnis.max' => 'File maksimal berukuran 2MB',
-            'anggaran.mimes' => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
-            'anggaran.max' => 'File maksimal berukuran 2MB',
+            'nama.required'               => 'Nama Inovasi wajib diisi',
+            'kategori_id.required'        => 'Kategori Inovasi wajib dipilih',
+            'nama_inisiator.required_unless' => 'Nama Inisiator wajib diisi',
+            'jenis_id.required_unless'    => 'Jenis Inovasi wajib dipilih',
+            'waktu_uji_coba.required_unless' => 'Waktu Ujicoba Inovasi wajib diisi',
+            'waktu_penerapan.required_unless' => 'Waktu Penerapan Inovasi wajib diisi',
+            'rancang_bangun.required'     => 'Rancang Bangun wajib diisi',
+            'tujuan.required_unless'      => 'Tujuan Inovasi wajib diisi',
+            'manfaat.required_unless'     => 'Manfaat Inovasi wajib diisi',
+            'hasil.required_unless'       => 'Hasil Inovasi wajib diisi',
+            'file_rancang_bangun.mimes'   => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
+            'file_rancang_bangun.max'     => 'File maksimal berukuran 2MB',
+            'profil_bisnis.max'           => 'File maksimal berukuran 2MB',
+            'anggaran.mimes'              => 'File harus pdf / doc / jpg / jpeg / png / xlsx',
+            'anggaran.max'                => 'File maksimal berukuran 2MB',
         ]);
         if ($validator->fails()) {
             $msg = "";
@@ -424,14 +444,12 @@ class InovasiController extends Controller
                     }
                 }
             }
-            $max_kata = 10;
+            $max_kata = 300;
             $rancang_bangun = $request->rancang_bangun;
-            $string = strip_tags($rancang_bangun);
-            $words = explode(' ', strip_tags($rancang_bangun));
-            $return = trim(implode(' ', array_slice($words, 0, 10)));
+            $words = array_filter(explode(' ', strip_tags($rancang_bangun)));
             $kata = count($words);
             if($kata < $max_kata){
-                return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata');
+                return redirect()->back()->with('error', 'Minimal Data Rancang Bangun 300 kata (saat ini: ' . $kata . ' kata)')->withInput();
             }
 
             $data->nama = $request->nama;

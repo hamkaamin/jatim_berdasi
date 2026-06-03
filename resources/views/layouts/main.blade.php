@@ -1143,6 +1143,18 @@
             });
         }
     </script>
+    <script>
+        $(document).ready(function () {
+            if (window._flashSuccess) {
+                Swal.fire({ icon: 'success', title: 'Berhasil!', html: window._flashSuccess, confirmButtonColor: '#28a745', confirmButtonText: 'OK' });
+            } else if (window._flashError) {
+                Swal.fire({ icon: 'error', title: 'Error!', html: window._flashError, confirmButtonColor: '#d33', confirmButtonText: 'Tutup' });
+            } else if (window._flashErrors && window._flashErrors.length) {
+                var html = '<ul class="text-left mb-0">' + window._flashErrors.map(function(e){ return '<li>' + e + '</li>'; }).join('') + '</ul>';
+                Swal.fire({ icon: 'warning', title: 'Validasi Gagal!', html: html, confirmButtonColor: '#d33', confirmButtonText: 'Tutup' });
+            }
+        });
+    </script>
 
     {{-- Adjustable Minible Script --}}
     <!-- JAVASCRIPT -->

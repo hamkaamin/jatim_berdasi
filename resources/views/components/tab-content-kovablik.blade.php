@@ -170,10 +170,9 @@
                                             <input type="hidden" name="id" value="{{ $item->id }}">
                                             <input type="hidden" name="status" value="1">
                                             @if ($fase && $fase->active == 1 && strtotime($fase->tgl_berakhir) >= strtotime(date('Y-m-d H:i:s')))
-                                                <button type="submit"
-                                                    class="btn m-1 btn-block btn-sm btn btn-success" name="is_sent"
-                                                    value="1"
-                                                    onclick="if(!confirm('Apakah Anda yakin akan mengirim data Proposal ini? (Pastikan Data Sudah Diisi dengan Benar)')){return false;}"><i
+                                                <button type="button"
+                                                    class="btn m-1 btn-block btn-sm btn btn-success"
+                                                    onclick="kirim_proposal(this)"><i
                                                         class="fa fa-paper-plane"></i>&nbsp;&nbsp;Kirim Proposal</button>
                                             @endif
                                         </form>
@@ -209,26 +208,58 @@
             });
         });
     });
+    function kirim_proposal(btn) {
+        Swal.fire({
+            title: 'Kirim Proposal?',
+            text: 'Apakah Anda yakin akan mengirim data Proposal ini? (Pastikan Data Sudah Diisi dengan Benar)',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Kirim!',
+            cancelButtonText: 'Batal'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                btn.closest('form').submit();
+            }
+        });
+    }
     function hapus_data_kovablik(token, id) {
-        if (confirm('Apakah anda yakin menghapus data ini ? ')) {
-            if (confirm('Apakah anda benar-benar yakin menghapus ini ? ')) {
-                var routeUrl = "{{ route('kovablik.delete') }}";
-                $.post(routeUrl, { _token: token, id: id }, function(data) {
-                    if (data.success) {
-                        $('#container-alert').html(
-                            '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                            '<strong>Success!</strong> ' + data.message +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                            '<span aria-hidden="true">&times;</span>' +
-                            '</button></div>'
-                        );
-                        setTimeout(function() { location.reload(); }, 1000);
-                    } else {
-                        alert('Failed to delete data: ' + data.message);
+        Swal.fire({
+            title: 'Hapus Data?',
+            text: 'Apakah Anda yakin ingin menghapus data ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: 'Konfirmasi Terakhir',
+                    text: 'Data yang dihapus tidak dapat dikembalikan!',
+                    icon: 'error',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Hapus Permanen!',
+                    cancelButtonText: 'Batal'
+                }).then(function(result2) {
+                    if (result2.isConfirmed) {
+                        var routeUrl = "{{ route('kovablik.delete') }}";
+                        $.post(routeUrl, { _token: token, id: id }, function(data) {
+                            if (data.success) {
+                                Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500, showConfirmButton: false })
+                                    .then(function() { location.reload(); });
+                            } else {
+                                Swal.fire('Gagal!', data.message, 'error');
+                            }
+                        });
                     }
                 });
             }
-        }
+        });
     }
     //Button masuk tahap selanjutnya per batch
     function batch_selanjutnya(token) {

@@ -195,33 +195,41 @@
 
     <script>
         function hapus_data(token, id) {
-            if (confirm('Apakah anda yakin menghapus data ini ? ')) {
-                if (confirm('Apakah anda benar-benar yakin menghapus ini ? ')) {
-                    var routeUrl = "{{ route('inovasi.delete') }}";
-
-                    $.post(routeUrl, {
-                            _token: token,
-                            id: id
-                        },
-                        function(data) {
-                            if (data.success) {
-                                $('#container-alert').html(
-                                    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                                    '<strong>Success!</strong> ' + data.message +
-                                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                                    '<span aria-hidden="true">&times;</span>' +
-                                    '</button>' +
-                                    '</div>');
-
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 1000);
-                            } else {
-                                alert('Failed to delete data: ' + data.message);
-                            }
-                        });
+            Swal.fire({
+                title: 'Hapus Data?',
+                text: 'Apakah Anda yakin ingin menghapus data ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Konfirmasi Terakhir',
+                        text: 'Data yang dihapus tidak dapat dikembalikan!',
+                        icon: 'error',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Ya, Hapus Permanen!',
+                        cancelButtonText: 'Batal'
+                    }).then(function(result2) {
+                        if (result2.isConfirmed) {
+                            var routeUrl = "{{ route('inovasi.delete') }}";
+                            $.post(routeUrl, { _token: token, id: id }, function(data) {
+                                if (data.success) {
+                                    Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500, showConfirmButton: false })
+                                        .then(function() { location.reload(); });
+                                } else {
+                                    Swal.fire('Gagal!', data.message, 'error');
+                                }
+                            });
+                        }
+                    });
                 }
-            }
+            });
         }
     </script>
 @endsection

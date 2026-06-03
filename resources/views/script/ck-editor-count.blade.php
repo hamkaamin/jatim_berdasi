@@ -35,31 +35,10 @@
     }
 
     window._ckSubmitHandler = function(e) {
-        var isValid = true;
-        var missingFields = [];
-
-        editorInstances.forEach(function(item, idx) {
-            // Sync semua editor ke textarea
+        // Hanya sync semua editor ke textarea; validasi ditangani oleh interceptor utama
+        editorInstances.forEach(function(item) {
             item.textarea.value = item.editor.getData();
-
-            // Hanya validasi panel yang aktif
-            var panel = item.textarea.closest('.step-panel');
-            if (panel && !panel.classList.contains('step-panel-active')) {
-                return;
-            }
-
-            var plainText = item.editor.getData().replace(/<[^>]*>/g, '').trim();
-            if (!plainText) {
-                var fieldName = item.textarea.getAttribute('data-label') || ('Kolom narasi ' + (idx + 1));
-                missingFields.push(fieldName);
-                isValid = false;
-            }
         });
-
-        if (!isValid) {
-            e.preventDefault();
-            alert("Kolom dibawah masih kosong dan wajib diisi:\n\n" + missingFields.join('\n'));
-        }
     };
 
     document.getElementById('form-edit-inovasi').addEventListener('submit', window._ckSubmitHandler);

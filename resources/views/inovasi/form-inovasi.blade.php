@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col">
                 <form action="{{ route('inovasi.save', ['id' => $data != null ? $data->id : 0]) }}" method="post"
-                    enctype="multipart/form-data" id="form-edit-inovasi"
+                    enctype="multipart/form-data" id="form-edit-inovasi" novalidate
                     data-action-inovasi="{{ route('inovasi.save', ['id' => $data != null ? $data->id : 0]) }}"
                     data-action-kovablik="{{ route('kovablik.save', ['id' => $data != null ? $data->id : 0]) }}">
                     <input type="hidden" name="label" value="{{ $label }}">
@@ -346,4 +346,121 @@
     {{-- @include('script.select2-multiple') --}}
     @include('script.modal')
     @include('inovasi.partials.stepper-script')
+    <script>
+        (function () {
+            var form = document.getElementById('form-edit-inovasi');
+            if (!form) return;
+
+            function getLabel(el) {
+                if (el.dataset && el.dataset.label) return el.dataset.label;
+                var row = el.closest('.row');
+                if (row) {
+                    var b = row.querySelector('label b');
+                    if (b) return b.textContent.trim();
+                    var lbl = row.querySelector('label');
+                    if (lbl) return lbl.firstChild && lbl.firstChild.textContent ? lbl.firstChild.textContent.trim() : lbl.textContent.trim();
+                }
+                return el.getAttribute('name') || el.id || 'Field';
+            }
+
+            function doSubmit(statusValue) {
+                // Sync CKEditor 5 (editorInstances dari ck-editor-count.blade.php)
+                if (window.editorInstances && editorInstances.length) {
+                    editorInstances.forEach(function (item) {
+                        item.textarea.value = item.editor.getData();
+                    });
+                }
+                // Fallback CKEditor 4
+                if (window.CKEDITOR) {
+                    Object.keys(CKEDITOR.instances).forEach(function (id) {
+                        try { CKEDITOR.instances[id].updateElement(); } catch (ex) {}
+                    });
+                }
+                // Set status via hidden input (button value tidak ikut saat form.submit())
+                var statusInput = form.querySelector('input[name="status"][type="hidden"]');
+                if (!statusInput) {
+                    statusInput = document.createElement('input');
+                    statusInput.type = 'hidden';
+                    statusInput.name = 'status';
+                    form.appendChild(statusInput);
+                }
+                statusInput.value = statusValue !== undefined ? statusValue : '0';
+                form.submit();
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault(); // selalu cegah default agar browser tidak tampilkan native alert
+
+                var submitter = e.submitter;
+                var statusValue = (submitter && submitter.name === 'status') ? submitter.value : '0';
+
+                var errors = [];
+                var activePanel = document.querySelector('.step-panel.step-panel-active');
+                if (!activePanel) { doSubmit(statusValue); return; }
+
+                var checkedRadios = {};
+
+                activePanel.querySelectorAll('input[required], select[required], textarea[required]:not(.ck-editor)').forEach(function (el) {
+                    if (el.type === 'file') return;
+                    if (el.type === 'radio') {
+                        if (checkedRadios[el.name] !== undefined) return;
+                        checkedRadios[el.name] = true;
+                        if (!activePanel.querySelector('[name="' + el.name + '"]:checked')) {
+                            errors.push(getLabel(el) + ' wajib dipilih');
+                        }
+                    } else if (el.tagName === 'SELECT') {
+                        if (!el.value) errors.push(getLabel(el) + ' wajib dipilih');
+                    } else {
+                        if (!el.value.trim()) errors.push(getLabel(el) + ' wajib diisi');
+                    }
+                });
+
+                activePanel.querySelectorAll('textarea[required].ck-editor').forEach(function (ta) {
+                    var content = '';
+                    // CKEditor 5: cari dari editorInstances
+                    if (window.editorInstances && editorInstances.length) {
+                        var inst = editorInstances.find(function (i) { return i.textarea === ta; });
+                        if (inst) content = inst.editor.getData().replace(/<[^>]*>/g, '').trim();
+                    }
+                    // Fallback CKEditor 4
+                    if (!content && window.CKEDITOR && CKEDITOR.instances[ta.id]) {
+                        content = CKEDITOR.instances[ta.id].getData().replace(/<[^>]*>/g, '').trim();
+                    }
+                    // Fallback nilai textarea (sudah di-sync oleh _ckSubmitHandler jika run duluan)
+                    if (!content) content = ta.value.trim();
+                    if (!content) errors.push(getLabel(ta) + ' wajib diisi');
+                });
+
+                if (errors.length > 0) {
+                    Swal.fire({
+                        title: 'Lengkapi Data',
+                        html: '<ul class="text-left mb-0">' + errors.map(function (item) { return '<li>' + item + '</li>'; }).join('') + '</ul>',
+                        icon: 'warning',
+                        confirmButtonColor: '#d33',
+                        confirmButtonText: 'Tutup'
+                    });
+                    return;
+                }
+
+                // Kirim Inovasi (status=1) butuh konfirmasi tambahan
+                if (statusValue === '1') {
+                    Swal.fire({
+                        title: 'Kirim Inovasi?',
+                        text: 'Pastikan seluruh isian wajib telah terisi dan data indikator sudah dilengkapi.',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#28a745',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Ya, Kirim!',
+                        cancelButtonText: 'Batal'
+                    }).then(function (result) {
+                        if (result.isConfirmed) doSubmit(statusValue);
+                    });
+                    return;
+                }
+
+                doSubmit(statusValue);
+            });
+        }());
+    </script>
 @endsection

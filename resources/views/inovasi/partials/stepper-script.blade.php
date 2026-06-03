@@ -42,6 +42,44 @@
             });
             return;
         }
+        if (fromStep === 2) {
+            var errors = [];
+            if (isKovablik) {
+                var kategoriKov = $('#form-edit-inovasi').find('[name="kategori_kovablik_id"]').val();
+                var kelompok    = $('#form-edit-inovasi').find('[name="kelompok_id"]').val();
+                var jenisIno    = $('#form-edit-inovasi').find('[name="kov_jenis_inovasi"]').val();
+                var tglMulai    = $('#form-edit-inovasi').find('[name="tanggal_mulai"]').val();
+                var namaInov    = $.trim($('#form-edit-inovasi').find('[name="nama_inovator"]').val());
+                var nipInov     = $.trim($('#form-edit-inovasi').find('[name="kov_nip_inovator"]').val());
+                if (!kategoriKov) errors.push('Kategori wajib dipilih');
+                if (!kelompok)    errors.push('Kelompok Inovasi wajib dipilih');
+                if (!jenisIno)    errors.push('Jenis Inovasi wajib dipilih');
+                if (!tglMulai)    errors.push('Waktu Mulai Implementasi wajib diisi');
+                if (!namaInov)    errors.push('Nama Inovator wajib diisi');
+                if (!nipInov)     errors.push('NIP Inovator wajib diisi');
+            } else {
+                var namaInisiator = $.trim($('#form-edit-inovasi').find('[name="nama_inisiator"]').val());
+                var jenisChecked  = $('[name="jenis_id"]:checked').val();
+                var urusan        = $('[name="urusan_id[]"]').val();
+                var waktuUji      = $('#form-edit-inovasi').find('[name="waktu_uji_coba"]').val();
+                var waktuPenerapan = $('#form-edit-inovasi').find('[name="waktu_penerapan"]').val();
+                if (!namaInisiator)                    errors.push('Nama Inisiator wajib diisi');
+                if (!jenisChecked)                     errors.push('Jenis Inovasi wajib dipilih');
+                if (!urusan || !urusan.length)         errors.push('Urusan Inovasi wajib dipilih');
+                if (!waktuUji)                         errors.push('Waktu Ujicoba Inovasi wajib diisi');
+                if (!waktuPenerapan)                   errors.push('Waktu Penerapan Inovasi wajib diisi');
+            }
+            if (errors.length > 0) {
+                Swal.fire({
+                    title: 'Lengkapi Data',
+                    html: '<ul class="text-left mb-0">' + errors.map(function(e){ return '<li>' + e + '</li>'; }).join('') + '</ul>',
+                    icon: 'warning',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Tutup'
+                });
+                return;
+            }
+        }
         goToStep(fromStep + 1);
     }
 
