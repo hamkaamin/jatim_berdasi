@@ -123,7 +123,7 @@
                                             @endphp
 
                                             {!! $tahap !!}
-                                            {{ $nilai }}
+                                            {{ $i < $item->juri_tahap && (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
                                             <br>
                                         @endfor
                                     @endif
