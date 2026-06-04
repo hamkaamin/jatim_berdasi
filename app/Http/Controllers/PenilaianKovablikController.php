@@ -98,6 +98,8 @@ class PenilaianKovablikController extends Controller
     public function move(Request $request)
     {
         $ids = $request->input('id');
+        $is_next = filter_var($request->input('is_next'), FILTER_VALIDATE_BOOLEAN);
+
         try {
             DB::beginTransaction();
             foreach ($ids as $id) {
@@ -129,14 +131,23 @@ class PenilaianKovablikController extends Controller
                         ]);
                     }
                 }
-                $kovablik->juri_tahap = $kovablik->juri_tahap + 1;
+
+                // Tandai nilai tahap saat ini sebagai boleh ditampilkan (sebelum increment)
+                $kovablik->nilai_juri_tahap_show = $kovablik->juri_tahap;
+
+                if ($is_next) {
+                    $kovablik->juri_tahap = $kovablik->juri_tahap + 1;
+                }
+
                 $kovablik->save();
             }
             DB::commit();
-            return response()->json([
-                'status' => true,
-                'message' => 'Proposal Kovablik Berhasil Masuk ke Tahap ' . $kovablik->juri_tahap,
-            ], 200);
+
+            $message = $is_next
+                ? 'Proposal Kovablik Berhasil Masuk ke Tahap ' . $kovablik->juri_tahap . ' dan Nilai Tahap Sebelumnya Dibagikan'
+                : 'Nilai Tahap ' . $kovablik->nilai_juri_tahap_show . ' Berhasil Dibagikan';
+
+            return response()->json(['status' => true, 'message' => $message], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([

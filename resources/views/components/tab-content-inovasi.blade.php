@@ -146,7 +146,7 @@
                                                         });
                                                 @endphp
                                                 {!! $tahap !!}
-                                                {{ $i < $item->juri_tahap || (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '-' }}
+                                                {{ (Auth::user()->role == 2 || Auth::user()->role == 7 || $i <= $item->nilai_juri_tahap_show) ? $nilai : '-' }}
                                             </div>
                                         @endfor
                                     </div>
@@ -245,43 +245,42 @@
                 title: 'Gagal',
                 text: 'Penilaian sudah di tahap 3',
                 icon: 'error',
-                showCancelButton: false,
-                confirmButtonColor: '#d33', // merah, cocok untuk error
+                confirmButtonColor: '#d33',
                 confirmButtonText: 'Tutup'
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 2) + ` ?`,
+                title: 'Lanjutkan ke Penilaian Tahap ' + next_juri + '?',
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,
+                showDenyButton: true,
                 confirmButtonColor: '#28a745',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Lanjutkan!'
+                denyButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Lanjut & Bagikan',
+                denyButtonText: 'Bagikan Saja',
+                cancelButtonText: 'Batal'
             }).then((result) => {
+                var is_next;
                 if (result.isConfirmed) {
-                    var routeUrl = "{{ route('penilaian.move') }}";
-
-                    $.post(routeUrl, {
-                            _token: token,
-                            id: id
-                        },
-                        function(data) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil!',
-                                text: data.message,
-                                showConfirmButton: true,
-                                timer: 1500
-                            }).then(() => {
-                                show_status('{{ csrf_token() }}', $('#statusFilter').val(),
-                                    '{{ $area }}', '#show_inovasi');
-                            });
-                        });
+                    is_next = true;
+                } else if (result.isDenied) {
+                    is_next = false;
+                } else {
+                    return;
                 }
+                $.post("{{ route('penilaian.move') }}", { _token: token, id: id, is_next: is_next }, function(data) {
+                    if (data.status == true) {
+                        Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500 }).then(() => {
+                            show_status('{{ csrf_token() }}', $('#statusFilter').val(), '{{ $area }}', '#show_inovasi');
+                        });
+                    } else {
+                        Swal.fire({ title: 'Gagal', html: data.message, icon: 'error', confirmButtonColor: '#d33', confirmButtonText: 'Tutup' });
+                    }
+                });
             });
         }
-
     }
 </script>
 <script>

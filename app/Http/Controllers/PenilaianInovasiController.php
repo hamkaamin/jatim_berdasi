@@ -228,6 +228,7 @@ class PenilaianInovasiController extends Controller
 
 
     public function move(Request $request){
+        $is_next = filter_var($request->input('is_next'), FILTER_VALIDATE_BOOLEAN);
         try{
             DB::beginTransaction();
             $inovasi = Inovasi::find($request->id);
@@ -258,13 +259,22 @@ class PenilaianInovasiController extends Controller
                     ]);
                 }
             }
-            $inovasi->juri_tahap = $inovasi->juri_tahap+1;
+
+            // Tandai nilai tahap saat ini sebagai boleh ditampilkan (sebelum increment)
+            $inovasi->nilai_juri_tahap_show = $inovasi->juri_tahap;
+
+            if ($is_next) {
+                $inovasi->juri_tahap = $inovasi->juri_tahap + 1;
+            }
+
             $inovasi->save();
             DB::commit();
-            return response()->json([
-                'status'=>true,
-                'message' => 'Inovasi Berhasil Masuk ke Tahap '.$inovasi->juri_tahap,
-            ],200);
+
+            $message = $is_next
+                ? 'Inovasi Berhasil Masuk ke Tahap ' . $inovasi->juri_tahap . ' dan Nilai Tahap Sebelumnya Dibagikan'
+                : 'Nilai Tahap ' . $inovasi->nilai_juri_tahap_show . ' Berhasil Dibagikan';
+
+            return response()->json(['status' => true, 'message' => $message], 200);
         }catch(\Exception $e){
             DB::rollback();
             return response()->json([

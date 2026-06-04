@@ -113,17 +113,18 @@
                                                     $tahap =
                                                         "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                 }
+
                                                 $nilai = $item->penilaian
-                                                    ->where('pivot.juri_tahap', $i)
-                                                    ->sum(function ($pen) {
-                                                        return $pen->pivot->nilai;
-                                                    });
+                                                            ->where('pivot.juri_tahap', $i)
+                                                            ->sum(function ($pen) {
+                                                                return $pen->pivot->nilai;
+                                                            });
                                                 $jumlahJuri = $item->kelompok->juris->count();
                                                 $nilai = $nilai / $jumlahJuri;
                                             @endphp
 
                                             {!! $tahap !!}
-                                            {{ $i < $item->juri_tahap || (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
+                                            {{ (Auth::user()->role == 2 || Auth::user()->role == 7 || $i <= $item->nilai_juri_tahap_show) ? $nilai : '-' }}
                                             <br>
                                         @endfor
                                     @endif
