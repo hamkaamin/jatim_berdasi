@@ -244,9 +244,19 @@ class PenilaianInovasiController extends Controller
                     ->count();
 
                 if ($jumlah_penilai < $juri->count()) {
+                    $sudah_menilai = PenilaianMap::where('inovasi_id', $inovasi->id)
+                        ->where('juri_tahap', 1)
+                        ->whereIn('juri_id', $juri_ids)
+                        ->pluck('juri_id');
+
+                    $belum_menilai = $juri->whereNotIn('id', $sudah_menilai)
+                        ->map(fn($j) => $j->user ? $j->user->name : 'Juri #'.$j->id)
+                        ->values()
+                        ->toArray();
+
                     return response()->json([
                         'status' => false,
-                        'message' => 'Ada juri yang belum menilai.',
+                        'message' => 'Juri yang belum menilai: ' . implode(', ', $belum_menilai),
                         'error' => 'Gagal',
                     ]);
                 }

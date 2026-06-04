@@ -120,10 +120,13 @@
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
                                 </td>
                                 <td>
+                                    @if ($item->juri_tahap == 0 && $item->indikator->sum('pivot.bobot_akhir') == 0)
+                                        <span class='badge badge-secondary'>Belum Dinilai</span>
+                                    @endif
                                     <div class="d-flex flex-column gap-1">
-                                        @if ($item->indikator->sum('pivot.bobot_akhir') != null && $item->juri_tahap != 0)
+                                        @if ($item->indikator->sum('pivot.bobot_akhir') != null)
                                             <div class="d-flex gap-1 align-items-center">
-                                                <span class='badge badge-primary rounded-pill'>Tahap 1</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                                <span class='badge badge-primary rounded-pill'>Tahap 1 | Kematangan</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
                                             </div>
                                         @endif
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)
@@ -143,17 +146,12 @@
                                                         });
                                                 @endphp
                                                 {!! $tahap !!}
-                                                {{ $i < $item->juri_tahap && (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
+                                                {{ $i < $item->juri_tahap || (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '-' }}
                                             </div>
                                         @endfor
-                                        @if ($item->juri_tahap == 0)
-                                            <span class='badge badge-secondary'>Belum Dinilai</span>
-                                        @endif
                                     </div>
                                 </td>
 
-                                {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
-                                </td> --}}
                                 <td>
                                     @if ($item->status != 0)
                                         <a target="_blank"
@@ -200,7 +198,7 @@
                                             </form>
                                         @endif --}}
                                     @endif
-                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5))
+                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) && $item->juri_tahap == 0)
                                         {{-- <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
