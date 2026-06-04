@@ -111,9 +111,19 @@ class PenilaianKovablikController extends Controller
                         ->whereIn('juri_id', $juri_ids)
                         ->count();
                     if ($jumlah_penilai < $juri->count()) {
+                        $sudah_menilai = PenilaianKovablikMap::where('proposal_id', $kovablik->id)
+                            ->where('juri_tahap', 1)
+                            ->whereIn('juri_id', $juri_ids)
+                            ->pluck('juri_id');
+
+                        $belum_menilai = $juri->whereNotIn('id', $sudah_menilai)
+                            ->map(fn($j) => $j->user ? $j->user->name : 'Juri #'.$j->id)
+                            ->values()
+                            ->toArray();
+
                         return response()->json([
                             'status' => false,
-                            'message' => 'Ada juri yang belum menilai.',
+                            'message' => 'Juri yang belum menilai: ' . implode(', ', $belum_menilai),
                             'error' => 'Gagal',
                         ]);
                     }

@@ -126,7 +126,7 @@
                                     <div class="d-flex flex-column gap-1">
                                         @if ($item->indikator->sum('pivot.bobot_akhir') != null)
                                             <div class="d-flex gap-1 align-items-center">
-                                                <span class='badge badge-primary rounded-pill'>Tahap 1 | Kematangan</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                                <span class='badge badge-primary rounded-pill'>Kematangan</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
                                             </div>
                                         @endif
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)

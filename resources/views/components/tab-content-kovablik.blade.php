@@ -123,7 +123,7 @@
                                             @endphp
 
                                             {!! $tahap !!}
-                                            {{ $i < $item->juri_tahap && (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
+                                            {{ $i < $item->juri_tahap || (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
                                             <br>
                                         @endfor
                                     @endif
@@ -151,7 +151,7 @@
                                                 Detail
                                             @endif
                                     </a>
-                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) && $item->juri_tahap < 2)
+                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) && $item->juri_tahap == 0)
                                         <button type="button"
                                             onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
