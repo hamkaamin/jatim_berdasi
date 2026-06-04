@@ -53,7 +53,8 @@ class PenilaianKovablikController extends Controller
         $id = decrypt($request->id);
         $juri_tahap = $request->tahap;
         $proposal = ProposalKovablik::findOrFail($id);
-        $juri = JuriKovablik::where('user_id', Auth::user()->id)->where('kelompok_id', $proposal->kelompok_id)->first();
+        $kategori = KategoriInovasi::where('is_kovablik', 1)->first();
+        $juri = Juri::where('user_id', Auth::user()->id)->where('kategori_id', $kategori->id)->first();
         $penilaians = KategoriNilaiKovablik::where('tahapan_id', $proposal->juri_tahap)->get();
         foreach ($penilaians as $penilaian) {
             $exists = DB::table('penilaian_kovabliks')

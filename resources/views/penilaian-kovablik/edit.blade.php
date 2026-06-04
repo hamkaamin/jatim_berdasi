@@ -174,7 +174,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -183,6 +183,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->latar_belakang : old('latar_belakang') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_latar_belakang) <a href="{{ $proposal->file_latar_belakang }}">{{ $proposal->file_latar_belakang }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -209,7 +212,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -218,6 +221,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->tujuan_outcome : old('tujuan_outcome') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_tujuan_outcome) <a href="{{ $proposal->file_tujuan_outcome }}">{{ $proposal->file_tujuan_outcome }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -244,7 +250,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -253,6 +259,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->cara_kerja : old('cara_kerja') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_cara_kerja) <a href="{{ $proposal->file_cara_kerja }}">{{ $proposal->file_cara_kerja }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -279,7 +288,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -288,6 +297,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->mekanisme_monitoring : old('mekanisme_monitoring') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_mekanisme_monitoring) <a href="{{ $proposal->file_mekanisme_monitoring }}">{{ $proposal->file_mekanisme_monitoring }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -314,7 +326,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -323,6 +335,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->bentuk_dampak : old('bentuk_dampak') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_bentuk_dampak) <a href="{{ $proposal->file_bentuk_dampak }}">{{ $proposal->file_bentuk_dampak }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -349,7 +364,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -384,7 +399,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -393,6 +408,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->kebaharuan : old('kebaharuan') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_kebaharuan) <a href="{{ $proposal->file_kebaharuan }}">{{ $proposal->file_kebaharuan }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -419,7 +437,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -454,7 +472,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -489,7 +507,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -524,7 +542,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -533,6 +551,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->sumber_daya : old('sumber_daya') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->link_sumber_data) <a href="{{ $proposal->link_sumber_data }}">{{ $proposal->link_sumber_data }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -559,7 +580,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -568,6 +589,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->strategi_keberlanjutan : old('strategi_keberlanjutan') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_upaya) <a href="{{ $proposal->file_upaya }}">{{ $proposal->file_upaya }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -594,7 +618,7 @@
                                 <div class="row my-2">
                                     <div class="col-md-8">
                                         <div class="row">
-                                            <label>
+                                            <label class="d-flex flex-column gap-1">
                                                 <b>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</b>
                                                 {!! $item->indikator !!}
                                             </label>
@@ -603,6 +627,9 @@
                                             <div class="form-control" style="height: auto; min-height: 40px; white-space: pre-wrap; overflow-wrap: break-word;">
                                                 {{ $proposal != null ? $proposal->potensi_replikasi : old('potensi_replikasi') }}
                                             </div>
+                                        </div>
+                                        <div class="row mx-1 mt-2">
+                                            Link : @if($proposal->file_potensi_replikasi) <a href="{{ $proposal->file_potensi_replikasi }}">{{ $proposal->file_potensi_replikasi }}</a> @else - @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">

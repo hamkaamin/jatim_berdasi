@@ -191,11 +191,7 @@ class PenilaianInovasiController extends Controller
         // Merged from PenilaianKovablikController@ranking: load data_kelompok for is_kovablik categories
         $data_kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
         if (Auth::user()->role == 7) {
-            $data_kelompok = KelompokKovablik::whereIn('id', function ($query) {
-                $query->select('kelompok_id')
-                    ->from('juri_kovabliks')
-                    ->where('user_id', Auth::user()->id);
-            })->get();
+            $data_kelompok = KelompokKovablik::all();
         }
         if (Auth::user()->role == 2) {
             $data_kelompok = KelompokKovablik::whereIn('id', function ($query) {
@@ -217,6 +213,7 @@ class PenilaianInovasiController extends Controller
                 $id_kategori = Helper::getKategoriRole(Auth::user()->role);
                 $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
             }
+            
             return view('penilaian.index_ranking', compact('jenis','data_kategori','juri_tahap','data_kelompok'));
         }
     }
