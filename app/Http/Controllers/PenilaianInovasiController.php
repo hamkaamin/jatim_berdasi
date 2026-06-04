@@ -46,7 +46,7 @@ class PenilaianInovasiController extends Controller
         $jenis = $request->jenis;
         $id = decrypt($request->id);
         $inovasi = Inovasi::findOrFail($id);
-        $juri = Juri::where('user_id',Auth::user()->id)->first();
+        $juri = Juri::where('user_id',Auth::user()->id)->where('kategori_id', $inovasi->kategori_id)->first();
         $penilaians = Penilaian::where('kategori_id', $inovasi->kategori_id)->get();
         foreach ($penilaians as $penilaian) {
             $exists = DB::table('penilaian_inovasi')
@@ -64,6 +64,7 @@ class PenilaianInovasiController extends Controller
         }
         $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->get();
         $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->where('juri_tahap',$inovasi->juri_tahap)->first();
+
         return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map','juri_tahap'));
     }
 
@@ -90,20 +91,20 @@ class PenilaianInovasiController extends Controller
     }
 
     public function print($id,$juri_tahap)
-    { 
+    {
         $id =decrypt($id);
-        $inovasi = Inovasi::findOrFail($id);  
-        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_tahap',$juri_tahap)->get(); 
+        $inovasi = Inovasi::findOrFail($id);
+        $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_tahap',$juri_tahap)->get();
         $kategori_juri = Juri::where('kategori_id', $inovasi->kategori_id)->pluck('user_id');
 
-        $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->where('juri_tahap',$juri_tahap)->get();  // Filter berdasarkan kategori juri 
-        $pdf = PDF::loadview('penilaian.print', compact('kategori_juri','inovasi','data','juri_tahap')); 
+        $data = $inovasi->penilaian()->whereIn('user_id', $kategori_juri)->where('juri_tahap',$juri_tahap)->get();  // Filter berdasarkan kategori juri
+        $pdf = PDF::loadview('penilaian.print', compact('kategori_juri','inovasi','data','juri_tahap'));
 
         $customPaper = array(0, 0, 595.35, 935.55);
         $pdf->setPaper($customPaper);
-        $pdf->output(); 
+        $pdf->output();
 
-        return $pdf->stream('penilaian-'.$inovasi->nama.'-'.$inovasi->kode.'.pdf'); 
+        return $pdf->stream('penilaian-'.$inovasi->nama.'-'.$inovasi->kode.'.pdf');
     }
 
     public function save(Request $request)
@@ -113,14 +114,14 @@ class PenilaianInovasiController extends Controller
         try {
             $inovasi = Inovasi::findOrFail($request->inovasi_id);
             $total_nilai = 0;
-    
+
             foreach ($request->except('_token', 'inovasi_id', 'signature_data', 'penilaian_map', 'juri_id') as $key => $value) {
                 if (strpos($key, 'keterangan_') === 0) {
                     $penilaianId = str_replace('keterangan_', '', $key);
                     $catatanSaran = $value;
                     $nilaiKey = "nilai_$penilaianId";
                     $nilai = $request->input($nilaiKey);
-    
+
                     if (is_numeric($nilai)) {
                         $updated = DB::table('penilaian_inovasi')
                             ->where('inovasi_id', $inovasi->id)
@@ -131,31 +132,31 @@ class PenilaianInovasiController extends Controller
                                 'catatan_saran' => $catatanSaran,
                                 'nilai' => $nilai,
                             ]);
-    
+
                         if ($updated) {
                             $total_nilai += $nilai;
                         }
                     }
                 }
             }
-    
+
             // Simpan tanda tangan juri
             if ($request->has('signature_data') && $request->filled('signature_data')) {
                 $signatureData = str_replace(['data:image/png;base64,', ' '], ['', '+'], $request->input('signature_data'));
                 $signatureImage = base64_decode($signatureData);
                 $signatureName = 'signature_' . time() . '.png';
                 $signaturePath = public_path('uploads/signatures/');
-    
+
                 if (!File::exists($signaturePath)) {
                     File::makeDirectory($signaturePath, 0755, true);
                 }
-    
+
                 file_put_contents($signaturePath . $signatureName, $signatureImage);
-    
-                $penilaian_map = $request->filled('penilaian_map') 
-                    ? PenilaianMap::find($request->penilaian_map) 
+
+                $penilaian_map = $request->filled('penilaian_map')
+                    ? PenilaianMap::find($request->penilaian_map)
                     : new PenilaianMap();
-    
+
                 $penilaian_map->inovasi_id = $inovasi->id;
                 $penilaian_map->juri_id = $request->juri_id;
                 $penilaian_map->total_nilai = $total_nilai;
@@ -163,14 +164,14 @@ class PenilaianInovasiController extends Controller
                 $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;
                 $penilaian_map->save();
             }
-    
+
             DB::commit();
             return redirect()->back()->with('success', 'Data penilaian berhasil diperbarui!');
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
         }
-        
+
     }
 
     public function ranking($jenis, Request $request)
@@ -213,7 +214,7 @@ class PenilaianInovasiController extends Controller
                 $id_kategori = Helper::getKategoriRole(Auth::user()->role);
                 $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
             }
-            
+
             return view('penilaian.index_ranking', compact('jenis','data_kategori','juri_tahap','data_kelompok'));
         }
     }
@@ -221,8 +222,8 @@ class PenilaianInovasiController extends Controller
     public function export($kategori_id,$jenis)
     {
         $kategori = KategoriInovasi::find($kategori_id);
-        $nama_file = 'Export Penilaian Inovasi Kategori '.$kategori->nama_singkat.' '.Auth::user()->tahun.'_Tanggal_'.date('d-m-Y H-i-s').'.xlsx'; 
-        return Excel::download(new PenilaianExport($jenis, $kategori_id),$nama_file);  
+        $nama_file = 'Export Penilaian Inovasi Kategori '.$kategori->nama_singkat.' '.Auth::user()->tahun.'_Tanggal_'.date('d-m-Y H-i-s').'.xlsx';
+        return Excel::download(new PenilaianExport($jenis, $kategori_id),$nama_file);
         session()->put('status', 'Data Opd berhasil diunduh!');
     }
 

@@ -134,10 +134,10 @@
                                                 @php
                                                     if ($i == 1) {
                                                         $tahap =
-                                                            "<span class='badge badge-primary rounded-pill'>Tahap 2</span>";
+                                                            "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
                                                     } elseif ($i == 2) {
                                                         $tahap =
-                                                            "<span class='badge badge-success rounded-pill'>Tahap 3</span>";
+                                                            "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                     }
                                                     $nilai = $item->penilaian
                                                         ->where('pivot.juri_tahap', $i)

@@ -142,6 +142,15 @@
                                                                                     data-toggle="tooltip" data-placement="top" title="Tahap Selanjutnya">
                                                                                     <i class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya
                                                                                 </button>
+                                                                            @elseif ($item->juri_tahap == 2 && $item->nilai_juri_tahap_show != 2)
+                                                                                <button type="button"
+                                                                                    onclick="btn_bagikan_kov('{{ csrf_token() }}','{{ $item->id }}')"
+                                                                                    class="btn m-1 btn-block btn-sm"
+                                                                                    style="background-color:green;color:white"
+                                                                                    data-toggle="tooltip" data-placement="top"
+                                                                                    title="Bagikan Nilai"><i
+                                                                                        class="fa fa-share"></i>&nbsp;&nbsp;Bagikan Nilai
+                                                                                </button>
                                                                             @endif
                                                                         @endif
                                                                     </td>
@@ -201,10 +210,10 @@
                                                         }
                                                         if ($item->juri_tahap == 1) {
                                                             $tahap =
-                                                                "<span class='badge badge-primary rounded-pill'>Tahap 2</span>";
+                                                                "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
                                                         } elseif ($item->juri_tahap == 2) {
                                                             $tahap =
-                                                                "<span class='badge badge-success rounded-pill'>Tahap 3</span>";
+                                                                "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                         }
                                                     @endphp
 
@@ -243,7 +252,7 @@
                                                         <td>
                                                             <div class="d-flex flex-column gap-1">
                                                                 <div class="d-flex gap-1 align-items-center">
-                                                                    <span class='badge badge-primary rounded-pill'>Tahap 1</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                                                    <span class='badge badge-primary rounded-pill'>Kematangan</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
                                                                 </div>
                                                                 <div class="d-flex align-items-center gap-1">
                                                                     {!! $tahap !!}
@@ -266,14 +275,25 @@
                                                                     title="Penilaian Inovasi"><i
                                                                         class="fa fa-star"></i>&nbsp;&nbsp;Penilaian</a>
 
-                                                                <button type="button"
-                                                                    onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
-                                                                    class="btn m-1 btn-block btn-sm"
-                                                                    style="background-color:green;color:white"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Tahap Selanjutnya"><i
-                                                                        class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya
-                                                                </button>
+                                                                @if ($item->juri_tahap < 2)
+                                                                    <button type="button"
+                                                                        onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                                                        class="btn m-1 btn-block btn-sm"
+                                                                        style="background-color:green;color:white"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Tahap Selanjutnya"><i
+                                                                            class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya
+                                                                    </button>
+                                                                @elseif ($item->juri_tahap == 2 && $item->nilai_juri_tahap_show != 2)
+                                                                    <button type="button"
+                                                                        onclick="btn_bagikan('{{ csrf_token() }}','{{ $item->id }}')"
+                                                                        class="btn m-1 btn-block btn-sm"
+                                                                        style="background-color:green;color:white"
+                                                                        data-toggle="tooltip" data-placement="top"
+                                                                        title="Bagikan Nilai"><i
+                                                                            class="fa fa-share"></i>&nbsp;&nbsp;Bagikan Nilai
+                                                                    </button>
+                                                                @endif
                                                             @endif
                                                         </td>
                                                     </tr>
@@ -345,6 +365,28 @@
                     });
                 }
             }
+
+            function btn_bagikan(token, id) {
+                Swal.fire({
+                    title: 'Bagikan Hasil Penilaian?',
+                    text: "Pastikan semua juri sudah menilai!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Bagikan',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (!result.isConfirmed) return;
+                    $.post("{{ route('penilaian.move') }}", { _token: token, id: id, is_next: false }, function(data) {
+                        if (data.status == true) {
+                            Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500 }).then(() => location.reload());
+                        } else {
+                            Swal.fire({ title: 'Gagal', html: data.message, icon: 'error', confirmButtonColor: '#d33', confirmButtonText: 'Tutup' });
+                        }
+                    });
+                });
+            }
         </script>
         <script>
             $(document).ready(function() {
@@ -408,6 +450,28 @@
                         });
                     });
                 }
+            }
+
+            function btn_bagikan_kov(token, id) {
+                Swal.fire({
+                    title: 'Bagikan Hasil Penilaian?',
+                    text: "Pastikan semua juri sudah menilai!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#28a745',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, Bagikan',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (!result.isConfirmed) return;
+                    $.post("{{ route('penilaian-kovablik.move') }}", { _token: token, id: id, is_next: false }, function(data) {
+                        if (data.status == true) {
+                            Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500 }).then(() => location.reload());
+                        } else {
+                            Swal.fire({ title: 'Gagal', html: data.message, icon: 'error', confirmButtonColor: '#d33', confirmButtonText: 'Tutup' });
+                        }
+                    });
+                });
             }
         </script>
         <script>
