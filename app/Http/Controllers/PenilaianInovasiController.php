@@ -179,7 +179,7 @@ class PenilaianInovasiController extends Controller
             return redirect()->back()->with('error', 'Data tidak ditemukan');
         }
         $juri_tahap = $request->tahap;
-        $data_kategori = KategoriInovasi::orderBy('id','asc')->get();
+        $data_kategori = KategoriInovasi::orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
         if(Auth::user()->role == 7){
             $data_kategori = KategoriInovasi::whereIn('id', function ($query) {
                 $query->select('kategori_id')
@@ -215,7 +215,7 @@ class PenilaianInovasiController extends Controller
         }else if($jenis == 'inotek'){
             if(Auth::user()->role == 2){
                 $id_kategori = Helper::getKategoriRole(Auth::user()->role);
-                $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+                $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
             }
             return view('penilaian.index_ranking', compact('jenis','data_kategori','juri_tahap','data_kelompok'));
         }
