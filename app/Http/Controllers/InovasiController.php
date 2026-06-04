@@ -345,6 +345,37 @@ class InovasiController extends Controller
 
     public function save(Request $request)
     {
+        // Kirim status saja dari halaman indikator — tidak perlu validasi field form
+        if ($request->status == 1 && $request->id != 0) {
+            $data = Inovasi::findOrFail($request->id);
+            $temp = [];
+            if ($data->nama == null) {
+                $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
+            }
+            if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
+                $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
+            } else {
+                foreach ($data->indikator()->where('wajib', 1)->get() as $indikator) {
+                    $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $data->id)->count();
+                    if ($upload <= 0) {
+                        $temp[] = "Upload file pendukung untuk Indikator ".$indikator->nama." terlebih dahulu !";
+                    }
+                }
+            }
+            if (count($temp) > 0) {
+                $msg = "<ul>";
+                foreach ($temp as $item) {
+                    $msg .= "<li>".$item."</li>";
+                }
+                $msg .= "</ul>";
+                return redirect()->back()->with('error', $msg);
+            }
+            $data->status = 1;
+            $data->save();
+            $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
+            return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
+        }
+
         $validator = Validator::make($request->all(), [
             'nama'                => 'required',
             'kategori_id'         => 'required',
@@ -411,38 +442,6 @@ class InovasiController extends Controller
                 }
             } else {
                 $data = Inovasi::findOrFail($request->id);
-                $temp = [];
-                if ($request->status == 1) {
-                    if ($data->nama == null) {
-                        $temp[] = "Lengkapi data Nama Inovasi terlebih dahulu !";
-                    }
-                    // if ($data->bentuk_id == null) {
-                    //     $temp[] = "Lengkapi data Bentuk Inovasi terlebih dahulu !";
-                    // }
-                    if ($data->indikator()->count() <= 0 || $data->indikator()->where('wajib', 1)->wherePivot('bobot_awal', null)->count() > 0) {
-                        $temp[] = "Lengkapi data parameter dan bobot tiap INDIKATOR terlebih dahulu !";
-                    } else {
-                        foreach ($data->indikator()->where('wajib', 1)->get() as $indikator) {
-                            $upload = Upload::where('indikator_id', $indikator->id)->where('inovasi_id', $data->id)->count();
-                            if ($upload <= 0) {
-                                $temp[] = "Upload file pendukung untuk Indikator ".$indikator->nama." terlebih dahulu !";
-                            }
-                        }
-                    }
-                    if (count($temp) > 0) {
-                        $msg = "<ul>";
-                        foreach ($temp as $item) {
-                            $msg .= "<li>".$item."</li>";
-                        }
-                        $msg .= "</ul>";
-                        return redirect()->back()->with('error', $msg);
-                    } else {
-                        $data->status = $request->status;
-                        $data->save();
-                        $route = $request->label == 1 ? route('inovasi.index', ['area' => 'masyarakat']) : route('inovasi.index', ['area' => 'kota']);
-                        return redirect($route)->with('success', 'Data Inovasi berhasil di-submit dan masuk ke tahap <b>Proses</b> ! Harap menunggu pengumuman lebih lanjut. Terima kasih');
-                    }
-                }
             }
             $max_kata = 300;
             $rancang_bangun = $request->rancang_bangun;
