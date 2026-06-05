@@ -204,7 +204,7 @@
                                             data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-star"></i>&nbsp;&nbsp;Penilaian </a> --}}
                                         <button type="button"
-                                            onclick="btn_selanjutnya_inovasi('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                            onclick="btn_selanjutnya_inovasi('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }},{{ json_encode($item->nama) }},{{ json_encode($item->user->name) }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
                                                 class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
@@ -238,12 +238,12 @@
 
 
 <script>
-    function btn_selanjutnya_inovasi(token, id, juri_tahap) {
+    function btn_selanjutnya_inovasi(token, id, juri_tahap, nama, user_name) {
         var next_juri = juri_tahap + 2;
         if (next_juri > 3) {
             Swal.fire({
                 title: 'Gagal',
-                text: 'Penilaian sudah di tahap 3',
+                text: 'Penilaian sudah di tahap 2',
                 icon: 'error',
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'Tutup'
@@ -251,7 +251,23 @@
         } else {
             Swal.fire({
                 title: 'Lanjutkan ke Penilaian Tahap ' + next_juri + '?',
-                text: "Pastikan data sebelumnya sudah disimpan!",
+                html: `<div style="text-align:left; padding:4px 8px">
+                    <table style="width:100%; font-size:14px; border-collapse:collapse">
+                        <tr>
+                            <td style="padding:5px 0; color:#6c757d; font-weight:600; white-space:nowrap; vertical-align:top; width:110px">Nama Inovasi</td>
+                            <td style="padding:5px 6px; vertical-align:top">:</td>
+                            <td style="padding:5px 0; color:#333">${nama}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px 0; color:#6c757d; font-weight:600; white-space:nowrap; vertical-align:top">Dibuat Oleh</td>
+                            <td style="padding:5px 6px; vertical-align:top">:</td>
+                            <td style="padding:5px 0; color:#333">${user_name}</td>
+                        </tr>
+                    </table>
+                    <div style="margin-top:12px; padding:8px 12px; background:#fff3cd; border-left:4px solid #ffc107; border-radius:4px; color:#856404; font-size:13px">
+                        ⚠️ Pastikan data sebelumnya sudah disimpan!
+                    </div>
+                </div>`,
                 icon: 'warning',
                 showCancelButton: true,
                 showDenyButton: true,

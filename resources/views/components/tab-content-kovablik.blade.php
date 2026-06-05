@@ -154,7 +154,7 @@
                                     </a>
                                     @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) && $item->juri_tahap == 0)
                                         <button type="button"
-                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }})"
+                                            onclick="btn_selanjutnya('{{ csrf_token() }}','{{ $item->id }}',{{ $item->juri_tahap }},{{ json_encode($item->judul) }},{{ json_encode($item->user->name) }})"
                                             class="btn m-1 btn-block btn-sm" style="background-color:green;color:white"
                                             data-toggle="tooltip" data-placement="top" title="Penilaian Inovasi"><i
                                             class="fa fa-angle-double-right"></i>&nbsp;&nbsp;Selanjutnya </button>
@@ -277,7 +277,7 @@
         btn_selanjutnya(token, checkedIds, juri_tahap);
     }
     //Button tahap selanjutnya individu
-    function btn_selanjutnya(token, ids, juri_tahap) {
+    function btn_selanjutnya(token, ids, juri_tahap, nama, user_name) {
         var id = Array.isArray(ids) ? ids : [ids];
         var next_juri = juri_tahap + 1;
         if (next_juri > 2) {
@@ -286,13 +286,29 @@
                 text: 'Penilaian sudah di tahap 2',
                 icon: 'error',
                 showCancelButton: false,
-                confirmButtonColor: '#d33', // merah, cocok untuk error
+                confirmButtonColor: '#d33',
                 confirmButtonText: 'Tutup'
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 1) + ` ?`,
-                text: "Pastikan data sebelumnya sudah disimpan!",
+                title: 'Lanjutkan ke Penilaian Tahap ' + (juri_tahap + 1) + '?',
+                html: `<div style="text-align:left; padding:4px 8px">
+                    <table style="width:100%; font-size:14px; border-collapse:collapse">
+                        <tr>
+                            <td style="padding:5px 0; color:#6c757d; font-weight:600; white-space:nowrap; vertical-align:top; width:110px">Nama Proposal</td>
+                            <td style="padding:5px 6px; vertical-align:top">:</td>
+                            <td style="padding:5px 0; color:#333">${nama}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:5px 0; color:#6c757d; font-weight:600; white-space:nowrap; vertical-align:top">Dibuat Oleh</td>
+                            <td style="padding:5px 6px; vertical-align:top">:</td>
+                            <td style="padding:5px 0; color:#333">${user_name}</td>
+                        </tr>
+                    </table>
+                    <div style="margin-top:12px; padding:8px 12px; background:#fff3cd; border-left:4px solid #ffc107; border-radius:4px; color:#856404; font-size:13px">
+                        ⚠️ Pastikan data sebelumnya sudah disimpan!
+                    </div>
+                </div>`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#28a745',
