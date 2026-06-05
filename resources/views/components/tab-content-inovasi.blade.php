@@ -120,10 +120,13 @@
                                 <td style="{!! $display !!}">{{ $item->indikator->sum('pivot.bobot_awal') }}
                                 </td>
                                 <td>
+                                    @if ($item->juri_tahap == 0 && $item->indikator->sum('pivot.bobot_akhir') == 0)
+                                        <span class='badge badge-secondary'>Belum Dinilai</span>
+                                    @endif
                                     <div class="d-flex flex-column gap-1">
-                                        @if ($item->indikator->sum('pivot.bobot_akhir') != null && $item->juri_tahap != 0)
+                                        @if ($item->indikator->sum('pivot.bobot_akhir') != null)
                                             <div class="d-flex gap-1 align-items-center">
-                                                <span class='badge badge-primary rounded-pill'>Tahap 1</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
+                                                <span class='badge badge-primary rounded-pill'>Kematangan</span> {{ $item->indikator->sum('pivot.bobot_akhir') }}
                                             </div>
                                         @endif
                                         @for ($i = 1; $i <= $item->juri_tahap; $i++)
@@ -131,10 +134,10 @@
                                                 @php
                                                     if ($i == 1) {
                                                         $tahap =
-                                                            "<span class='badge badge-primary rounded-pill'>Tahap 2</span>";
+                                                            "<span class='badge badge-primary rounded-pill'>Tahap 1</span>";
                                                     } elseif ($i == 2) {
                                                         $tahap =
-                                                            "<span class='badge badge-success rounded-pill'>Tahap 3</span>";
+                                                            "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                     }
                                                     $nilai = $item->penilaian
                                                         ->where('pivot.juri_tahap', $i)
@@ -143,17 +146,12 @@
                                                         });
                                                 @endphp
                                                 {!! $tahap !!}
-                                                {{ $i < $item->juri_tahap && (Auth::user()->role != 2 || Auth::user()->role != 7) ? $nilai : '' }}
+                                                {{ (Auth::user()->role == 2 || Auth::user()->role == 7 || $i <= $item->nilai_juri_tahap_show) ? $nilai : '-' }}
                                             </div>
                                         @endfor
-                                        @if ($item->juri_tahap == 0)
-                                            <span class='badge badge-secondary'>Belum Dinilai</span>
-                                        @endif
                                     </div>
                                 </td>
 
-                                {{-- <td style="{!! $display_nilai !!}">{{ number_format($rataRata, 2) }}
-                                </td> --}}
                                 <td>
                                     @if ($item->status != 0)
                                         <a target="_blank"
@@ -200,7 +198,7 @@
                                             </form>
                                         @endif --}}
                                     @endif
-                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5))
+                                    @if ($item->status == 2 && (Auth::user()->role != 4 && Auth::user()->role != 5) && $item->juri_tahap == 0)
                                         {{-- <a href="{{ route('penilaian.show', ['id' => encrypt($item->id)]) }}"
                                             class="btn m-1 btn-block btn-sm btn-warning" data-toggle="tooltip"
                                             data-placement="top" title="Penilaian Inovasi"><i
@@ -247,43 +245,42 @@
                 title: 'Gagal',
                 text: 'Penilaian sudah di tahap 3',
                 icon: 'error',
-                showCancelButton: false,
-                confirmButtonColor: '#d33', // merah, cocok untuk error
+                confirmButtonColor: '#d33',
                 confirmButtonText: 'Tutup'
             });
         } else {
             Swal.fire({
-                title: `Lanjutkan ke Penilaian Tahap ` + (juri_tahap + 2) + ` ?`,
+                title: 'Lanjutkan ke Penilaian Tahap ' + next_juri + '?',
                 text: "Pastikan data sebelumnya sudah disimpan!",
                 icon: 'warning',
                 showCancelButton: true,
+                showDenyButton: true,
                 confirmButtonColor: '#28a745',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Lanjutkan!'
+                denyButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Lanjut & Bagikan',
+                denyButtonText: 'Bagikan Saja',
+                cancelButtonText: 'Batal'
             }).then((result) => {
+                var is_next;
                 if (result.isConfirmed) {
-                    var routeUrl = "{{ route('penilaian.move') }}";
-
-                    $.post(routeUrl, {
-                            _token: token,
-                            id: id
-                        },
-                        function(data) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil!',
-                                text: data.message,
-                                showConfirmButton: true,
-                                timer: 1500
-                            }).then(() => {
-                                show_status('{{ csrf_token() }}', $('#statusFilter').val(),
-                                    '{{ $area }}', '#show_inovasi');
-                            });
-                        });
+                    is_next = true;
+                } else if (result.isDenied) {
+                    is_next = false;
+                } else {
+                    return;
                 }
+                $.post("{{ route('penilaian.move') }}", { _token: token, id: id, is_next: is_next }, function(data) {
+                    if (data.status == true) {
+                        Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, timer: 1500 }).then(() => {
+                            show_status('{{ csrf_token() }}', $('#statusFilter').val(), '{{ $area }}', '#show_inovasi');
+                        });
+                    } else {
+                        Swal.fire({ title: 'Gagal', html: data.message, icon: 'error', confirmButtonColor: '#d33', confirmButtonText: 'Tutup' });
+                    }
+                });
             });
         }
-
     }
 </script>
 <script>

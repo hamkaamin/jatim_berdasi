@@ -53,7 +53,8 @@ class PenilaianKovablikController extends Controller
         $id = decrypt($request->id);
         $juri_tahap = $request->tahap;
         $proposal = ProposalKovablik::findOrFail($id);
-        $juri = JuriKovablik::where('user_id', Auth::user()->id)->where('kelompok_id', $proposal->kelompok_id)->first();
+        $kategori = KategoriInovasi::where('is_kovablik', 1)->first();
+        $juri = Juri::where('user_id', Auth::user()->id)->where('kategori_id', $kategori->id)->first();
         $penilaians = KategoriNilaiKovablik::where('tahapan_id', $proposal->juri_tahap)->get();
         foreach ($penilaians as $penilaian) {
             $exists = DB::table('penilaian_kovabliks')
@@ -97,6 +98,8 @@ class PenilaianKovablikController extends Controller
     public function move(Request $request)
     {
         $ids = $request->input('id');
+        $is_next = filter_var($request->input('is_next'), FILTER_VALIDATE_BOOLEAN);
+
         try {
             DB::beginTransaction();
             foreach ($ids as $id) {
@@ -111,21 +114,40 @@ class PenilaianKovablikController extends Controller
                         ->whereIn('juri_id', $juri_ids)
                         ->count();
                     if ($jumlah_penilai < $juri->count()) {
+                        $sudah_menilai = PenilaianKovablikMap::where('proposal_id', $kovablik->id)
+                            ->where('juri_tahap', 1)
+                            ->whereIn('juri_id', $juri_ids)
+                            ->pluck('juri_id');
+
+                        $belum_menilai = $juri->whereNotIn('id', $sudah_menilai)
+                            ->map(fn($j) => $j->user ? $j->user->name : 'Juri #'.$j->id)
+                            ->values()
+                            ->toArray();
+
                         return response()->json([
                             'status' => false,
-                            'message' => 'Ada juri yang belum menilai.',
+                            'message' => 'Juri yang belum menilai: ' . implode(', ', $belum_menilai),
                             'error' => 'Gagal',
                         ]);
                     }
                 }
-                $kovablik->juri_tahap = $kovablik->juri_tahap + 1;
+
+                // Tandai nilai tahap saat ini sebagai boleh ditampilkan (sebelum increment)
+                $kovablik->nilai_juri_tahap_show = $kovablik->juri_tahap;
+
+                if ($is_next) {
+                    $kovablik->juri_tahap = $kovablik->juri_tahap + 1;
+                }
+
                 $kovablik->save();
             }
             DB::commit();
-            return response()->json([
-                'status' => true,
-                'message' => 'Proposal Kovablik Berhasil Masuk ke Tahap ' . $kovablik->juri_tahap,
-            ], 200);
+
+            $message = $is_next
+                ? 'Proposal Kovablik Berhasil Masuk ke Tahap ' . $kovablik->juri_tahap . ' dan Nilai Tahap Sebelumnya Dibagikan'
+                : 'Nilai Tahap ' . $kovablik->nilai_juri_tahap_show . ' Berhasil Dibagikan';
+
+            return response()->json(['status' => true, 'message' => $message], 200);
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
