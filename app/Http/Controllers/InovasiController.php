@@ -216,7 +216,7 @@ class InovasiController extends Controller
         } elseif (Helper::checkOpd('kelurahan', $user) || Helper::checkUserUmum('opd-kelurahan', $user)) {
             $kovablikQuery->where('kelurahan_id', $user->opd->kelurahan_id);
         }
-        $kovablik = $kovablikQuery->with(['kategori', 'kelompok', 'kelompok.juris', 'penilaian'])->get();
+        $kovablik = $kovablikQuery->with(['kategori', 'kelompok', 'kelompok.juris', 'penilaian', 'user'])->get();
         $kovablikCount = $kovablik->count();
 
         $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();

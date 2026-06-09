@@ -95,7 +95,13 @@
                                     </td>
                                 @endif
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->instansi }}</td>
+                                <td>
+                                    @if ($item->instansi)
+                                        {{ $item->instansi }}
+                                    @else
+                                        {{ $item->user->name . ' - ' . $item->user->username }}
+                                    @endif
+                                </td>
                                 <td>{{ $item->judul }}</td>
                                 <td>{{ $item->kategori?->nama }}</td>
                                 <td>{{ $item->kelompok?->nama }}</td>
