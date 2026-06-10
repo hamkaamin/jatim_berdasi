@@ -379,6 +379,7 @@ class InovasiController extends Controller
         $validator = Validator::make($request->all(), [
             'nama'                => 'required',
             'kategori_id'         => 'required',
+            'tahapan_id'          => 'required_unless:kategori_id,5|exists:tahapans,id',
             'nama_inisiator'      => 'required_unless:kategori_id,5',
             'jenis_id'            => 'required_unless:kategori_id,5',
             'waktu_uji_coba'      => 'required_unless:kategori_id,5|nullable|date',
@@ -392,6 +393,8 @@ class InovasiController extends Controller
         ], [
             'nama.required'               => 'Nama Inovasi wajib diisi',
             'kategori_id.required'        => 'Kategori Inovasi wajib dipilih',
+            'tahapan_id.required_unless'  => 'Tahapan Inovasi wajib dipilih',
+            'tahapan_id.exists'           => 'Tahapan Inovasi tidak valid',
             'nama_inisiator.required_unless' => 'Nama Inisiator wajib diisi',
             'jenis_id.required_unless'    => 'Jenis Inovasi wajib dipilih',
             'waktu_uji_coba.required_unless' => 'Waktu Ujicoba Inovasi wajib diisi',

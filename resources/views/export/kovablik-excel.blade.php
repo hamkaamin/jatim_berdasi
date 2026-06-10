@@ -21,15 +21,27 @@
     </tr>
     <tr>
         <td>Dokumen Standart Pelayanan</td>
-        <td><a href="{{ $proposal->link_standart }}">{{ $proposal->link_standart }}</a></td>
+        <td>
+            @if($proposal->link_standart)
+                <a href="{{ $proposal->link_standart }}">{{ $proposal->link_standart }}</a>
+            @endif
+        </td>
     </tr>
     <tr>
         <td>Dokumen Maklumat Pelayanan</td>
-        <td><a href="{{ $proposal->link_maklumat }}">{{ $proposal->link_maklumat }}</a></td>
+        <td>
+            @if($proposal->link_maklumat)
+                <a href="{{ $proposal->link_maklumat }}">{{ $proposal->link_maklumat }}</a>
+            @endif
+        </td>
     </tr>
     <tr>
         <td>Dokumen SK Pengelolaan Pengaduan</td>
-        <td><a href="{{ $proposal->link_sk_pengaduan }}">{{ $proposal->link_sk_pengaduan }}</a></td>
+        <td>
+            @if($proposal->link_sk_pengaduan)
+                <a href="{{ $proposal->link_sk_pengaduan }}">{{ $proposal->link_sk_pengaduan }}</a>
+            @endif
+        </td>
     </tr>
     <tr>
         <td>Instansi</td>
