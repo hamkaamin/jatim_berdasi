@@ -220,13 +220,6 @@ class InovasiController extends Controller
         $kovablikCount = $kovablik->count();
 
         $kelompok = KelompokKovablik::orderBy('id', 'asc')->get();
-        if ($user->role == 2) {
-            $kelompok = KelompokKovablik::whereIn('id', function ($query) use ($user) {
-                $query->select('kelompok_id')
-                    ->from('verifikator_kovabliks')
-                    ->where('user_id', $user->id);
-            })->get();
-        }
 
         $setting = Setting::where('kode','tambah_inovasi')->first();
         $fase = Fase::where('active', 1)->where('nama', 'inotek')->first();
