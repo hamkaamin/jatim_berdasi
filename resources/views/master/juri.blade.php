@@ -48,7 +48,7 @@
                                     @foreach ($data->juris as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->user->name }}
+                                            <td>{{ $item->user?->name }}
                                             <td>
                                                 <button data-target="#modalPopup" data-toggle="modal"
                                                     onclick="modal({{ $item->id }}, 'juri')"

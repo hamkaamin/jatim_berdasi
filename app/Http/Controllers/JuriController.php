@@ -17,9 +17,17 @@ class JuriController extends Controller
      */
     public function index()
     {
-        $juri = Juri::whereHas('user')->get();
-        $data_kategori = KategoriInovasi::orderBy('is_kovablik', 'desc')->orderBy('is_aktif', 'desc')->orderBy('id','asc')->get();
-        return view('master.juri', compact('juri','data_kategori'));
+        $data_kategori = KategoriInovasi::with([
+                'juris' => function ($q) {
+                    $q->whereHas('user');
+                },
+                'juris.user'
+            ])
+            ->orderBy('is_kovablik', 'desc')
+            ->orderBy('is_aktif', 'desc')
+            ->orderBy('id','asc')
+            ->get();
+        return view('master.juri', compact('data_kategori'));
     }
 
     /**
