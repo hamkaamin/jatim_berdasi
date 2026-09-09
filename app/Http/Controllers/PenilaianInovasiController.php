@@ -21,9 +21,9 @@ class PenilaianInovasiController extends Controller
 {
     public function index($jenis)
     {
-        $data_kategori = KategoriInovasi::orderBy('id','asc')->get();
+        $data_kategori = KategoriInovasi::where('is_aktif', 1)->orderBy('id','asc')->get();
         if(Auth::user()->role == 7){
-            $data_kategori = KategoriInovasi::whereIn('id', function ($query) {
+            $data_kategori = KategoriInovasi::where('is_aktif', 1)->whereIn('id', function ($query) {
                 $query->select('kategori_id')
                       ->from('juris')
                       ->where('user_id', Auth::user()->id);
@@ -31,7 +31,7 @@ class PenilaianInovasiController extends Controller
         }
 
         if($jenis == 'iga'){
-            $data_kategori = KategoriInovasi::where('id',1)->get();
+            $data_kategori = KategoriInovasi::where('is_aktif', 1)->where('id',1)->get();
                 return view('penilaian.index_ranking', compact('jenis','data_kategori'));
         }else if($jenis == 'inotek'){
             return view('penilaian.index_ranking', compact('jenis','data_kategori'));
@@ -121,6 +121,8 @@ class PenilaianInovasiController extends Controller
                     $catatanSaran = $value;
                     $nilaiKey = "nilai_$penilaianId";
                     $nilai = $request->input($nilaiKey);
+                    $bobot = $request->input("bobot_nilai_$penilaianId");
+                    $nilai = $nilai * $bobot / 100;
 
                     if (is_numeric($nilai)) {
                         $updated = DB::table('penilaian_inovasi')
@@ -180,9 +182,9 @@ class PenilaianInovasiController extends Controller
             return redirect()->back()->with('error', 'Data tidak ditemukan');
         }
         $juri_tahap = $request->tahap;
-        $data_kategori = KategoriInovasi::orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
+        $data_kategori = KategoriInovasi::where('is_aktif', 1)->orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
         if(Auth::user()->role == 7){
-            $data_kategori = KategoriInovasi::whereIn('id', function ($query) {
+            $data_kategori = KategoriInovasi::where('is_aktif', 1)->whereIn('id', function ($query) {
                 $query->select('kategori_id')
                       ->from('juris')
                       ->where('user_id', Auth::user()->id);
@@ -203,16 +205,16 @@ class PenilaianInovasiController extends Controller
         }
 
         if($jenis == 'iga'){
-            $data_kategori = KategoriInovasi::where('id',1)->get();
+            $data_kategori = KategoriInovasi::where('is_aktif', 1)->where('id',1)->get();
             if(Auth::user()->role == 2){
                 $id_kategori = Helper::getKategoriRole(Auth::user()->role);
-                $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('id','asc')->get();
+                $data_kategori = KategoriInovasi::where('is_aktif', 1)->whereIn('id',$id_kategori)->orderBy('id','asc')->get();
             }
             return view('penilaian.index_ranking', compact('jenis','data_kategori','juri_tahap','data_kelompok'));
         }else if($jenis == 'inotek'){
             if(Auth::user()->role == 2){
                 $id_kategori = Helper::getKategoriRole(Auth::user()->role);
-                $data_kategori = KategoriInovasi::whereIn('id',$id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
+                $data_kategori = KategoriInovasi::where('is_aktif', 1)->whereIn('id',$id_kategori)->orderBy('is_kovablik', 'desc')->orderBy('id','asc')->get();
             }
 
             return view('penilaian.index_ranking', compact('jenis','data_kategori','juri_tahap','data_kelompok'));

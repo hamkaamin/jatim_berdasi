@@ -23,6 +23,7 @@ class JuriController extends Controller
                 },
                 'juris.user'
             ])
+            ->where('is_aktif', 1)
             ->orderBy('is_kovablik', 'desc')
             ->orderBy('is_aktif', 'desc')
             ->orderBy('id','asc')

@@ -274,7 +274,7 @@ class HomeController extends Controller
                 break;
             case "indikator":
                 $data = ($request->id == 0) ? null : Indikator::findOrFail($request->id);
-                $kategori = KategoriInovasi::all();
+                $kategori = KategoriInovasi::where('is_aktif', 1)->get();
                 return response()->json(array(
                     'msg' => view('modal.form-indikator', compact('data', 'kategori'))->render()
                 ), 200);
@@ -376,15 +376,20 @@ class HomeController extends Controller
                 break;
             case "penilaian":
                 $data = ($request->id == 0) ? null : Penilaian::findOrFail($request->id);
-                $kategori = KategoriInovasi::all();
+                $kategori = KategoriInovasi::where('is_aktif', 1)->where('is_kovablik', 0)->get();
+                $bobot_terpakai = Penilaian::selectRaw('kategori_id, SUM(bobot_nilai) as total')
+                    ->groupBy('kategori_id')
+                    ->pluck('total', 'kategori_id');
+                $bagian_list = Penilaian::whereNotNull('bagian')->where('bagian', '!=', '')
+                    ->distinct()->orderBy('bagian')->pluck('bagian');
                 return response()->json(array(
-                    'msg' => view('modal.form-penilaian', compact('data', 'kategori'))->render()
+                    'msg' => view('modal.form-penilaian', compact('data', 'kategori', 'bobot_terpakai', 'bagian_list'))->render()
                 ), 200);
                 break;
             case "juri":
                 $data = ($request->id == 0) ? null : Juri::findOrFail($request->id);
                 $users = User::where('role', 7)->get();
-                $kategori = KategoriInovasi::all();
+                $kategori = KategoriInovasi::where('is_aktif', 1)->get();
                 return response()->json(array(
                     'msg' => view('modal.form-juri', compact('data', 'kategori', 'users'))->render()
                 ), 200);
@@ -426,8 +431,13 @@ class HomeController extends Controller
             case "kategori_nilai_kovablik":
                 $data = ($request->id == 0) ? null : KategoriNilaiKovablik::findOrFail($request->id);
                 $tahapan = TahapanKovablik::all();
+                $bobot_terpakai = KategoriNilaiKovablik::selectRaw('tahapan_id, SUM(bobot_nilai) as total')
+                    ->groupBy('tahapan_id')
+                    ->pluck('total', 'tahapan_id');
+                $bagian_list = KategoriNilaiKovablik::whereNotNull('bagian')->where('bagian', '!=', '')
+                    ->distinct()->orderBy('bagian')->pluck('bagian');
                 return response()->json(array(
-                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'tahapan'))->render()
+                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'tahapan', 'bobot_terpakai', 'bagian_list'))->render()
                 ), 200);
                 break;
 

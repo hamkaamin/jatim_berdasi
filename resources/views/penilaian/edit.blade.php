@@ -50,7 +50,7 @@
                             <div class="row">
                                 <!-- Bagian -->
                                 <div class="col-md-3 d-flex align-items-center">
-                                    <label class="form-label"><strong>{{ $item->bagian }}</strong></label>
+                                    <label class="form-label"><strong>{{ $item->bagian }} ({{ $item->bobot_nilai }}%)</strong></label>
                                 </div>
 
                                 <!-- Indikator -->
@@ -71,8 +71,11 @@
                                     <input type="number" class="form-control" min="{{ $item->nilai_min }}"
                                         max="{{ $item->nilai_max }}" name="nilai_{{ $item->pivot->penilaian_id }}"
                                         id="nilai_{{ $item->pivot->penilaian_id }}"
-                                        value="{{ optional($item->pivot)->nilai }}">
-                                    <small>Nilai :{{ $item->nilai_min }} s.d. {{ $item->nilai_max }}</small>
+                                        value="{{ $item->bobot_nilai ? optional($item->pivot)->nilai / ($item->bobot_nilai / 100) : 0 }}">
+                                    <input type="hidden" name="bobot_nilai_{{ $item->pivot->penilaian_id }}"
+                                        value="{{ $item->bobot_nilai }}">
+                                    <small>Nilai :{{ $item->nilai_min }} s.d. {{ $item->nilai_max }} &middot; Bobot
+                                        {{ $item->bobot_nilai }}%</small>
                                 </div>
                             </div>
                             <hr class="my-0">

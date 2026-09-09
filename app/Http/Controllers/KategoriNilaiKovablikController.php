@@ -9,11 +9,27 @@ use Illuminate\Support\Facades\Config;
 
 class KategoriNilaiKovablikController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = KategoriNilaiKovablik::all();
-        $data_tahapan = TahapanKovablik::orderBy('id','asc')->get();
-        return view('master.kategori_nilai_kovablik', compact('data', 'data_tahapan'));
+        $q = trim((string) $request->q);
+
+        $data_tahapan = TahapanKovablik::orderBy('id', 'asc')->get();
+
+        $nilaiPerTahapan = [];
+        foreach ($data_tahapan as $th) {
+            $nilaiPerTahapan[$th->id] = KategoriNilaiKovablik::where('tahapan_id', $th->id)
+                ->when($q !== '', function ($x) use ($q) {
+                    $x->where(function ($w) use ($q) {
+                        $w->where('bagian', 'ilike', "%{$q}%")
+                          ->orWhere('indikator', 'ilike', "%{$q}%");
+                    });
+                })
+                ->orderBy('bagian', 'asc')->orderBy('id', 'asc')
+                ->paginate(15, ['*'], 'page_' . $th->id)
+                ->withQueryString();
+        }
+
+        return view('master.kategori_nilai_kovablik', compact('data_tahapan', 'nilaiPerTahapan', 'q'));
     }
 
     public function save(Request $request)
@@ -23,6 +39,16 @@ class KategoriNilaiKovablikController extends Controller
         } else {
             $data = KategoriNilaiKovablik::findOrFail($request->id);
         }
+
+        $bobot_dipakai = KategoriNilaiKovablik::where('tahapan_id', $request->tahapan_id)
+            ->when($request->id != 0, function ($q) use ($request) {
+                return $q->where('id', '!=', $request->id);
+            })
+            ->sum('bobot_nilai');
+        if ($bobot_dipakai + (int) $request->bobot_nilai > 100) {
+            return redirect()->back()->with('error', 'Total bobot nilai untuk tahapan ini melebihi 100%. Sisa kuota: ' . (100 - $bobot_dipakai) . '%');
+        }
+
         $data->bagian = $request->bagian;
         $data->indikator = $_POST['indikator'];
         $data->nilai_min = $request->nilai_min;

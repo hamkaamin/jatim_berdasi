@@ -14,11 +14,29 @@ class PenilaianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $penilaian = Penilaian::get();
-        $data_kategori = KategoriInovasi::orderBy('id','asc')->get();
-        return view('master.penilaian', compact('penilaian','data_kategori'));
+        $q = trim((string) $request->q);
+        $perPage = 15;
+
+        $data_kategori = KategoriInovasi::where('is_aktif', 1)->where('is_kovablik', 0)
+            ->orderBy('id', 'asc')->get();
+
+        $penilaianPerKategori = [];
+        foreach ($data_kategori as $kat) {
+            $penilaianPerKategori[$kat->id] = Penilaian::where('kategori_id', $kat->id)
+                ->when($q !== '', function ($x) use ($q) {
+                    $x->where(function ($w) use ($q) {
+                        $w->where('bagian', 'ilike', "%{$q}%")
+                          ->orWhere('indikator', 'ilike', "%{$q}%");
+                    });
+                })
+                ->orderBy('bagian', 'asc')->orderBy('id', 'asc')
+                ->paginate($perPage, ['*'], 'page_' . $kat->id)
+                ->withQueryString();
+        }
+
+        return view('master.penilaian', compact('data_kategori', 'penilaianPerKategori', 'q'));
     }
 
     /**
@@ -54,11 +72,21 @@ class PenilaianController extends Controller
         if($request->nilai_min > $request->nilai_max){
             return redirect()->back()->with('error', 'Nilai minimal harus lebih kecil atau sama dengan nilai maksimal');
         }
-        
+
+        $bobot_dipakai = Penilaian::where('kategori_id', $request->kategori_id)
+            ->when($request->id != 0, function ($q) use ($request) {
+                return $q->where('id', '!=', $request->id);
+            })
+            ->sum('bobot_nilai');
+        if ($bobot_dipakai + (int) $request->bobot_nilai > 100) {
+            return redirect()->back()->with('error', 'Total bobot nilai untuk kategori ini melebihi 100%. Sisa kuota: ' . (100 - $bobot_dipakai) . '%');
+        }
+
         $data->bagian = $request->bagian;
         $data->indikator = $request->indikator;
         $data->nilai_min = $request->nilai_min;
         $data->nilai_max = $request->nilai_max;
+        $data->bobot_nilai = $request->bobot_nilai ?: 100;
         $data->kategori_id = $request->kategori_id;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
