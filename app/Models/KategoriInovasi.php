@@ -44,7 +44,7 @@ class KategoriInovasi extends Model
                 $inovasi = Inovasi::where('label',0)->where('status',2)->where('kategori_id',$kategori_id)->where('tahun',Auth::user()->tahun)->where('juri_tahap','!=',0)->get()
                 ->sortByDesc(function ($item) {
                     $jurisCount = sizeof($item->kategori->juris);
-                    $totalNilai = $item->penilaian->sum('pivot.nilai');
+                    $totalNilai = $item->penilaian->whereNull('parent_id')->sum('pivot.nilai');
                     return $jurisCount > 0 ? $totalNilai / $jurisCount : 0;
                 });
         }else if($jenis == 'inotek'){
@@ -58,7 +58,7 @@ class KategoriInovasi extends Model
             ->get() // Ambil data dulu
             ->sortByDesc(function ($item) {
                 $jurisCount = sizeof($item->kategori->juris);
-                $totalNilai = $item->penilaian->sum('pivot.nilai');
+                $totalNilai = $item->penilaian->whereNull('parent_id')->sum('pivot.nilai');
                 return $jurisCount > 0 ? $totalNilai / $jurisCount : 0;
             });
         }

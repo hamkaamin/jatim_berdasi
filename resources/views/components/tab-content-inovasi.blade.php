@@ -140,6 +140,7 @@
                                                             "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                     }
                                                     $nilai = $item->penilaian
+                                                        ->whereNull('parent_id')
                                                         ->where('pivot.juri_tahap', $i)
                                                         ->sum(function ($pen) {
                                                             return $pen->pivot->nilai;

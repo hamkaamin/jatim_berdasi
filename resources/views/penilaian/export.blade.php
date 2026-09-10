@@ -13,7 +13,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $item->user->name }}</td>
                 <td>{{ $item->nama }}</td>
-                <td>{{ $item->penilaian->sum('pivot.nilai') }}
+                <td>{{ $item->penilaian->whereNull('parent_id')->sum('pivot.nilai') }}
                 </td>
             </tr>
         @endforeach

@@ -43,7 +43,7 @@ class KelompokKovablik extends Model
             ->get() // Ambil data dulu
             ->sortByDesc(function ($item) {
                 $jurisCount = sizeof($item->kelompok->juris);
-                $totalNilai = $item->penilaian->sum('pivot.nilai');
+                $totalNilai = $item->penilaian->whereNull('parent_id')->sum('pivot.nilai');
                 return $jurisCount > 0 ? $totalNilai / $jurisCount : 0;
             });
         return $kovablik;

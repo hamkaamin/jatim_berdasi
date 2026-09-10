@@ -13,120 +13,114 @@
 
 @section('content')
     @if (env('APP_CLOSE_APP') == 0)
-        <div class="container">
+        @include('penilaian.partials.split-pane-assets')
 
-            <ul class="nav nav-tabs">
-                @for ($i = 1; $i <= $inovasi->juri_tahap; $i++)
-                    <li class="nav-item">
-                        <a data-toggle="tab" href="#tab-juri-{{ $i }}"
-                            class="{{ $i == $inovasi->juri_tahap ? 'active' : '' }} nav-link">
+        <h5 class="mb-3">Rekap Penilaian Inovasi {{ $inovasi->nama }}</h5>
 
-                            {{ 'Tahap ' . $i }} <span class="badge badge-primary"></span>
-                        </a>
-                    </li>
-                @endfor
-            </ul>
-            <div class="tab-content">
-                @for ($i = 1; $i <= $inovasi->juri_tahap; $i++)
-                    {{-- <div class="card shadow-sm p-4"> --}}
+        <div class="split-container" data-storage-key="penilaian-inovasi-show">
+            <div class="split-pane split-left">
+                <h6 class="fw-bold mb-2 sticky-top bg-white py-1">Data Inovasi</h6>
+                @include('inovasi.partials.detail-body', ['data' => $inovasi])
+            </div>
 
-                    <div class="tab-pane {{ $i == $inovasi->juri_tahap ? 'active' : '' }}" id="tab-juri-{{ $i }}"
-                        role="tabpanel">
-                        <h5 class="mb-4">
-                            Form Penilaian Inovasi {{ $inovasi->nama }}
-                            <a href="{{ route('penilaian.print', [encrypt($inovasi->id), $i]) }}" target="_blank"
-                                class="btn btn-info">
-                                <i class="uil-print"></i> Cetak Penilaian
+            <div class="split-gutter" role="separator" aria-orientation="vertical"></div>
+
+            <div class="split-pane split-right">
+                <ul class="nav nav-tabs mb-3 sticky-top bg-white pt-1">
+                    @for ($i = 1; $i <= $inovasi->juri_tahap; $i++)
+                        <li class="nav-item">
+                            <a data-toggle="tab" href="#tab-juri-{{ $i }}"
+                                class="{{ $i == $inovasi->juri_tahap ? 'active' : '' }} nav-link">
+                                {{ 'Tahap ' . $i }} <span class="badge badge-primary"></span>
                             </a>
-                        </h5>
-                        @foreach ($kategori_juri as $user_id)
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    @php
-                                        $penilaian_map = App\Models\PenilaianMap::where('inovasi_id', $inovasi->id)
-                                            ->where('juri_tahap', $i)
-                                            ->whereIn('juri_id', function ($query) use ($user_id) {
-                                                $query->select('id')->from('juris')->where('user_id', $user_id);
-                                            })
-                                            ->first();
-
-                                    @endphp
-                                    <div class="row">
-                                        <div class="col-md-10">
-                                            <h5>{{ App\Models\User::find($user_id)->name }} </h5>
-                                        </div>
-
-                                        <div class="d-flex col-md-2">
-                                            <i
-                                                class="fas {{ @$penilaian_map->signature_path ? 'fa-check-circle text-success' : 'fa-exclamation-triangle text-warning' }} fa-2x"></i>
-                                            <div class="fw-semibold">
-                                                {{ @$penilaian_map->signature_path ? 'Sudah Ditandatangani' : 'Belum Ditandatangani' }}
+                        </li>
+                    @endfor
+                </ul>
+                <div class="tab-content">
+                    @for ($i = 1; $i <= $inovasi->juri_tahap; $i++)
+                        <div class="tab-pane {{ $i == $inovasi->juri_tahap ? 'active' : '' }}" id="tab-juri-{{ $i }}"
+                            role="tabpanel">
+                            <div class="d-flex justify-content-end mb-3">
+                                <a href="{{ route('penilaian.print', [encrypt($inovasi->id), $i]) }}" target="_blank"
+                                    class="btn btn-info btn-sm">
+                                    <i class="uil-print"></i> Cetak Penilaian
+                                </a>
+                            </div>
+                            @foreach ($kategori_juri as $user_id)
+                                <div class="card mb-4 border">
+                                    <div class="card-header bg-light">
+                                        @php
+                                            $penilaian_map = App\Models\PenilaianMap::where('inovasi_id', $inovasi->id)
+                                                ->where('juri_tahap', $i)
+                                                ->whereIn('juri_id', function ($query) use ($user_id) {
+                                                    $query->select('id')->from('juris')->where('user_id', $user_id);
+                                                })
+                                                ->first();
+                                        @endphp
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <h6 class="mb-0 fw-bold">{{ App\Models\User::find($user_id)->name }}</h6>
                                             </div>
 
+                                            <div class="col-md-4 text-md-end">
+                                                <i
+                                                    class="fas {{ @$penilaian_map->signature_path ? 'fa-check-circle text-success' : 'fa-exclamation-triangle text-warning' }} me-1"></i>
+                                                <small class="fw-semibold">
+                                                    {{ @$penilaian_map->signature_path ? 'Sudah Ditandatangani' : 'Belum Ditandatangani' }}
+                                                </small>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>No.</th>
-                                                <th>Bagian</th>
-                                                <th>Indikator</th>
-                                                <th style="min-width: 150px;">Catatan & Saran</th>
-                                                <th style="min-width: 100px;">Nilai</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $totalNilai = 0;
-                                                $no = 0;
-                                                $data = $inovasi
-                                                    ->penilaian()
-                                                    ->whereIn('user_id', $kategori_juri) // Filter berdasarkan kategori juri
-                                                    ->where('juri_tahap', $i)
-                                                    ->get();
-                                                // dump($data, $i);
-                                            @endphp
-
-                                            @foreach ($data as $item)
-                                                @if ($item->pivot->user_id == $user_id)
-                                                    @php $no++; @endphp
+                                    <div class="card-body p-2">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-sm table-hover mb-0">
+                                                <thead class="thead-light">
                                                     <tr>
-                                                        <td>{{ $no }}
-
-                                                        </td>
-                                                        <td>{{ $item->bagian }}</td>
-                                                        <td>{!! $item->indikator !!}</td>
-                                                        <td>
-                                                            @if ($item->pivot->catatan_saran)
-                                                                {{ $item->pivot->catatan_saran }}
-                                                            @else
-                                                                -
-                                                            @endif
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <h4><b>{{ $item->pivot->nilai }}</b></h4>
-                                                        </td>
+                                                        <th>No.</th>
+                                                        <th>Bagian</th>
+                                                        <th>Indikator</th>
+                                                        <th style="min-width: 150px;">Catatan & Saran</th>
+                                                        <th style="min-width: 80px;">Nilai</th>
                                                     </tr>
+                                                </thead>
+                                                <tbody>
                                                     @php
-                                                        $totalNilai += $item->pivot->nilai;
+                                                        $rows = $inovasi
+                                                            ->penilaian()
+                                                            ->wherePivot('user_id', $user_id)
+                                                            ->wherePivot('juri_tahap', $i)
+                                                            ->get()
+                                                            ->sortBy('id')
+                                                            ->values();
+                                                        $tree = \App\Helper\Helper::buildAspekTree($rows);
+                                                        $totalNilai = $rows
+                                                            ->whereNull('parent_id')
+                                                            ->sum(fn($r) => optional($r->pivot)->nilai);
                                                     @endphp
-                                                @endif
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+
+                                                    @include('penilaian.partials.rekap-node', [
+                                                        'nodes' => $tree,
+                                                        'depth' => 0,
+                                                        'prefix' => '',
+                                                    ])
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between align-items-center py-2">
+                                        <strong>Total Nilai:</strong>
+                                        <span class="h5 mb-0 font-weight-bold">{{ round($totalNilai, 2) }}</span>
+                                    </div>
                                 </div>
-                                <div class="card-footer d-flex justify-content-between align-items-center">
-                                    <strong>Total Nilai:</strong>
-                                    <span class="h4 font-weight-bold">{{ $totalNilai }}</span>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    {{-- </div> --}}
-                @endfor
+                            @endforeach
+                        </div>
+                    @endfor
+                </div>
             </div>
+        </div>
+
+        <div class="d-flex justify-content-start mt-3">
+            <a href="{{ route('penilaian.index', ['jenis' => $jenis ?? 'inotek']) }}" class="btn btn-secondary">Kembali</a>
         </div>
     @else
         <h3>

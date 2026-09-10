@@ -52,7 +52,7 @@
                                         <td>{{ $item->indikator->sum('pivot.bobot_akhir') }}</td>
                                         <td>
 
-                                            {{ $item->penilaian->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
+                                            {{ $item->penilaian->whereNull('parent_id')->sum('pivot.nilai') / sizeof($item->kategori->juris) }}
                                         </td>
                                         <td>
                                             @if ($item->status != 0)
