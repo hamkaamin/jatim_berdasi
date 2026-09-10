@@ -18,8 +18,7 @@
         <div class="col">
 
             <form method="get" class="d-flex mb-3" style="max-width: 420px">
-                <input type="text" name="q" value="{{ $q }}" class="form-control me-2"
-                    placeholder="Cari bagian / indikator...">
+                <input type="text" name="q" value="{{ $q }}" class="form-control me-2" placeholder="Cari aspek...">
                 <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                 @if ($q !== '')
                     <a href="{{ url()->current() }}" class="btn btn-secondary ms-2">Reset</a>
@@ -32,7 +31,7 @@
                         <a data-toggle="tab" href="#tab-{{ $item->id }}"
                             class="{{ $loop->iteration == 1 ? 'active' : '' }} nav-link">
                             {{ $item->nama }} <span class="badge badge-primary">
-                                {{ $penilaianPerKategori[$item->id]->total() }}
+                                {{ \Helper::countAspek($treePerKategori[$item->id]) }}
                             </span>
                         </a>
                     </li>
@@ -43,63 +42,47 @@
                 @foreach ($data_kategori as $data)
                     <div class="tab-pane {{ $loop->iteration == 1 ? 'active' : '' }}" id="tab-{{ $data->id }}"
                         role="tabpanel">
-                        <h4>Penilaian Inovasi</h4>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4 class="mb-0">Penilaian Inovasi</h4>
+                            @if ($treePerKategori[$data->id]->isNotEmpty())
+                                <form method="post" action="{{ route('master.penilaian.delete-all') }}" style="all: unset"
+                                    class="form-hapus-semua" data-nama="kategori {{ $data->nama }}">
+                                    @csrf
+                                    <input type="hidden" name="kategori_id" value="{{ $data->id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus Semua</button>
+                                </form>
+                            @endif
+                        </div>
                         <div class="table-responsive p-3">
-                            @php
-                                $pg = $penilaianPerKategori[$data->id];
-                                $grouped = collect($pg->items())->groupBy('bagian');
-                                $baris = $pg->firstItem() ?? 0;
-                            @endphp
                             <table class="table align-items-center table-flush" id="tabel-{{ $data->id }}">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>No.</th>
-                                        <th>Bagian</th>
-                                        <th>Indikator</th>
+                                        <th>Aspek</th>
                                         <th>Nilai Min - Max</th>
                                         <th>Bobot Nilai</th>
-                                        <th style="width: 100px"></th>
+                                        <th style="width: 140px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($grouped as $namaBagian => $items)
-                                        @foreach ($items as $item)
-                                            <tr>
-                                                <td>{{ $baris++ }}</td>
-                                                @if ($loop->first)
-                                                    <td rowspan="{{ $items->count() }}" class="align-middle fw-bold">
-                                                        {{ $namaBagian !== '' ? $namaBagian : '-' }}
-                                                    </td>
-                                                @endif
-                                                <td>{!! $item->indikator !!}</td>
-                                                <td><b>{{ $item->nilai_min }}</b> - <b>{{ $item->nilai_max }}</b></td>
-                                                <td>{{ $item->bobot_nilai }}%</td>
-                                                <td>
-                                                    <button data-target="#modalPopup" data-toggle="modal"
-                                                        onclick="modal({{ $item->id }}, 'penilaian')"
-                                                        class="btn m-1 btn-sm btn-block btn-warning"><i
-                                                            class="fa fa-edit"></i>&nbsp;&nbsp;Edit</button>
-                                                    <form style="all: unset"
-                                                        action="{{ route('master.penilaian.delete', ['id' => $item->id]) }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button type="submit" class="btn m-1 btn-sm btn-block btn-danger"
-                                                            onclick="if(!confirm('{{ Config::get('delete_confirm') }}')){return false;}"><i
-                                                                class="fa fa-trash-alt"></i>&nbsp;&nbsp;Hapus</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @empty
+                                    @if ($treePerKategori[$data->id]->isEmpty())
                                         <tr>
-                                            <td colspan="6" class="text-center text-muted">
+                                            <td colspan="5" class="text-center text-muted">
                                                 Tidak ada data{{ $q !== '' ? ' untuk pencarian "' . $q . '"' : '' }}.
                                             </td>
                                         </tr>
-                                    @endforelse
+                                    @else
+                                        @include('master.partials.aspek-rows', [
+                                            'nodes' => $treePerKategori[$data->id],
+                                            'depth' => 0,
+                                            'prefix' => '',
+                                            'modalType' => 'penilaian',
+                                            'deleteRoute' => 'master.penilaian.delete',
+                                        ])
+                                    @endif
                                 </tbody>
                             </table>
-                            <div class="mt-2">{{ $pg->links() }}</div>
                         </div>
                     </div>
                 @endforeach
@@ -111,6 +94,26 @@
 
 @section('script')
     @include('script.modal')
+    <script>
+        document.querySelectorAll('.form-hapus-semua').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Hapus Semua Aspek?',
+                    html: 'Semua aspek penilaian pada <b>' + (form.dataset.nama || 'kelompok ini') +
+                        '</b> akan dihapus.<br>Tindakan ini tidak bisa dibatalkan dari aplikasi.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, hapus semua',
+                    cancelButtonText: 'Batal'
+                }).then(function(r) {
+                    if (r.isConfirmed) form.submit();
+                });
+            });
+        });
+    </script>
     <script>
         var appendCount = 0; // Initialize the count variable outside the function
 

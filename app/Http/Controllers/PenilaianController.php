@@ -17,26 +17,17 @@ class PenilaianController extends Controller
     public function index(Request $request)
     {
         $q = trim((string) $request->q);
-        $perPage = 15;
 
         $data_kategori = KategoriInovasi::where('is_aktif', 1)->where('is_kovablik', 0)
             ->orderBy('id', 'asc')->get();
 
-        $penilaianPerKategori = [];
+        $treePerKategori = [];
         foreach ($data_kategori as $kat) {
-            $penilaianPerKategori[$kat->id] = Penilaian::where('kategori_id', $kat->id)
-                ->when($q !== '', function ($x) use ($q) {
-                    $x->where(function ($w) use ($q) {
-                        $w->where('bagian', 'ilike', "%{$q}%")
-                          ->orWhere('indikator', 'ilike', "%{$q}%");
-                    });
-                })
-                ->orderBy('bagian', 'asc')->orderBy('id', 'asc')
-                ->paginate($perPage, ['*'], 'page_' . $kat->id)
-                ->withQueryString();
+            $flat = Penilaian::where('kategori_id', $kat->id)->orderBy('id', 'asc')->get();
+            $treePerKategori[$kat->id] = \Helper::buildAspekTree($flat, $q);
         }
 
-        return view('master.penilaian', compact('data_kategori', 'penilaianPerKategori', 'q'));
+        return view('master.penilaian', compact('data_kategori', 'treePerKategori', 'q'));
     }
 
     /**
@@ -73,21 +64,33 @@ class PenilaianController extends Controller
             return redirect()->back()->with('error', 'Nilai minimal harus lebih kecil atau sama dengan nilai maksimal');
         }
 
-        $bobot_dipakai = Penilaian::where('kategori_id', $request->kategori_id)
+        // Induk hanya diambil dari request saat tambah anak; saat edit tetap mengikuti yang lama.
+        $parentId = $request->id == 0 ? ($request->parent_id ?: null) : $data->parent_id;
+
+        // Anak selalu mengikuti kategori induknya.
+        $kategoriId = $parentId
+            ? optional(Penilaian::find($parentId))->kategori_id
+            : ($request->id == 0 ? $request->kategori_id : $data->kategori_id);
+
+        $bobot_dipakai = Penilaian::when($parentId, function ($x) use ($parentId) {
+                return $x->where('parent_id', $parentId);
+            }, function ($x) use ($kategoriId) {
+                return $x->whereNull('parent_id')->where('kategori_id', $kategoriId);
+            })
             ->when($request->id != 0, function ($q) use ($request) {
                 return $q->where('id', '!=', $request->id);
             })
             ->sum('bobot_nilai');
         if ($bobot_dipakai + (int) $request->bobot_nilai > 100) {
-            return redirect()->back()->with('error', 'Total bobot nilai untuk kategori ini melebihi 100%. Sisa kuota: ' . (100 - $bobot_dipakai) . '%');
+            return redirect()->back()->with('error', 'Total bobot untuk kelompok aspek ini melebihi 100%. Sisa kuota: ' . (100 - $bobot_dipakai) . '%');
         }
 
+        $data->parent_id = $parentId;
         $data->bagian = $request->bagian;
-        $data->indikator = $request->indikator;
         $data->nilai_min = $request->nilai_min;
         $data->nilai_max = $request->nilai_max;
         $data->bobot_nilai = $request->bobot_nilai ?: 100;
-        $data->kategori_id = $request->kategori_id;
+        $data->kategori_id = $kategoriId;
 		$data->save();
         return redirect()->back()->with('success', Config::get('save_success'));
     }
@@ -131,6 +134,13 @@ class PenilaianController extends Controller
         $data = Penilaian::findOrFail($request->id);
         $data->delete();
         return redirect()->back()->with('success', Config::get('delete_success'));
+    }
+
+    public function deleteAll(Request $request)
+    {
+        $jumlah = Penilaian::where('kategori_id', $request->kategori_id)->count();
+        Penilaian::where('kategori_id', $request->kategori_id)->delete();
+        return redirect()->back()->with('success', $jumlah . ' aspek penilaian berhasil dihapus');
     }
 
     /**

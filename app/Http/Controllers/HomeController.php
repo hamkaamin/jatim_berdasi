@@ -376,14 +376,17 @@ class HomeController extends Controller
                 break;
             case "penilaian":
                 $data = ($request->id == 0) ? null : Penilaian::findOrFail($request->id);
+                $parent = $request->parent_id ? Penilaian::find($request->parent_id) : null;
                 $kategori = KategoriInovasi::where('is_aktif', 1)->where('is_kovablik', 0)->get();
-                $bobot_terpakai = Penilaian::selectRaw('kategori_id, SUM(bobot_nilai) as total')
-                    ->groupBy('kategori_id')
-                    ->pluck('total', 'kategori_id');
-                $bagian_list = Penilaian::whereNotNull('bagian')->where('bagian', '!=', '')
-                    ->distinct()->orderBy('bagian')->pluck('bagian');
+                $bobot_terpakai = Penilaian::select('id', 'parent_id', 'kategori_id', 'bobot_nilai')->get()
+                    ->groupBy(function ($r) {
+                        return $r->parent_id ? 'p' . $r->parent_id : 'root:' . $r->kategori_id;
+                    })
+                    ->map(function ($g) {
+                        return (int) $g->sum('bobot_nilai');
+                    });
                 return response()->json(array(
-                    'msg' => view('modal.form-penilaian', compact('data', 'kategori', 'bobot_terpakai', 'bagian_list'))->render()
+                    'msg' => view('modal.form-penilaian', compact('data', 'parent', 'kategori', 'bobot_terpakai'))->render()
                 ), 200);
                 break;
             case "juri":
@@ -430,14 +433,17 @@ class HomeController extends Controller
 
             case "kategori_nilai_kovablik":
                 $data = ($request->id == 0) ? null : KategoriNilaiKovablik::findOrFail($request->id);
+                $parent = $request->parent_id ? KategoriNilaiKovablik::find($request->parent_id) : null;
                 $tahapan = TahapanKovablik::all();
-                $bobot_terpakai = KategoriNilaiKovablik::selectRaw('tahapan_id, SUM(bobot_nilai) as total')
-                    ->groupBy('tahapan_id')
-                    ->pluck('total', 'tahapan_id');
-                $bagian_list = KategoriNilaiKovablik::whereNotNull('bagian')->where('bagian', '!=', '')
-                    ->distinct()->orderBy('bagian')->pluck('bagian');
+                $bobot_terpakai = KategoriNilaiKovablik::select('id', 'parent_id', 'tahapan_id', 'bobot_nilai')->get()
+                    ->groupBy(function ($r) {
+                        return $r->parent_id ? 'p' . $r->parent_id : 'root:' . $r->tahapan_id;
+                    })
+                    ->map(function ($g) {
+                        return (int) $g->sum('bobot_nilai');
+                    });
                 return response()->json(array(
-                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'tahapan', 'bobot_terpakai', 'bagian_list'))->render()
+                    'msg' => view('modal.form-kategori_nilai_kovablik', compact('data', 'parent', 'tahapan', 'bobot_terpakai'))->render()
                 ), 200);
                 break;
 

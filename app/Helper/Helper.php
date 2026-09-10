@@ -359,4 +359,54 @@ class Helper
 		}
 		return false;
 	}
+
+	/**
+	 * Susun collection flat (punya id + parent_id) menjadi pohon.
+	 * Tiap node diberi relasi "children" (Collection). Bila $search diisi,
+	 * pohon dipangkas: hanya cabang yang mengandung kecocokan pada "bagian"
+	 * (beserta leluhurnya) yang dipertahankan.
+	 */
+	public static function buildAspekTree($flat, string $search = '')
+	{
+		$byParent = $flat->groupBy(function ($r) {
+			return $r->parent_id ?? 0;
+		});
+
+		$build = function ($parentId) use (&$build, $byParent) {
+			$anak = $byParent[$parentId] ?? collect();
+			return $anak->map(function ($node) use (&$build) {
+				$node->setRelation('children', $build($node->id));
+				return $node;
+			})->values();
+		};
+
+		$tree = $build(0);
+
+		if ($search === '') {
+			return $tree;
+		}
+
+		$prune = function ($nodes) use (&$prune, $search) {
+			return $nodes->filter(function ($node) use (&$prune, $search) {
+				$kept = $prune($node->children);
+				$node->setRelation('children', $kept);
+				return $kept->isNotEmpty()
+					|| mb_stripos((string) $node->bagian, $search) !== false;
+			})->values();
+		};
+
+		return $prune($tree);
+	}
+
+	/**
+	 * Hitung total node dalam pohon (rekursif).
+	 */
+	public static function countAspek($nodes): int
+	{
+		$n = 0;
+		foreach ($nodes as $node) {
+			$n += 1 + self::countAspek($node->children);
+		}
+		return $n;
+	}
 }
