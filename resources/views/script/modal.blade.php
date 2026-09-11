@@ -7,7 +7,7 @@
 </div>
 
 <script>
-    function modal(id, type) {
+    function modal(id, type, parent_id) {
         $('#modalContent').html("<div class=\"text-center my-3\"><h2>Loading...</h2></div>");
         $.ajax({
             type: 'POST',
@@ -16,6 +16,7 @@
                 '_token': '<?php echo csrf_token(); ?>',
                 'id': id,
                 'type': type,
+                'parent_id': parent_id || 0,
             },
             success: function(data) {
                 $('#modalContent').html(data.msg);

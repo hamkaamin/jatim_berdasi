@@ -158,6 +158,7 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::get('/', [PenilaianController::class, 'index'])->name('index');
                     Route::post('/', [PenilaianController::class, 'save'])->name('save');
                     Route::post('/delete', [PenilaianController::class, 'delete'])->name('delete');
+                    Route::post('/delete-all', [PenilaianController::class, 'deleteAll'])->name('delete-all');
                 });
 
                 Route::prefix('juri')->name('juri.')->group(function () {
@@ -196,6 +197,7 @@ Route::group(['middleware' => ['XSS']], function () {
                     Route::get('/', [KategoriNilaiKovablikController::class, 'index'])->name('index');
                     Route::post('/', [KategoriNilaiKovablikController::class, 'save'])->name('save');
                     Route::post('/delete', [KategoriNilaiKovablikController::class, 'delete'])->name('delete');
+                    Route::post('/delete-all', [KategoriNilaiKovablikController::class, 'deleteAll'])->name('delete-all');
                 });
 
                 Route::prefix('juri_kovablik')->name('juri_kovablik.')->group(function () {

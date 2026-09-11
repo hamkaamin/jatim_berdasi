@@ -18,7 +18,7 @@ class IndikatorController extends Controller
         $indikator_inovasi = Indikator::where('label', 0)->get();
         // dd($indikator_inovasi);
         $indikator_provinsi = Indikator::where('label', 1)->get();
-        $data_kategori = KategoriInovasi::orderBy('id','asc')->get();
+        $data_kategori = KategoriInovasi::where('is_aktif', 1)->orderBy('id','asc')->get();
         return view('master.indikator', compact('indikator_inovasi', 'indikator_provinsi','data_kategori'));
     }
 
