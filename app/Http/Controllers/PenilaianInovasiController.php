@@ -62,10 +62,13 @@ class PenilaianInovasiController extends Controller
                 ]);
             }
         }
-        $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->get();
+        $data = $inovasi->penilaian()->wherePivot('user_id', Auth::id())->wherePivot('juri_tahap', $inovasi->juri_tahap)->get()->sortBy('id')->values();
+        $tree = Helper::buildAspekTree($data);
+        $leafIds = Helper::aspekLeafIds($data);
+        $grandTotal = collect($tree)->sum(fn ($n) => optional($n->pivot)->nilai);
         $penilaian_map = PenilaianMap::where('inovasi_id', $id)->where('juri_id',$juri->id)->where('juri_tahap',$inovasi->juri_tahap)->first();
 
-        return view('penilaian.edit', compact('data','inovasi','jenis','juri','penilaian_map','juri_tahap'));
+        return view('penilaian.edit', compact('data','tree','leafIds','grandTotal','inovasi','jenis','juri','penilaian_map','juri_tahap'));
     }
 
     public function show(Request $request)
@@ -109,63 +112,81 @@ class PenilaianInovasiController extends Controller
 
     public function save(Request $request)
     {
+        // Tanda tangan wajib (selalu baru) setiap menyimpan.
+        if (!$request->filled('signature_data')) {
+            return redirect()->back()
+                ->withErrors(['signature_data' => 'Tanda tangan wajib diisi sebelum menyimpan penilaian.'])
+                ->withInput();
+        }
+
         DB::beginTransaction();
 
         try {
             $inovasi = Inovasi::findOrFail($request->inovasi_id);
-            $total_nilai = 0;
 
-            foreach ($request->except('_token', 'inovasi_id', 'signature_data', 'penilaian_map', 'juri_id') as $key => $value) {
-                if (strpos($key, 'keterangan_') === 0) {
-                    $penilaianId = str_replace('keterangan_', '', $key);
-                    $catatanSaran = $value;
-                    $nilaiKey = "nilai_$penilaianId";
-                    $nilai = $request->input($nilaiKey);
-                    $bobot = $request->input("bobot_nilai_$penilaianId");
-                    $nilai = $nilai * $bobot / 100;
+            // 1. Pohon rubrik otoritatif dari master (bukan dari request).
+            $flat = Penilaian::where('kategori_id', $inovasi->kategori_id)->get()->sortBy('id')->values();
+            $tree = Helper::buildAspekTree($flat);
+            $leafIds = Helper::aspekLeafIds($flat);
 
-                    if (is_numeric($nilai)) {
-                        $updated = DB::table('penilaian_inovasi')
-                            ->where('inovasi_id', $inovasi->id)
-                            ->where('penilaian_id', $penilaianId)
-                            ->where('user_id', Auth::id())
-                            ->where('juri_tahap',$inovasi->juri_tahap)
-                            ->update([
-                                'catatan_saran' => $catatanSaran,
-                                'nilai' => $nilai,
-                            ]);
-
-                        if ($updated) {
-                            $total_nilai += $nilai;
-                        }
-                    }
+            // 2. Kumpulkan input leaf + catatan.
+            $rawByLeafId = [];
+            $noteById = [];
+            foreach ($leafIds as $lid) {
+                if ($request->has("nilai_$lid")) {
+                    $rawByLeafId[$lid] = $request->input("nilai_$lid");
+                }
+                if ($request->has("keterangan_$lid")) {
+                    $noteById[$lid] = $request->input("keterangan_$lid");
                 }
             }
 
-            // Simpan tanda tangan juri
-            if ($request->has('signature_data') && $request->filled('signature_data')) {
-                $signatureData = str_replace(['data:image/png;base64,', ' '], ['', '+'], $request->input('signature_data'));
-                $signatureImage = base64_decode($signatureData);
-                $signatureName = 'signature_' . time() . '.png';
-                $signaturePath = public_path('uploads/signatures/');
+            // 3. Nilai tersimpan (berbobot) bottom-up untuk SEMUA node.
+            $storedById = Helper::rollupAspek($tree, $rawByLeafId);
 
-                if (!File::exists($signaturePath)) {
-                    File::makeDirectory($signaturePath, 0755, true);
+            // 4. Persist tiap node (updateOrInsert agar node rubrik baru tetap dapat baris).
+            foreach ($storedById as $rid => $stored) {
+                $key = [
+                    'inovasi_id' => $inovasi->id,
+                    'penilaian_id' => $rid,
+                    'user_id' => Auth::id(),
+                    'juri_tahap' => $inovasi->juri_tahap,
+                ];
+                $values = ['nilai' => is_numeric($stored) ? $stored : 0];
+                if (in_array($rid, $leafIds)) {
+                    $values['catatan_saran'] = $noteById[$rid] ?? null;
                 }
-
-                file_put_contents($signaturePath . $signatureName, $signatureImage);
-
-                $penilaian_map = $request->filled('penilaian_map')
-                    ? PenilaianMap::find($request->penilaian_map)
-                    : new PenilaianMap();
-
-                $penilaian_map->inovasi_id = $inovasi->id;
-                $penilaian_map->juri_id = $request->juri_id;
-                $penilaian_map->total_nilai = $total_nilai;
-                $penilaian_map->juri_tahap = $inovasi->juri_tahap;
-                $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;
-                $penilaian_map->save();
+                DB::table('penilaian_inovasi')->updateOrInsert($key, $values);
             }
+
+            // 5. Total = Σ node root saja.
+            $total_nilai = collect($tree)->sum(fn ($n) => $storedById[$n->id] ?? 0);
+
+            // 6. Simpan tanda tangan juri.
+            $signatureData = str_replace(['data:image/png;base64,', ' '], ['', '+'], $request->input('signature_data'));
+            $signatureImage = base64_decode($signatureData);
+            $signatureName = 'signature_' . time() . '.png';
+            $signaturePath = public_path('uploads/signatures/');
+
+            if (!File::exists($signaturePath)) {
+                File::makeDirectory($signaturePath, 0755, true);
+            }
+
+            file_put_contents($signaturePath . $signatureName, $signatureImage);
+
+            $penilaian_map = $request->filled('penilaian_map')
+                ? PenilaianMap::find($request->penilaian_map)
+                : new PenilaianMap();
+            if (!$penilaian_map) {
+                $penilaian_map = new PenilaianMap();
+            }
+
+            $penilaian_map->inovasi_id = $inovasi->id;
+            $penilaian_map->juri_id = $request->juri_id;
+            $penilaian_map->total_nilai = $total_nilai;
+            $penilaian_map->juri_tahap = $inovasi->juri_tahap;
+            $penilaian_map->signature_path = 'uploads/signatures/' . $signatureName;
+            $penilaian_map->save();
 
             DB::commit();
             return redirect()->back()->with('success', 'Data penilaian berhasil diperbarui!');

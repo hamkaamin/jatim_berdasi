@@ -109,6 +109,7 @@
                                                                                     ? "<span class='badge badge-primary rounded-pill'>Tahap 1</span>"
                                                                                     : "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                                                 $nilai_kov = $item->penilaian
+                                                                                    ->whereNull('parent_id')
                                                                                     ->where('pivot.juri_tahap', $i)
                                                                                     ->sum(fn($p) => $p->pivot->nilai);
                                                                                 $jumlahJuri = $item->kelompok->juris->count();
@@ -227,6 +228,7 @@
                                                     @endforeach
                                                     @php
                                                         $nilai = $item->penilaian
+                                                            ->whereNull('parent_id')
                                                             ->where('pivot.juri_tahap', $item->juri_tahap)
                                                             ->sum(function ($pen) {
                                                                 return $pen->pivot->nilai;

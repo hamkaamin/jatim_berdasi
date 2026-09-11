@@ -16,6 +16,7 @@
                 <td>
                     @php
                         $nilai = $item->penilaian
+                            ->whereNull('parent_id')
                             ->where('pivot.juri_tahap', $item->juri_tahap)
                             ->sum(function ($pen) {
                                 return $pen->pivot->nilai;

@@ -116,6 +116,7 @@
                                                                         "<span class='badge badge-success rounded-pill'>Tahap 2</span>";
                                                                 }
                                                                 $nilai = $item->penilaian
+                                                                    ->whereNull('parent_id')
                                                                     ->where('pivot.juri_tahap', $i)
                                                                     ->sum(function ($pen) {
                                                                         return $pen->pivot->nilai;
@@ -219,16 +220,29 @@
                         text: "Pastikan data sebelumnya sudah disimpan!",
                         icon: 'warning',
                         showCancelButton: true,
+                        showDenyButton: true,
                         confirmButtonColor: '#28a745',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ya, Lanjutkan!'
+                        denyButtonColor: '#007bff',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Lanjut & Bagikan',
+                        denyButtonText: 'Bagikan Saja',
+                        cancelButtonText: 'Batal'
                     }).then((result) => {
+                        var is_next;
                         if (result.isConfirmed) {
+                            is_next = true;
+                        } else if (result.isDenied) {
+                            is_next = false;
+                        } else {
+                            return;
+                        }
+                        {
                             var routeUrl = "{{ route('penilaian-kovablik.move') }}";
 
                             $.post(routeUrl, {
                                     _token: token,
-                                    id: id
+                                    id: id,
+                                    is_next: is_next
                                 },
                                 function(data) {
                                     if (data.status == true) {

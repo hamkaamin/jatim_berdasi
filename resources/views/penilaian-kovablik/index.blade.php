@@ -57,7 +57,7 @@
                                                     $juri_id = \App\Models\JuriKovablik::where('kelompok_id', $item->kelompok_id)->pluck('user_id');
                                                     $user = \App\Models\User::whereIn('id', $juri_id)->pluck('name');
 
-                                                    $penilaian = $item->penilaian->where('tahapan_id', $item->tahapan_id);
+                                                    $penilaian = $item->penilaian->whereNull('parent_id')->where('tahapan_id', $item->tahapan_id);
                                                     $groupedByJuri = $penilaian->groupBy('pivot.user_id');
                                                     $totalNilai = $groupedByJuri->map(function ($nilai) {
                                                         return $nilai->sum('pivot.nilai');
@@ -180,21 +180,45 @@
     </script>
     <script>
         function submitSelectedCheckboxes() {
-            let selectedCheckboxes = document.querySelectorAll('.is_pass:checked'); // Find checked checkboxes
-            let hiddenInputsContainer = document.getElementById('hidden-inputs');
-            hiddenInputsContainer.innerHTML = ''; // Clear previous inputs
+            let ids = Array.from(document.querySelectorAll('.is_pass:checked')).map(cb => cb.value);
+            if (ids.length === 0) {
+                return;
+            }
 
-            // Append checked checkboxes into the hidden form
-            selectedCheckboxes.forEach(checkbox => {
-                let input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'is_pass[]';
-                input.value = checkbox.value;
-                hiddenInputsContainer.appendChild(input);
+            Swal.fire({
+                title: 'Loloskan ke Tahap Selanjutnya?',
+                text: 'Pastikan data sebelumnya sudah disimpan!',
+                icon: 'warning',
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonColor: '#28a745',
+                denyButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Lanjut & Bagikan',
+                denyButtonText: 'Bagikan Saja',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                var is_next;
+                if (result.isConfirmed) {
+                    is_next = true;
+                } else if (result.isDenied) {
+                    is_next = false;
+                } else {
+                    return;
+                }
+                $.post("{{ route('penilaian-kovablik.move') }}", {
+                    _token: "{{ csrf_token() }}",
+                    id: ids,
+                    is_next: is_next
+                }, function(data) {
+                    Swal.fire({
+                        icon: data.status ? 'success' : 'error',
+                        title: data.status ? 'Berhasil!' : 'Gagal!',
+                        text: data.message,
+                        timer: 1500
+                    }).then(() => location.reload());
+                });
             });
-
-            // Submit the form
-            document.getElementById('form-lolos').submit();
         }
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll(".is_pass").forEach(function (checkbox) {

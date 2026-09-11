@@ -409,4 +409,65 @@ class Helper
 		}
 		return $n;
 	}
+
+	/**
+	 * Hitung nilai "tersimpan" (kontribusi berbobot) tiap node rubrik, bottom-up.
+	 *
+	 * Bobot diterapkan di SETIAP level, termasuk leaf:
+	 *   - leaf  : stored = nilai_mentah * bobot_nilai / 100
+	 *   - induk : stored = (Σ stored anak) * bobot_nilai / 100
+	 * Total 1 juri = Σ stored node root (parent_id IS NULL).
+	 *
+	 * @param  iterable $nodes        hasil Helper::buildAspekTree (tiap node punya relasi "children")
+	 * @param  array    $rawByLeafId  [rubric_id => nilai mentah juri] — hanya leaf
+	 * @return array                  [rubric_id => nilai tersimpan] untuk SEMUA node
+	 */
+	public static function rollupAspek($nodes, array $rawByLeafId): array
+	{
+		$out = [];
+		$walk = function ($nodes) use (&$walk, &$out, $rawByLeafId) {
+			$sum = 0.0;
+			foreach ($nodes as $node) {
+				$bobot = (int) ($node->bobot_nilai ?? 100);
+				$children = $node->children ?? collect();
+				if ($children->isEmpty()) {
+					$raw = isset($rawByLeafId[$node->id]) && is_numeric($rawByLeafId[$node->id])
+						? (float) $rawByLeafId[$node->id]
+						: 0.0;
+					$stored = $bobot ? $raw * $bobot / 100 : 0.0;
+				} else {
+					$stored = $bobot ? $walk($children) * $bobot / 100 : 0.0;
+				}
+				$out[$node->id] = $stored;
+				$sum += $stored;
+			}
+			return $sum;
+		};
+		$walk($nodes);
+		return $out;
+	}
+
+	/**
+	 * Ratakan pohon aspek (hasil buildAspekTree) menjadi array node pre-order.
+	 */
+	public static function flattenAspek($nodes, array &$acc = []): array
+	{
+		foreach ($nodes as $node) {
+			$acc[] = $node;
+			self::flattenAspek($node->children ?? collect(), $acc);
+		}
+		return $acc;
+	}
+
+	/**
+	 * Id node "leaf" dari sebuah collection flat (punya id + parent_id):
+	 * leaf = tidak ada baris lain yang parent_id-nya menunjuk ke id baris ini.
+	 */
+	public static function aspekLeafIds($flat): array
+	{
+		$parentIds = $flat->pluck('parent_id')->filter()->unique()->all();
+		return $flat->reject(function ($n) use ($parentIds) {
+			return in_array($n->id, $parentIds);
+		})->pluck('id')->values()->all();
+	}
 }

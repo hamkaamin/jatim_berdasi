@@ -121,6 +121,7 @@
                                                 }
 
                                                 $nilai = $item->penilaian
+                                                            ->whereNull('parent_id')
                                                             ->where('pivot.juri_tahap', $i)
                                                             ->sum(function ($pen) {
                                                                 return $pen->pivot->nilai;
@@ -317,30 +318,41 @@
                 </div>`,
                 icon: 'warning',
                 showCancelButton: true,
+                showDenyButton: true,
                 confirmButtonColor: '#28a745',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Lanjutkan!'
+                denyButtonColor: '#007bff',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Lanjut & Bagikan',
+                denyButtonText: 'Bagikan Saja',
+                cancelButtonText: 'Batal'
             }).then((result) => {
+                var is_next;
                 if (result.isConfirmed) {
-                    var routeUrl = "{{ route('penilaian-kovablik.move') }}";
-
-                    $.post(routeUrl, {
-                            _token: token,
-                            id: id
-                        },
-                        function(data) {
-                            Swal.fire({
-                                icon: data.status ? 'success' : 'error',
-                                title: data.status ? 'Berhasil!' : 'Gagal!',
-                                text: data.message,
-                                showConfirmButton: true,
-                                timer: 1500
-                            }).then(() => {
-                                show_status('{{ csrf_token() }}', $('#statusFilter').val(),
-                                    '#show_kovablik');
-                            });
-                        });
+                    is_next = true;
+                } else if (result.isDenied) {
+                    is_next = false;
+                } else {
+                    return;
                 }
+                var routeUrl = "{{ route('penilaian-kovablik.move') }}";
+
+                $.post(routeUrl, {
+                        _token: token,
+                        id: id,
+                        is_next: is_next
+                    },
+                    function(data) {
+                        Swal.fire({
+                            icon: data.status ? 'success' : 'error',
+                            title: data.status ? 'Berhasil!' : 'Gagal!',
+                            text: data.message,
+                            showConfirmButton: true,
+                            timer: 1500
+                        }).then(() => {
+                            show_status('{{ csrf_token() }}', $('#statusFilter').val(),
+                                '#show_kovablik');
+                        });
+                    });
             });
         }
 

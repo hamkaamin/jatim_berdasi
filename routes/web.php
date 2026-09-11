@@ -311,7 +311,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('/show', [PenilaianKovablikController::class, 'show'])->name('show');
 
             Route::get('/ranking', [PenilaianKovablikController::class, 'ranking'])->name('ranking');
-            Route::get('/print/{id}', [PenilaianKovablikController::class, 'print'])->name('print');
+            Route::get('/print/{id}/{juri_tahap}', [PenilaianKovablikController::class, 'print'])->name('print');
             Route::post('/move', [PenilaianKovablikController::class, 'move'])->name('move');
         });
 

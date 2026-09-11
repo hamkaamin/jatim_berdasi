@@ -79,35 +79,22 @@
             </thead>
             <tbody>
                 @php
-                    $totalNilai = 0;
-                    $no = 0;
+                    $rows = $data
+                        ->where('pivot.user_id', $user_id)
+                        ->where('pivot.juri_tahap', $juri_tahap)
+                        ->sortBy('id')
+                        ->values();
+                    $tree = \App\Helper\Helper::buildAspekTree($rows);
+                    $totalNilai = $rows->whereNull('parent_id')->sum(fn($r) => optional($r->pivot)->nilai);
                 @endphp
-                @foreach ($data as $item)
-                    @if ($item->pivot->user_id == $user_id)
-                        @php $no++; @endphp
-                        <tr>
-                            <td style="text-align: center">{{ $no }}</td>
-                            <td>{{ $item->bagian }}</td>
-                            <td>{!! $item->indikator !!}</td>
-                            <td>
-                                @if ($item->pivot->catatan_saran)
-                                    {{ $item->pivot->catatan_saran }}
-                                @else
-                                    -
-                                @endif
-                            </td>
-                            <td style="text-align: center">
-                                <h4><b>{{ $item->pivot->nilai }}</b></h4>
-                            </td>
-                        </tr>
-                        @php
-                            $totalNilai += $item->pivot->nilai;
-                        @endphp
-                    @endif
-                @endforeach
+                @include('penilaian.partials.rekap-node', [
+                    'nodes' => $tree,
+                    'depth' => 0,
+                    'prefix' => '',
+                ])
                 <tr>
                     <td colspan="4" style="text-align: right"><b>Total Nilai</b></td>
-                    <td style="text-align: center"><b>{{ $totalNilai }}</b></td>
+                    <td style="text-align: center"><b>{{ round($totalNilai, 2) }}</b></td>
                 </tr>
             </tbody>
         </table>
